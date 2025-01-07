@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christian Raro | Front-End Developer & Web Enthusiast</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Me</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#tech-stack">Tech Stack</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact_me.html">Contact Me</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>   
+
+  <!-- Hero Section -->
+  <section id="hero" class="py-5 text-light" style="background-color: #111;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="hero-image text-center" data-aos="fade-right">
+            <img src="images/Christian_Pic_No_BG.png" class="img-fluid" style="width: 350px; height: 400px; object-fit: cover; border: 1px solid rgba(0, 0, 0, 0.1);" alt="Christian Raro Profile Picture" />
+          </div>
+        </div> 
+        <div class="col-md-6">
+          <h1 class="display-4" data-aos="fade-left">Hi, I'm Christian Raro</h1>
+          <p class="lead" data-aos="fade-left" data-aos-delay="100">
+            A full-stack web developer with a passion for building efficient, scalable solutions. 
+            I specialize in creating user-friendly applications using modern technologies.
+          </p>
+          <div class="socials" data-aos="fade-left" data-aos-delay="200">
+            <a href="https://www.facebook.com/chrisrarss?mibextid=ZbWKwL" class="btn btn-outline-light m-1">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://github.com" class="btn btn-outline-light m-1">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:christian.raro@example.com" class="btn btn-outline-light m-1">
+              <i class="fas fa-envelope"></i>
+            </a>
+            <!-- LinkedIn Icon -->
+            <a href="https://www.linkedin.com/in/your-linkedin-profile" class="btn btn-outline-light m-1">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="py-5 bg-light text-dark">
+    <div class="container">
+      <h2 class="text-center mb-4">About Me</h2>
+      <p class="text-center">I am a passionate front-end developer with a strong interest in building intuitive and engaging user interfaces. My journey began as a Computer Science graduate, where I worked on various exciting projects like Bubble.io apps, augmented reality navigation, and WordPress websites. I'm constantly learning and growing to master modern web technologies.</p>
+      <div class="row">
+        <div class="col-md-6 mb-4" data-aos="fade-up">
+          <div class="card border-dark">
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-user-graduate fa-2x text-danger me-3"></i>
+                <h5 class="card-title">Educational Background</h5>
+              </div>
+              <p class="card-text">I graduated with a Bachelor's degree in Computer Science. My academic journey focused on web development, programming languages, and modern software engineering practices.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4" data-aos="fade-up">
+          <div class="card border-dark">
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-map-pin fa-2x text-danger me-3"></i>
+                <h5 class="card-title">Naga City, Philippines</h5>
+              </div>
+              <p class="card-text">I am based in Naga City, Philippines, a vibrant city known for its rich history and culture.</p>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Map_of_Philippines.svg/1024px-Map_of_Philippines.svg.png" class="card-img-top" alt="Map of Philippines">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="bg-dark text-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Skills</h2>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <i class="fas fa-code fa-3x mb-2"></i>
+          <h4>Web Development</h4>
+          <p>Proficient in HTML, CSS, JavaScript, and PHP.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-palette fa-3x mb-2"></i>
+          <h4>UI/UX Design</h4>
+          <p>Experience with responsive design and user-centric interfaces.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-database fa-3x mb-2"></i>
+          <h4>Database Management</h4>
+          <p>Familiar with MySQL and database integration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack Section -->
+  <section id="tech-stack" class="py-5 text-dark">
+    <div class="container">
+      <h2 class="text-center mb-4">Tech Stack</h2>
+      <ul class="list-inline text-center">
+        <li class="list-inline-item mx-3"><i class="fab fa-html5 fa-3x text-danger"></i><p>HTML5</p></li>
+        <li class="list-inline-item mx-3"><i class="fab fa-css3-alt fa-3x text-primary"></i><p>CSS3</p></li>
+        <li class="list-inline-item mx-3"><i class="fab fa-js-square fa-3x text-warning"></i><p>JavaScript</p></li>
+        <li class="list-inline-item mx-3"><i class="fab fa-bootstrap fa-3x"></i><p>Bootstrap</p></li>
+        <li class="list-inline-item mx-3"><i class="fab fa-php fa-3x"></i><p>PHP</p></li>
+      </ul>
+    </div>
+  </section>
+
+ <!-- Projects Section -->
+<section id="projects" class="py-5" style="background-color: #333;">
+  <div class="container">
+    <h2 class="text-center mb-4 text-light">Projects</h2>
+    <!-- Project 1 -->
+    <div class="row gy-4">
+      <div class="col-md-12" data-aos="fade-up">
+        <div class="card">
+          <div class="row no-gutters">
+            <div class="col-md-7">
+              <div class="card-body">
+                <h5 class="card-title">Bubble.io App</h5>
+                <p class="card-text">A mobile application built using Bubble.io for seamless navigation and interaction.</p>
+                <!-- View Project Button -->
+                <a href="https://example.com/project1" class="btn btn-danger mt-3" target="_blank">View Project</a>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <img src="project1.jpg" class="card-img" alt="Project 1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Project 2 -->
+    <div class="row gy-4">
+      <div class="col-md-12" data-aos="fade-up">
+        <div class="card" style="margin-top: 20px;">
+          <div class="row no-gutters">
+            <div class="col-md-7">
+              <div class="card-body">
+                <h5 class="card-title">Augmented Reality Navigation</h5>
+                <p class="card-text">A college thesis project focused on creating an augmented reality navigation app.</p>
+                <!-- View Project Button -->
+                <a href="https://example.com/project2" class="btn btn-danger mt-3" target="_blank">View Project</a>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <img src="project2.jpg" class="card-img" alt="Project 2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Project 3 -->
+    <div class="row gy-4">
+      <div class="col-md-12" data-aos="fade-up">
+        <div class="card" style="margin-top: 20px;">
+          <div class="row no-gutters">
+            <div class="col-md-7">
+              <div class="card-body">
+                <h5 class="card-title">WordPress Portfolio Website</h5>
+                <p class="card-text">A WordPress website showcasing my freelance projects, with integrated WooCommerce functionality.</p>
+                <!-- View Project Button -->
+                <a href="https://example.com/project3" class="btn btn-danger mt-3" target="_blank">View Project</a>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <img src="project3.jpg" class="card-img" alt="Project 3">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- Footer -->
+  <footer class="text-center bg-dark text-light py-3">
+    <p>© 2025 Christian Raro. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="btn btn-danger" title="Back to Top" style="position: fixed; bottom: 20px; right: 20px; display: none;">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Bootstrap Bundle (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS Animation Library -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    // Back to top button functionality
+    window.onscroll = function() {
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        document.getElementById("back-to-top").style.display = "block";
+      } else {
+        document.getElementById("back-to-top").style.display = "none";
+      }
+    };
+
+    document.getElementById("back-to-top").addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Me - Christian Raro</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Icons -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+    }
+    header {
+      background-color: #222;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+    }
+    header a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    header a i {
+      margin-right: 0.5em;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 2em auto;
+      padding: 2em;
+      background-color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    .left-column,
+    .right-column {
+      flex: 1;
+      margin: 1em;
+    }
+    .left-column {
+      max-width: 40%;
+    }
+    .right-column {
+      max-width: 50%;
+    }
+    .left-column h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5em;
+    }
+    .left-column p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5em;
+    }
+    .socials a {
+      display: inline-block;
+      margin: 0.5em;
+      font-size: 1.5rem;
+      color: #007bff;
+      transition: color 0.3s ease;
+    }
+    .socials a:hover {
+      color: #0056b3;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group {
+      margin-bottom: 1.5em;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5em;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8em;
+      border: none;
+      border-radius: 5px;
+      background-color: #555;
+      color: #fff;
+    }
+    button {
+      padding: 0.8em;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px);
+    }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .left-column,
+      .right-column {
+        max-width: 100%;
+        margin: 0;
+      }
+    }
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 1em 0;
+      text-align: center;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-to-top:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</header>
+
+<div class="container">
+  <!-- Left Column -->
+  <div class="left-column">
+    <h1>Contact Me</h1>
+    <p>Feel free to reach out through my socials or the form.</p>
+    <div class="socials">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="mailto:christian.raro@example.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="right-column">
+    <form action="mailto:christian.raro@gmail.com" method="post" enctype="text/plain">
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="6" required placeholder="Write your message"></textarea>
+      </div>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 Christian Raro. All Rights Reserved.</p>
+</footer>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"><i class="fas fa-arrow-up"></i></button>
+
+</body>
+</html>
