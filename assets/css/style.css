@@ -155,13 +155,6 @@ nav.navbar {
   color: #e63946;
 }
 
-/* Bullet dot styling */
-.bullet-dot {
-  color: #ff5e57;
-  margin-right: 10px;
-  font-size: 20px;
-}
-
 /* Card hover effect */
 .card.hover-effect:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -183,8 +176,6 @@ nav.navbar {
 .card-body {
   background-color: #fff;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
 }
 
 /* Card styling for better interactivity */
@@ -282,7 +273,7 @@ nav.navbar {
   animation: fadeInOutLeft 7s ease-in-out 5s infinite;
 }
 
-.image-container {
+.image-container-hero {
   position: relative;
   width: 100%;
   height: 100%;
@@ -290,7 +281,7 @@ nav.navbar {
   overflow: hidden;
 }
 
-.image-container::before {
+.image-container-hero::before {
   content: '';
   position: absolute;
   top: 0;
@@ -302,7 +293,7 @@ nav.navbar {
   opacity: 0.5;
 }
 
-.image-container img {
+.image-container-hero img {
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -434,19 +425,22 @@ nav.navbar {
     object-fit: cover;
     object-position: center;
   }
-  /* Card hover effect */
-  .card:hover {
-    transform: scale(1.02);
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  }
-
-  /* For small screens */
   @media (max-width: 768px) {
-    .card-body {
-      text-align: center;
+    .card {
+      flex-direction: column; /* Switch to column layout for mobile */
+      height: auto; /* Allow dynamic height */
     }
-    .image-container {
-      padding-bottom: 75%; /* Adjust for smaller aspect ratio on mobile */
+
+    .card-img-container {
+      flex: unset; /* Reset flex sizing */
+      height: auto; /* Adjust height dynamically for mobile */
+    }
+
+    .card-body {
+      padding: 1rem; /* Ensure proper spacing on mobile */
+    }
+
+    .card img {
+      border-radius: 15px 15px 0 0; /* Rounded corners on mobile */
     }
   }
