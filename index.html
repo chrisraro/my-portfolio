@@ -87,9 +87,7 @@
     <div class="container">
       <h2 class="text-center mb-4">About Me</h2>
       <p class="text-center">
-        I am a passionate front-end developer with a strong interest in building intuitive and engaging user interfaces.
-        As a Computer Science graduate from Bicol University Polangui Campus, I developed hands-on experience with web and mobile application development.
-        My journey includes working as an Associate Bubble.io Developer at Muramart Holdings Inc., where I contributed to building a full-stack application.
+        I am a passionate front-end developer with a strong interest in building intuitive and engaging user interfaces. My journey began as a Computer Science graduate, where I worked on various exciting projects like Bubble.io apps, and WordPress websites. I'm constantly learning and growing to master modern web technologies.
       </p>
       <div class="row">
         <!-- Educational Background Card -->
@@ -205,8 +203,8 @@
             <div class="row no-gutters">
               <div class="col-md-7">
                 <div class="card-body">
-                  <h5 class="card-title">WordPress Portfolio Website</h5>
-                  <p class="card-text">A WordPress website showcasing my freelance projects, with integrated WooCommerce functionality.</p>
+                  <h5 class="card-title">Acad1 Review Center Website</h5>
+                  <p class="card-text">A WordPress website showcasing services of a review center, with integrated WooCommerce functionality.</p>
                   <a href="https://example.com/project3" class="btn btn-danger mt-3" target="_blank">View Project</a>
                 </div>
               </div>
@@ -226,7 +224,7 @@
               <div class="col-md-7">
                 <div class="card-body">
                   <h5 class="card-title">Muramart App</h5>
-                  <p class="card-text">A full-stack web and mobile application built with Bubble.io for seamless UI/UX and backend workflows.</p>
+                  <p class="card-text">An agri-ecommerce mobile application built with Bubble.io for seamless UI/UX and backend workflows.</p>
                   <a href="https://muramartv2.com/" class="btn btn-danger mt-3" target="_blank">View Project</a>
                 </div>
               </div>
@@ -278,6 +276,33 @@
     // Initialize AOS (Animation on Scroll)
     AOS.init();
   </script>
+
+  <!-- Add this before the closing </body> tag -->
+<div id="back-to-top" class="back-to-top">
+  <i class="fas fa-chevron-up"></i>
+</div>
+<script>
+  // Back to Top Button Functionality
+  const backToTopButton = document.getElementById('back-to-top');
+
+  // Show or hide the button based on scroll position
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      backToTopButton.classList.add('show');
+    } else {
+      backToTopButton.classList.remove('show');
+    }
+  });
+
+  // Scroll to top when the button is clicked
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>
+
 </body>
 
 </html>
