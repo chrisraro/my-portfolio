@@ -45,7 +45,16 @@
   border-radius: 10px;
   transition: box-shadow 0.3s ease;
 }
+.card {
+  height: 100%; /* Ensures the cards fill the available space */
+  display: flex;
+  flex-direction: column; /* Stacks content vertically */
+  justify-content: space-between; /* Distributes space evenly */
+}
 
+.card-body {
+  flex-grow: 1; /* Makes the content fill the card */
+}
 .card:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }

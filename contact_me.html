@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Me - Christian Raro</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -56,9 +56,13 @@
       font-size: 1.2rem;
       margin-bottom: 1.5em;
     }
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+    }
     .socials a {
       display: inline-block;
-      margin: 0.5em;
       font-size: 1.5rem;
       color: #007bff;
       transition: color 0.3s ease;
@@ -104,12 +108,27 @@
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
-        align-items: center;
+        padding: 1em;
       }
       .left-column,
       .right-column {
         max-width: 100%;
         margin: 0;
+      }
+      .left-column h1 {
+        font-size: 2rem;
+        text-align: center;
+      }
+      .left-column p {
+        font-size: 1rem;
+        text-align: center;
+      }
+      .socials {
+        justify-content: center;
+        margin-bottom: 1.5em;
+      }
+      form {
+        padding: 0 1em;
       }
     }
     footer {
@@ -117,9 +136,6 @@
       color: #fff;
       padding: 1em 0;
       text-align: center;
-      position: relative;
-      bottom: 0;
-      width: 100%;
     }
     footer a {
       color: #007bff;
