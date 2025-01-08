@@ -53,7 +53,7 @@ nav.navbar {
 }
 
 .navbar-toggler-icon {
-  background-color: #f8f9fa;
+  background-color: transparent;
 }
 
 /* Tech Stack Section */
