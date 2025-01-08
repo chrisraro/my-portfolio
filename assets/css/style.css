@@ -1,0 +1,372 @@
+/* Set global font family */
+body {
+  font-family: 'Clash Grotesk', sans-serif;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
+}
+
+/* Adjust text colors for better contrast */
+.text-light {
+  color: #f1f1f1;
+}
+.text-dark {
+  color: #333;
+}
+.btn-outline-light {
+  color: #f1f1f1;
+  border-color: #f1f1f1;
+}
+.btn-outline-light:hover {
+  background-color: #f1f1f1;
+  color: #333;
+}
+.bg-dark {
+  background-color: #111 !important;
+}
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+.bg-dark .btn-outline-light {
+  border-color: #f1f1f1;
+}
+
+/* Navbar styles */
+nav.navbar {
+  transition: background-color 0.3s ease;
+}
+
+.navbar-nav .nav-link {
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #ff5e57 !important;
+}
+
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+}
+
+.navbar-toggler-icon {
+  background-color: #f8f9fa;
+}
+
+/* Tech Stack Section */
+#tech-stack {
+  padding: 60px 0;
+  background-color: #fff;
+}
+
+#tech-stack h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #212121;
+  margin-bottom: 30px;
+}
+
+#tech-stack .list-inline-item {
+  color: #212121;
+}
+
+#tech-stack .list-inline-item i {
+  font-size: 3rem;
+  color: #212121;
+  margin: 0 20px;
+}
+
+#tech-stack .list-inline-item p {
+  font-size: 1rem;
+  color: #e63946;
+}
+
+/* Projects Section */
+#projects {
+  padding: 60px 0;
+  background-color: #e63946;
+}
+
+#projects h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+}
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-body {
+  flex-grow: 1;
+}
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-body h5 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #212121;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card-footer {
+  background-color: #333;
+  padding: 10px;
+  text-align: center;
+}
+
+.card-footer a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.card-footer a:hover {
+  color: #e63946;
+}
+
+/* Bullet dot styling */
+.bullet-dot {
+  color: #ff5e57;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+/* Card hover effect */
+.card.hover-effect:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  transition: all 0.3s ease-in-out;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.card-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555;
+}
+
+.card-body {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Card styling for better interactivity */
+.card-body:hover {
+  background-color: #f8f9fa;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  #projects h2 {
+    font-size: 1.75rem;
+  }
+  .card-body h5 {
+    font-size: 1.2rem;
+  }
+
+  .card-body p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 767px) {
+  #projects .card {
+    width: 95%;
+    margin: 0 auto;
+  }
+  #projects .card .row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #projects .card .col-md-7 {
+    width: 65%;
+  }
+
+  #projects .card .col-md-5 {
+    width: 35%;
+  }
+
+  #projects .card .card-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+/* Add smooth transitions to images and buttons */
+.card-img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.card:hover .card-img {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Add hover effect to the card */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* View Project Button Hover Effect */
+.btn-danger {
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #ff5733;
+}
+
+/* Smooth transitions on AOS animations */
+[data-aos] {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+}
+
+/* Apply fade-in and fade-out from the left */
+.hero-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image img {
+  position: relative;
+  animation: fadeInOutLeft 7s ease-in-out 5s infinite;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(128, 21, 21, 0.5), #111);
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.image-container img {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* Fade in/out animation from the left */
+@keyframes fadeInOutLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Tech Item Styling */
+.tech-item {
+  display: inline-block;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.tech-item:hover {
+  transform: translateY(-10px);
+}
+
+.tech-icon {
+  transition: transform 0.3s ease;
+}
+
+.tech-item:hover .tech-icon {
+  transform: scale(1.1);
+}
+
+.tech-item p {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.tech-item:hover p {
+  color: #ff5e57;
+}
+
+/* Styling for section title */
+#tech-stack h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .tech-item {
+    margin-bottom: 20px;
+  }
+}
