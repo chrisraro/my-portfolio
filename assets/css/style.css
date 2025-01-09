@@ -444,3 +444,13 @@ nav.navbar {
       border-radius: 15px 15px 0 0; /* Rounded corners on mobile */
     }
   }
+  .card-img-container img {
+    height: 200px; /* Adjust as needed */
+    width: 100%;
+    object-fit: cover;
+  }
+  .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
