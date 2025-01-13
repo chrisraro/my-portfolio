@@ -317,7 +317,30 @@ section {
 .skill-item:hover i {
   transform: scale(1.2);
 }
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  #skills {
+    padding: 10px;
+  }
 
+  #skills h2 {
+    font-size: 1.2rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr); /* Reduce columns to 2 */
+    gap: 15px; /* Smaller gap between items */
+  }
+
+  .skill-item {
+    font-size: 0.9rem; /* Smaller text size */
+  }
+
+  .skill-item img {
+    width: 20px; /* Smaller icon size */
+    height: 20px;
+  }
+}
 /* Contact Section */
 .contact {
   text-align: center;
