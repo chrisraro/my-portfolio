@@ -1,302 +1,412 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Christian Raro | Front-End Developer & Web Enthusiast</title>
-  <link rel="icon" href="assets/images/Site icon/logo new.png" type="png">
-  <!-- Google Fonts: Lato -->
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-  <!-- AOS Animation Library -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Portfolio</title>
+     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-
 <body>
-
-  <!-- Navbar Section -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About Me</a></li>
-          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
-          <li class="nav-item"><a class="nav-link" href="#tech-stack">Tech Stack</a></li>
-          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="contact_me.html">Contact Me</a></li>
-        </ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <div class="theme-switch">
+          <button class="theme-toggle" aria-label="Toggle theme">
+              <i class="fas fa-toggle-off light-icon"></i>
+              <i class="fas fa-toggle-on dark-icon"></i>
+          </button>
+        </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#works" class="nav-link">Works</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+   
+   <style>
+      @font-face {
+      font-family: 'ndot-47-inspired-by-nothing';
+      src: url(assets/fonts/ndot-47-inspired-by-nothing.woff2) format('woff2');
+        }
+    </style>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content mb-4" data-aos="fade-up" data-aos-duration="1000">
+        <h4 class="animate__animated animate__fadeIn">Hello, I'm Christian Raro</h4>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">
+          A software engineer with a passion for building efficient, scalable solutions.
+        </p>
+        <div class="social-link mt-4" data-aos="fade-left" data-aos-delay="200">
+          <a href="https://www.facebook.com/chrisrarss?mibextid=ZbWKwL" class="btn btn-outline-dark m-1">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://github.com/chrisraro" class="btn btn-outline-dark m-1">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="mailto:rarochristian029@gmail.com" class="btn btn-outline-dark m-1">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/christian-raro" class="btn btn-outline-dark m-1">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
       </div>
-    </div>
-  </nav>
-  <style>
-    @font-face {
-    font-family: 'ndot-47-inspired-by-nothing';
-    src: url(assets/fonts/ndot-47-inspired-by-nothing.woff2) format('woff2');
-      }
-  </style>
-  <!-- Hero Section -->
-  <section id="hero" class="py-5 text-light" style="background-color: #111;">
-    <div class="container">
-      <div class="row align-items-center">
-        <!-- Hero Image -->
-        <div class="col-12 col-md-4">
-          <div class="hero-image text-center cross-fade" data-aos="fade-right">
-            <div class="image-container-hero">
-              <img src="assets/images/hero section/Christian_Pic_No_BG.png" class="img-fluid" style="width: 350px; height: 400px; object-fit: cover; border: 1px solid rgba(0, 0, 0, 0.1);" alt="Christian Raro Profile Picture" />
+    </section>    
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1200" data-aos-offset="300">
+            <div class="avatar">
+              <img src="assets/images/hero section/Christian_Pic_No_BG.png" alt="Christian" class="img-fluid rounded-circle">
             </div>
           </div>
-        </div>
-        <!-- Hero Text -->
-        <div class="col-12 col-md-8 mt-4 mt-md-0 text-center text-md-left">
-          <section class="hero">
-          <h3 data-aos="fade-left">Hi, I'm Christian</h3>    
-          </section>
-          <p class="lead" data-aos="fade-left" data-aos-delay="100">
-            A front-end developer with a passion for building efficient, scalable solutions.
-            I specialize in creating user-friendly applications using modern technologies.
-          </p>
-
-          <!-- Social Links -->
-          <div class="socials" data-aos="fade-left" data-aos-delay="200">
-            <a href="https://www.facebook.com/chrisrarss?mibextid=ZbWKwL" class="btn btn-outline-light m-1">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://github.com/chrisraro" class="btn btn-outline-light m-1">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="mailto:rarochristian029@gmail.com" class="btn btn-outline-light m-1">
-              <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/christian-raro" class="btn btn-outline-light m-1">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+            <h2>About Me</h2>
+            <p>
+              I'm a software engineer and a recent Computer Science graduate of Bicol University. I’m passionate about using my technical skills to design, develop, and deliver software that solves challenges and enhances user experiences across digital platforms.
+            </p>
+            <p class="text-secondary">Based in Naga City, Camarines Sur, Bicol, Philippines</p>
+            <a href="assets/resume/Raro, Christian F - Resume.pdf" class="btn btn-secondary" download="Christian_Raro_Resume.pdf">
+              <i class="fas fa-download"></i> More about me
+          </a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+    
 
-  <!-- About Me Section -->
-  <section id="about" class="py-5 bg-light text-dark">
-    <div class="container">
-      <h2 class="text-center mb-4">About Me</h2>
-      <p class="text-center">
-        I am a passionate front-end developer with a strong interest in building intuitive and engaging user interfaces. My journey began as a Computer Science graduate, where I worked on various exciting projects like Bubble.io apps, and WordPress websites. I'm constantly learning and growing to master modern web technologies.
-      </p>
-      <div class="row">
-        <!-- Educational Background Card -->
-        <div class="col-md-6 mb-4" data-aos="fade-up">
-          <div class="card hover-effect">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-graduation-cap text-danger"></i> Educational Background
-              </h5>
-              <p class="card-text">
-                Bicol University Polangui Campus - Bachelor of Science in Computer Science (Class of 2024)
-              </p>
+    <!-- Works Section -->
+    <section class="works" id="works">
+        <h2 data-aos="fade-up">Selected Works</h2>
+        <div class="project-grid">
+            <article class="project-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="project-image">
+                    <img src="assets/images/projects section/Acad1/Acad1 Screenshot.png" alt="Project One Preview">
+                </div>
+                <div class="project-content">
+                    <h3>Acad1 Review Center</h3>
+                    <p class="text">WordPress Development</p>
+                </div>
+                <div class="project-preview">
+                    <div class="preview-content">
+                        <h3>Acad1 Review Center</h3>
+                        <p>A website showcasing services of a review center built with WordPress and WooCommerce Integration for Storefront.</p>
+                        <div class="preview-tech">
+                            <span>WordPress</span>
+                            <span>GeneratePress</span>
+                            <span>WooCommerce</span>
+                            <span>Paymongo</span>
+                        </div>
+                        <div class="preview-links">
+                            <a href="https://kurokuroko.com/academicgateway/" class="preview-link">View Live</a>
+                            <a href="#" class="preview-link">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="project-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="project-image">
+                    <img src="assets/images/projects section/Muramart/Muramart Screenshot.png" alt="Project Two Preview">
+                </div>
+                <div class="project-content">
+                    <h3>Muramart</h3>
+                    <p class="text">Bubble.io Development</p>
+                </div>
+                <div class="project-preview">
+                    <div class="preview-content">
+                        <h3>Muramart</h3>
+                        <p>An agri-ecommerce mobile application built with Bubble.io for seamless UI/UX and backend workflows</p>
+                        <div class="preview-tech">
+                            <span>Bubble.io</span>
+                            <span>Xendit</span>
+                        </div>
+                        <div class="preview-links">
+                            <a href="https://apps.apple.com/app/id1589941523" class="preview-link">App Store</a>
+                            <a href="https://play.google.com/store/apps/details?id=com.wnapp.id1705363159277" class="preview-link">Play Store</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="project-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="project-image">
+                    <img src="assets/images/projects section/ARway/ARway Screenshot.jpg" alt="Project Three Preview">
+                </div>
+                <div class="project-content">
+                    <h3>ARWay (CampusNav)</h3>
+                    <p class="text">Mobile App</p>
+                </div>
+                <div class="project-preview">
+                    <div class="preview-content">
+                        <h3>ARWay (CampusNav)</h3>
+                        <p>An Augmented Reality navigation app built using Flutter, Unity, and C#.</p>
+                        <div class="preview-tech">
+                            <span>Flutter</span>
+                            <span>Unity</span>
+                            <span>C#</span>
+                        </div>
+                        <div class="preview-links">
+                            <a href="#" class="preview-link">Source Code</a>
+                            <a href="https://drive.google.com/file/d/1FeThKAcsLwR-oDy8nsvah88XahDJp6RR/view" class="preview-link">APK</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 data-aos="fade-up">Skills & Tech Stack</h2>
+        <div class="skills-grid">
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="100">
+                <i class="fab fa-html5"></i>
+                <span>HTML5</span>
             </div>
-          </div>
-        </div>
-        <!-- Location Card -->
-        <div class="col-md-6 mb-4" data-aos="fade-up">
-          <div class="card hover-effect">
-            <div class="card-body">
-              <h5 class="card-title">
-                <i class="fas fa-map-marker-alt text-danger"></i> Naga City, Camarines Sur, Philippines
-              </h5>
-              <p class="card-text">
-                I am based in Naga City, Camarines Sur, Philippines, a vibrant city known for its rich history and culture.
-              </p>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="200">
+                <i class="fab fa-css3-alt"></i>
+                <span>CSS3</span>
             </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="300">
+                <i class="fab fa-js"></i>
+                <span>JavaScript</span>
+            </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="400">
+                <i class="fab fa-php "></i>
+                <span>PHP</span>
+            </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="500">
+                <i class="fab fa-java"></i>
+                <span>Java</span>
+            </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="600">
+                <i class="fab fa-git-alt"></i>
+                <span>Git</span>
+            </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="650">
+                <i class="fab fa-wordpress"></i>
+                <span>WordPress</span>
+            </div>
+            <div class="skill-item" data-aos="flip-left" data-aos-delay="700">
+              <img src="assets/images/Additional Logo/bubble logo.png" alt="home icon" style="width: 28px; height: 28px;" />
+              <span>Bubble</span>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="bg-dark text-light py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Skills</h2>
-      <div class="row text-center">
-        <!-- Web Development -->
-        <div class="col-md-4">
-          <i class="fas fa-code fa-3x mb-2"></i>
-          <h4>Web Development</h4>
-          <p>Proficient in JavaScript, HTML, CSS, Bubble.io</p>
+    <section class="contact" id="contact">
+      <div class="container">
+          <div class="row g-4" data-aos="fade-up" data-aos-delay="200">
+              <!-- Right Column: Contact Info -->
+              <div class="col-md-6">
+                  <div class="contact-info">
+                    <h1>Contact Me</h1>
+                    <p>Feel free to reach out through my socials or the form.</p>
+                    <div class="social-link">
+                      <a href="https://facebook.com" class="btn btn-outline-dark m-1"  aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                      <a href="https://github.com" class="btn btn-outline-dark m-1" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                      <a href="mailto:christian.raro@example.com" class="btn btn-outline-dark m-1" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                      <a href="https://linkedin.com" class="btn btn-outline-dark m-1" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+              </div>    
+          </div>
+          <!-- Left Column: Contact Form -->
+          <div class="col-md-6">
+            <form action="https://formspree.io/f/xannvygn" method="POST" class="contact-form">
+                <div class="mb-3">
+                    <label for="name" class="label">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="label">Message</label>
+                    <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary w-100">
+                    <span>Send Message</span>
+                    <i class="fas fa-paper-plane ms-2"></i>
+                </button>
+            </form>
         </div>
-        <!-- UI/UX Design -->
-        <div class="col-md-4">
-          <i class="fas fa-palette fa-3x mb-2"></i>
-          <h4>UI/UX Design</h4>
-          <p>Experience with responsive design using Bootstrap and Material-UI.</p>
-        </div>
-        <!-- Tools -->
-        <div class="col-md-4">
-          <i class="fas fa-cogs fa-3x mb-2"></i>
-          <h4>Tools</h4>
-          <p>Git/GitHub, Visual Studio Code, Unity, Eclipse</p>
-        </div>
       </div>
-    </div>
+      <!-- Footer -->
+      <footer class="footer" data-aos="fade-up" data-aos-delay="400">
+          <p class="copyright">©2025 Christian Raro. All rights reserved.</p>
+      </footer>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Back to top" title="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
   </section>
+    <!-- Previous scripts remain the same -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 800
+        });
 
-  <!-- Tech Stack Section -->
-  <section id="tech-stack" class="py-5 text-dark">
-    <div class="container">
-      <h2 class="text-center mb-4">Tech Stack</h2>
-      <ul class="list-inline text-center">
-        <!-- HTML -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="100">
-          <i class="fab fa-html5 fa-3x text-danger tech-icon"></i>
-          <p>HTML5</p>
-        </li>
-        <!-- CSS -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="200">
-          <i class="fab fa-css3-alt fa-3x text-primary tech-icon"></i>
-          <p>CSS3</p>
-        </li>
-        <!-- JavaScript -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="300">
-          <i class="fab fa-js-square fa-3x text-warning tech-icon"></i>
-          <p>JavaScript</p>
-        </li>
-        <!-- Bootstrap -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="400">
-          <i class="fab fa-bootstrap fa-3x text-purple tech-icon"></i>
-          <p>Bootstrap</p>
-        </li>
-        <!-- PHP -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="500">
-          <i class="fab fa-php fa-3x text-dark tech-icon"></i>
-          <p>PHP</p>
-        </li>
-        <!-- Java -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="600">
-          <i class="fab fa-java fa-3x text-orange tech-icon"></i>
-          <p>Java</p>
-        </li>
-        <!-- WordPress -->
-        <li class="list-inline-item mx-3 tech-item" data-aos="fade-up" data-aos-delay="700">
-          <i class="fab fa-wordpress fa-3x text-primary tech-icon"></i>
-          <p>WordPress</p>
-        </li>
-      </ul>
-    </div>
-  </section>
+        // Navbar Interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navbar = document.querySelector('.navbar');
+            const navLinks = document.querySelectorAll('.nav-link');
 
-<!-- Projects Section -->
-<section id="projects" class="py-5" style="background-color: #333;">
-  <div class="container">
-    <h2 class="text-center mb-4 text-light">Projects</h2>
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', () => {
+                navbar.classList.toggle('nav-open');
+                mobileMenuToggle.classList.toggle('open');
+            });
 
-<!-- WordPress Portfolio Project -->
-<div class="row gy-4">
-  <!-- Acad1 Review Center Website -->
-  <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-    <div class="card text-light" style="border-radius: 15px; overflow: hidden;">
-      <div class="card-img-container">
-        <img src="assets/images/projects section/Acad1/Acad1 Screenshot.png" class="img-fluid w-100" style="object-fit: cover;" alt="WordPress Website">
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Acad1 Review Center Website</h5>
-        <p class="card-text">A WordPress website showcasing services of a review center, with integrated WooCommerce functionality.</p>
-        <a href="https://kurokuroko.com/academicgateway/" class="btn btn-danger mt-3" target="_blank">View Project</a>
-      </div>
-    </div>
-  </div>
+            // Smooth scroll for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    const navHeight = navbar.offsetHeight;
 
-  <!-- Muramart App -->
-  <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-    <div class="card text-light" style="border-radius: 15px; overflow: hidden;">
-      <div class="card-img-container">
-        <img src="assets/images/projects section/Muramart/Muramart Screenshot.png" class="img-fluid w-100" style="object-fit: cover;" alt="Muramart App">
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Muramart App</h5>
-        <p class="card-text">An agri-ecommerce mobile application built with Bubble.io for seamless UI/UX and backend workflows.</p>
-        <a href="https://muramartv2.com/" class="btn btn-danger mt-3" target="_blank">View Project</a>
-      </div>
-    </div>
-  </div>
+                    window.scrollTo({
+                        top: targetSection.offsetTop - navHeight,
+                        behavior: 'smooth'
+                    });
 
-  <!-- ARWay Project -->
-  <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-    <div class="card text-light" style="border-radius: 15px; overflow: hidden;">
-      <div class="card-img-container">
-        <img src="assets/images/projects section/ARway/ARway Screenshot.jpg" class="img-fluid w-100" style="object-fit: cover;" alt="ARWay App">
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">ARWay (CampusNav)</h5>
-        <p class="card-text">An Augmented Reality navigation app built using Flutter, Unity, and C#.</p>
-        <a href="https://drive.google.com/file/d/1FeThKAcsLwR-oDy8nsvah88XahDJp6RR/view" class="btn btn-danger mt-3" target="_blank">View Project</a>
-      </div>
-    </div>
-  </div>
-</div>
+                    // Close mobile menu after clicking
+                    navbar.classList.remove('nav-open');
+                    mobileMenuToggle.classList.remove('open');
+                });
+            });
 
-  </div>
-</section>
+            // Active link highlighting
+            const observerOptions = {
+                root: null,
+                rootMargin: '-50% 0px',
+                threshold: 0
+            };
 
-  <!-- Footer -->
-  <footer class="bg-dark text-light py-3">
-    <div class="container text-center">
-      <p class="mb-0">© 2025 Christian Raro | All Rights Reserved</p>
-    </div>
-  </footer>
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
 
-  <!-- Bootstrap JS, Popper.js, and jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+            // Observe all sections
+            document.querySelectorAll('section[id]').forEach((section) => {
+                observer.observe(section);
+            });
+        });
 
-  <!-- AOS Animation Library JS -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        // Back to Top Button Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopButton = document.querySelector('.back-to-top');
+            
+            // Show/hide button based on scroll position
+            const toggleBackToTopButton = () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            };
 
-  <script>
-    // Initialize AOS (Animation on Scroll)
-    AOS.init();
+            // Initial check for scroll position
+            toggleBackToTopButton();
+
+            // Listen for scroll events
+            window.addEventListener('scroll', () => {
+                toggleBackToTopButton();
+            });
+
+            // Smooth scroll to top when clicked
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <script>
+      // Theme Switcher
+      document.addEventListener('DOMContentLoaded', () => {
+          const themeToggle = document.querySelector('.theme-toggle');
+          
+          // Check for saved theme preference
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          
+          // Toggle theme
+          themeToggle.addEventListener('click', () => {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+              
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('theme', newTheme);
+          });
+      });
   </script>
-
-  <!-- Add this before the closing </body> tag -->
-<div id="back-to-top" class="back-to-top">
-  <i class="fas fa-chevron-up"></i>
-</div>
-<script>
-  // Back to Top Button Functionality
-  const backToTopButton = document.getElementById('back-to-top');
-
-  // Show or hide the button based on scroll position
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) {
-      backToTopButton.classList.add('show');
-    } else {
-      backToTopButton.classList.remove('show');
-    }
-  });
-
-  // Scroll to top when the button is clicked
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  <script>
+    // Initialize AOS with enhanced settings
+    AOS.init({
+        duration: 1000, // values from 0 to 3000, with step 50ms
+        easing: 'ease', // default easing for AOS animations
+        once: false, // whether animation should happen only once - while scrolling down
+        mirror: true, // whether elements should animate out while scrolling past them
+        anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
+        offset: 120, // offset (in px) from the original trigger point
+        delay: 0, // values from 0 to 3000, with step 50ms
+        
+        // Customize animations based on screen size
+        disable: function() {
+            return window.innerWidth < 768; // Disable animations on mobile devices
+        }
     });
-  });
+
+    // Refresh AOS when the window is resized
+    window.addEventListener('resize', () => {
+        AOS.refresh();
+    });
+
+    // Refresh AOS when the theme changes
+    document.querySelector('.theme-toggle').addEventListener('click', () => {
+        setTimeout(() => {
+            AOS.refresh();
+        }, 300); // Wait for theme transition to complete
+    });
 </script>
-
 </body>
-
 </html>
