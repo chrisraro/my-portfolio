@@ -160,12 +160,19 @@ section {
   }
 }
 
-.glowing-effect,
-.arrow-down {
+.glowing-effect{
+  font-family: 'ndot-47-inspired-by-nothing';
+  font-size: smaller;
   color: white;
-  animation: fadeGlow 2s infinite;
-  font-size: 1.5rem; /* Adjust as needed */
-  transition: color 0.3s ease-in-out;
+  animation: fadeGlow 1.2s infinite;
+  transition: color 0.1s ease-in-out;
+}
+.arrow-down {
+  padding-top: 2rem;
+  color: white;
+  animation: fadeGlow 1.2s infinite;
+  font-size: 1.5em; /* Adjust as needed */
+  transition: color 0.1s ease-in-out;
 }
 
 /* Hover effect to enhance interaction */
