@@ -789,12 +789,12 @@ section {
   color: var(--card-accent);
   cursor: pointer;
   padding: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 2.2rem;
   transition: transform 0.3s ease;
 }
 
 .theme-toggle:hover {
-  transform: rotate(15deg);
+  transform: rotate(25deg);
 }
 
 [data-theme="dark"] .light-icon,
