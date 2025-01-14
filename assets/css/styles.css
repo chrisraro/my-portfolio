@@ -162,24 +162,25 @@ section {
 
 .glowing-effect{
   font-family: 'ndot-47-inspired-by-nothing';
-  font-size: smaller;
-  color: white;
-  animation: fadeGlow 1.2s infinite;
-  transition: color 0.1s ease-in-out;
+  font-size: 5px;
+  color: var(--primary);
+  /* animation: fadeGlow 1.2s infinite; */
+  /* transition: color 0.1s ease-in-out; */
 }
 .arrow-down {
-  padding-top: 2rem;
-  color: white;
-  animation: fadeGlow 1.2s infinite;
-  font-size: 1.5em; /* Adjust as needed */
+  margin-top: 10rem;
+  color: var(--primary);
+  border-radius: 100px;
+  animation: fadeGlow .8s infinite;
+  font-size: 30px;
   transition: color 0.1s ease-in-out;
 }
 
 /* Hover effect to enhance interaction */
 .glowing-effect:hover,
 .arrow-down:hover {
-  color: #D71921;
-  text-shadow: 0 0 15px #fff, 0 0 25px #D71921, 0 0 50px #D71921, 0 0 75px #D71921;
+  color: var(--card-accent);
+  text-shadow: 0 0 15px #D71921, 0 0 25px #fff, 0 0 50px #fff, 0 0 75px #D71921;
 }
 
 /* About Section */
@@ -616,6 +617,7 @@ section {
 /* All previous CSS styles remain unchanged */
 /* Back to Top Button */
 .back-to-top {
+  font-family: 'ndot-47-inspired-by-nothing';
   position: fixed;
   bottom: 2rem;
   right: 2rem;
