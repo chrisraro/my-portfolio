@@ -751,6 +751,7 @@ section {
   --background: #ffffff;
   --btn-accent: #fff;
   --card-accent: #666;
+  --toggle-accent: #D71921;
   --accent: #e5e5e5;
   --card-bg: #ffffff;
   --text-primary: #000000;
@@ -771,6 +772,7 @@ section {
   --background: #000000;
   --btn-accent: #D71921;
   --card-accent: #D71921;
+  --toggle-accent: #fff;
   --accent: #1a1a1a;
   --card-bg: #111111;
   --text-primary: #ffffff;
@@ -789,9 +791,9 @@ section {
 .theme-toggle {
   background: none;
   border: none;
-  color: var(--card-accent);
+  color: var(--toggle-accent);
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.25rem;
   font-size: 2.2rem;
   transition: transform 0.3s ease;
 }
