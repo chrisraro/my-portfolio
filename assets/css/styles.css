@@ -144,6 +144,36 @@ section {
   max-width: 60ch;
   margin: 0 auto;
 }
+/* Glowing effect with fade-in and fade-out animation */
+@keyframes fadeGlow {
+  0% {
+      opacity: 0;
+      text-shadow: 0 0 5px #fff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  }
+  50% {
+      opacity: 1;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff;
+  }
+  100% {
+      opacity: 0;
+      text-shadow: 0 0 5px #fff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  }
+}
+
+.glowing-effect,
+.arrow-down {
+  color: white;
+  animation: fadeGlow 2s infinite;
+  font-size: 1.5rem; /* Adjust as needed */
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover effect to enhance interaction */
+.glowing-effect:hover,
+.arrow-down:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 15px #fff, 0 0 25px #ff00ff, 0 0 50px #ff00ff, 0 0 75px #ff00ff;
+}
 
 /* About Section */
 .about {
