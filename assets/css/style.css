@@ -12,6 +12,10 @@
   --accent: #e5e5e5;
   --spacing: clamp(1rem, 2vw, 2rem);
 }
+.full-width-container {
+  width: 100%;
+  padding: 0;
+}
 body {
   font-family: 'Clash Grotesk', sans-serif;
   line-height: 1.6;
