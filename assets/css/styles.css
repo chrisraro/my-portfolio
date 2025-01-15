@@ -148,12 +148,12 @@ section {
 /* Glowing effect with fade-in and fade-out animation */
 @keyframes fadeGlow {
   0% {
-      opacity: 0;
+      opacity: .5;
       text-shadow: 0 0 5px #fff, 0 0 10px #D71921, 0 0 20px #D71921, 0 0 30px #D71921;
   }
   50% {
       opacity: 1;
-      text-shadow: 0 0 10px #fff, 0 0 20px #D71921, 0 0 40px #D71921, 0 0 50px #D71921;
+      text-shadow: 0 0 5px #fff, 0 0 0px #D71921, 0 0 0px #D71921, 0 0 0px #D71921;
   }
   100% {
       opacity: 0;
@@ -172,9 +172,9 @@ section {
   margin-top: 10rem;
   color: var(--primary);
   border-radius: 100px;
-  animation: fadeGlow .8s infinite;
+  animation: fadeGlow 3.5s infinite;
   font-size: 30px;
-  transition: color 0.1s ease-in-out;
+  transition: color 1s ease-in-out;
 }
 
 /* Hover effect to enhance interaction */
