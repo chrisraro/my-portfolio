@@ -173,7 +173,7 @@ section {
   color: var(--primary);
   border-radius: 100px;
   animation: fadeGlow 3.5s infinite;
-  font-size: 30px;
+  font-size: 25px;
   transition: color 1s ease-in-out;
 }
 
@@ -969,4 +969,33 @@ body {
   [data-aos] {
       transition-duration: 600ms !important;
   }
+}
+
+.resume-btn {
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.resume-btn:hover {
+    box-shadow: 0 0 15px var(--accent-color);
+    transform: translateY(2px);
+}
+
+.resume-btn .download-icon {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.resume-btn:hover .download-icon {
+    animation: bounceDown 0.5s ease infinite;
+}
+
+@keyframes bounceDown {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(3px);
+    }
 }
