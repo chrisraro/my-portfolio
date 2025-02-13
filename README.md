@@ -7,6 +7,6 @@
   - 📱 Augmented Reality Navigation App using Flutter, Unity, and C#. (https://drive.google.com/drive/folders/1QryelHMVJvjGXbLq3du_N-2RoKxC6mAq)
 
 ## 🌐 Connect with Me
-- 🌍 Website: [Your Website](https://chrisraro.github.io/my-portfolio/)
-- 💼 LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/christian-raro)
+- 🌍 Website: [Digital Portfolio](https://chrisraro.github.io/my-portfolio/)
+- 💼 LinkedIn: [My LinkedIn](https://www.linkedin.com/in/christian-raro)
 - 💻 GitHub: [ChristianRaro](https://github.com/chrisraro)
