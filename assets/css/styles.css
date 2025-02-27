@@ -11,6 +11,8 @@
   --background: #ffffff;
   --accent: #e5e5e5;
   --spacing: clamp(1rem, 2vw, 2rem);
+  --accent-color-rgb: 64, 153, 255; /* Adjust the RGB values to match your theme */
+  --surface-color: rgba(255, 255, 255, 0.05);
 }
 body {
   font-family: 'Clash Grotesk', sans-serif;
@@ -186,9 +188,15 @@ section {
 
 /* About Section */
 .about {
+  padding: 6rem 0;
   display: grid;
   gap: calc(var(--spacing) * 2);
   grid-template-columns: 1fr;
+}
+
+.about .row {
+  align-items: center;
+  text-align: center;
 }
 
 .avatar {
@@ -211,6 +219,95 @@ section {
 
 .avatar:hover img {
   transform: scale(1.05);
+}
+
+.bento-avatar {
+  position: relative;
+  padding: 1.5rem;
+  background: var(--surface-color);
+  border-radius: 24px;
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.bento-avatar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(
+      45deg,
+      rgba(var(--accent-color-rgb), 0.5),
+      rgba(var(--accent-color-rgb), 0.2)
+  );
+  -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+  mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.avatar-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.bento-avatar:hover img {
+  transform: scale(1.02);
+}
+
+.about-content {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-content h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.about-content p {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+}
+
+.resume-btn {
+  margin: 1rem auto;
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0.5;
+  }
 }
 
 /* Works Section */
@@ -719,6 +816,16 @@ section {
   }
 }
 
+@media (max-width: 991px) {
+  .about .row {
+      text-align: center;
+  }
+  
+  .about-content {
+      padding-top: 2rem;
+  }
+}
+
 /* Utility Classes */
 .text-secondary {
   color: var(--secondary);
@@ -781,6 +888,7 @@ section {
   --hover-color: rgba(255, 255, 255, 0.05);
   --navbar-bg: rgba(0, 0, 0, 0.8);
   --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --surface-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Theme Switch Styles */
