@@ -6,15 +6,15 @@ import Image from 'next/image'
 
 export function AboutSection() {
   return (
-    <section id="about" className="section-padding" style={{ background: 'oklch(var(--muted))' }}>
+    <section id="about" className="section-padding" style={{ background: 'var(--muted)' }}>
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="relative">
-            <div className="relative p-6 rounded-2xl shadow-xl" style={{ background: 'oklch(var(--card))' }}>
+            <div className="relative p-6 rounded-2xl shadow-xl" style={{ background: 'var(--card)' }}>
               <div className="relative w-full aspect-square rounded-xl overflow-hidden">
                 <Image src="/assets/images/about/christian-noBG.png" alt="Christian Raro - Software Engineer" fill className="object-cover" priority />
               </div>
-              <div className="absolute inset-0 rounded-2xl opacity-20 animate-pulse" style={{ background: 'linear-gradient(90deg, oklch(var(--primary)), oklch(var(--accent)))' }} />
+              <div className="absolute inset-0 rounded-2xl opacity-20 animate-pulse" style={{ background: 'linear-gradient(90deg, var(--primary), var(--accent))' }} />
             </div>
           </motion.div>
 

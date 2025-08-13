@@ -51,3 +51,19 @@ export interface Notification {
   message: string;
   duration?: number;
 }
+
+export interface ExperienceItem {
+  id: string;
+  title: string;
+  company: string;
+  dates: string;
+  location: string;
+  responsibilities: string[];
+}
+
+export interface EducationItem {
+  school: string;
+  degree: string;
+  graduationDate: string;
+  honors?: string;
+}
