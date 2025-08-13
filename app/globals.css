@@ -2,17 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Serif:wght@400;600;700&family=Ubuntu+Mono:wght@400;700&display=swap');
 
-/* Theme tokens (Clean Slate) */
 :root {
 	--background: oklch(0.9842 0.0034 247.8575);
-	--foreground: oklch(0.2795 0.0368 260.0310);
+	--foreground: oklch(0.2230 0.0038 286.0840);
 	--card: oklch(1.0000 0 0);
 	--card-foreground: oklch(0.2795 0.0368 260.0310);
 	--popover: oklch(1.0000 0 0);
 	--popover-foreground: oklch(0.2795 0.0368 260.0310);
-	--primary: oklch(0.5854 0.2041 277.1173);
+	--primary: oklch(0.5607 0.2177 26.7895);
 	--primary-foreground: oklch(1.0000 0 0);
 	--secondary: oklch(0.9276 0.0058 264.5313);
 	--secondary-foreground: oklch(0.3729 0.0306 259.7328);
@@ -38,9 +37,9 @@
 	--sidebar-accent-foreground: oklch(0.3729 0.0306 259.7328);
 	--sidebar-border: oklch(0.8717 0.0093 258.3382);
 	--sidebar-ring: oklch(0.5854 0.2041 277.1173);
-	--font-sans: Inter, sans-serif;
-	--font-serif: Merriweather, serif;
-	--font-mono: JetBrains Mono, monospace;
+	--font-sans: Noto Sans, ui-sans-serif, sans-serif, system-ui;
+	--font-serif: Noto Serif, ui-serif, serif;
+	--font-mono: Ubuntu Mono, ui-monospace, monospace;
 	--radius: 0.5rem;
 	--shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
 	--shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
@@ -55,26 +54,26 @@
 }
 
 .dark {
-	--background: oklch(0.2077 0.0398 265.7549);
+	--background: oklch(0.2230 0.0038 286.0840);
 	--foreground: oklch(0.9288 0.0126 255.5078);
-	--card: oklch(0.2795 0.0368 260.0310);
+	--card: oklch(0.2230 0.0038 286.0840);
 	--card-foreground: oklch(0.9288 0.0126 255.5078);
-	--popover: oklch(0.2795 0.0368 260.0310);
+	--popover: oklch(0.2230 0.0038 286.0840);
 	--popover-foreground: oklch(0.9288 0.0126 255.5078);
-	--primary: oklch(0.6801 0.1583 276.9349);
-	--primary-foreground: oklch(0.2077 0.0398 265.7549);
+	--primary: oklch(0.5607 0.2177 26.7895);
+	--primary-foreground: oklch(1.0000 0 0);
 	--secondary: oklch(0.3351 0.0331 260.9120);
 	--secondary-foreground: oklch(0.8717 0.0093 258.3382);
-	--muted: oklch(0.2795 0.0368 260.0310);
+	--muted: oklch(0.2230 0.0038 286.0840);
 	--muted-foreground: oklch(0.7137 0.0192 261.3246);
 	--accent: oklch(0.3729 0.0306 259.7328);
 	--accent-foreground: oklch(0.8717 0.0093 258.3382);
 	--destructive: oklch(0.6368 0.2078 25.3313);
-	--destructive-foreground: oklch(0.2077 0.0398 265.7549);
+	--destructive-foreground: oklch(0.2230 0.0038 286.0840);
 	--border: oklch(0.4461 0.0263 256.8018);
 	--input: oklch(0.4461 0.0263 256.8018);
-	--ring: oklch(0.6801 0.1583 276.9349);
-	--chart-1: oklch(0.6801 0.1583 276.9349);
+	--ring: oklch(0.2230 0.0038 286.0840);
+	--chart-1: oklch(0.6368 0.2078 25.3313);
 	--chart-2: oklch(0.5854 0.2041 277.1173);
 	--chart-3: oklch(0.5106 0.2301 276.9656);
 	--chart-4: oklch(0.4568 0.2146 277.0229);
@@ -87,15 +86,15 @@
 	--sidebar-accent-foreground: oklch(0.8717 0.0093 258.3382);
 	--sidebar-border: oklch(0.4461 0.0263 256.8018);
 	--sidebar-ring: oklch(0.6801 0.1583 276.9349);
-	--font-sans: Inter, sans-serif;
-	--font-serif: Merriweather, serif;
-	--font-mono: JetBrains Mono, monospace;
+	--font-sans: Noto Sans, ui-sans-serif, sans-serif, system-ui;
+	--font-serif: Noto Serif, ui-serif, serif;
+	--font-mono: Ubuntu Mono, ui-monospace, monospace;
 	--radius: 0.5rem;
 	--shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
 	--shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
 	--shadow-sm: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 1px 2px -2px hsl(0 0% 0% / 0.10);
 	--shadow: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 1px 2px -2px hsl(0 0% 0% / 0.10);
-	--shadow-md: 0px 2px 4px -2px hsl(0 0% 0% / 0.10), 0px 4px 8px -1px hsl(0 0% 0% / 0.10);
+	--shadow-md: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 2px 4px -2px hsl(0 0% 0% / 0.10);
 	--shadow-lg: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 4px 6px -2px hsl(0 0% 0% / 0.10);
 	--shadow-xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 8px 10px -2px hsl(0 0% 0% / 0.10);
 	--shadow-2xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.25);
@@ -109,12 +108,15 @@
 @layer components {
 	.container-custom { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
 	.section-padding { @apply py-16 md:py-24; }
-	/* Fallback then gradient */
 	.gradient-text { color: var(--primary); background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%); -webkit-background-clip: text; background-clip: text; }
 	@supports (-webkit-background-clip: text) or (background-clip: text) { .gradient-text { color: transparent; } }
 	.card-hover { @apply transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl; }
 	.button-primary { @apply font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:shadow-lg hover:transform hover:-translate-y-1; background: var(--primary); color: var(--primary-foreground); }
 	.button-secondary { @apply font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:shadow-lg hover:transform hover:-translate-y-1; background: var(--muted); color: var(--muted-foreground); }
+
+	/* Animated gradient border (border-only glow) */
+	.glow-border { padding: 2px; border-radius: 1rem; background: linear-gradient(135deg, var(--primary), var(--accent), var(--ring)); background-size: 400% 400%; animation: gradient-rotate 6s ease infinite; }
+	.glow-inner { border-radius: calc(1rem - 2px); background: var(--card); }
 }
 
 @layer utilities {
@@ -126,7 +128,13 @@
 @keyframes float { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-20px) } }
 @keyframes glow { 0%,100%{ box-shadow: 0 0 5px var(--primary) } 50%{ box-shadow: 0 0 20px var(--primary), 0 0 30px var(--primary) } }
 @keyframes fadeInUp { from{ opacity:0; transform: translateY(30px) } to{ opacity:1; transform: translateY(0) } }
+@keyframes gradient-rotate { 0%{ background-position: 0% 50% } 50%{ background-position: 100% 50% } 100%{ background-position: 0% 50% } }
 
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-glow { animation: glow 2s ease-in-out infinite alternate; }
 .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+	.glow-border { animation: none; }
+	.animate-float, .animate-glow, .animate-fade-in-up { animation: none; }
+}
