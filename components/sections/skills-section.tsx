@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { skills } from '@/lib/data'
 import { FaHtml5, FaCss3Alt, FaJsSquare, FaPhp, FaJava, FaGitAlt, FaWordpress } from 'react-icons/fa'
-import { SiBubble } from 'react-icons/si'
+import { RiBubbleChartFill } from 'react-icons/ri'
 
 const iconMap: Record<string, { Icon?: React.ComponentType<{ className?: string }>; color: string }> = {
   html5: { Icon: FaHtml5, color: '#E34F26' },
@@ -13,7 +13,7 @@ const iconMap: Record<string, { Icon?: React.ComponentType<{ className?: string 
   java: { Icon: FaJava, color: '#007396' },
   git: { Icon: FaGitAlt, color: '#F05032' },
   wordpress: { Icon: FaWordpress, color: '#21759B' },
-  bubble: { Icon: SiBubble, color: '#1F70FF' },
+  bubble: { Icon: RiBubbleChartFill, color: '#1F70FF' },
 }
 
 export function SkillsSection() {
