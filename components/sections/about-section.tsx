@@ -41,7 +41,7 @@ export function AboutSection() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.8 }} viewport={{ once: true }} className="pt-4">
-              <motion.a href="/assets/resume/Raro, Christian F - Resume.pdf" download whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-flex items-center space-x-2 button-primary">
+              <motion.a href="/assets/resume/Raro, Christian F - Resume (DEV).pdf" download whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-flex items-center space-x-2 button-primary">
                 <Download className="h-5 w-5" />
                 <span>Download Resume</span>
               </motion.a>
