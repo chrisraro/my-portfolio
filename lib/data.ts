@@ -17,7 +17,7 @@ export const projects: Project[] = [
     category: 'WordPress Development',
     image: '/assets/images/projects/beachbus.ph_.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Payments'],
-    links: { live: 'https://beachbus_.ph' },
+    links: { live: 'https://beachbus.ph' },
   },
   {
     id: 'aman-webapp',
