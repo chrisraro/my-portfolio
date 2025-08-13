@@ -32,9 +32,11 @@ export function SkillsSection() {
             return (
               <motion.div key={skill.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: index * 0.1 }} viewport={{ once: true }} whileHover={{ scale: 1.05, y: -5 }} className="group">
                 <div className="rounded-xl p-6 text-center card-hover" style={{ background: 'var(--card)', boxShadow: 'var(--shadow-lg)' }}>
-                  <div className="mb-4 flex justify-center">
+                  <div className="mb-4 flex justify-center" aria-label={skill.name}>
                     {IconComponent ? (
-                      <IconComponent className="h-10 w-10" style={{ color: entry?.color }} aria-label={skill.name} />
+                      <span style={{ color: entry?.color }}>
+                        <IconComponent className="h-10 w-10" />
+                      </span>
                     ) : (
                       <span className="text-3xl" aria-hidden>💻</span>
                     )}
