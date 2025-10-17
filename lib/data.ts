@@ -87,7 +87,7 @@ export const projects: Project[] = [
     title: 'Muramart App',
     description: 'Full-stack Bubble.io web and mobile app with UI/UX design and backend workflow + API maintenance.',
     category: 'Bubble.io App',
-    image: '/assets/images/projects/muramart.webp',
+    image: '/assets/images/projects/muramartv2.webp',
     technologies: ['Bubble.io', 'Mobile', 'API'],
     links: { live: 'https://muramartv2.com', playStore: 'https://play.google.com/store/apps/details?id=com.wnapp.id1705363159277' },
   },
