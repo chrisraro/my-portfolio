@@ -26,7 +26,7 @@ export const projects: Project[] = [
     category: 'Hotel Website',
     image: '/assets/images/projects/azaleamain.webp',
     technologies: ['WordPress', 'Booking System', 'Hotel Management'],
-    links: { live: 'https://kurokuroko.com/azaleamain/' },
+    links: { live: 'https://onlinecreativesolutions.com/azaleamain' },
   },
   {
     id: 'downtown-district-hotel',
