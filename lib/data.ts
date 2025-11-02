@@ -15,7 +15,7 @@ export const projects: Project[] = [
     title: 'Naga Perks by Giya',
     description: 'Naga Perks by Giya is a hyperlocal discovery and privilege app that unlocks new experiences and perks for locals. The platform connects three key user types: (Customer, Business, and Influencer) it has also an Admin Module for managing the entire system.',
     category: 'Node.js + Next.js + Supabase + Tailwind CSS + PWA features',
-    image: '/assets/images/projects/giya.webp',
+    image: '/assets/images/projects/giya-app.webp',
     technologies: ['Node.js', 'Next.js', 'Tailwind CSS', 'Supabase', 'PWA'],
     links: { live: 'https://giya.vercel.app' },
   },
