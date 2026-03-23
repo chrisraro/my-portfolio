@@ -86,7 +86,7 @@ export function HeroSection() {
             className="flex items-center gap-1.5 text-sm text-muted-foreground"
           >
             <MapPin className="w-4 h-4" />
-            <span>Philippines</span>
+            <span>Naga City, Camarines Sur, Philippines</span>
           </motion.div>
 
           {/* Professional Titles */}
