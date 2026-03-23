@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://chrisraro.github.io',
-    title: 'Christian Raro | Software Engineer & Frontend Developer',
+    title: 'Christian Raro | Software Engineer',
     description: 'Portfolio showcasing innovative web and mobile development projects',
     siteName: 'Christian Raro Portfolio',
     images: [
