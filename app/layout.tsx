@@ -14,9 +14,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Christian Raro | Software Engineer & Frontend Developer',
-  description: 'Christian Raro - Software Engineer and Frontend Developer specializing in modern web applications, mobile development, and innovative digital solutions.',
-  keywords: ['Christian Raro', 'Software Engineer', 'Frontend Developer', 'Web Development', 'Mobile Apps', 'Philippines'],
+  title: 'Christian Raro | Software Engineer',
+  description: 'Christian Raro - Software Engineer specializing in modern web applications, mobile development, and innovative digital solutions.',
+  keywords: ['Christian Raro', 'Software Engineer', 'Web Development', 'Mobile Apps', 'Philippines'],
   authors: [{ name: 'Christian Raro' }],
   creator: 'Christian Raro',
   openGraph: {
