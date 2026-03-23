@@ -112,28 +112,28 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center gap-3 pt-3"
+            className="flex flex-nowrap items-center gap-2 pt-3"
           >
             <Link
               href="/assets/resume/Raro, Christian F - Resume (DEV).pdf"
               target="_blank"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-md px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
-              <FileText className="w-4 h-4" />
+              <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               View Resume
             </Link>
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex items-center gap-2 bg-muted border border-border text-foreground rounded-md px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
+              className="inline-flex items-center gap-1.5 bg-muted border border-border text-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
             >
-              <Mail className="w-4 h-4" />
+              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Send Email
             </Link>
             <Link
               href="#works"
-              className="inline-flex items-center gap-2 bg-muted border border-border text-foreground rounded-md px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
+              className="inline-flex items-center gap-1.5 bg-muted border border-border text-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
             >
-              <Briefcase className="w-4 h-4" />
+              <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               View Projects
             </Link>
           </motion.div>

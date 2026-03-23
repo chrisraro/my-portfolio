@@ -9,7 +9,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/onlinecreativesolutions.webp',
     technologies: ['WordPress', 'Marketing', 'SEO', 'Digital Marketing'],
     links: { live: 'https://onlinecreativesolutions.com' },
-    featured: false,
+    featured: true,
   },
   {
     id: 'naga-perks-giya-app',
@@ -19,7 +19,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/giya-app.webp',
     technologies: ['Node.js', 'Next.js', 'Tailwind CSS', 'Supabase', 'PWA'],
     links: { live: 'https://giya.vercel.app' },
-    featured: true,
+    featured: false,
   },
   {
     id: 'fish2go',
@@ -52,6 +52,16 @@ export const projects: Project[] = [
     featured: false,
   },
   {
+    id: 'beachbus',
+    title: 'BeachBus Palawan',
+    description: 'WordPress site with GeneratePress Premium + GenerateBlocks Pro, WooCommerce storefront for digital products, and payment integration.',
+    category: 'WordPress Development',
+    image: '/assets/images/projects/beachbus.webp',
+    technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Payments'],
+    links: { live: 'https://beachbus.ph' },
+    featured: true,
+  },
+  {
     id: 'elnido',
     title: 'El Nido Guide PH',
     description: 'WordPress site using GeneratePress Premium and GenerateBlocks Pro. Custom child theme code for booking, product add-ons, invoice printing, PayPal payments, and WooCommerce storefront.',
@@ -62,16 +72,6 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: 'beachbus',
-    title: 'BeachBus Palawan',
-    description: 'WordPress site with GeneratePress Premium + GenerateBlocks Pro, WooCommerce storefront for digital products, and payment integration.',
-    category: 'WordPress Development',
-    image: '/assets/images/projects/beachbus.webp',
-    technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Payments'],
-    links: { live: 'https://beachbus.ph' },
-    featured: false,
-  },
-  {
     id: 'aman-webapp',
     title: 'Aman Group of Companies Web App',
     description: "Full-stack Next.js app for a real estate company: projects/properties showcase, visit scheduling, loan calculator, and broker referral links. Leveraged Vercel, Supabase, Upstash.",
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/amangroupofcompanies.webp',
     technologies: ['Next.js', 'React', 'Vercel', 'Supabase', 'Upstash'],
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
-    featured: true,
+    featured: false,
   },
   // {
   //   id: 'enjoy-realty',
@@ -108,7 +108,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/muramartv2.webp',
     technologies: ['Bubble.io', 'Mobile', 'API'],
     links: { live: 'https://muramartv2.com', playStore: 'https://play.google.com/store/apps/details?id=com.wnapp.id1705363159277' },
-    featured: true,
+    featured: false,
   },
   {
     id: 'arway',
@@ -119,6 +119,16 @@ export const projects: Project[] = [
     technologies: ['Flutter', 'ARWay', 'Unity'],
     links: {},
     featured: false,
+  },
+  {
+    id: 'upcat-review-plus',
+    title: 'UPCAT Review Plus',
+    description: 'Review center website with online reservation powered by WooCommerce and event entry system using QR code.',
+    category: 'WordPress + WooCommerce',
+    image: '/assets/images/projects/upcatreviewplus.webp',
+    technologies: ['WordPress', 'WooCommerce', 'QR Code', 'Online Reservation'],
+    links: { live: 'https://upcatreviewplus.com' },
+    featured: true,
   },
 ]
 
@@ -201,6 +211,23 @@ export const skills: Skill[] = [
   { id: 'vscode', name: 'VS Code', icon: 'vscode', category: 'Tools & DevOps' },
   { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'Tools & DevOps' },
   { id: 'bubble', name: 'Bubble.io', icon: 'bubble', category: 'Tools & DevOps' },
+  { id: 'supabase', name: 'Supabase', icon: 'supabase', category: 'Backend' },
+  { id: 'firebase', name: 'Firebase', icon: 'firebase', category: 'Backend' },
+  { id: 'vercel', name: 'Vercel', icon: 'vercel', category: 'Tools & DevOps' },
+  { id: 'render', name: 'Render', icon: 'render', category: 'Tools & DevOps' },
+  { id: 'clerk', name: 'Clerk', icon: 'clerk', category: 'Tools & DevOps' },
+  { id: 'coolify', name: 'Coolify', icon: 'coolify', category: 'Tools & DevOps' },
+  { id: 'docker', name: 'Docker', icon: 'docker', category: 'Tools & DevOps' },
+  { id: 'claude-code', name: 'Claude Code', icon: 'claudecode', category: 'Tools & DevOps' },
+  { id: 'gemini-cli', name: 'Gemini CLI', icon: 'geminicli', category: 'Tools & DevOps' },
+  { id: 'qoder', name: 'Qoder/Qwen', icon: 'qoder', category: 'Tools & DevOps' },
+  { id: 'google-ai-studio', name: 'Google AI Studio', icon: 'googleaistudio', category: 'Tools & DevOps' },
+  { id: 'woocommerce', name: 'WooCommerce', icon: 'woocommerce', category: 'Tools & DevOps' },
+  { id: 'generatepress', name: 'GeneratePress', icon: 'generatepress', category: 'Tools & DevOps' },
+  { id: 'generateblocks', name: 'GenerateBlocks', icon: 'generateblocks', category: 'Tools & DevOps' },
+  { id: 'paypal', name: 'PayPal', icon: 'paypal', category: 'Tools & DevOps' },
+  { id: 'maya', name: 'Maya', icon: 'maya', category: 'Tools & DevOps' },
+  { id: 'xendit', name: 'Xendit', icon: 'xendit', category: 'Tools & DevOps' },
 ]
 
 export const socialLinks: SocialLink[] = [
