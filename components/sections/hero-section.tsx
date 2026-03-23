@@ -94,7 +94,7 @@ export function HeroSection() {
             variants={itemVariants}
             className="text-lg text-muted-foreground"
           >
-            Software Engineer / Frontend Developer
+            Software Engineer / Full-Stack Developer
           </motion.p>
 
           {/* Achievement Badge */}
