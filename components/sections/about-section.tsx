@@ -23,7 +23,7 @@ export function AboutSection() {
         className="space-y-3 text-muted-foreground leading-relaxed text-base"
       >
         <p>
-          I'm Christian Raro, a Software Engineer and Frontend Developer based in the Philippines. 
+          I'm Christian Raro, a Software Engineer and Full-Stack Developer based in the Philippines. 
           I specialize in building modern, responsive web applications using React, Next.js, and 
           TypeScript — crafting digital experiences that are both functional and delightful to use.
         </p>
