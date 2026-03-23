@@ -12,13 +12,14 @@ export interface Project {
     playStore?: string;
     download?: string;
   };
+  featured?: boolean;
 }
 
 export interface Skill {
   id: string;
   name: string;
   icon: string;
-  category: 'frontend' | 'backend' | 'tools' | 'other';
+  category: 'Frontend' | 'Backend' | 'Tools & DevOps';
 }
 
 export interface SocialLink {
@@ -66,4 +67,24 @@ export interface EducationItem {
   degree: string;
   graduationDate: string;
   honors?: string;
+}
+
+export interface Recommendation {
+  id: number;
+  quote: string;
+  authorName: string;
+  authorTitle: string;
+}
+
+export interface GalleryImage {
+  id: number;
+  src: string;
+  alt: string;
+}
+
+export interface Achievement {
+  id: number;
+  title: string;
+  description?: string;
+  link?: string;
 }

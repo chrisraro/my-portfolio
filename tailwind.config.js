@@ -26,10 +26,10 @@ module.exports = {
         'card-foreground': 'oklch(var(--card-foreground) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
+        mono: ['var(--font-mono)', 'monospace'],
+        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         sm: 'calc(var(--radius) - 4px)',
@@ -50,9 +50,6 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'fade-in-up': 'fadeInUp 0.5s ease-out',
-        'float': 'float 6s ease-in-out infinite',
-        'bounce-slow': 'bounce 2s infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -62,14 +59,6 @@ module.exports = {
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
-        },
-        glow: {
-          '0%': { boxShadow: '0 0 5px #3b82f6' },
-          '100%': { boxShadow: '0 0 20px #3b82f6, 0 0 30px #3b82f6' },
         },
       },
       backdropBlur: {

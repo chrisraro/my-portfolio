@@ -2,7 +2,6 @@
 const nextConfig = {
   images: {
     domains: ['localhost'],
-    unoptimized: true,
   },
   trailingSlash: false,
   reactStrictMode: true,

@@ -2,56 +2,120 @@
 
 import { motion } from 'framer-motion'
 import { experience, education } from '@/lib/data'
-import { Briefcase, GraduationCap, MapPin } from 'lucide-react'
+import { ExperienceItem, EducationItem } from '@/types'
+
+type TimelineEntry = {
+  type: 'work' | 'education' | 'milestone'
+  title: string
+  subtitle: string
+  date: string
+  sortKey: number
+}
+
+function parseYear(dateStr: string): number {
+  const match = dateStr.match(/(\d{4})/)
+  return match ? parseInt(match[1]) : 0
+}
+
+function buildTimeline(): TimelineEntry[] {
+  const entries: TimelineEntry[] = []
+
+  experience.forEach((item: ExperienceItem) => {
+    const year = item.dates.includes('Present') ? 9999 : parseYear(item.dates)
+    entries.push({
+      type: 'work',
+      title: item.title,
+      subtitle: item.company,
+      date: item.dates.replace(/\s*–\s*/g, ' – '),
+      sortKey: year,
+    })
+  })
+
+  education.forEach((item: EducationItem) => {
+    entries.push({
+      type: 'education',
+      title: item.degree,
+      subtitle: item.school,
+      date: item.graduationDate,
+      sortKey: parseYear(item.graduationDate),
+    })
+  })
+
+  entries.push({
+    type: 'milestone',
+    title: 'Hello World! 👋',
+    subtitle: '',
+    date: '2015',
+    sortKey: 2015,
+  })
+
+  return entries.sort((a, b) => b.sortKey - a.sortKey)
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+}
 
 export function ExperienceSection() {
+  const timeline = buildTimeline()
+
   return (
-    <section id="experience" className="section-padding">
-      <div className="container-custom">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Experience</h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">Roles, responsibilities, and achievements</p>
-        </motion.div>
+    <section id="experience">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-xl font-bold mb-6"
+      >
+        Experience
+      </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {experience.map((item, idx) => (
-            <motion.div key={item.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: idx * 0.1 }} viewport={{ once: true }} className="rounded-xl p-6" style={{ background: 'var(--card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="flex items-start gap-3 mb-3">
-                <Briefcase className="h-5 w-5 text-primary" />
-                <div>
-                  <h3 className="text-xl font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-foreground/80">{item.company}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-foreground/70 mb-3">
-                <span>{item.dates}</span>
-                <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" />{item.location}</span>
-              </div>
-              <ul className="list-disc pl-5 space-y-2 text-foreground/80">
-                {item.responsibilities.map((r, i) => (
-                  <li key={i}>{r}</li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="relative border-l-2 border-border pl-6"
+      >
+        {timeline.map((entry, idx) => (
+          <motion.div
+            key={`${entry.type}-${idx}`}
+            variants={itemVariants}
+            className="relative pb-5 last:pb-0"
+          >
+            {/* Marker */}
+            <span
+              className={`absolute -left-[31px] top-1 w-3 h-3 rounded-full ${
+                entry.type === 'work'
+                  ? 'bg-primary'
+                  : 'border-2 border-muted-foreground bg-background'
+              }`}
+            />
 
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="text-center mt-16 mb-8">
-          <h3 className="text-2xl font-bold">Education</h3>
-        </motion.div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {education.map((e, idx) => (
-            <motion.div key={e.school + idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: idx * 0.1 }} viewport={{ once: true }} className="rounded-xl p-6 text-center" style={{ background: 'var(--card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="flex justify-center mb-3">
-                <GraduationCap className="h-6 w-6 text-primary" />
+            {/* Content */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <span className="font-medium text-foreground">{entry.title}</span>
+                {entry.subtitle && (
+                  <span className="text-muted-foreground"> — {entry.subtitle}</span>
+                )}
               </div>
-              <p className="font-semibold text-foreground">{e.school}</p>
-              <p className="text-sm text-foreground/80 mt-1">{e.degree}</p>
-              <p className="text-xs text-foreground/70 mt-1">{e.graduationDate}{e.honors ? ` • ${e.honors}` : ''}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+              <span className="text-sm text-muted-foreground whitespace-nowrap shrink-0">
+                {entry.date}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   )
 }

@@ -1,4 +1,4 @@
-import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem } from '@/types'
+import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, Achievement } from '@/types'
 
 export const projects: Project[] = [
   {
@@ -9,8 +9,9 @@ export const projects: Project[] = [
     image: '/assets/images/projects/onlinecreativesolutions.webp',
     technologies: ['WordPress', 'Marketing', 'SEO', 'Digital Marketing'],
     links: { live: 'https://onlinecreativesolutions.com' },
+    featured: false,
   },
-    {
+  {
     id: 'naga-perks-giya-app',
     title: 'Naga Perks by Giya',
     description: 'Naga Perks by Giya is a hyperlocal discovery and privilege app that unlocks new experiences and perks for locals. The platform connects three key user types: (Customer, Business, and Influencer) it has also an Admin Module for managing the entire system.',
@@ -18,6 +19,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/giya-app.webp',
     technologies: ['Node.js', 'Next.js', 'Tailwind CSS', 'Supabase', 'PWA'],
     links: { live: 'https://giya.vercel.app' },
+    featured: true,
   },
   {
     id: 'fish2go',
@@ -27,6 +29,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/fish2go.webp',
     technologies: ['WordPress', 'WooCommerce', 'Payments', 'Online Ordering'],
     links: { live: 'https://onlinecreativesolutions.com/fish2go' },
+    featured: false,
   },
   {
     id: 'azalea-main',
@@ -36,6 +39,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/azaleamain.webp',
     technologies: ['WordPress', 'Booking System', 'Hotel Management'],
     links: { live: 'https://onlinecreativesolutions.com/azaleamain' },
+    featured: false,
   },
   {
     id: 'downtown-district-hotel',
@@ -45,6 +49,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/downtowndistricthotel.webp',
     technologies: ['WordPress', 'Booking System', 'Hotel Management'],
     links: { live: 'https://downtowndistricthotel.ph' },
+    featured: false,
   },
   {
     id: 'elnido',
@@ -54,6 +59,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/elnidoguide.webp',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'PayPal'],
     links: { live: 'https://elnidoguide.ph' },
+    featured: true,
   },
   {
     id: 'beachbus',
@@ -63,6 +69,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/beachbus.webp',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Payments'],
     links: { live: 'https://beachbus.ph' },
+    featured: false,
   },
   {
     id: 'aman-webapp',
@@ -72,6 +79,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/amangroupofcompanies.webp',
     technologies: ['Next.js', 'React', 'Vercel', 'Supabase', 'Upstash'],
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
+    featured: true,
   },
   // {
   //   id: 'enjoy-realty',
@@ -90,6 +98,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/acad1.webp',
     technologies: ['WordPress', 'WooCommerce', 'GeneratePress', 'GenerateBlocks', 'PayMongo'],
     links: { live: 'https://acad1.ph' },
+    featured: false,
   },
   {
     id: 'muramart',
@@ -99,6 +108,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/muramartv2.webp',
     technologies: ['Bubble.io', 'Mobile', 'API'],
     links: { live: 'https://muramartv2.com', playStore: 'https://play.google.com/store/apps/details?id=com.wnapp.id1705363159277' },
+    featured: true,
   },
   {
     id: 'arway',
@@ -108,6 +118,7 @@ export const projects: Project[] = [
     image: '/assets/images/projects/ARway Screenshot.jpg',
     technologies: ['Flutter', 'ARWay', 'Unity'],
     links: {},
+    featured: false,
   },
 ]
 
@@ -172,14 +183,24 @@ export const education: EducationItem[] = [
 ]
 
 export const skills: Skill[] = [
-  { id: 'html5', name: 'HTML5', icon: 'html5', category: 'frontend' },
-  { id: 'css3', name: 'CSS3', icon: 'css3', category: 'frontend' },
-  { id: 'javascript', name: 'JavaScript', icon: 'javascript', category: 'frontend' },
-  { id: 'php', name: 'PHP', icon: 'php', category: 'backend' },
-  { id: 'java', name: 'Java', icon: 'java', category: 'backend' },
-  { id: 'git', name: 'Git', icon: 'git', category: 'tools' },
-  { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'tools' },
-  { id: 'bubble', name: 'Bubble.io', icon: 'bubble', category: 'tools' },
+  { id: 'html5', name: 'HTML5', icon: 'html5', category: 'Frontend' },
+  { id: 'css3', name: 'CSS3', icon: 'css3', category: 'Frontend' },
+  { id: 'javascript', name: 'JavaScript', icon: 'javascript', category: 'Frontend' },
+  { id: 'typescript', name: 'TypeScript', icon: 'typescript', category: 'Frontend' },
+  { id: 'react', name: 'React', icon: 'react', category: 'Frontend' },
+  { id: 'nextjs', name: 'Next.js', icon: 'nextjs', category: 'Frontend' },
+  { id: 'tailwindcss', name: 'Tailwind CSS', icon: 'tailwindcss', category: 'Frontend' },
+  { id: 'php', name: 'PHP', icon: 'php', category: 'Backend' },
+  { id: 'nodejs', name: 'Node.js', icon: 'nodejs', category: 'Backend' },
+  { id: 'java', name: 'Java', icon: 'java', category: 'Backend' },
+  { id: 'postgresql', name: 'PostgreSQL', icon: 'postgresql', category: 'Backend' },
+  { id: 'mysql', name: 'MySQL', icon: 'mysql', category: 'Backend' },
+  { id: 'git', name: 'Git', icon: 'git', category: 'Tools & DevOps' },
+  { id: 'github', name: 'GitHub', icon: 'github', category: 'Tools & DevOps' },
+  { id: 'figma', name: 'Figma', icon: 'figma', category: 'Tools & DevOps' },
+  { id: 'vscode', name: 'VS Code', icon: 'vscode', category: 'Tools & DevOps' },
+  { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'Tools & DevOps' },
+  { id: 'bubble', name: 'Bubble.io', icon: 'bubble', category: 'Tools & DevOps' },
 ]
 
 export const socialLinks: SocialLink[] = [
@@ -203,3 +224,52 @@ export const navigationItems = [
   { label: 'Experience', href: '#experience' },
   { label: 'Contact', href: '#contact' },
 ]
+
+export const recommendations: Recommendation[] = [
+  {
+    id: 1,
+    quote: "Christian is an exceptional developer who brings both technical skill and creative vision to every project. His attention to detail and commitment to clean code is impressive.",
+    authorName: "Alec Santos",
+    authorTitle: "Project Manager, BeachBus Palawan"
+  },
+  {
+    id: 2,
+    quote: "Working with Christian was a great experience. He consistently delivered high-quality work on time and was always willing to go the extra mile to ensure project success.",
+    authorName: "Brian Labilles",
+    authorTitle: "Business Development Assistant, Enjoy Realty and Development Corporation"
+  },
+  {
+    id: 3,
+    quote: "Christian's expertise in frontend development and his eye for design made him an invaluable team member. He transformed our ideas into beautiful, functional interfaces.",
+    authorName: "Bryden Elizan",
+    authorTitle: "CEO/Founder, Online Creative Solutions"
+  },
+  {
+    id: 4,
+    quote: "I was impressed by Christian's ability to quickly learn new technologies and apply them effectively. His problem-solving skills and positive attitude make him a joy to work with.",
+    authorName: "Joseph Cua",
+    authorTitle: "CEO/Founder, Palawan Pick and Drop"
+  }
+];
+
+export const galleryImages: GalleryImage[] = [
+  { id: 1, src: "/assets/images/gallery/AmanWebAppPresentation.jpg", alt: "Web App Presentation on ERDC's Brokers Meeting" },
+  { id: 2, src: "/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg", alt: "Team Building Workshop in Tagaytay with Enjoy Realty and Development Corporation" },
+  { id: 3, src: "/assets/images/gallery/ElNidoSolo3.jpg", alt: "Solo Travel in El Nido which is sponsored of one of our client on our agency, Then as my personal client for their Internal NFC Web App System" },
+  { id: 4, src: "/assets/images/gallery/BeachBusatPort.jpg", alt: "BeachBus arrival at El Nido Port which is the new mode of Public Transportation in El Nido! Where I develop its website and the internal NFC Card system" },
+  { id: 5, src: "/assets/images/gallery/InsideBeachBuswithBosses.jpg", alt: "During the Test Ride of the BeachBus at El Nido" },
+  { id: 6, src: "/assets/images/gallery/AtokwithJewel3.jpg", alt: "Traveling to Cordillera with my Love, Jewel" }
+];
+
+export const achievements: Achievement[] = [
+  {
+    id: 1,
+    title: "Software Engineer & Frontend Developer",
+    description: "Building modern web experiences"
+  },
+  {
+    id: 2,
+    title: "B.S. Computer Science Graduate",
+    link: "#experience"
+  }
+];
