@@ -1,7 +1,9 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 import { motion } from 'framer-motion'
-import { MapPin, FileText, Mail, Briefcase } from 'lucide-react'
+import { MapPin, FileText, Mail, Briefcase, Sun, Moon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { achievements, contactInfo } from '@/lib/data'
@@ -30,9 +32,32 @@ const itemVariants = {
 
 export function HeroSection() {
   const degreeAchievement = achievements.find((a) => a.id === 2)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
-    <section id="home" className="bg-background">
+    <section id="home" className="relative bg-background">
+      {/* Theme Toggle - Top Right */}
+      {mounted && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className="absolute top-4 right-0 p-2 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors z-10"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? (
+            <Sun className="h-5 w-5" />
+          ) : (
+            <Moon className="h-5 w-5" />
+          )}
+        </motion.button>
+      )}
       <motion.div
         variants={containerVariants}
         initial="hidden"

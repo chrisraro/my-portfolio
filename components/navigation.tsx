@@ -19,18 +19,21 @@ export function Navigation() {
 
   if (!mounted) return null
 
+  // Hide nav on homepage — theme toggle is in the hero section
+  if (isHomePage) return null
+
   return (
-    <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50"
-    >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14">
-          {/* Left side: Back arrow (if not home) + Site name */}
-          <div className="flex items-center gap-3">
-            {!isHomePage && (
+    <>
+      <motion.nav
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50"
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-14">
+            {/* Left side: Back arrow + Site name */}
+            <div className="flex items-center gap-3">
               <Link
                 href="/"
                 className="p-1.5 -ml-1.5 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
@@ -38,29 +41,31 @@ export function Navigation() {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
-            )}
-            <Link
-              href="/"
-              className="text-lg font-semibold text-foreground hover:text-foreground/80 transition-colors"
-            >
-              Christian Raro
-            </Link>
-          </div>
+              <Link
+                href="/"
+                className="text-lg font-semibold text-foreground hover:text-foreground/80 transition-colors"
+              >
+                Christian Raro
+              </Link>
+            </div>
 
-          {/* Right side: Theme toggle */}
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-          </button>
+            {/* Right side: Theme toggle */}
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-2 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+      {/* Spacer for fixed nav */}
+      <div className="h-14" />
+    </>
   )
 }

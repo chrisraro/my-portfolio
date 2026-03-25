@@ -1,25 +1,56 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { recommendations } from "@/lib/data"
 import { Recommendation } from "@/types"
 
 export default function RecommendationsSection() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
 
   const goToSlide = useCallback((index: number) => {
     setActiveIndex(index)
   }, [])
 
+  const goNext = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % recommendations.length)
+  }, [])
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((prev) => (prev - 1 + recommendations.length) % recommendations.length)
+  }, [])
+
   // Auto-advance every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % recommendations.length)
+      goNext()
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [activeIndex])
+  }, [activeIndex, goNext])
+
+  // Swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current
+    const minSwipe = 50 // minimum swipe distance in px
+    if (Math.abs(diff) > minSwipe) {
+      if (diff > 0) {
+        goNext() // swipe left = next
+      } else {
+        goPrev() // swipe right = prev
+      }
+    }
+  }
 
   const currentRecommendation: Recommendation = recommendations[activeIndex]
 
@@ -32,14 +63,19 @@ export default function RecommendationsSection() {
         Recommendations
       </h2>
 
-      <div className="min-h-[150px] flex flex-col justify-center">
+      <div
+        className="min-h-[150px] flex flex-col justify-center cursor-grab active:cursor-grabbing select-none"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={currentRecommendation.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
           >
             <p className="text-lg md:text-xl text-foreground leading-relaxed italic">
               &ldquo;{currentRecommendation.quote}&rdquo;

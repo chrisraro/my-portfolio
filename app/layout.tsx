@@ -73,7 +73,7 @@ export default function RootLayout({
         >
           <div className="min-h-screen bg-background text-foreground">
             <Navigation />
-            <main className="pt-14">
+            <main>
               {children}
             </main>
             <Footer />
