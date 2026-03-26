@@ -109,6 +109,16 @@ ADDITIONAL TECHNICAL SKILLS (from resume):
 - Other: AI automation
 
 SOFT SKILLS: Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service
+
+PERSONAL:
+- Birthday: November 29, 2001
+- Girlfriend: Jewel Maxine Fortuna — a beautiful and smart girl who is currently working as an Accounting Assistant
+- Hobbies & Interests:
+  • Basketball
+  • Riding motorcycle
+  • Learning new things, especially tech-related topics
+  • Watching sneaker/buying content creators such as Rami and Frankie from Coolkicks
+  • Sneaker enthusiast/collector
 `
 }
 
