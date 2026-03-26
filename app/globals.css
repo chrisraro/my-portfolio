@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 :root {
-	/* Clean black/white + blue accent palette */
+	/* Clean black/white + red accent palette (#FF2D55) */
 	--background: 1.0000 0 0;
 	--foreground: 0.1459 0 0;
 	--card: 1.0000 0 0;
 	--card-foreground: 0.1459 0 0;
 	--popover: 1.0000 0 0;
 	--popover-foreground: 0.1459 0 0;
-	--primary: 0.6229 0.1777 254.0275;
+	--primary: 0.6274 0.2577 13.59;
 	--primary-foreground: 1.0000 0 0;
 	--secondary: 0.9698 0 0;
 	--secondary-foreground: 0.4500 0 0;
 	--muted: 0.9698 0 0;
 	--muted-foreground: 0.5255 0 0;
-	--accent: 0.9725 0.0189 247.6975;
-	--accent-foreground: 0.3357 0.0691 251.5595;
+	--accent: 0.9600 0.0300 13.59;
+	--accent-foreground: 0.4500 0.1800 13.59;
 	--destructive: 0.5772 0.2452 27.3250;
 	--destructive-foreground: 1.0000 0 0;
 	--border: 0.9170 0 0;
 	--input: 0.9170 0 0;
-	--ring: 0.6229 0.1777 254.0275;
-	--chart-1: 0.6229 0.1777 254.0275;
-	--chart-2: 0.5500 0.1600 254.0275;
-	--chart-3: 0.4800 0.1400 254.0275;
-	--chart-4: 0.4100 0.1200 254.0275;
-	--chart-5: 0.3400 0.1000 254.0275;
+	--ring: 0.6274 0.2577 13.59;
+	--chart-1: 0.6274 0.2577 13.59;
+	--chart-2: 0.5500 0.2200 13.59;
+	--chart-3: 0.4800 0.1900 13.59;
+	--chart-4: 0.4100 0.1600 13.59;
+	--chart-5: 0.3400 0.1300 13.59;
 	--sidebar: 0.9698 0 0;
 	--sidebar-foreground: 0.1459 0 0;
-	--sidebar-primary: 0.6229 0.1777 254.0275;
+	--sidebar-primary: 0.6274 0.2577 13.59;
 	--sidebar-primary-foreground: 1.0000 0 0;
-	--sidebar-accent: 0.9725 0.0189 247.6975;
-	--sidebar-accent-foreground: 0.3357 0.0691 251.5595;
+	--sidebar-accent: 0.9600 0.0300 13.59;
+	--sidebar-accent-foreground: 0.4500 0.1800 13.59;
 	--sidebar-border: 0.9170 0 0;
-	--sidebar-ring: 0.6229 0.1777 254.0275;
+	--sidebar-ring: 0.6274 0.2577 13.59;
 	--font-sans: 'Plus Jakarta Sans', ui-sans-serif, sans-serif, system-ui;
 	--font-serif: ui-serif, serif;
 	--font-mono: ui-monospace, monospace;
@@ -59,32 +59,32 @@
 	--card-foreground: 0.9854 0 0;
 	--popover: 0.1749 0 0;
 	--popover-foreground: 0.9854 0 0;
-	--primary: 0.6229 0.1777 254.0275;
+	--primary: 0.6274 0.2577 13.59;
 	--primary-foreground: 1.0000 0 0;
 	--secondary: 0.1913 0 0;
 	--secondary-foreground: 0.8500 0 0;
 	--muted: 0.1913 0 0;
 	--muted-foreground: 0.6994 0 0;
-	--accent: 0.2200 0.0300 254.0275;
+	--accent: 0.2400 0.0500 13.59;
 	--accent-foreground: 0.8500 0 0;
 	--destructive: 0.5772 0.2452 27.3250;
 	--destructive-foreground: 0.1459 0 0;
 	--border: 0.2466 0 0;
 	--input: 0.2466 0 0;
-	--ring: 0.6229 0.1777 254.0275;
-	--chart-1: 0.6229 0.1777 254.0275;
-	--chart-2: 0.5500 0.1600 254.0275;
-	--chart-3: 0.4800 0.1400 254.0275;
-	--chart-4: 0.4100 0.1200 254.0275;
-	--chart-5: 0.3400 0.1000 254.0275;
+	--ring: 0.6274 0.2577 13.59;
+	--chart-1: 0.6274 0.2577 13.59;
+	--chart-2: 0.5500 0.2200 13.59;
+	--chart-3: 0.4800 0.1900 13.59;
+	--chart-4: 0.4100 0.1600 13.59;
+	--chart-5: 0.3400 0.1300 13.59;
 	--sidebar: 0.1749 0 0;
 	--sidebar-foreground: 0.9854 0 0;
-	--sidebar-primary: 0.6229 0.1777 254.0275;
+	--sidebar-primary: 0.6274 0.2577 13.59;
 	--sidebar-primary-foreground: 1.0000 0 0;
-	--sidebar-accent: 0.2200 0.0300 254.0275;
+	--sidebar-accent: 0.2400 0.0500 13.59;
 	--sidebar-accent-foreground: 0.8500 0 0;
 	--sidebar-border: 0.2466 0 0;
-	--sidebar-ring: 0.6229 0.1777 254.0275;
+	--sidebar-ring: 0.6274 0.2577 13.59;
 	--font-sans: 'Plus Jakarta Sans', ui-sans-serif, sans-serif, system-ui;
 	--font-serif: ui-serif, serif;
 	--font-mono: ui-monospace, monospace;
@@ -106,6 +106,8 @@
 		font-family: var(--font-sans);
 		line-height: 1.7;
 		letter-spacing: -0.01em;
+		background-image: radial-gradient(circle, oklch(var(--foreground) / 0.12) 1.2px, transparent 1.2px);
+		background-size: 40px 40px;
 	}
 }
 

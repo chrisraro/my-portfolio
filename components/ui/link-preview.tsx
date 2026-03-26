@@ -7,16 +7,21 @@ interface LinkPreviewProps {
   url: string
   children: React.ReactNode
   className?: string
+  fallbackImage?: string // Local screenshot path for fallback
 }
 
 interface PreviewData {
   screenshot: string | null
   loading: boolean
   error: boolean
+  usedFallback: boolean
 }
 
 // Cache for storing preview data to avoid re-fetching
 const previewCache = new Map<string, PreviewData>()
+
+// Timeout duration for API calls (4 seconds)
+const API_TIMEOUT_MS = 4000
 
 function extractDomain(url: string): string {
   try {
@@ -26,19 +31,21 @@ function extractDomain(url: string): string {
   }
 }
 
-export function LinkPreview({ url, children, className = '' }: LinkPreviewProps) {
+export function LinkPreview({ url, children, className = '', fallbackImage }: LinkPreviewProps) {
   const [isHovering, setIsHovering] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [previewData, setPreviewData] = useState<PreviewData>({
     screenshot: null,
     loading: false,
     error: false,
+    usedFallback: false,
   })
   const [position, setPosition] = useState<'top' | 'bottom'>('top')
   
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   // Determine if preview should be shown above or below based on viewport position
   const updatePosition = useCallback(() => {
@@ -55,7 +62,25 @@ export function LinkPreview({ url, children, className = '' }: LinkPreviewProps)
     }
   }, [])
 
-  // Fetch preview data from microlink API
+  // Use fallback image when API fails
+  const useFallback = useCallback(() => {
+    if (fallbackImage) {
+      const fallbackState: PreviewData = {
+        screenshot: fallbackImage,
+        loading: false,
+        error: false,
+        usedFallback: true,
+      }
+      previewCache.set(url, fallbackState)
+      setPreviewData(fallbackState)
+    } else {
+      const errorState: PreviewData = { screenshot: null, loading: false, error: true, usedFallback: false }
+      previewCache.set(url, errorState)
+      setPreviewData(errorState)
+    }
+  }, [url, fallbackImage])
+
+  // Fetch preview data from microlink API with timeout and fallback
   const fetchPreview = useCallback(async () => {
     // Check cache first
     if (previewCache.has(url)) {
@@ -65,33 +90,43 @@ export function LinkPreview({ url, children, className = '' }: LinkPreviewProps)
     }
 
     // Set loading state
-    const loadingState = { screenshot: null, loading: true, error: false }
+    const loadingState: PreviewData = { screenshot: null, loading: true, error: false, usedFallback: false }
     setPreviewData(loadingState)
+
+    // Create abort controller for timeout
+    abortControllerRef.current = new AbortController()
+    const timeoutId = setTimeout(() => {
+      abortControllerRef.current?.abort()
+    }, API_TIMEOUT_MS)
 
     try {
       const apiUrl = `https://api.microlink.io?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`
-      const response = await fetch(apiUrl)
+      const response = await fetch(apiUrl, {
+        signal: abortControllerRef.current.signal,
+      })
+      clearTimeout(timeoutId)
+      
       const data = await response.json()
 
       if (data.status === 'success' && data.data?.screenshot?.url) {
-        const successState = {
+        const successState: PreviewData = {
           screenshot: data.data.screenshot.url,
           loading: false,
           error: false,
+          usedFallback: false,
         }
         previewCache.set(url, successState)
         setPreviewData(successState)
       } else {
-        const errorState = { screenshot: null, loading: false, error: true }
-        previewCache.set(url, errorState)
-        setPreviewData(errorState)
+        // API returned but no screenshot - use fallback
+        useFallback()
       }
-    } catch {
-      const errorState = { screenshot: null, loading: false, error: true }
-      previewCache.set(url, errorState)
-      setPreviewData(errorState)
+    } catch (error) {
+      clearTimeout(timeoutId)
+      // On timeout or network error - use fallback
+      useFallback()
     }
-  }, [url])
+  }, [url, useFallback])
 
   // Handle mouse enter with delay
   const handleMouseEnter = useCallback(() => {

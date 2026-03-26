@@ -24,8 +24,32 @@ export function ChatWidget() {
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [hasShownWelcome, setHasShownWelcome] = useState(false)
+  const [showLabel, setShowLabel] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [hasMounted, setHasMounted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Show label on mount, then hide after delay
+  useEffect(() => {
+    if (!isOpen) {
+      // Small delay before showing the label for a nice entrance
+      const showTimer = setTimeout(() => {
+        setShowLabel(true)
+        setHasMounted(true)
+      }, 500)
+
+      // Hide label after 4 seconds
+      const hideTimer = setTimeout(() => {
+        setShowLabel(false)
+      }, 4500)
+
+      return () => {
+        clearTimeout(showTimer)
+        clearTimeout(hideTimer)
+      }
+    }
+  }, [])
 
   // Welcome message shown when chat opens for the first time
   const welcomeMessage: Message = {
@@ -125,22 +149,70 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button with Label */}
       <AnimatePresence>
         {!isOpen && (
-          <motion.button
+          <motion.div
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            animate={{ 
+              scale: 1, 
+              opacity: 1,
+              y: hasMounted ? 0 : [0, -12, 0, -6, 0] // Bounce only on first mount
+            }}
             exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
-            aria-label="Open chat"
+            transition={{ 
+              type: 'spring', 
+              stiffness: 260, 
+              damping: 20,
+              y: { duration: 0.6, ease: 'easeOut' }
+            }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
-            {/* Pulse animation ring */}
-            <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
-          </motion.button>
+            {/* Slide-in Label */}
+            <AnimatePresence>
+              {(showLabel || isHovered) && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: 20, scale: 0.9 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                  className="bg-card border border-border rounded-full px-4 py-2 shadow-lg cursor-pointer"
+                  onClick={() => setIsOpen(true)}
+                >
+                  <span className="text-sm font-medium text-foreground whitespace-nowrap flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                    Chat with Chunks
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Main Chat Button */}
+            <button
+              onClick={() => setIsOpen(true)}
+              className="relative w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
+              style={{
+                boxShadow: '0 4px 20px rgba(var(--primary-rgb, 220, 38, 38), 0.4), 0 0 40px rgba(var(--primary-rgb, 220, 38, 38), 0.2)'
+              }}
+              aria-label="Open chat"
+            >
+              <MessageCircle className="w-7 h-7 group-hover:scale-110 transition-transform duration-200" />
+              
+              {/* Enhanced pulse animation rings */}
+              <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping" style={{ animationDuration: '1.5s' }} />
+              <span className="absolute -inset-1 rounded-full bg-primary/20 animate-pulse" style={{ animationDuration: '2s' }} />
+              
+              {/* Notification badge/dot */}
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-background flex items-center justify-center">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              </span>
+              
+              {/* Glow ring on hover */}
+              <span className="absolute inset-0 rounded-full bg-transparent ring-2 ring-primary/0 group-hover:ring-primary/50 transition-all duration-300" />
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
 

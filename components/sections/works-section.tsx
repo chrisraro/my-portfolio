@@ -53,7 +53,7 @@ export function WorksSection() {
               }}
               transition={{ duration: 0.4 }}
             >
-              <LinkPreview url={href} className="block h-full">
+              <LinkPreview url={href} fallbackImage={project.image} className="block h-full">
                 <a
                   href={href}
                   target="_blank"

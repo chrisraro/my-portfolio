@@ -88,7 +88,7 @@ function ProjectCard({ project }: { project: Project }) {
         visible: { opacity: 1, y: 0 },
       }}
     >
-      <LinkPreview url={primaryLink} className="block h-full">
+      <LinkPreview url={primaryLink} fallbackImage={project.image} className="block h-full">
         <Link
           href={primaryLink}
           target={primaryLink !== "#" ? "_blank" : undefined}

@@ -64,14 +64,15 @@ export default function RecommendationsSection() {
       </h2>
 
       <div
-        className="min-h-[150px] flex flex-col justify-center cursor-grab active:cursor-grabbing select-none"
+        className="relative overflow-hidden h-[200px] sm:h-[180px] md:h-[160px] cursor-grab active:cursor-grabbing select-none"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={currentRecommendation.id}
+            className="absolute inset-x-0 top-0 flex flex-col justify-center h-full px-4"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
