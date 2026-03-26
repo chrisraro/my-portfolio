@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Toaster } from '@/components/ui/toaster'
+import { ChatWidget } from '@/components/ui/chat-widget'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ 
   subsets: ['latin'],
@@ -78,6 +79,7 @@ export default function RootLayout({
             </main>
             <Footer />
             <Toaster />
+            <ChatWidget />
           </div>
         </ThemeProvider>
       </body>

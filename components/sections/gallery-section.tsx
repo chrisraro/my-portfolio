@@ -11,6 +11,8 @@ export default function GallerySection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const lightboxTouchStartX = useRef(0);
+  const lightboxTouchEndX = useRef(0);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -44,6 +46,21 @@ export default function GallerySection() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedImage, navigateLightbox]);
+
+  // Lightbox swipe handlers
+  const handleLightboxTouchStart = (e: React.TouchEvent) => {
+    lightboxTouchStartX.current = e.touches[0].clientX;
+  };
+  const handleLightboxTouchMove = (e: React.TouchEvent) => {
+    lightboxTouchEndX.current = e.touches[0].clientX;
+  };
+  const handleLightboxTouchEnd = () => {
+    const diff = lightboxTouchStartX.current - lightboxTouchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) navigateLightbox('next');
+      else navigateLightbox('prev');
+    }
+  };
 
   // Duplicate images for seamless infinite scroll
   const loopedImages = [...galleryImages, ...galleryImages, ...galleryImages];
@@ -201,6 +218,9 @@ export default function GallerySection() {
               transition={{ duration: 0.2 }}
               className="relative w-[90vw] h-[80vh] max-w-6xl flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={handleLightboxTouchStart}
+              onTouchMove={handleLightboxTouchMove}
+              onTouchEnd={handleLightboxTouchEnd}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

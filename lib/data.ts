@@ -280,12 +280,12 @@ export const recommendations: Recommendation[] = [
 ];
 
 export const galleryImages: GalleryImage[] = [
-  { id: 1, src: "/assets/images/gallery/AmanWebAppPresentation.jpg", alt: "Web App Presentation on ERDC's Brokers Meeting" },
-  { id: 2, src: "/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg", alt: "Team Building Workshop in Tagaytay with Enjoy Realty and Development Corporation" },
-  { id: 3, src: "/assets/images/gallery/ElNidoSolo3.jpg", alt: "Solo Travel in El Nido which is sponsored of one of our client on our agency, Then as my personal client for their Internal NFC Web App System" },
-  { id: 4, src: "/assets/images/gallery/BeachBusatPort.jpg", alt: "BeachBus arrival at El Nido Port which is the new mode of Public Transportation in El Nido! Where I develop its website and the internal NFC Card system" },
-  { id: 5, src: "/assets/images/gallery/InsideBeachBuswithBosses.jpg", alt: "During the Test Ride of the BeachBus at El Nido" },
-  { id: 6, src: "/assets/images/gallery/AtokwithJewel3.jpg", alt: "Traveling to Cordillera with my Love, Jewel" }
+  { id: 1, src: "/assets/images/gallery/AmanWebAppPresentation.jpg", alt: "Presenting the Aman Group Web App at ERDC's Brokers Meeting" },
+  { id: 2, src: "/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg", alt: "Team building workshop in Tagaytay with Enjoy Realty and Development Corporation" },
+  { id: 3, src: "/assets/images/gallery/ElNidoSolo3.jpg", alt: "Solo trip to El Nido, sponsored by an agency client for whom I built an internal NFC Web App system" },
+  { id: 4, src: "/assets/images/gallery/BeachBusatPort.jpg", alt: "BeachBus arriving at El Nido Port — I developed its website and internal NFC card system" },
+  { id: 5, src: "/assets/images/gallery/InsideBeachBuswithBosses.jpg", alt: "Test ride aboard the BeachBus in El Nido" },
+  { id: 6, src: "/assets/images/gallery/AtokwithJewel3.jpg", alt: "Exploring the Cordillera highlands with my partner, Jewel" }
 ];
 
 export const achievements: Achievement[] = [

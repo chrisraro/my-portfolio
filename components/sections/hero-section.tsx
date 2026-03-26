@@ -62,11 +62,11 @@ export function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-col md:flex-row items-center md:items-start gap-6 py-8 md:py-12"
+        className="flex flex-row items-start gap-4 md:gap-6 py-8 md:py-12"
       >
         {/* Profile Image - Large, rounded rectangle like bryllim.com */}
         <motion.div variants={itemVariants} className="flex-shrink-0">
-          <div className="w-[160px] h-[200px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
+          <div className="w-[120px] h-[150px] sm:w-[140px] sm:h-[175px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
             <Image
               src="/assets/images/about/ProfilePic.jpg"
               alt="Christian Raro"
@@ -79,11 +79,11 @@ export function HeroSection() {
         </motion.div>
 
         {/* Info Section - Left aligned */}
-        <div className="flex flex-col items-center md:items-start gap-3 text-center md:text-left">
+        <div className="flex flex-col items-start gap-2 md:gap-3 text-left min-w-0">
           {/* Name with Verified Badge */}
           <motion.h1
             variants={itemVariants}
-            className="text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2"
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2"
           >
             Christian Raro
             <svg
@@ -117,7 +117,7 @@ export function HeroSection() {
           {/* Professional Titles */}
           <motion.p
             variants={itemVariants}
-            className="text-lg text-muted-foreground"
+            className="text-sm sm:text-base md:text-lg text-muted-foreground"
           >
             Software Engineer / Full-Stack Developer
           </motion.p>
@@ -137,7 +137,7 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-nowrap items-center gap-2 pt-3"
+            className="flex flex-wrap items-center gap-2 pt-2 md:pt-3"
           >
             <Link
               href="/assets/resume/Raro, Christian F - Resume (DEV).pdf"

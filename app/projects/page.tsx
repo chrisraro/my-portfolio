@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { ExternalLink, Github } from "lucide-react"
 import { projects } from "@/lib/data"
 import { Project } from "@/types"
+import { LinkPreview } from "@/components/ui/link-preview"
 
 export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All")
@@ -87,48 +88,50 @@ function ProjectCard({ project }: { project: Project }) {
         visible: { opacity: 1, y: 0 },
       }}
     >
-      <Link
-        href={primaryLink}
-        target={primaryLink !== "#" ? "_blank" : undefined}
-        rel={primaryLink !== "#" ? "noopener noreferrer" : undefined}
-        className="block border border-border rounded-lg p-5 hover:bg-muted/50 transition-colors h-full"
-      >
-        {/* Project Title */}
-        <h3 className="font-semibold text-base">{project.title}</h3>
+      <LinkPreview url={primaryLink} className="block h-full">
+        <Link
+          href={primaryLink}
+          target={primaryLink !== "#" ? "_blank" : undefined}
+          rel={primaryLink !== "#" ? "noopener noreferrer" : undefined}
+          className="block border border-border rounded-lg p-5 hover:bg-muted/50 transition-colors h-full"
+        >
+          {/* Project Title */}
+          <h3 className="font-semibold text-base">{project.title}</h3>
 
-        {/* Description */}
-        <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
-          {project.description}
-        </p>
+          {/* Description */}
+          <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
+            {project.description}
+          </p>
 
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-1 mt-3">
-          {project.technologies.map((tech) => (
-            <span
-              key={tech}
-              className="bg-muted rounded px-2 py-0.5 text-xs"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-1 mt-3">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="bg-muted rounded px-2 py-0.5 text-xs"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
 
-        {/* Links */}
-        <div className="flex items-center gap-3 mt-2">
-          {project.links.live && (
-            <span className="inline-flex items-center gap-1 text-xs text-primary">
-              <ExternalLink className="w-3 h-3" />
-              Live Site
-            </span>
-          )}
-          {project.links.github && (
-            <span className="inline-flex items-center gap-1 text-xs text-primary">
-              <Github className="w-3 h-3" />
-              GitHub
-            </span>
-          )}
-        </div>
-      </Link>
+          {/* Links */}
+          <div className="flex items-center gap-3 mt-2">
+            {project.links.live && (
+              <span className="inline-flex items-center gap-1 text-xs text-primary">
+                <ExternalLink className="w-3 h-3" />
+                Live Site
+              </span>
+            )}
+            {project.links.github && (
+              <span className="inline-flex items-center gap-1 text-xs text-primary">
+                <Github className="w-3 h-3" />
+                GitHub
+              </span>
+            )}
+          </div>
+        </Link>
+      </LinkPreview>
     </motion.div>
   )
 }

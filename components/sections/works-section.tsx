@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { projects } from '@/lib/data'
 import { Project } from '@/types'
+import { LinkPreview } from '@/components/ui/link-preview'
 
 const featuredProjects = projects.filter((p: Project) => p.featured)
 
@@ -44,22 +45,27 @@ export function WorksSection() {
             : project.technologies.slice(0, 3).join(' · ')
 
           return (
-            <motion.a
+            <motion.div
               key={project.id}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-border rounded-lg p-5 hover:bg-muted/50 transition-colors"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
               transition={{ duration: 0.4 }}
             >
-              <h3 className="font-semibold text-foreground text-base">{project.title}</h3>
-              <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{project.description}</p>
-              <p className="text-xs text-primary mt-2">{displayUrl}</p>
-            </motion.a>
+              <LinkPreview url={href} className="block h-full">
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block border border-border rounded-lg p-5 hover:bg-muted/50 transition-colors h-full"
+                >
+                  <h3 className="font-semibold text-foreground text-base">{project.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{project.description}</p>
+                  <p className="text-xs text-primary mt-2">{displayUrl}</p>
+                </a>
+              </LinkPreview>
+            </motion.div>
           )
         })}
       </motion.div>

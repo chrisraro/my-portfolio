@@ -41,14 +41,6 @@ function buildTimeline(): TimelineEntry[] {
     })
   })
 
-  entries.push({
-    type: 'milestone',
-    title: 'Hello World! 👋',
-    subtitle: '',
-    date: '2015',
-    sortKey: 2015,
-  })
-
   return entries.sort((a, b) => b.sortKey - a.sortKey)
 }
 
