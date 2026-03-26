@@ -76,7 +76,7 @@ export function ExperienceSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="relative border-l-2 border-border pl-6"
+        className="relative border-l-2 border-border pl-4 sm:pl-6"
       >
         {timeline.map((entry, idx) => (
           <motion.div
@@ -86,7 +86,7 @@ export function ExperienceSection() {
           >
             {/* Marker */}
             <span
-              className={`absolute -left-[31px] top-1 w-3 h-3 rounded-full ${
+              className={`absolute -left-[23px] sm:-left-[31px] top-1.5 sm:top-1 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
                 entry.type === 'work'
                   ? 'bg-primary'
                   : 'border-2 border-muted-foreground bg-background'
@@ -94,14 +94,18 @@ export function ExperienceSection() {
             />
 
             {/* Content */}
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <span className="font-medium text-foreground">{entry.title}</span>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-4">
+              <div className="min-w-0">
+                <span className="font-medium text-foreground text-sm sm:text-base leading-snug block">
+                  {entry.title}
+                </span>
                 {entry.subtitle && (
-                  <span className="text-muted-foreground"> — {entry.subtitle}</span>
+                  <span className="text-muted-foreground text-xs sm:text-sm block">
+                    {entry.subtitle}
+                  </span>
                 )}
               </div>
-              <span className="text-sm text-muted-foreground whitespace-nowrap shrink-0">
+              <span className="text-xs sm:text-sm text-muted-foreground sm:whitespace-nowrap sm:shrink-0 mt-0.5 sm:mt-0">
                 {entry.date}
               </span>
             </div>
