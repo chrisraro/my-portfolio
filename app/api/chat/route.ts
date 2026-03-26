@@ -73,6 +73,42 @@ CONTACT:
 - Email: ${contactInfo.email}
 - Location: ${contactInfo.location}
 - Social Links: GitHub (github.com/chrisraro), LinkedIn (linkedin.com/in/christian-raro)
+- Phone: 09631751535
+- Address: Zone 3 Bronze Street, Brgy. Triangulo, Naga City, Camarines Sur
+
+RESUME / EDUCATION HISTORY:
+- B.S. Computer Science, Bicol University Polangui Campus, Polangui, Albay (Aug 2020 – July 2024)
+- TVL – ICT (Computer Programming), Camarines Sur National High School, Naga City (June 2018 – July 2020) — With Honors
+- TVL – ICT (Computer System Servicing, Gr. 7–8), Camarines Sur National High School (June 2014 – April 2018)
+
+DETAILED WORK HISTORY (from resume):
+- Web Developer at Online Creative Solutions, Naga City (Nov 2024 – present): Full stack web apps, WordPress sites, backend workflows & API integrations, UI/UX design
+- IT Staff/Web Developer at Enjoy Realty and Development Corporation, Naga City (March 2025 – Aug 2025): Full stack web apps, WordPress sites, backend & API, graphic design, hardware/network/software maintenance
+- Junior Bubble.io Developer at Muramart Holdings Inc., Naga City (Aug 2023 – Sep 2024): Full stack web & mobile apps via Bubble.io, UI/UX design, backend workflows
+- OJT (240 hrs) at Muramart Holdings Inc. (July–Aug 2023): Bubble.io workshops, hands-on development
+
+DETAILED PROJECT HISTORY (from resume):
+- El Nido Guide PH (May–July 2025): WordPress + GeneratePress + GenerateBlocks, WooCommerce, PayPal, custom booking — elnidoguide.ph
+- BeachBus Palawan (June–Aug 2025): WordPress + GeneratePress + GenerateBlocks, WooCommerce, payment — beachbus.ph
+- Aman Group Web App (March–April 2025): Next.js full stack, v0.dev AI coding, Supabase/Upstash — amangroup-webapp.enjoyrealty.com
+- Enjoy Realty Website Redesign (May–June 2025): Migrated Elementor to GeneratePress/GenerateBlocks — enjoyrealty.com
+- Acad1 Review Center (Nov–Dec 2024): WordPress + WooCommerce + Paymongo — acad1.ph
+- Muramart App (July 2023–Sep 2024): Bubble.io full stack web & mobile — muramartv2.com + Google Play
+- ARWay CampusNav (Oct 2023–March 2024): Flutter + Unity + C# AR navigation thesis project
+
+ADDITIONAL TECHNICAL SKILLS (from resume):
+- OS: Windows, Linux
+- Networking: TCP/IP, subnetting, routing, VLANs, Firewalls
+- SysAdmin: Active Directory, File Server, Backup/Recovery, Security
+- Scripting: PowerShell, Bash/Shell, Python
+- Databases: SQL, basic database administration
+- Languages: Java, PHP, JavaScript, HTML/CSS
+- Frameworks: Flutter, WordPress, Material-UI, Bubble.io, Next.js, Laravel
+- Dev Tools: Git/GitHub, VS Code, Cursor, Eclipse, Unity, Docker
+- Libraries: Bootstrap, Material-UI, React, shadcn-ui
+- Other: AI automation
+
+SOFT SKILLS: Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service
 `
 }
 

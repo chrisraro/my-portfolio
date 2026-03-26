@@ -62,11 +62,11 @@ export function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex flex-row items-start gap-4 md:gap-6 py-8 md:py-12"
+        className="flex flex-row items-start gap-3 md:gap-6 py-6 md:py-12"
       >
-        {/* Profile Image - Large, rounded rectangle like bryllim.com */}
+        {/* Profile Image */}
         <motion.div variants={itemVariants} className="flex-shrink-0">
-          <div className="w-[120px] h-[150px] sm:w-[140px] sm:h-[175px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
+          <div className="w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
             <Image
               src="/assets/images/about/ProfilePic.jpg"
               alt="Christian Raro"
@@ -79,15 +79,15 @@ export function HeroSection() {
         </motion.div>
 
         {/* Info Section - Left aligned */}
-        <div className="flex flex-col items-start gap-2 md:gap-3 text-left min-w-0">
+        <div className="flex flex-col items-start gap-1 sm:gap-1.5 md:gap-3 text-left min-w-0">
           {/* Name with Verified Badge */}
           <motion.h1
             variants={itemVariants}
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2"
+            className="text-base sm:text-xl md:text-3xl font-bold text-foreground flex items-center gap-1.5"
           >
             Christian Raro
             <svg
-              className="w-5 h-5 md:w-6 md:h-6"
+              className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex-shrink-0"
               viewBox="0 0 48 48"
               fill="none"
               aria-label="Verified"
@@ -108,16 +108,16 @@ export function HeroSection() {
           {/* Location Badge */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground"
+            className="flex items-center gap-1 text-[11px] sm:text-xs md:text-sm text-muted-foreground"
           >
-            <MapPin className="w-4 h-4" />
+            <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0" />
             <span>Naga City, Camarines Sur, Philippines</span>
           </motion.div>
 
           {/* Professional Titles */}
           <motion.p
             variants={itemVariants}
-            className="text-sm sm:text-base md:text-lg text-muted-foreground"
+            className="text-[11px] sm:text-xs md:text-lg text-muted-foreground"
           >
             Software Engineer / Full-Stack Developer
           </motion.p>
@@ -127,39 +127,39 @@ export function HeroSection() {
             <motion.div variants={itemVariants}>
               <Link
                 href={degreeAchievement.link || '#experience'}
-                className="inline-block bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-medium hover:bg-primary/20 transition-colors"
+                className="inline-block bg-primary/10 text-primary rounded-full px-2.5 py-1 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-primary/20 transition-colors"
               >
                 {degreeAchievement.title}
               </Link>
             </motion.div>
           )}
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Always 3 columns */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center gap-2 pt-2 md:pt-3"
+            className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-1.5 md:pt-3 w-full"
           >
             <Link
               href="/assets/resume/Raro, Christian F - Resume (DEV).pdf"
               target="_blank"
-              className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-primary text-primary-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
-              <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              View Resume
+              <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              Resume
             </Link>
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex items-center gap-1.5 bg-muted border border-border text-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-muted border border-border text-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
             >
-              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              Send Email
+              <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              Email
             </Link>
             <Link
               href="#works"
-              className="inline-flex items-center gap-1.5 bg-muted border border-border text-foreground rounded-md px-3 py-2 text-xs sm:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-muted border border-border text-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
             >
-              <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              View Projects
+              <Briefcase className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              Projects
             </Link>
           </motion.div>
         </div>
