@@ -1,42 +1,30 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { Reveal } from '@/components/ui/reveal'
 
 export function AboutSection() {
   return (
     <section id="about">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="text-xl font-bold mb-4"
-      >
-        About
-      </motion.h2>
+      <Reveal>
+        <p className="eyebrow mb-2">// about</p>
+        <h2 className="font-display text-2xl font-semibold tracking-tight mb-4">About</h2>
+      </Reveal>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        viewport={{ once: true }}
-        className="space-y-3 text-muted-foreground leading-relaxed text-base"
-      >
+      <Reveal delay={0.1} className="space-y-3 text-muted-foreground leading-relaxed text-base">
         <p>
-          I'm Christian Raro, a Software Engineer and Full-Stack Developer based in the Philippines. 
-          I specialize in building modern, responsive web applications using React, Next.js, and 
-          TypeScript — crafting digital experiences that are both functional and delightful to use.
+          I&apos;m Christian Raro — a software engineer and full-stack developer from Naga City,
+          Philippines. I build production web apps with Next.js, React, and TypeScript, and ship
+          client-ready WordPress and WooCommerce sites end to end.
         </p>
         <p>
-          My background spans full-stack development, WordPress solutions, and mobile app development. 
-          I'm passionate about writing clean, maintainable code and creating user-centric interfaces 
-          with thoughtful design decisions.
+          My work spans real-estate platforms, hotel booking systems, and AI-assisted study tools.
+          I care about clean, maintainable code and interfaces that feel effortless.
         </p>
         <p>
-          When I'm not coding, I enjoy exploring new technologies and finding creative ways to solve 
-          real-world problems through software.
+          I move fast with modern AI-assisted workflows, and I&apos;m always exploring new tools to
+          solve real-world problems through software.
         </p>
-      </motion.div>
+      </Reveal>
     </section>
   )
 }
