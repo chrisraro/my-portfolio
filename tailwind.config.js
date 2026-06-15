@@ -29,7 +29,7 @@ module.exports = {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-serif)', 'serif'],
         mono: ['var(--font-mono)', 'monospace'],
-        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
       },
       borderRadius: {
         sm: 'calc(var(--radius) - 4px)',

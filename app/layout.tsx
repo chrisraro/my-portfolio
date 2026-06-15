@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navigation } from '@/components/navigation'
@@ -7,10 +7,16 @@ import { Footer } from '@/components/footer'
 import { Toaster } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
 
-const plusJakartaSans = Plus_Jakarta_Sans({ 
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-sans',
+  display: 'swap',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
   display: 'swap',
 })
 
@@ -64,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={plusJakartaSans.variable}>
+    <html lang="en" suppressHydrationWarning className={`${plusJakartaSans.variable} ${fraunces.variable}`}>
       <body className={plusJakartaSans.className}>
         <ThemeProvider
           attribute="class"
