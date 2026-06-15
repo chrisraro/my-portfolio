@@ -109,7 +109,7 @@ export default function GallerySection() {
   return (
     <section id="gallery" className="py-8 md:py-12">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-foreground">Gallery</h2>
+        <h2 className="font-display text-xl font-bold tracking-tight text-foreground">Gallery</h2>
       </div>
 
       <motion.div

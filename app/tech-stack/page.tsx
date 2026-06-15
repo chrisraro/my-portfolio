@@ -19,7 +19,7 @@ export default function TechStackPage() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-20 md:py-28">
       {/* Page Header */}
-      <h1 className="text-2xl font-bold mb-2">Tech Stack</h1>
+      <h1 className="font-display text-2xl font-bold tracking-tight mb-2">Tech Stack</h1>
       <p className="text-muted-foreground mb-10">
         Technologies and tools I work with
       </p>

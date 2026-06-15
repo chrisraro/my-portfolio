@@ -19,7 +19,7 @@ export function SkillsSection() {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-xl font-bold mb-6">Tech Stack</h2>
+        <h2 className="font-display text-xl font-bold tracking-tight mb-6">Tech Stack</h2>
 
         {categories.map((category) => (
           <div key={category} className="mb-5">

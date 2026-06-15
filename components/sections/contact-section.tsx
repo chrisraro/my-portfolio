@@ -46,7 +46,7 @@ export function ContactSection() {
         viewport={{ once: true }}
         className="text-center mb-8"
       >
-        <h2 className="text-2xl font-bold mb-3 text-foreground">Get In Touch</h2>
+        <h2 className="font-display text-2xl font-bold tracking-tight mb-3 text-foreground">Get In Touch</h2>
         <p className="text-base text-muted-foreground max-w-2xl mx-auto">
           I'm always interested in new opportunities and exciting projects. Feel free to reach out through my social media or the contact form.
         </p>

@@ -59,7 +59,7 @@ export default function RecommendationsSection() {
       id="recommendations"
       className="py-8 md:py-12 text-center"
     >
-      <h2 className="text-xl font-bold mb-6 text-foreground">
+      <h2 className="font-display text-xl font-bold tracking-tight mb-6 text-foreground">
         Recommendations
       </h2>
 
