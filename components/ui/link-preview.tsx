@@ -192,7 +192,7 @@ export function LinkPreview({ url, children, className = '', fallbackImage }: Li
   return (
     <div
       ref={containerRef}
-      className={`relative inline-block ${className}`}
+      className={`relative ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

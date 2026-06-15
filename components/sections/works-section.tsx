@@ -4,83 +4,38 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { projects } from '@/lib/data'
 import { Project } from '@/types'
-import { LinkPreview } from '@/components/ui/link-preview'
+import { ProjectCard } from '@/components/ui/project-card'
+import { Reveal, staggerContainer, staggerItem } from '@/components/ui/reveal'
 
 const featuredProjects = projects.filter((p: Project) => p.featured)
-
-function extractDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace('www.', '')
-  } catch {
-    return url
-  }
-}
 
 export function WorksSection() {
   return (
     <section id="works" className="py-8 md:py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-xl font-bold mb-6">Recent Projects</h2>
-      </motion.div>
+      <Reveal>
+        <p className="eyebrow mb-2">// selected work</p>
+        <h2 className="font-display text-2xl font-semibold tracking-tight mb-6">Recent Projects</h2>
+      </Reveal>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.1 } }
-        }}
+        variants={staggerContainer}
       >
-        {featuredProjects.map((project) => {
-          const href = project.links.live || project.links.github || '#'
-          const displayUrl = project.links.live 
-            ? extractDomain(project.links.live) 
-            : project.technologies.slice(0, 3).join(' · ')
-
-          return (
-            <motion.div
-              key={project.id}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 }
-              }}
-              transition={{ duration: 0.4 }}
-            >
-              <LinkPreview url={href} fallbackImage={project.image} className="block h-full">
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block border border-border rounded-lg p-5 hover:bg-muted/50 transition-colors h-full"
-                >
-                  <h3 className="font-semibold text-foreground text-base">{project.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{project.description}</p>
-                  <p className="text-xs text-primary mt-2">{displayUrl}</p>
-                </a>
-              </LinkPreview>
-            </motion.div>
-          )
-        })}
+        {featuredProjects.map((project) => (
+          <motion.div key={project.id} variants={staggerItem}>
+            <ProjectCard project={project} />
+          </motion.div>
+        ))}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-6"
-      >
+      <Reveal delay={0.2} className="mt-6">
         <Link href="/projects" className="text-sm text-primary font-medium hover:underline">
           View All →
         </Link>
-      </motion.div>
+      </Reveal>
     </section>
   )
 }
