@@ -17,7 +17,6 @@ const targets = [
   { id: 'naga-perks-giya-app', url: 'https://giya.vercel.app' },
   { id: 'elnido', url: 'https://elnidoguide.ph' },
   { id: 'beachbus', url: 'https://beachbus.ph' },
-  { id: 'acad1', url: 'https://acad1.ph' },
   { id: 'upcat-review-plus', url: 'https://upcatreviewplus.com' },
   { id: 'downtown-district-hotel', url: 'https://downtowndistricthotel.ph' },
   { id: 'azalea-main', url: 'https://onlinecreativesolutions.com/azaleamain' },
@@ -50,12 +49,13 @@ const viewport = { width: 1440, height: 900, deviceScaleFactor: 1 }
 async function autoScroll(page) {
   await page.evaluate(async () => {
     await new Promise((resolve) => {
+      const maxHeight = document.body.scrollHeight
       let total = 0
       const step = 400
       const timer = setInterval(() => {
         window.scrollBy(0, step)
         total += step
-        if (total >= document.body.scrollHeight) {
+        if (total >= maxHeight) {
           clearInterval(timer)
           resolve()
         }
@@ -69,7 +69,7 @@ async function autoScroll(page) {
 ;(async () => {
   const browser = await puppeteer.launch({
     executablePath: findBrowser(),
-    headless: 'new',
+    headless: true,
     args: ['--no-sandbox', '--hide-scrollbars'],
   })
 

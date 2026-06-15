@@ -3,11 +3,10 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { projects } from '@/lib/data'
-import { Project } from '@/types'
 import { ProjectCard } from '@/components/ui/project-card'
 import { Reveal, staggerContainer, staggerItem } from '@/components/ui/reveal'
 
-const featuredProjects = projects.filter((p: Project) => p.featured)
+const featuredProjects = projects.filter((p) => p.featured)
 
 export function WorksSection() {
   return (
@@ -20,7 +19,8 @@ export function WorksSection() {
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={staggerContainer}
       >
         {featuredProjects.map((project) => (
