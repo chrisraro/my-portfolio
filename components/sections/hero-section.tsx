@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { motion } from 'framer-motion'
-import { MapPin, FileText, Mail, Briefcase, Sun, Moon } from 'lucide-react'
+import { MapPin, FileText, Mail, Briefcase, Sun, Moon, Expand } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { achievements, contactInfo } from '@/lib/data'
+import { ImageLightbox } from '@/components/ui/image-lightbox'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -66,16 +67,24 @@ export function HeroSection() {
       >
         {/* Profile Image */}
         <motion.div variants={itemVariants} className="flex-shrink-0">
-          <div className="w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
-            <Image
-              src="/assets/images/about/profile-hiking.jpg"
-              alt="Christian Raro"
-              width={220}
-              height={220}
-              priority
-              className="object-cover object-center w-full h-full"
-            />
-          </div>
+          <ImageLightbox src="/assets/images/about/profile-hiking.jpg" alt="Christian Raro">
+            <div className="relative w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
+              <Image
+                src="/assets/images/about/profile-hiking.jpg"
+                alt="Christian Raro"
+                width={220}
+                height={220}
+                priority
+                className="object-cover object-center w-full h-full transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* Hover hint */}
+              <div className="absolute inset-0 flex items-end justify-end bg-black/0 p-1.5 opacity-0 transition-all duration-300 group-hover:bg-black/20 group-hover:opacity-100">
+                <span className="rounded-md bg-black/55 p-1 text-white backdrop-blur-sm">
+                  <Expand className="h-3.5 w-3.5" />
+                </span>
+              </div>
+            </div>
+          </ImageLightbox>
         </motion.div>
 
         {/* Info Section - Left aligned */}
