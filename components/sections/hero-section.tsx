@@ -83,9 +83,15 @@ export function HeroSection() {
           {/* Name with Verified Badge */}
           <motion.h1
             variants={itemVariants}
-            className="text-base sm:text-xl md:text-3xl font-bold text-foreground flex items-center gap-1.5"
+            className="font-display text-lg sm:text-2xl md:text-4xl font-semibold tracking-tight text-foreground flex items-center gap-1.5"
           >
-            Christian Raro
+            <span className="flex flex-wrap gap-x-2">
+              {'Christian Raro'.split(' ').map((word, i) => (
+                <motion.span key={word + i} variants={itemVariants} className="inline-block">
+                  {word}
+                </motion.span>
+              ))}
+            </span>
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex-shrink-0"
               viewBox="0 0 48 48"
