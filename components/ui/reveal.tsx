@@ -10,21 +10,27 @@ interface RevealProps {
   className?: string
 }
 
-/** Scroll-triggered fade/slide-in. Renders static when reduced motion is preferred. */
+/**
+ * Fade/slide-in entrance, animated on mount.
+ *
+ * Two deliberate choices:
+ * 1. Animate on mount (not `whileInView`): framer-motion's in-view trigger only
+ *    fires on an enter transition, so content already in the viewport on first
+ *    paint would stay stuck at opacity 0.
+ * 2. Always render the same `motion.div` — never branch the element type on
+ *    reduced motion. A conditional `<div>` vs `<motion.div>` causes a hydration
+ *    mismatch that leaves the SSR `opacity: 0` inline style stuck. For reduced
+ *    motion we just collapse the movement and make the transition instant.
+ */
 export function Reveal({ children, delay = 0, y = 20, className }: RevealProps) {
   const reduce = useReducedMotion()
-
-  if (reduce) {
-    return <div className={className}>{children}</div>
-  }
 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      initial={{ opacity: 0, y: reduce ? 0 : y }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={reduce ? { duration: 0 } : { duration: 0.5, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
     </motion.div>
