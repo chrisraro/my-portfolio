@@ -62,3 +62,11 @@ export function isInViewport(element: Element): boolean {
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   )
 }
+
+export function extractDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace("www.", "")
+  } catch {
+    return url
+  }
+}

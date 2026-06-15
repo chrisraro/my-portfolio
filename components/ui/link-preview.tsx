@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { extractDomain } from '@/lib/utils'
 
 interface LinkPreviewProps {
   url: string
@@ -22,14 +23,6 @@ const previewCache = new Map<string, PreviewData>()
 
 // Timeout duration for API calls (4 seconds)
 const API_TIMEOUT_MS = 4000
-
-function extractDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace('www.', '')
-  } catch {
-    return url
-  }
-}
 
 export function LinkPreview({ url, children, className = '', fallbackImage }: LinkPreviewProps) {
   const [isHovering, setIsHovering] = useState(false)

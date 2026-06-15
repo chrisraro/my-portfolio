@@ -5,28 +5,22 @@ import { useState } from 'react'
 import { ExternalLink } from 'lucide-react'
 import { Project } from '@/types'
 import { LinkPreview } from '@/components/ui/link-preview'
-
-function extractDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace('www.', '')
-  } catch {
-    return url
-  }
-}
+import { extractDomain } from '@/lib/utils'
 
 export function ProjectCard({ project }: { project: Project }) {
   const href = project.links.live || project.links.github || '#'
+  const isExternal = href !== '#'
   const label = project.links.live
     ? extractDomain(project.links.live)
     : project.technologies.slice(0, 3).join(' · ')
-  const [imgError, setImgError] = useState(false)
+  const [imgError, setImgError] = useState(!project.image)
 
   return (
     <LinkPreview url={href} fallbackImage={project.image} className="block h-full">
       <a
         href={href}
-        target={href !== '#' ? '_blank' : undefined}
-        rel={href !== '#' ? 'noopener noreferrer' : undefined}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
         className="group block h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
       >
         {/* Thumbnail */}
@@ -41,7 +35,11 @@ export function ProjectCard({ project }: { project: Project }) {
               onError={() => setImgError(true)}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+            <div
+              role="img"
+              aria-label={`${project.title} screenshot`}
+              className="flex h-full w-full items-center justify-center text-xs text-muted-foreground"
+            >
               {project.title}
             </div>
           )}
@@ -66,7 +64,7 @@ export function ProjectCard({ project }: { project: Project }) {
             ))}
           </div>
           <p className="mt-3 inline-flex items-center gap-1 text-xs text-primary">
-            <ExternalLink className="h-3 w-3" />
+            {isExternal && <ExternalLink className="h-3 w-3" />}
             {label}
           </p>
         </div>
