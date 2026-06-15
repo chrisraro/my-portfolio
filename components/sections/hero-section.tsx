@@ -68,12 +68,12 @@ export function HeroSection() {
         <motion.div variants={itemVariants} className="flex-shrink-0">
           <div className="w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
             <Image
-              src="/assets/images/about/ProfilePic.jpg"
+              src="/assets/images/about/profile-hiking.jpg"
               alt="Christian Raro"
-              width={180}
+              width={220}
               height={220}
               priority
-              className="object-cover w-full h-full"
+              className="object-cover object-center w-full h-full"
             />
           </div>
         </motion.div>
