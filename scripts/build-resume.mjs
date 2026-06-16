@@ -94,11 +94,11 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
   <h2>Projects</h2>
 
   <div class="proj">
-    <div class="row"><span><b>Iskotify</b> <span class="stack">| Next.js, React, Supabase, AI, PWA</span></span><span class="date">2026</span></div>
+    <div class="row"><span><b>Iskotify</b> <span class="stack">| Next.js, React, Supabase, AI, PWA</span></span><span class="date">Jun 2026</span></div>
     <ul>
       <li>Built a scholarship and exam-prep platform for Filipino students with scholarship tracking and deadline reminders.</li>
       <li>Implemented AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT and an AI study companion.</li>
-      <li>Full-stack on Next.js with Supabase; delivered as an installable PWA. (iskotify.ph)</li>
+      <li>Full-stack on Next.js with Supabase as an installable PWA; shipping to production with early-access student registration. (iskotify.ph)</li>
     </ul>
   </div>
 
@@ -121,7 +121,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
   </div>
 
   <div class="proj">
-    <div class="row"><span><b>Graceland Bicolano Dining</b> <span class="stack">| WordPress, GeneratePress, GenerateBlocks Pro</span></span><span class="date">2026</span></div>
+    <div class="row"><span><b>Graceland Bicolano Dining</b> <span class="stack">| WordPress, GeneratePress, GenerateBlocks Pro</span></span><span class="date">May 2026</span></div>
     <ul>
       <li>Built the website for a heritage Bicolano restaurant chain: menu showcase, branch locations, and brand story.</li>
       <li>Developed with a GeneratePress Premium child theme and GenerateBlocks Pro, with SEO and responsive design.</li>

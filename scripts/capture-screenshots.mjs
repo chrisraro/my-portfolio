@@ -12,7 +12,7 @@ import puppeteer from 'puppeteer-core'
 // id must match the project `id` (and image filename) in lib/data.ts
 const targets = [
   { id: 'graceland', url: 'https://res326.servconfig.com/~graceland/staging/' },
-  { id: 'iskotify', url: 'https://iskotify.vercel.app' },
+  { id: 'iskotify', url: 'https://iskotify.ph' },
   { id: 'aman-webapp', url: 'https://amangroup-webapp.enjoyrealty.com' },
   { id: 'naga-perks-giya-app', url: 'https://giya.vercel.app' },
   { id: 'elnido', url: 'https://elnidoguide.ph' },

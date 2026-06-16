@@ -14,7 +14,7 @@ export const projects: Project[] = [
   {
     id: 'iskotify',
     title: 'Iskotify',
-    description: 'Scholarship and exam-prep platform for Filipino students: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw."',
+    description: 'Scholarship and exam-prep platform for Filipino students: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw." Shipping to production with early-access student registration.',
     category: 'Full-Stack Web App',
     image: '/assets/images/projects/iskotify.png',
     technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
