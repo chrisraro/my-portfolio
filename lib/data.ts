@@ -18,7 +18,7 @@ export const projects: Project[] = [
     category: 'Full-Stack Web App',
     image: '/assets/images/projects/iskotify.png',
     technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
-    links: { live: 'https://iskotify.vercel.app' },
+    links: { live: 'https://iskotify.ph' },
     featured: true,
   },
   {
