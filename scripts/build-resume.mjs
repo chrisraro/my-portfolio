@@ -1,5 +1,10 @@
 // Build an ATS-friendly resume PDF (long bond, 8.5 x 13 in) from semantic HTML
-// using the system Chrome via puppeteer-core. Real selectable text → ATS-readable.
+// using the system Chrome via puppeteer-core. Real selectable text -> ATS-readable.
+//
+// Typography: Lato (Google Fonts) embedded in the PDF, Arial fallback. Lato is a
+// clean, widely-recognized humanist sans that ATS parsers handle reliably and
+// human reviewers find highly legible. One family + a single consistent type
+// scale throughout.
 //
 // Usage: node scripts/build-resume.mjs
 // Output: public/assets/resume/Raro, Christian F - Resume (DEV).pdf
@@ -14,30 +19,40 @@ const CHROME = [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
 ].find((p) => fs.existsSync(p))
 
-const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family: Arial, Helvetica, sans-serif; color: #1a1a1a; }
-  body { font-size: 10.2pt; line-height: 1.26; }
-  a { color: #1a1a1a; text-decoration: none; }
-  .name { font-size: 21pt; font-weight: 700; letter-spacing: 1px; text-align: center; }
-  .title { text-align: center; font-size: 10.5pt; color: #333; margin-top: 2px; letter-spacing: .3px; }
-  .contact { text-align: center; font-size: 9.2pt; color: #333; margin-top: 3px; }
+  html, body { font-family: 'Lato', Arial, Helvetica, sans-serif; color: #222; }
+  body { font-size: 9.8pt; line-height: 1.3; }
+  a { color: #222; text-decoration: none; }
+
+  /* Header */
+  .name { font-size: 20pt; font-weight: 700; letter-spacing: 1.2px; text-align: center; }
+  .title { text-align: center; font-size: 10.5pt; color: #444; margin-top: 3px; letter-spacing: .4px; }
+  .contact { text-align: center; font-size: 9pt; color: #444; margin-top: 3px; }
   .contact span { white-space: nowrap; }
-  h2 { font-size: 10.6pt; font-weight: 700; text-transform: uppercase; letter-spacing: .8px;
-       border-bottom: 1.4px solid #1a1a1a; padding-bottom: 2px; margin: 8px 0 4px; }
-  p.summary { font-size: 10pt; text-align: justify; }
+
+  /* Section headings */
+  h2 { font-size: 10.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+       border-bottom: 1.4px solid #222; padding-bottom: 2px; margin: 9px 0 5px; }
+
+  /* Body blocks */
+  p.summary { font-size: 9.8pt; text-align: justify; }
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .role { font-weight: 700; }
   .org { font-style: italic; }
-  .date { font-size: 9.5pt; color: #333; white-space: nowrap; }
-  ul { margin: 2px 0 5px 17px; }
-  li { font-size: 9.8pt; margin-bottom: 1px; }
+  .date { font-size: 9.3pt; color: #555; white-space: nowrap; }
+  ul { margin: 2px 0 6px 17px; }
+  li { font-size: 9.8pt; margin-bottom: 1.5px; }
   .skills li { margin-bottom: 2px; }
-  .proj { margin-bottom: 5px; }
-  .proj .stack { font-weight: 400; color: #333; font-size: 9.6pt; }
+  .proj { margin-bottom: 6px; }
+  .proj .stack { font-weight: 400; color: #555; font-size: 9.4pt; }
   .edu .row { margin-bottom: 1px; }
-  .edu .sub { font-size: 9.7pt; color: #333; margin-bottom: 6px; }
-  .nda { font-style: italic; color: #333; }
+  .edu .sub { font-size: 9.4pt; color: #555; margin-bottom: 6px; }
+  .nda { font-style: italic; color: #555; }
 </style></head>
 <body>
 
@@ -60,19 +75,6 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
     Vercel and Supabase. Ships quickly using modern AI-assisted development workflows.
   </p>
 
-  <h2>Skills</h2>
-  <ul class="skills">
-    <li><b>Languages:</b> JavaScript, TypeScript, PHP, Java, HTML/CSS, Python</li>
-    <li><b>Frameworks &amp; Libraries:</b> Next.js, React, Node.js, Laravel, Flutter, Tailwind CSS, shadcn/ui, Material UI, Bootstrap</li>
-    <li><b>CMS &amp; E-commerce:</b> WordPress (GeneratePress, GenerateBlocks Pro), WooCommerce, Bubble.io</li>
-    <li><b>Databases:</b> PostgreSQL, MySQL, SQL, Supabase, Firebase</li>
-    <li><b>Cloud &amp; DevOps:</b> Vercel, Upstash, Docker, Render, Coolify, Git/GitHub</li>
-    <li><b>Payments:</b> PayPal, PayMongo, Maya, Xendit</li>
-    <li><b>Tools &amp; AI:</b> VS Code, Cursor, Figma, Claude Code, v0.dev, AI-assisted development</li>
-    <li><b>Also:</b> Networking &amp; system administration fundamentals (TCP/IP, VLANs, Active Directory)</li>
-    <li><b>Soft Skills:</b> Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service</li>
-  </ul>
-
   <h2>Experience</h2>
   <div class="row"><span class="role">Web Developer</span><span class="date">Nov 2024 &ndash; Present</span></div>
   <div class="row"><span class="org">Online Creative Solutions</span><span class="date">Naga City, Camarines Sur</span></div>
@@ -89,6 +91,19 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
     <li>Developed and maintained full-stack web applications and WordPress sites.</li>
     <li>Managed backend workflows and API integrations.</li>
     <li>Provided graphic design support and IT maintenance (hardware, networks, software).</li>
+  </ul>
+
+  <h2>Skills</h2>
+  <ul class="skills">
+    <li><b>Languages:</b> JavaScript, TypeScript, PHP, Java, HTML/CSS, Python</li>
+    <li><b>Frameworks &amp; Libraries:</b> Next.js, React, Node.js, Laravel, Flutter, Tailwind CSS, shadcn/ui, Material UI, Bootstrap</li>
+    <li><b>CMS &amp; E-commerce:</b> WordPress (GeneratePress, GenerateBlocks Pro), WooCommerce, Bubble.io</li>
+    <li><b>Databases:</b> PostgreSQL, MySQL, SQL, Supabase, Firebase</li>
+    <li><b>Cloud &amp; DevOps:</b> Vercel, Upstash, Docker, Render, Coolify, Git/GitHub</li>
+    <li><b>Payments:</b> PayPal, PayMongo, Maya, Xendit</li>
+    <li><b>Tools &amp; AI:</b> VS Code, Cursor, Figma, Claude Code, v0.dev, AI-assisted development</li>
+    <li><b>Also:</b> Networking &amp; system administration fundamentals (TCP/IP, VLANs, Active Directory)</li>
+    <li><b>Soft Skills:</b> Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service</li>
   </ul>
 
   <h2>Projects</h2>
@@ -132,7 +147,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
   <div class="edu">
     <div class="row"><span class="role">Bicol University &ndash; Polangui Campus</span><span class="date">Aug 2020 &ndash; Jul 2024</span></div>
     <div class="sub">Bachelor of Science in Computer Science &middot; Polangui, Albay</div>
-    <div class="row"><span class="role">Camarines Sur National High School</span><span class="date">2018 &ndash; 2020</span></div>
+    <div class="row"><span class="role">Camarines Sur National High School</span><span class="date">Jun 2018 &ndash; Jul 2020</span></div>
     <div class="sub">TVL &ndash; Information and Communications Technology (Computer Programming) &middot; With Honors</div>
   </div>
 
@@ -142,6 +157,9 @@ const outPath = path.resolve('public/assets/resume/Raro, Christian F - Resume (D
 const b = await puppeteer.launch({ executablePath: CHROME, headless: true })
 const page = await b.newPage()
 await page.setContent(html, { waitUntil: 'networkidle0' })
+await page.evaluate(async () => {
+  await document.fonts.ready
+})
 await page.pdf({
   path: outPath,
   width: '8.5in',
