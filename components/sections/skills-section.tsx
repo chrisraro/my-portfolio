@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import { skills } from '@/lib/data'
 import { Skill } from '@/types'
 
@@ -38,13 +37,6 @@ export function SkillsSection() {
             </div>
           </div>
         ))}
-
-        <Link
-          href="/tech-stack"
-          className="text-sm text-primary font-medium hover:underline"
-        >
-          View All →
-        </Link>
       </motion.div>
     </section>
   )

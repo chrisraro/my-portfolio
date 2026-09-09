@@ -2,7 +2,6 @@
 
 import { HeroSection } from '@/components/sections/hero-section'
 import { AboutSection } from '@/components/sections/about-section'
-import { CredentialsSidebar } from '@/components/sections/credentials-sidebar'
 import { ExperienceSection } from '@/components/sections/experience-section'
 import { SkillsSection } from '@/components/sections/skills-section'
 import { WorksSection } from '@/components/sections/works-section'
@@ -16,14 +15,9 @@ export default function HomePage() {
       {/* Hero Row: Image left + Info right */}
       <HeroSection />
 
-      {/* Bento Row: About left + Credentials right */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 py-6">
-        <div className="lg:col-span-3">
-          <AboutSection />
-        </div>
-        <div className="lg:col-span-2">
-          <CredentialsSidebar />
-        </div>
+      {/* About, full width — the credentials sidebar restated the hero and went */}
+      <div className="py-6">
+        <AboutSection />
       </div>
 
       {/* Bento Row: Tech Stack left + Experience right */}
