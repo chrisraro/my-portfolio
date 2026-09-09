@@ -6,8 +6,8 @@ import { CredentialsSidebar } from '@/components/sections/credentials-sidebar'
 import { ExperienceSection } from '@/components/sections/experience-section'
 import { SkillsSection } from '@/components/sections/skills-section'
 import { WorksSection } from '@/components/sections/works-section'
-import RecommendationsSection from '@/components/sections/recommendations-section'
-import GallerySection from '@/components/sections/gallery-section'
+import { RecommendationsSection } from '@/components/sections/recommendations-section'
+import { GallerySection } from '@/components/sections/gallery-section'
 import { ContactSection } from '@/components/sections/contact-section'
 
 export default function HomePage() {

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { galleryImages } from "@/lib/data";
 import { GalleryImage } from "@/types";
 
-export default function GallerySection() {
+export function GallerySection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);

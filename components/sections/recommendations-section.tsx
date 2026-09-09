@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { recommendations } from "@/lib/data"
 import { Recommendation } from "@/types"
 
-export default function RecommendationsSection() {
+export function RecommendationsSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
