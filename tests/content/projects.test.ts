@@ -59,3 +59,51 @@ describe('project taxonomy', () => {
     }
   })
 })
+
+describe('project inventory', () => {
+  it('holds exactly fifteen projects', () => {
+    expect(projects).toHaveLength(15)
+  })
+
+  it('distributes them across the four bands as designed', () => {
+    const count = (band: string) => projects.filter((p) => p.band === band).length
+    expect(count('Products')).toBe(3)
+    expect(count('Custom systems')).toBe(2)
+    expect(count('Applications')).toBe(1)
+    expect(count('Sites')).toBe(9)
+  })
+
+  it('carries the full inventory by slug', () => {
+    expect(projects.map((p) => p.slug)).toEqual([
+      'iskotify',
+      'giya',
+      'latag',
+      'beachbus-nfc-card-system',
+      'ocs-wp-control-panel',
+      'aman-group-web-app',
+      'graceland-bicolano-dining',
+      'el-nido-guide-ph',
+      'beachbus-palawan',
+      'review-masters-bicol',
+      'acad1-review-center',
+      'downtown-district-hotel',
+      'azalea-baguio',
+      'azalea-boracay',
+      'aralabroad',
+    ])
+  })
+
+  it('features exactly six projects', () => {
+    expect(projects.filter((p) => p.featured)).toHaveLength(6)
+  })
+
+  it('gives every project a live link unless it is internal', () => {
+    for (const project of projects) {
+      if (project.status === 'internal') {
+        expect(project.links.live).toBeUndefined()
+      } else {
+        expect(project.links.live).toMatch(/^https:\/\//)
+      }
+    }
+  })
+})
