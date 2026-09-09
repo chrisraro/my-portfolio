@@ -12,7 +12,7 @@ export function WorksSection() {
   return (
     <section id="works" className="py-8 md:py-12">
       <Reveal>
-        <p className="eyebrow mb-2">// selected work</p>
+        <p className="eyebrow mb-2">{'// selected work'}</p>
         <h2 className="font-display text-2xl font-semibold tracking-tight mb-6">Recent Projects</h2>
       </Reveal>
 

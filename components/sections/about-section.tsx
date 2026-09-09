@@ -6,7 +6,7 @@ export function AboutSection() {
   return (
     <section id="about">
       <Reveal>
-        <p className="eyebrow mb-2">// about</p>
+        <p className="eyebrow mb-2">{'// about'}</p>
         <h2 className="font-display text-2xl font-semibold tracking-tight mb-4">About</h2>
       </Reveal>
 

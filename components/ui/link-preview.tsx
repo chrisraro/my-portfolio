@@ -56,7 +56,7 @@ export function LinkPreview({ url, children, className = '', fallbackImage }: Li
   }, [])
 
   // Use fallback image when API fails
-  const useFallback = useCallback(() => {
+  const applyFallback = useCallback(() => {
     if (fallbackImage) {
       const fallbackState: PreviewData = {
         screenshot: fallbackImage,
@@ -112,14 +112,14 @@ export function LinkPreview({ url, children, className = '', fallbackImage }: Li
         setPreviewData(successState)
       } else {
         // API returned but no screenshot - use fallback
-        useFallback()
+        applyFallback()
       }
     } catch (error) {
       clearTimeout(timeoutId)
       // On timeout or network error - use fallback
-      useFallback()
+      applyFallback()
     }
-  }, [url, useFallback])
+  }, [url, applyFallback])
 
   // Handle mouse enter with delay
   const handleMouseEnter = useCallback(() => {

@@ -21,7 +21,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-20 md:py-28">
-      <p className="eyebrow mb-2">// portfolio</p>
+      <p className="eyebrow mb-2">{'// portfolio'}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">All Projects</h1>
       <p className="text-muted-foreground mb-8">A collection of projects I&apos;ve worked on</p>
 

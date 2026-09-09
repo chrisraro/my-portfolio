@@ -30,34 +30,23 @@ export function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Show label on mount, then hide after delay
+  // Show the label shortly after mount, then hide it again. Mount-only: the
+  // widget always starts closed, so there is nothing to guard against here.
   useEffect(() => {
-    if (!isOpen) {
-      // Small delay before showing the label for a nice entrance
-      const showTimer = setTimeout(() => {
-        setShowLabel(true)
-        setHasMounted(true)
-      }, 500)
+    const showTimer = setTimeout(() => {
+      setShowLabel(true)
+      setHasMounted(true)
+    }, 500)
 
-      // Hide label after 4 seconds
-      const hideTimer = setTimeout(() => {
-        setShowLabel(false)
-      }, 4500)
+    const hideTimer = setTimeout(() => {
+      setShowLabel(false)
+    }, 4500)
 
-      return () => {
-        clearTimeout(showTimer)
-        clearTimeout(hideTimer)
-      }
+    return () => {
+      clearTimeout(showTimer)
+      clearTimeout(hideTimer)
     }
   }, [])
-
-  // Welcome message shown when chat opens for the first time
-  const welcomeMessage: Message = {
-    id: 'welcome',
-    text: "Hey! 👋 I'm Chunks, Christian's portfolio assistant. Ask me about his projects, skills, or experience!",
-    sender: 'bot',
-    timestamp: new Date(),
-  }
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -71,9 +60,17 @@ export function ChatWidget() {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
     }
-    // Show welcome message when chat opens for the first time
+    // Show welcome message when chat opens for the first time. Built here so
+    // its timestamp is the moment the chat actually opened.
     if (isOpen && !hasShownWelcome) {
-      setMessages([welcomeMessage])
+      setMessages([
+        {
+          id: 'welcome',
+          text: "Hey! 👋 I'm Chunks, Christian's portfolio assistant. Ask me about his projects, skills, or experience!",
+          sender: 'bot',
+          timestamp: new Date(),
+        },
+      ])
       setHasShownWelcome(true)
     }
   }, [isOpen, hasShownWelcome])

@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "capture": "node ./scripts/capture-project-screenshots.mjs"
+    "capture": "node ./scripts/capture-screenshots.mjs",
+    "resume": "node ./scripts/build-resume.mjs"
   },
   "dependencies": {
     "clsx": "^2.0.0",
