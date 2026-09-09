@@ -33,7 +33,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const showToast = (toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9)
+    const id = Math.random().toString(36).slice(2, 11)
     const newToast = { ...toast, id }
     setToasts(prev => [...prev, newToast])
 
@@ -76,7 +76,11 @@ export function ToastProvider({ children }: ToastProviderProps) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed top-4 right-4 z-50 space-y-2">
+      <div
+        role="status"
+        aria-live="polite"
+        className="fixed top-4 right-4 z-50 space-y-2"
+      >
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
@@ -87,12 +91,13 @@ export function ToastProvider({ children }: ToastProviderProps) {
               className={`flex items-center space-x-3 p-4 rounded-lg border shadow-lg max-w-sm ${getToastStyles(toast.type)}`}
             >
               {getToastIcon(toast.type)}
-              <p className="flex-1 text-sm text-gray-900 dark:text-white">
+              <p className="flex-1 text-sm text-foreground">
                 {toast.message}
               </p>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200"
+                aria-label="Dismiss notification"
+                className="text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -102,8 +107,4 @@ export function ToastProvider({ children }: ToastProviderProps) {
       </div>
     </ToastContext.Provider>
   )
-}
-
-export function Toaster() {
-  return <ToastProvider>{null}</ToastProvider>
 }

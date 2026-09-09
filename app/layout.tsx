@@ -4,7 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
-import { Toaster } from '@/components/ui/toaster'
+import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -20,7 +20,10 @@ const fraunces = Fraunces({
   display: 'swap',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Christian Raro | Software Engineer',
   description: 'Christian Raro - Software Engineer specializing in modern web applications, mobile development, and innovative digital solutions.',
   keywords: ['Christian Raro', 'Software Engineer', 'Web Development', 'Mobile Apps', 'Philippines'],
@@ -29,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://chrisraro.github.io',
+    url: siteUrl,
     title: 'Christian Raro | Software Engineer',
     description: 'Portfolio showcasing innovative web and mobile development projects',
     siteName: 'Christian Raro Portfolio',
@@ -59,9 +62,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
 }
 
 export default function RootLayout({
@@ -78,15 +78,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background text-foreground">
-            <Navigation />
-            <main>
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
-            <ChatWidget />
-          </div>
+          <ToastProvider>
+            <div className="min-h-screen bg-background text-foreground">
+              <Navigation />
+              <main>
+                {children}
+              </main>
+              <Footer />
+              <ChatWidget />
+            </div>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-react'
 import { contactInfo } from '@/lib/data'
+import { useToast } from '@/components/ui/toaster'
 
 const socialIcons = {
   github: Github,
@@ -19,14 +20,57 @@ export function ContactSection() {
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { showToast } = useToast()
+
+  /**
+   * Hand the message off to the visitor's own mail client. Used when the server
+   * has no mail provider configured, so the form still reaches a real inbox
+   * instead of quietly dropping the message.
+   */
+  const openMailClient = () => {
+    const subject = encodeURIComponent(`Portfolio message from ${formData.name}`)
+    const body = encodeURIComponent(`${formData.message}\n\n\u2014 ${formData.name} (${formData.email})`)
+    window.location.href = `mailto:${contactInfo.email}?subject=${subject}&body=${body}`
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setFormData({ name: '', email: '', message: '' })
-    setIsSubmitting(false)
-    alert('Message sent successfully!')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const result = await response.json()
+
+      if (!response.ok) {
+        showToast({
+          type: 'error',
+          message: result.error || `Something went wrong. Email me at ${contactInfo.email}.`,
+        })
+        return
+      }
+
+      if (result.delivered) {
+        setFormData({ name: '', email: '', message: '' })
+        showToast({ type: 'success', message: "Message sent — I'll get back to you soon!" })
+        return
+      }
+
+      // No mail provider configured server-side: fall back to mailto:.
+      showToast({ type: 'info', message: 'Opening your email app to send this message...' })
+      openMailClient()
+    } catch {
+      showToast({
+        type: 'error',
+        message: `Couldn't reach the server. Email me directly at ${contactInfo.email}.`,
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -48,7 +92,7 @@ export function ContactSection() {
       >
         <h2 className="font-display text-2xl font-bold tracking-tight mb-3 text-foreground">Get In Touch</h2>
         <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-          I'm always interested in new opportunities and exciting projects. Feel free to reach out through my social media or the contact form.
+          I&apos;m always interested in new opportunities and exciting projects. Feel free to reach out through my social media or the contact form.
         </p>
       </motion.div>
 
@@ -62,9 +106,9 @@ export function ContactSection() {
           className="space-y-6"
         >
           <div>
-            <h3 className="text-xl font-bold mb-4 text-foreground">Let's Connect</h3>
+            <h3 className="text-xl font-bold mb-4 text-foreground">Let&apos;s Connect</h3>
             <p className="text-muted-foreground mb-6">
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+              I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
             </p>
           </div>
 
@@ -131,6 +175,8 @@ export function ContactSection() {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                maxLength={100}
+                autoComplete="name"
                 className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors placeholder:text-muted-foreground"
                 placeholder="Your name"
               />
@@ -147,6 +193,8 @@ export function ContactSection() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                maxLength={254}
+                autoComplete="email"
                 className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors placeholder:text-muted-foreground"
                 placeholder="your.email@example.com"
               />
@@ -162,6 +210,7 @@ export function ContactSection() {
                 value={formData.message}
                 onChange={handleChange}
                 required
+                maxLength={5000}
                 rows={5}
                 className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors resize-none placeholder:text-muted-foreground"
                 placeholder="Tell me about your project..."
