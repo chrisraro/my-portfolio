@@ -40,8 +40,11 @@ Open <http://localhost:3000>.
 | `npm start` | Serve the production build |
 | `npm run type-check` | `tsc --noEmit` |
 | `npm run lint` | ESLint (`next/core-web-vitals`) |
+| `npm test` | Run the content test suite (Vitest) |
+| `npm run test:watch` | Run the content test suite in watch mode |
 | `npm run capture [id...]` | Recapture project thumbnails from live sites |
 | `npm run resume` | Rebuild the ATS resume PDF |
+| `npm run verify:urls` | Check every project's live URL still resolves — hits the live internet, manual-only, not run in CI |
 
 `capture` and `resume` drive a local Chrome/Edge install through
 `puppeteer-core` and currently resolve the browser from hardcoded Windows paths
@@ -89,8 +92,9 @@ All content lives in [`lib/data.ts`](lib/data.ts) — `projects`, `skills`,
 New shapes get an interface in [`types/index.ts`](types/index.ts).
 
 The chat assistant builds its system prompt from `lib/data.ts` at module load,
-so new projects reach it automatically. Resume-specific detail is written inline
-in [`app/api/chat/route.ts`](app/api/chat/route.ts) and must be edited there.
+via [`lib/chat-context.ts`](lib/chat-context.ts), so new projects reach it
+automatically. There is no second, hand-written copy of portfolio facts to keep
+in sync — don't reintroduce one in `app/api/chat/route.ts`.
 
 ### Styling
 
@@ -107,8 +111,11 @@ motion setups. Its doc comment records two hydration bugs worth not repeating.
 
 ## Testing
 
-There is no automated test suite. CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml))
-runs type-check, lint, and build on every push and pull request to `main`.
+There is no unit/E2E test suite, but [`tests/content/`](tests/content/) holds
+84 content-integrity tests across 11 files (Vitest) that guard the data in
+`lib/data.ts` against drift — taxonomy, dates, dead routes, and the like. CI
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs type-check, lint,
+tests, and build on every push and pull request to `main`.
 
 ## Deployment
 

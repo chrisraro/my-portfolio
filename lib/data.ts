@@ -83,7 +83,7 @@ export const projects: Project[] = [
     title: 'OCS WP Control Panel',
     description: 'Internal tool for Online Creative Solutions to manage, secure, and report on client WordPress sites from one dashboard.',
     band: 'Custom systems',
-    image: '/assets/images/projects/ocs-wp-control.png',
+    image: '',
     technologies: ['Next.js', 'WordPress'],
     links: { live: 'https://ocs-wp-control.vercel.app' },
     status: 'auth-gated',

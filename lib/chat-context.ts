@@ -69,7 +69,7 @@ OWNER INFORMATION:
 - Title: ${heroContent.title}
 - Location: ${contactInfo.location}
 - Email: ${contactInfo.email}
-- The site's hero states: "${heroContent.proofPoints.join('. ')}."
+- Proof points: ${heroContent.proofPoints.join('. ')}.
 
 PROJECTS (${projects.length} total, grouped into ${bandList}):
 ${projectsList}

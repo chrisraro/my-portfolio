@@ -40,9 +40,12 @@ describe('education', () => {
 describe('dates shape', () => {
   // parseDateToken/endOfRange are deliberately tolerant: an unrecognised
   // month silently becomes January and an unparseable token becomes 0
-  // rather than throwing. That tolerance means a typo like 'Agust 2025' or
-  // 'Nov. 2024' would otherwise slip through unnoticed and quietly mis-order
-  // the timeline. Guard the content itself against that instead.
+  // rather than throwing. This regex only guards the surface shape —
+  // separator ("Month YYYY", "Month YYYY – Month YYYY", or "... – Present"),
+  // casing (a capitalised word), and structure — so it catches drift like a
+  // stray period ('Nov. 2024') or a missing en dash. It does NOT validate
+  // that the word is a real month: a misspelled month name such as
+  // 'Agust 2025' still matches `[A-Z][a-z]+` and passes silently.
   const DATE_SHAPE = /^([A-Z][a-z]+ )?\d{4}( – (([A-Z][a-z]+ )?\d{4}|Present))?$/
 
   it('writes every dates string in a recognised shape', () => {

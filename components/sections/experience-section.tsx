@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { buildTimeline, TimelineEntry } from '@/lib/timeline'
+import { buildTimeline } from '@/lib/timeline'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,7 +37,7 @@ export function ExperienceSection() {
         viewport={{ once: true }}
         className="relative border-l-2 border-border pl-4 sm:pl-6"
       >
-        {timeline.map((entry: TimelineEntry, idx: number) => (
+        {timeline.map((entry, idx) => (
           <motion.div
             key={`${entry.type}-${idx}`}
             variants={itemVariants}

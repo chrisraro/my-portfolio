@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import { projects } from '@/lib/data'
 import { BAND_ORDER } from '@/types'
 
@@ -104,6 +106,17 @@ describe('project inventory', () => {
       } else {
         expect(project.links.live).toMatch(/^https:\/\//)
       }
+    }
+  })
+
+  it('only declares an image file that actually exists under public/', () => {
+    for (const project of projects) {
+      if (project.image === '') continue
+      const filePath = path.join(process.cwd(), 'public', project.image)
+      expect(
+        existsSync(filePath),
+        `${project.slug}: declared image does not exist at ${filePath}`
+      ).toBe(true)
     }
   })
 })
