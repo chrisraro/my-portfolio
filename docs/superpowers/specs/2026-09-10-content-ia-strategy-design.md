@@ -278,7 +278,8 @@ Phase 1 is a content phase, so verification is factual rather than behavioural:
 1. Every URL in the §4 inventory returns 200 with a browser user-agent (re-verify at
    implementation time; two are UA-gated and one is auth-gated)
 2. No occurrence of `bubble`, `Bubble.io`, `muramart` or `Muramart` remains in
-   `lib/`, `app/`, `components/` or `scripts/` — currently 11 occurrences across 4 files
+   `lib/`, `app/`, `components/` or `scripts/` — currently 14 occurrences across 3 files
+   (`lib/data.ts` 8, `app/api/chat/route.ts` 5, `scripts/build-resume.mjs` 1)
 3. Every project in `lib/data.ts` has exactly one band from the §3 taxonomy
 4. Every testimonial references a project that exists in `projects[]`, or is
    explicitly marked as unattached
@@ -312,7 +313,7 @@ is a design constraint, not an edge case: it affects 3 of 15 projects.
 inventory and write depth-first, accepting that lower-ranked entries may carry only a
 title, band, stack and link. A thin case study is acceptable; a fabricated one is not.
 
-**R3 — The proof band's counts must stay true.** "Five payment gateways" and "one NFC
+**R3 — The proof band's counts must stay true.** "Four payment gateways" and "one NFC
 system" are verifiable claims. If the inventory changes, the band changes with it.
 
 **R4 — Broad positioning remains the main strategic risk.** It was chosen knowingly
