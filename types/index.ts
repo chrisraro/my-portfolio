@@ -108,6 +108,12 @@ export interface Recommendation {
   quote: string;
   authorName: string;
   authorTitle: string;
+  /**
+   * The project this quote refers to, when one exists in `projects`. Attaching
+   * a quote to its case study turns general praise into project-specific
+   * proof. Omitted where the author's organisation has no entry.
+   */
+  projectId?: string;
 }
 
 export interface GalleryImage {

@@ -278,19 +278,22 @@ export const recommendations: Recommendation[] = [
     id: 1,
     quote: "Christian is an exceptional developer who brings both technical skill and creative vision to every project. His attention to detail and commitment to clean code is impressive.",
     authorName: "Alec Santos",
-    authorTitle: "Project Manager, BeachBus Palawan"
+    authorTitle: "Project Manager, BeachBus Palawan",
+    projectId: 'beachbus',
   },
   {
     id: 2,
     quote: "Working with Christian was a great experience. He consistently delivered high-quality work on time and was always willing to go the extra mile to ensure project success.",
     authorName: "Brian Labilles",
-    authorTitle: "Business Development Assistant, Enjoy Realty and Development Corporation"
+    authorTitle: "Business Development Assistant, Enjoy Realty and Development Corporation",
+    projectId: 'aman-webapp',
   },
   {
     id: 3,
     quote: "Christian's expertise in frontend development and his eye for design made him an invaluable team member. He transformed our ideas into beautiful, functional interfaces.",
     authorName: "Bryden Elizan",
-    authorTitle: "CEO/Founder, Online Creative Solutions"
+    authorTitle: "CEO/Founder, Online Creative Solutions",
+    projectId: 'ocs-wp-control',
   },
   {
     id: 4,
