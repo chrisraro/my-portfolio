@@ -23,8 +23,12 @@ export function buildPortfolioContext(): string {
     })
     .join('\n')
 
-  const byCategory = (category: string) =>
-    skills.filter((s) => s.category === category).map((s) => s.name).join(', ')
+  // Derived rather than a fixed Frontend/Backend/Tools & DevOps list, so a
+  // category added to the Skill type in the future shows up here too.
+  const skillCategories = Array.from(new Set(skills.map((s) => s.category)))
+  const skillsList = skillCategories
+    .map((category) => `${category}: ${skills.filter((s) => s.category === category).map((s) => s.name).join(', ')}`)
+    .join('\n')
 
   const experienceList = experience
     .map((e) => {
@@ -47,15 +51,13 @@ OWNER INFORMATION:
 - Title: ${heroContent.title}
 - Location: ${contactInfo.location}
 - Email: ${contactInfo.email}
-- Proof points: ${heroContent.proofPoints.join('. ')}.
+- The site's hero states: "${heroContent.proofPoints.join('. ')}."
 
 PROJECTS (${projects.length} total, grouped into Products, Custom systems, Applications and Sites):
 ${projectsList}
 
 TECHNICAL SKILLS:
-Frontend: ${byCategory('Frontend')}
-Backend: ${byCategory('Backend')}
-Tools & DevOps: ${byCategory('Tools & DevOps')}
+${skillsList}
 Payment gateways integrated: ${paymentGateways.join(', ')}
 
 WORK EXPERIENCE:
@@ -98,3 +100,32 @@ PORTFOLIO DATA:
 ${buildPortfolioContext()}
 
 Be concise. No fluff.`
+
+const ONES = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen',
+]
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+
+// Spells out small non-negative integers so counts read as natural-language
+// words in prose rather than digits. Portfolio-scale counts (products,
+// projects) never approach three digits, so 0-99 coverage is enough.
+export function numberToWords(n: number): string {
+  if (n < 20) return ONES[n]
+  if (n < 100) {
+    const tens = TENS[Math.floor(n / 10)]
+    const ones = n % 10
+    return ones === 0 ? tens : `${tens}-${ONES[ones]}`
+  }
+  return String(n)
+}
+
+// The chat route's offline fallback, shown when GROQ_API_KEY is unset. It used
+// to hand-type "three products of his own, fifteen projects shipped" directly
+// in app/api/chat/route.ts — a second copy of portfolio facts in the very file
+// this module exists to keep those facts out of. Derived from the same
+// `projects` array as the rest of this file, so it cannot drift.
+const productCount = projects.filter((p) => p.band === 'Products').length
+const projectCount = projects.length
+
+export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City — ${numberToWords(productCount)} products of his own, ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`

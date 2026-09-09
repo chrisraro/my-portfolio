@@ -1,6 +1,6 @@
 import Groq from 'groq-sdk'
 import { NextRequest, NextResponse } from 'next/server'
-import { SYSTEM_PROMPT } from '@/lib/chat-context'
+import { OFFLINE_REPLY, SYSTEM_PROMPT } from '@/lib/chat-context'
 
 // Groq retires models fairly often, and a retired id fails at request time with
 // a 404 rather than at build time — so keep this overridable without a code change.
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Graceful degradation if no API key
     if (!apiKey) {
       return NextResponse.json({
-        response: "I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City — three products of his own, fifteen projects shipped. Explore the portfolio or use the contact form to reach him directly.",
+        response: OFFLINE_REPLY,
         offline: true
       })
     }
