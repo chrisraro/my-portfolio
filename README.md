@@ -1,172 +1,139 @@
-# Christian Raro Portfolio
+# Christian Raro — Portfolio
 
-A modern, responsive portfolio website built with Next.js, React, TypeScript, and Tailwind CSS.
+A personal portfolio site built with Next.js 14 (App Router), TypeScript, and
+Tailwind CSS. Single bento-grid home page, two sub-pages, and two API routes.
 
-## 🚀 Features
+## Tech Stack
 
-- **Modern Tech Stack**: Built with Next.js 14, React 18, TypeScript, and Tailwind CSS
-- **Responsive Design**: Fully responsive across all devices
-- **Dark/Light Mode**: Toggle between dark and light themes
-- **Smooth Animations**: Powered by Framer Motion for engaging interactions
-- **SEO Optimized**: Meta tags, Open Graph, and structured data
-- **Performance**: Optimized for speed and accessibility
-- **Contact Form**: Functional contact form with validation
-- **Project Showcase**: Beautiful project cards with links and descriptions
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript 5 (`strict`) |
+| UI | React 18 |
+| Styling | Tailwind CSS 3 + oklch CSS variables |
+| Animation | Framer Motion 10 |
+| Theming | next-themes (class-based dark mode) |
+| Fonts | Plus Jakarta Sans (body) + Fraunces (display), via `next/font` |
+| Icons | lucide-react, react-icons |
+| Chat | Groq (`llama-3.3-70b-versatile`) |
+| Email | Resend (REST API, no SDK) |
+| Scripts | puppeteer-core |
 
-## 🛠️ Tech Stack
+## Getting Started
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Fonts**: Inter + Custom Display Font
-- **Deployment**: Vercel (recommended)
+Requires Node.js 20+.
 
-## 📁 Project Structure
-
-```
-my-portfolio/
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/            # React components
-│   ├── sections/          # Page sections
-│   ├── ui/               # UI components
-│   ├── navigation.tsx    # Navigation component
-│   ├── footer.tsx        # Footer component
-│   └── theme-provider.tsx # Theme provider
-├── lib/                  # Utility functions
-│   ├── data.ts          # Portfolio data
-│   └── utils.ts         # Utility functions
-├── types/               # TypeScript types
-├── assets/              # Static assets
-│   ├── images/          # Images
-│   ├── fonts/           # Fonts
-│   └── resume/          # Resume files
-└── public/              # Public assets
+```bash
+npm install
+cp .env.example .env.local   # optional — see Environment below
+npm run dev
 ```
 
-## 🚀 Getting Started
+Open <http://localhost:3000>.
 
-### Prerequisites
+## Scripts
 
-- Node.js 18+ 
-- npm or yarn
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run type-check` | `tsc --noEmit` |
+| `npm run lint` | ESLint (`next/core-web-vitals`) |
+| `npm run capture [id...]` | Recapture project thumbnails from live sites |
+| `npm run resume` | Rebuild the ATS resume PDF |
 
-### Installation
+`capture` and `resume` drive a local Chrome/Edge install through
+`puppeteer-core` and currently resolve the browser from hardcoded Windows paths
+(see the top of each script in [`scripts/`](scripts/)).
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/chrisraro/portfolio.git
-   cd portfolio
-   ```
+## Environment
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+Every variable is optional — the site builds and runs on a bare checkout, and
+each feature degrades instead of erroring. See [`.env.example`](.env.example).
 
-3. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+| Variable | Effect when unset |
+|----------|-------------------|
+| `GROQ_API_KEY` | Chat widget replies with a canned offline message |
+| `GROQ_MODEL` | Defaults to `openai/gpt-oss-120b` |
+| `RESEND_API_KEY` | Contact form falls back to a `mailto:` link |
+| `CONTACT_FROM_EMAIL` | Defaults to Resend's shared test sender |
+| `NEXT_PUBLIC_SITE_URL` | Defaults to `https://christian-digital-portfolio.vercel.app` for OG metadata |
 
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+## Project Structure
 
-## 📝 Customization
+```
+app/
+  layout.tsx          Fonts, theme + toast providers, page chrome
+  page.tsx            Bento-grid home page composition
+  api/chat/           Groq-backed chat endpoint
+  api/contact/        Resend-backed contact endpoint
+  projects/           Full project list
+  tech-stack/         Skills detail page
+  globals.css         Design tokens (oklch) + shared utilities
+components/
+  sections/           One file per home page section
+  ui/                 Reusable primitives (Reveal, ProjectCard, ChatWidget, ...)
+lib/
+  data.ts             Single source of truth for all portfolio content
+  utils.ts            cn(), formatDate, debounce, throttle, extractDomain
+types/index.ts        Shared interfaces
+scripts/              Screenshot capture + resume PDF generation
+public/assets/        images/{about,gallery,projects}, resume/
+```
 
-### Personal Information
-Update your personal information in `lib/data.ts`:
-- Projects
-- Skills
-- Social links
-- Contact information
+## Editing Content
+
+All content lives in [`lib/data.ts`](lib/data.ts) — `projects`, `skills`,
+`experience`, `education`, `recommendations`, `galleryImages`, `achievements`,
+`socialLinks`, `contactInfo`, `navigationItems`. Components never hardcode copy.
+New shapes get an interface in [`types/index.ts`](types/index.ts).
+
+The chat assistant builds its system prompt from `lib/data.ts` at module load,
+so new projects reach it automatically. Resume-specific detail is written inline
+in [`app/api/chat/route.ts`](app/api/chat/route.ts) and must be edited there.
 
 ### Styling
-- Colors: Modify the color palette in `tailwind.config.js`
-- Fonts: Update font imports in `app/globals.css`
-- Animations: Customize animations in `app/globals.css`
 
-### Images
-Replace images in the `assets/images/` directory:
-- Profile photo: `assets/images/about/christian-profile.png`
-- Project screenshots: `assets/images/projects/`
-- Resume: `assets/resume/`
+Colors are oklch CSS variables defined for both themes in
+[`app/globals.css`](app/globals.css) and exposed as Tailwind tokens in
+[`tailwind.config.js`](tailwind.config.js). Use `bg-background`,
+`text-muted-foreground`, `border-border` — not raw hex or `dark:` color pairs.
 
-## 🎨 Features Overview
+### Animation
 
-### Sections
-1. **Hero Section**: Introduction with animated background
-2. **About Section**: Personal information and photo
-3. **Works Section**: Project showcase with cards
-4. **Skills Section**: Technology skills display
-5. **Contact Section**: Contact form and information
+Use the `Reveal` primitive and `staggerContainer` / `staggerItem` variants from
+[`components/ui/reveal.tsx`](components/ui/reveal.tsx) rather than new one-off
+motion setups. Its doc comment records two hydration bugs worth not repeating.
 
-### Components
-- **Navigation**: Responsive navbar with theme toggle
-- **Project Cards**: Interactive project showcase
-- **Contact Form**: Functional form with validation
-- **Theme Toggle**: Dark/light mode switcher
-- **Animations**: Smooth scroll animations
+## Testing
 
-## 🚀 Deployment
+There is no automated test suite. CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml))
+runs type-check, lint, and build on every push and pull request to `main`.
 
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically
+## Deployment
 
-### Other Platforms
-- Netlify
-- Railway
-- DigitalOcean App Platform
+Deployed on Vercel: <https://christian-digital-portfolio.vercel.app>
 
-## 📱 Responsive Design
+Pushes to `main` deploy automatically. The two API routes need a Node runtime, so
+a fully static export would disable the chat widget and the contact form.
 
-The portfolio is fully responsive with breakpoints:
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
+Environment variables are set in the Vercel project settings, not in the repo. At
+minimum set `NEXT_PUBLIC_SITE_URL` to the production origin so Open Graph tags
+resolve against the right host, plus `GROQ_API_KEY` and `RESEND_API_KEY` to enable
+the chat widget and contact form in production.
 
-## 🎯 Performance
+Two gotchas worth knowing before the first deploy:
 
-- **Lighthouse Score**: 95+ across all metrics
-- **Core Web Vitals**: Optimized for performance
-- **SEO**: Meta tags and structured data
-- **Accessibility**: WCAG 2.1 compliant
+- `CONTACT_FROM_EMAIL` is the **sender** and must sit on a domain verified at
+  <https://resend.com/domains>. A gmail.com address is rejected with a 403. Until a
+  domain is verified, Resend's shared `onboarding@resend.dev` sender only delivers
+  to the address that owns the Resend account — so messages from real visitors will
+  not arrive.
+- Groq retires models periodically, and a retired id fails at request time with a
+  404 (the chat widget then shows its generic error). `GROQ_MODEL` overrides the
+  default without a code change.
 
-## 🤝 Contributing
+## License
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👨‍💻 Author
-
-**Christian Raro**
-- Email: rarochristian029@gmail.com
-- LinkedIn: [Christian Raro](https://www.linkedin.com/in/christian-raro)
-- GitHub: [@chrisraro](https://github.com/chrisraro)
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - React framework
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
-- [Framer Motion](https://www.framer.com/motion/) - Animation library
-- [Lucide React](https://lucide.dev/) - Icon library
-
----
-
-Made with ❤️ by Christian Raro
+MIT
