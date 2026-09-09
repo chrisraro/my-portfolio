@@ -25,6 +25,10 @@ describe('chat portfolio context', () => {
       .split('\n')
       .filter((line) => line.startsWith('- '))
       .map((line) => line.slice(2).split(' (')[0])
+    // The set comparison alone would still pass if a project were rendered
+    // twice — duplicates collapse on both sides of a Set equality check. The
+    // length assertion catches that case.
+    expect(listedTitles).toHaveLength(projects.length)
     expect(new Set(listedTitles)).toEqual(new Set(projects.map((p) => p.title)))
   })
 
@@ -40,14 +44,6 @@ describe('chat portfolio context', () => {
     }
   })
 
-  it('leaks no private contact details', () => {
-    // Phone numbers, street addresses and birthdays were removed from this
-    // prompt deliberately and must not return.
-    expect(context).not.toMatch(/(?:\+?63|\b0)9[\d\s-]{8,}/)
-    expect(context).not.toMatch(/birthday|date of birth/i)
-    expect(context).not.toMatch(/\b(barangay|purok|zone \d)\b/i)
-  })
-
   it('carries no PERSONAL section', () => {
     // The removed prose block sat under a PERSONAL heading with Hobbies &
     // Interests. Its shape must not come back even under different wording.
@@ -56,19 +52,9 @@ describe('chat portfolio context', () => {
     expect(context).not.toMatch(/\bInterests\b/i)
   })
 
-  it('names no third party removed from the prompt for privacy', () => {
-    for (const name of REMOVED_THIRD_PARTY_NAMES) {
-      expect(context).not.toContain(name)
-    }
-  })
-
   it('mentions no abandoned tooling', () => {
     expect(context).not.toMatch(/bubble/i)
     expect(context).not.toMatch(/muramart/i)
-  })
-
-  it('claims no years-of-experience figure', () => {
-    expect(context).not.toMatch(/\d+\+?\s*years? of experience/i)
   })
 })
 
@@ -96,5 +82,50 @@ describe('offline reply', () => {
 
   it('renders the counts as words, not digits', () => {
     expect(OFFLINE_REPLY).not.toMatch(/\d/)
+  })
+})
+
+describe('numberToWords', () => {
+  // The offline-reply test above calls numberToWords on both sides of its
+  // assertion, so a wrong word table would produce a wrong-but-matching
+  // string and still pass. These literal cases pin the actual words.
+  it('spells out representative small numbers', () => {
+    expect(numberToWords(3)).toBe('three')
+    expect(numberToWords(15)).toBe('fifteen')
+    expect(numberToWords(21)).toBe('twenty-one')
+  })
+})
+
+// SYSTEM_PROMPT (shipped to the model) and OFFLINE_REPLY (shipped to visitors
+// with no GROQ_API_KEY set) are hand-written strings, not just wrappers around
+// buildPortfolioContext() — SYSTEM_PROMPT adds its own rules text and
+// OFFLINE_REPLY is entirely separate prose. A guard that only inspected
+// buildPortfolioContext() would miss a leak hand-typed into either of them.
+describe('privacy and factual guards apply to every shipped string', () => {
+  const shippedStrings: Array<[string, string]> = [
+    ['buildPortfolioContext()', buildPortfolioContext()],
+    ['SYSTEM_PROMPT', SYSTEM_PROMPT],
+    ['OFFLINE_REPLY', OFFLINE_REPLY],
+  ]
+
+  it.each(shippedStrings)('leaks no private contact details in %s', (_label, text) => {
+    // Phone numbers, street addresses and birthdays were removed from this
+    // prompt deliberately and must not return.
+    expect(text).not.toMatch(/(?:\+?63|\b0)9[\d\s-]{8,}/)
+    expect(text).not.toMatch(/birthday|date of birth/i)
+    expect(text).not.toMatch(/\b(barangay|purok|zone \d)\b/i)
+  })
+
+  it.each(shippedStrings)('names no third party removed from the prompt for privacy in %s', (_label, text) => {
+    for (const name of REMOVED_THIRD_PARTY_NAMES) {
+      // Word-boundary match, not substring — 'Rami' is a substring of
+      // plausible future content such as a recommendation author named
+      // "Ramil" or "Ramirez", which has nothing to do with this privacy rule.
+      expect(text).not.toMatch(new RegExp(`\\b${name}\\b`))
+    }
+  })
+
+  it.each(shippedStrings)('claims no years-of-experience figure in %s', (_label, text) => {
+    expect(text).not.toMatch(/\d+\+?\s*years? of experience/i)
   })
 })

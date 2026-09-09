@@ -8,11 +8,17 @@ import {
   recommendations,
   skills,
 } from '@/lib/data'
+import { BAND_ORDER } from '@/types'
 
-// This file is the assistant's only source of portfolio facts. The route used
-// to carry a hand-written prose copy alongside the generated one, and the two
+// The portfolio facts in this file derive from lib/data.ts. The route used to
+// carry a hand-written prose copy alongside the generated one, and the two
 // diverged: the prose advertised projects that were not on the site and omitted
-// ones that were. Everything here derives from lib/data.ts so that cannot recur.
+// ones that were. That drift cannot recur here.
+//
+// Two things below are deliberately hand-written, not derived: the SERVICES
+// OFFERED block (a positioning statement, not an inventory of lib/data.ts) and
+// the rules in SYSTEM_PROMPT (behavioral instructions to the model, not facts
+// about Christian).
 export function buildPortfolioContext(): string {
   const projectsList = projects
     .map((p) => {
@@ -22,6 +28,10 @@ export function buildPortfolioContext(): string {
       return `- ${p.title} (${p.band}): ${p.description} | Tech: ${p.technologies.join(', ')}${link}${when}${flag}`
     })
     .join('\n')
+
+  // Derived from the canonical band order rather than a fixed string, so a
+  // renamed or reordered band in @/types shows up here too.
+  const bandList = `${BAND_ORDER.slice(0, -1).join(', ')} and ${BAND_ORDER[BAND_ORDER.length - 1]}`
 
   // Derived rather than a fixed Frontend/Backend/Tools & DevOps list, so a
   // category added to the Skill type in the future shows up here too.
@@ -45,6 +55,14 @@ export function buildPortfolioContext(): string {
     .map((r) => `- "${r.quote}" — ${r.authorName}, ${r.authorTitle}`)
     .join('\n')
 
+  // Derived from contactInfo.socialLinks, excluding the Email entry — the
+  // email address is already stated on its own line above, and a mailto: URL
+  // here would read oddly next to the other bare-domain links.
+  const socialLinksList = contactInfo.socialLinks
+    .filter((link) => link.name !== 'Email')
+    .map((link) => `${link.name} (${link.url.replace(/^https?:\/\//, '')})`)
+    .join(', ')
+
   return `
 OWNER INFORMATION:
 - Name: Christian Raro
@@ -53,7 +71,7 @@ OWNER INFORMATION:
 - Email: ${contactInfo.email}
 - The site's hero states: "${heroContent.proofPoints.join('. ')}."
 
-PROJECTS (${projects.length} total, grouped into Products, Custom systems, Applications and Sites):
+PROJECTS (${projects.length} total, grouped into ${bandList}):
 ${projectsList}
 
 TECHNICAL SKILLS:
@@ -79,7 +97,7 @@ SERVICES OFFERED:
 CONTACT:
 - Email: ${contactInfo.email}
 - Location: ${contactInfo.location}
-- Social links: GitHub (github.com/chrisraro), LinkedIn (linkedin.com/in/christian-raro)
+- Social links: ${socialLinksList}
 - For anything else, direct people to the contact form or email.
 `
 }
