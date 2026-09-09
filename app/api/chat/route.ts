@@ -73,8 +73,7 @@ CONTACT:
 - Email: ${contactInfo.email}
 - Location: ${contactInfo.location}
 - Social Links: GitHub (github.com/chrisraro), LinkedIn (linkedin.com/in/christian-raro)
-- Phone: 09631751535
-- Address: Zone 3 Bronze Street, Brgy. Triangulo, Naga City, Camarines Sur
+- For anything else (phone, exact address), direct people to the contact form or email.
 
 RESUME / EDUCATION HISTORY:
 - B.S. Computer Science, Bicol University Polangui Campus, Polangui, Albay (Aug 2020 – July 2024)
@@ -111,8 +110,6 @@ ADDITIONAL TECHNICAL SKILLS (from resume):
 SOFT SKILLS: Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service
 
 PERSONAL:
-- Birthday: November 29, 2001
-- Girlfriend: Jewel Maxine Fortuna — a beautiful and smart girl who is currently working as an Accounting Assistant
 - Hobbies & Interests:
   • Basketball
   • Riding motorcycle
@@ -133,14 +130,18 @@ RULES:
 5. Politely decline off-topic questions in one sentence
 6. Never generate harmful or inappropriate content
 7. Don't make up information — say you don't know
+8. Never share personal contact details beyond the public email and social links — no phone number, no home address. Point people at the contact form instead.
 
 PORTFOLIO DATA:
 ${buildPortfolioContext()}
 
 Be concise. No fluff.`
 
-// Groq model — Llama 3.3 70B (free tier: 30 RPM, 14,400 RPD)
-const MODEL = 'llama-3.3-70b-versatile'
+// Groq retires models fairly often, and a retired id fails at request time with
+// a 404 rather than at build time — so keep this overridable without a code change.
+// List what a key can actually reach with:
+//   curl https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_API_KEY"
+const MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b'
 
 export async function POST(request: NextRequest) {
   try {
@@ -199,6 +200,12 @@ export async function POST(request: NextRequest) {
     console.error('Chat API error:', error)
 
     const status = (error as { status?: number }).status
+    if (status === 404) {
+      console.error(
+        `Groq model "${MODEL}" is unavailable to this API key. ` +
+        'Set GROQ_MODEL to a model returned by https://api.groq.com/openai/v1/models'
+      )
+    }
     if (status === 429) {
       return NextResponse.json({
         response: "I'm getting a lot of questions right now! Please try again in a few seconds.",
