@@ -1,8 +1,30 @@
+export type ProjectBand = 'Products' | 'Custom systems' | 'Applications' | 'Sites'
+
+// Canonical display order. `Applications` and `Sites` are shown together on the
+// home page under "Client work"; they stay separate on /projects, where the
+// distinction is what a visitor is browsing by.
+export const BAND_ORDER: readonly ProjectBand[] = [
+  'Products',
+  'Custom systems',
+  'Applications',
+  'Sites',
+]
+
+// Drives how a project can be previewed. Three of fifteen cannot be embedded
+// live: two reject non-browser user-agents and one sits behind a login.
+export type ProjectStatus =
+  | 'live'
+  | 'early-access'
+  | 'auth-gated'
+  | 'ua-gated'
+  | 'internal'
+
 export interface Project {
   id: string;
+  slug: string;
   title: string;
   description: string;
-  category: string;
+  band: ProjectBand;
   image: string;
   technologies: string[];
   links: {
@@ -12,6 +34,11 @@ export interface Project {
     playStore?: string;
     download?: string;
   };
+  status: ProjectStatus;
+  /** Human date range, e.g. 'March – April 2025'. Omitted where unverified. */
+  dates?: string;
+  /** What Christian personally built. Written in Phase 3; omitted until then. */
+  contribution?: string;
   featured?: boolean;
 }
 

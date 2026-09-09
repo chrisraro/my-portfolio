@@ -3,46 +3,51 @@
 import { useState, useMemo } from "react"
 import { motion } from "framer-motion"
 import { projects } from "@/lib/data"
+import { BAND_ORDER } from "@/types"
 import { ProjectCard } from "@/components/ui/project-card"
 import { staggerContainer, staggerItem } from "@/components/ui/reveal"
 
 export default function ProjectsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All")
+  const [selectedBand, setSelectedBand] = useState<string>("All")
 
-  const categories = useMemo(() => {
-    const uniqueCategories = Array.from(new Set(projects.map((p) => p.category)))
-    return ["All", ...uniqueCategories]
+  // Only offer a band that actually has something in it.
+  const bands = useMemo(() => {
+    const present = BAND_ORDER.filter((band) =>
+      projects.some((p) => p.band === band)
+    )
+    return ["All", ...present]
   }, [])
 
   const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return projects
-    return projects.filter((p) => p.category === selectedCategory)
-  }, [selectedCategory])
+    if (selectedBand === "All") return projects
+    return projects.filter((p) => p.band === selectedBand)
+  }, [selectedBand])
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-20 md:py-28">
       <p className="eyebrow mb-2">{'// portfolio'}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">All Projects</h1>
-      <p className="text-muted-foreground mb-8">A collection of projects I&apos;ve worked on</p>
+      <p className="text-muted-foreground mb-8">Products I own, custom systems, and client work</p>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        {categories.map((category) => (
+        {bands.map((band) => (
           <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
+            key={band}
+            onClick={() => setSelectedBand(band)}
+            aria-pressed={selectedBand === band}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-              selectedCategory === category
+              selectedBand === band
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted text-foreground border border-border hover:bg-muted/80"
             }`}
           >
-            {category}
+            {band}
           </button>
         ))}
       </div>
 
       <motion.div
-        key={selectedCategory}
+        key={selectedBand}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         initial="hidden"
         animate="visible"
@@ -57,7 +62,7 @@ export default function ProjectsPage() {
 
       {filteredProjects.length === 0 && (
         <p className="text-center text-muted-foreground py-10">
-          No projects found in this category.
+          No projects in this group.
         </p>
       )}
     </div>
