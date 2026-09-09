@@ -14,6 +14,8 @@ framer-motion 10 · next-themes · lucide-react + react-icons · Groq (chat) · 
 - Build: `npm run build`
 - Types: `npm run type-check`
 - Lint: `npm run lint`
+- Tests: `npm test` (Vitest, content invariants only — no component or E2E tests)
+- URL liveness: `npm run verify:urls` (manual; hits the live internet, never in CI)
 - Thumbnails: `npm run capture [id ...]`
 - Resume PDF: `npm run resume`
 
@@ -21,9 +23,14 @@ Both scripts drive system Chrome/Edge via hardcoded Windows paths (`puppeteer-co
 
 ## Testing
 
-No unit/E2E test suite. CI (`.github/workflows/ci.yml`) runs type-check, lint, and
-build on push and PR to `main`. Run all three locally before committing; they must
-pass with no environment variables set.
+Content-invariant tests live in `tests/content/` and run under Vitest. They assert
+the facts the site claims: the project inventory and its bands, the hero proof
+band's counts, testimonial attachment, experience ordering, and that removed
+content stays removed. There are no component or E2E tests.
+
+CI (`.github/workflows/ci.yml`) runs type-check, lint, test, and build on push and
+PR to `main`. Run all four locally before committing; they must pass with no
+environment variables set.
 
 ## Project Structure
 
@@ -32,12 +39,15 @@ app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page
-app/tech-stack/      Skills detail page
 components/sections/ Home page sections (hero, about, works, gallery, contact, …)
 components/ui/       Reusable primitives (project-card, reveal, chat-widget, toaster, …)
 lib/data.ts          Single source of truth for ALL portfolio content
+lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
+lib/dates.ts         Parses human date ranges into sortable timestamps
+lib/timeline.ts      Pure buildTimeline() the experience section renders
 lib/utils.ts         cn(), formatDate, debounce, throttle, extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
+tests/content/       Vitest content invariants
 scripts/             Puppeteer utilities (screenshots, resume PDF)
 public/assets/       images/{about,gallery,projects}, resume/
 ```
@@ -49,10 +59,16 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `galleryImages`, `achievements`, `socialLinks`, `contactInfo`, `navigationItems`)
 and add the matching interface in `types/index.ts` if it's new.
 
-`app/api/chat/route.ts` builds the AI assistant's system prompt from `lib/data.ts`
-at module load, but also embeds hand-written resume detail inline. Adding a project
-to `lib/data.ts` reaches the chatbot automatically; resume detail is edited in that
-route by hand.
+`lib/chat-context.ts` derives the AI assistant's entire system prompt from
+`lib/data.ts`. Adding a project reaches the chatbot automatically. Do not
+reintroduce hand-written portfolio prose into `app/api/chat/route.ts` — that
+duplicate existed once and drifted out of date.
+
+Projects carry a `band` from a closed four-value vocabulary — `Products`,
+`Custom systems`, `Applications`, `Sites` — and a `status` that tells Phase 3
+whether a live preview is possible. The hero's proof band in `heroContent` makes
+factual claims that `tests/content/proof-band.test.ts` checks against the data;
+if you change the inventory, the band changes with it.
 
 **Do not put private contact details in the chat prompt.** Public email and social
 links only — no phone number, no home address. Rule 8 of the system prompt states
@@ -81,9 +97,9 @@ this; keep it that way.
 ## Client/Server Boundary
 
 Almost everything is `'use client'` because of framer-motion and hooks. Only
-`app/layout.tsx`, `app/projects/page.tsx`, `app/tech-stack/page.tsx`, and
-`components/footer.tsx` are server components. Add `'use client'` to any component
-using motion, state, or `next-themes`.
+`app/layout.tsx`, `app/projects/page.tsx`, and `components/footer.tsx` are server
+components. Add `'use client'` to any component using motion, state, or
+`next-themes`.
 
 ## Animation
 
@@ -115,7 +131,7 @@ the action succeeded.
 All optional; see `.env.example`. Real keys live in `.env.local` (gitignored).
 `GROQ_API_KEY`, `GROQ_MODEL`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`.
 
-Three things that have already bitten:
+Four things that have already bitten:
 
 - `RESEND_API_KEY` may also be set in the developer's shell environment, which
   overrides nothing but means a stray `/api/contact` POST sends a real email.
@@ -125,6 +141,9 @@ Three things that have already bitten:
 - Groq retires model ids; a retired one 404s at request time, not build time. Check
   `curl https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_API_KEY"`
   and set `GROQ_MODEL` rather than editing the route.
+- Deleting a route leaves a stale `.next/types/app/<route>/page.ts` artifact behind.
+  `npm run type-check` then fails pointing at a file no longer in the source tree.
+  Clear `.next` and re-run.
 
 ## Git
 

@@ -69,7 +69,6 @@ app/
   api/chat/           Groq-backed chat endpoint
   api/contact/        Resend-backed contact endpoint
   projects/           Full project list
-  tech-stack/         Skills detail page
   globals.css         Design tokens (oklch) + shared utilities
 components/
   sections/           One file per home page section
