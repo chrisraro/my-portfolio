@@ -15,8 +15,9 @@ describe('experience', () => {
 
   it('sorts strictly descending by the end of each range', () => {
     const keys = experience.map((e) => endOfRange(e.dates))
-    const sorted = [...keys].sort((a, b) => b - a)
-    expect(keys).toEqual(sorted)
+    for (let i = 0; i < keys.length - 1; i++) {
+      expect(keys[i]).toBeGreaterThan(keys[i + 1])
+    }
   })
 
   it('claims no years-of-experience figure anywhere in the entries', () => {
@@ -31,7 +32,24 @@ describe('education', () => {
     expect(education[0].degree).toBe('B.S. in Computer Science')
   })
 
-  it('spans the employment gap between the Muramart roles and OCS', () => {
+  it('spans the gap before the OCS role', () => {
     expect(endOfRange(education[0].dates)).toBe(Date.UTC(2024, 6, 1))
+  })
+})
+
+describe('dates shape', () => {
+  // parseDateToken/endOfRange are deliberately tolerant: an unrecognised
+  // month silently becomes January and an unparseable token becomes 0
+  // rather than throwing. That tolerance means a typo like 'Agust 2025' or
+  // 'Nov. 2024' would otherwise slip through unnoticed and quietly mis-order
+  // the timeline. Guard the content itself against that instead.
+  const DATE_SHAPE = /^([A-Z][a-z]+ )?\d{4}( – (([A-Z][a-z]+ )?\d{4}|Present))?$/
+
+  it('writes every dates string in a recognised shape', () => {
+    for (const item of [...experience, ...education]) {
+      expect(item.dates, `unrecognised date shape: ${JSON.stringify(item.dates)}`).toMatch(
+        DATE_SHAPE
+      )
+    }
   })
 })

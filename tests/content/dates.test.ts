@@ -19,6 +19,10 @@ describe('parseDateToken', () => {
   it('resolves Present to now', () => {
     expect(parseDateToken('Present', NOW)).toBe(NOW.getTime())
   })
+
+  it('does not treat a token merely containing "present" as the sentinel', () => {
+    expect(parseDateToken('Present 2024', NOW)).toBe(Date.UTC(2024, 0, 1))
+  })
 })
 
 describe('endOfRange', () => {
@@ -38,5 +42,13 @@ describe('endOfRange', () => {
     expect(endOfRange('November 2024 – Present', NOW)).toBeGreaterThan(
       endOfRange('March 2025 – August 2025', NOW)
     )
+  })
+
+  it('takes the start as the end of a trailing-dash open range', () => {
+    expect(endOfRange('November 2024 –', NOW)).toBe(Date.UTC(2024, 10, 1))
+  })
+
+  it('splits on a non-breaking hyphen (U+2011)', () => {
+    expect(endOfRange('July 2023 ‑ August 2023')).toBe(Date.UTC(2023, 7, 1))
   })
 })

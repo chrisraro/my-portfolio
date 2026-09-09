@@ -1,45 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { experience, education } from '@/lib/data'
-import { endOfRange } from '@/lib/dates'
-import { ExperienceItem, EducationItem } from '@/types'
-
-type TimelineEntry = {
-  type: 'work' | 'education'
-  title: string
-  subtitle: string
-  note?: string
-  date: string
-  sortKey: number
-}
-
-function buildTimeline(): TimelineEntry[] {
-  const entries: TimelineEntry[] = []
-
-  experience.forEach((item: ExperienceItem) => {
-    entries.push({
-      type: 'work',
-      title: item.title,
-      subtitle: item.company,
-      note: item.concurrent,
-      date: item.dates.replace(/\s*–\s*/g, ' – '),
-      sortKey: endOfRange(item.dates),
-    })
-  })
-
-  education.forEach((item: EducationItem) => {
-    entries.push({
-      type: 'education',
-      title: item.degree,
-      subtitle: item.school,
-      date: item.dates,
-      sortKey: endOfRange(item.dates),
-    })
-  })
-
-  return entries.sort((a, b) => b.sortKey - a.sortKey)
-}
+import { buildTimeline, TimelineEntry } from '@/lib/timeline'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -75,7 +37,7 @@ export function ExperienceSection() {
         viewport={{ once: true }}
         className="relative border-l-2 border-border pl-4 sm:pl-6"
       >
-        {timeline.map((entry, idx) => (
+        {timeline.map((entry: TimelineEntry, idx: number) => (
           <motion.div
             key={`${entry.type}-${idx}`}
             variants={itemVariants}

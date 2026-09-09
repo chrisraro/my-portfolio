@@ -17,7 +17,7 @@ const MONTHS: Record<string, number> = {
  */
 export function parseDateToken(token: string, now: Date = new Date()): number {
   const cleaned = token.trim()
-  if (/present|current|now/i.test(cleaned)) return now.getTime()
+  if (/^(present|current|now)\.?$/i.test(cleaned)) return now.getTime()
 
   const match = cleaned.match(/([A-Za-z]+)?\s*(\d{4})/)
   if (!match) return 0
@@ -30,9 +30,11 @@ export function parseDateToken(token: string, now: Date = new Date()): number {
 
 /**
  * The sort key for a human date range is its END — that is what "most recent"
- * means. Splits on en dash, em dash or hyphen.
+ * means. Splits on en dash, em dash, non-breaking hyphen (U+2011) or hyphen.
+ * An open-ended range ('November 2024 –') has a trailing empty part after the
+ * split, so the last *non-empty* part is used rather than the literal last one.
  */
 export function endOfRange(dates: string, now: Date = new Date()): number {
-  const parts = dates.split(/\s*[–—-]\s*/)
-  return parseDateToken(parts[parts.length - 1], now)
+  const parts = dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
+  return parseDateToken(parts[parts.length - 1] ?? '', now)
 }
