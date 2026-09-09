@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "capture": "node ./scripts/capture-screenshots.mjs",
+    "verify:urls": "node ./scripts/verify-urls.mjs",
     "resume": "node ./scripts/build-resume.mjs"
   },
   "dependencies": {

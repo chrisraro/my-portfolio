@@ -8,21 +8,13 @@
 import fs from 'fs'
 import path from 'path'
 import puppeteer from 'puppeteer-core'
+import { readProjects } from './lib/read-projects.mjs'
 
-// id must match the project `id` (and image filename) in lib/data.ts
-const targets = [
-  { id: 'graceland', url: 'https://res326.servconfig.com/~graceland/staging/' },
-  { id: 'iskotify', url: 'https://iskotify.ph' },
-  { id: 'aman-webapp', url: 'https://amangroup-webapp.enjoyrealty.com' },
-  { id: 'naga-perks-giya-app', url: 'https://giya.vercel.app' },
-  { id: 'elnido', url: 'https://elnidoguide.ph' },
-  { id: 'beachbus', url: 'https://beachbus.ph' },
-  { id: 'upcat-review-plus', url: 'https://upcatreviewplus.com' },
-  { id: 'downtown-district-hotel', url: 'https://downtowndistricthotel.ph' },
-  { id: 'azalea-main', url: 'https://onlinecreativesolutions.com/azaleamain' },
-  { id: 'fish2go', url: 'https://onlinecreativesolutions.com/fish2go' },
-  { id: 'online-creative-solutions', url: 'https://onlinecreativesolutions.com' },
-]
+// Anything with a public URL is capturable. Auth-gated and internal projects
+// are not: their screenshots are supplied by hand (spec Phase 3, Q2).
+const targets = readProjects()
+  .filter((p) => p.live && p.status !== 'auth-gated' && p.status !== 'internal')
+  .map((p) => ({ id: p.id, url: p.live }))
 
 const CHROME_CANDIDATES = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
