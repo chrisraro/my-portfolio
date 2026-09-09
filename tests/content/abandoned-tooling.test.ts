@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 // that carried them; this test keeps them from creeping back.
 const SOURCES = [
   'lib/data.ts',
+  'lib/chat-context.ts',
   'app/api/chat/route.ts',
   'scripts/build-resume.mjs',
 ]
