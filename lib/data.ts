@@ -216,6 +216,7 @@ export const experience: ExperienceItem[] = [
     company: 'Enjoy Realty and Development Corporation',
     dates: 'March 2025 – August 2025',
     location: 'Naga City, Camarines Sur',
+    concurrent: 'Full-time, concurrent with Online Creative Solutions',
     responsibilities: [
       'Developed full‑stack web applications',
       'Built and maintained WordPress sites',
@@ -227,9 +228,11 @@ export const experience: ExperienceItem[] = [
 ]
 
 export const education: EducationItem[] = [
-  { school: 'Bicol University Polangui Campus', degree: 'B.S. in Computer Science', graduationDate: '2024' },
-  { school: 'Camarines Sur National High School', degree: 'TVL‑ICT – Computer Programming', graduationDate: '2020', honors: 'With Honors' },
-  { school: 'Camarines Sur National High School', degree: 'TVL‑ICT – Computer System Servicing (Gr. 7–8)', graduationDate: '2018' },
+  {
+    school: 'Bicol University Polangui Campus',
+    degree: 'B.S. in Computer Science',
+    dates: 'August 2020 – July 2024',
+  },
 ]
 
 export const skills: Skill[] = [

@@ -32,7 +32,7 @@ OWNER INFORMATION:
 
   // Education
   const educationList = education.map(e => 
-    `- ${e.degree} from ${e.school} (${e.graduationDate})${e.honors ? ` - ${e.honors}` : ''}`
+    `- ${e.degree} from ${e.school} (${e.dates})${e.honors ? ` - ${e.honors}` : ''}`
   ).join('\n')
 
   // Recommendations

@@ -2,32 +2,29 @@
 
 import { motion } from 'framer-motion'
 import { experience, education } from '@/lib/data'
+import { endOfRange } from '@/lib/dates'
 import { ExperienceItem, EducationItem } from '@/types'
 
 type TimelineEntry = {
-  type: 'work' | 'education' | 'milestone'
+  type: 'work' | 'education'
   title: string
   subtitle: string
+  note?: string
   date: string
   sortKey: number
-}
-
-function parseYear(dateStr: string): number {
-  const match = dateStr.match(/(\d{4})/)
-  return match ? parseInt(match[1]) : 0
 }
 
 function buildTimeline(): TimelineEntry[] {
   const entries: TimelineEntry[] = []
 
   experience.forEach((item: ExperienceItem) => {
-    const year = item.dates.includes('Present') ? 9999 : parseYear(item.dates)
     entries.push({
       type: 'work',
       title: item.title,
       subtitle: item.company,
+      note: item.concurrent,
       date: item.dates.replace(/\s*–\s*/g, ' – '),
-      sortKey: year,
+      sortKey: endOfRange(item.dates),
     })
   })
 
@@ -36,8 +33,8 @@ function buildTimeline(): TimelineEntry[] {
       type: 'education',
       title: item.degree,
       subtitle: item.school,
-      date: item.graduationDate,
-      sortKey: parseYear(item.graduationDate),
+      date: item.dates,
+      sortKey: endOfRange(item.dates),
     })
   })
 
@@ -102,6 +99,11 @@ export function ExperienceSection() {
                 {entry.subtitle && (
                   <span className="text-muted-foreground text-xs sm:text-sm block">
                     {entry.subtitle}
+                  </span>
+                )}
+                {entry.note && (
+                  <span className="text-muted-foreground text-xs block italic">
+                    {entry.note}
                   </span>
                 )}
               </div>

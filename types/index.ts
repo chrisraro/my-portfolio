@@ -87,12 +87,19 @@ export interface ExperienceItem {
   dates: string;
   location: string;
   responsibilities: string[];
+  /**
+   * Note shown beside a role that overlapped another. Holding a full-time
+   * corporate role while shipping agency client work is capacity evidence for
+   * a freelance-primary audience, so it is stated rather than hidden.
+   */
+  concurrent?: string;
 }
 
 export interface EducationItem {
   school: string;
   degree: string;
-  graduationDate: string;
+  /** Human date range, e.g. 'August 2020 – July 2024'. */
+  dates: string;
   honors?: string;
 }
 
