@@ -141,30 +141,6 @@ export const experience: ExperienceItem[] = [
       'Hardware, network, and software maintenance',
     ],
   },
-  {
-    id: 'muramart-bubble',
-    title: 'Junior/Assistant Bubble.io Developer',
-    company: 'Muramart Holdings Inc.',
-    dates: 'August 2023 – September 2024',
-    location: 'Naga City, Camarines Sur',
-    responsibilities: [
-      'Developed full‑stack web and mobile apps using Bubble.io',
-      'Designed UI/UX and translated to production apps',
-      'Maintained backend workflows and API integrations',
-    ],
-  },
-  {
-    id: 'muramart-ojt',
-    title: 'On-the-Job Training (240 hrs.)',
-    company: 'Muramart Holdings Inc.',
-    dates: 'July 2023 – August 2023',
-    location: 'Naga City, Camarines Sur',
-    responsibilities: [
-      'Introduced to Bubble.io development platform',
-      'Participated in workshops and seminars',
-      'Hands‑on development on assigned projects',
-    ],
-  },
 ]
 
 export const education: EducationItem[] = [
@@ -191,7 +167,6 @@ export const skills: Skill[] = [
   { id: 'figma', name: 'Figma', icon: 'figma', category: 'Tools & DevOps' },
   { id: 'vscode', name: 'VS Code', icon: 'vscode', category: 'Tools & DevOps' },
   { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'Tools & DevOps' },
-  { id: 'bubble', name: 'Bubble.io', icon: 'bubble', category: 'Tools & DevOps' },
   { id: 'supabase', name: 'Supabase', icon: 'supabase', category: 'Backend' },
   { id: 'firebase', name: 'Firebase', icon: 'firebase', category: 'Backend' },
   { id: 'vercel', name: 'Vercel', icon: 'vercel', category: 'Tools & DevOps' },

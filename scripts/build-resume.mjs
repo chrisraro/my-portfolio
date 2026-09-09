@@ -97,7 +97,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
   <ul class="skills">
     <li><b>Languages:</b> JavaScript, TypeScript, PHP, Java, HTML/CSS, Python</li>
     <li><b>Frameworks &amp; Libraries:</b> Next.js, React, Node.js, Laravel, Flutter, Tailwind CSS, shadcn/ui, Material UI, Bootstrap</li>
-    <li><b>CMS &amp; E-commerce:</b> WordPress (GeneratePress, GenerateBlocks Pro), WooCommerce, Bubble.io</li>
+    <li><b>CMS &amp; E-commerce:</b> WordPress (GeneratePress, GenerateBlocks Pro), WooCommerce</li>
     <li><b>Databases:</b> PostgreSQL, MySQL, SQL, Supabase, Firebase</li>
     <li><b>Cloud &amp; DevOps:</b> Vercel, Upstash, Docker, Render, Coolify, Git/GitHub</li>
     <li><b>Payments:</b> PayPal, PayMongo, Maya, Xendit</li>
