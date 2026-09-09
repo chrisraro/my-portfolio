@@ -119,7 +119,10 @@ export interface Recommendation {
 export interface GalleryImage {
   id: number;
   src: string;
+  /** Short description of the image itself, for screen readers. */
   alt: string;
+  /** Visible caption. This is the proof; it must not hide behind a hover. */
+  caption: string;
 }
 
 export interface Achievement {

@@ -1,5 +1,29 @@
 import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, Achievement } from '@/types'
 
+// The four gateways actually integrated across the WooCommerce projects. The
+// hero proof band cites this count and a test enforces the match — an early
+// draft of the design spec claimed five, and the review caught it.
+export const paymentGateways: readonly string[] = [
+  'PayPal',
+  'PayMongo',
+  'Maya',
+  'Xendit',
+]
+
+// Positioning stays broad, so the entire differentiation burden sits on these
+// four claims. Every one is checkable against the data below. No
+// years-of-experience figure is claimed; the dated timeline carries that.
+export const heroContent = {
+  title: 'Full-stack web developer',
+  location: 'Naga City',
+  proofPoints: [
+    'Three products of my own',
+    'Fifteen projects shipped',
+    'Four payment gateways',
+    'One NFC card system',
+  ],
+}
+
 export const projects: Project[] = [
   // --- Products ------------------------------------------------------------
   {
@@ -303,14 +327,52 @@ export const recommendations: Recommendation[] = [
   }
 ];
 
+// Retitled from "Gallery". These six photographs carry the most specific,
+// least reproducible content on the site; naming the section for what it shows
+// is the difference between decoration and proof.
+export const galleryContent = {
+  eyebrow: '// working with clients',
+  title: 'On-site delivery',
+}
+
 export const galleryImages: GalleryImage[] = [
-  { id: 1, src: "/assets/images/gallery/AmanWebAppPresentation.jpg", alt: "Presenting the Aman Group Web App at ERDC's Brokers Meeting" },
-  { id: 2, src: "/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg", alt: "Team building workshop in Tagaytay with Enjoy Realty and Development Corporation" },
-  { id: 3, src: "/assets/images/gallery/ElNidoSolo3.jpg", alt: "Solo trip to El Nido, sponsored by an agency client for whom I built an internal NFC Web App system" },
-  { id: 4, src: "/assets/images/gallery/BeachBusatPort.jpg", alt: "BeachBus arriving at El Nido Port — I developed its website and internal NFC card system" },
-  { id: 5, src: "/assets/images/gallery/InsideBeachBuswithBosses.jpg", alt: "Test ride aboard the BeachBus in El Nido" },
-  { id: 6, src: "/assets/images/gallery/AtokwithJewel3.jpg", alt: "Exploring the Cordillera highlands with my partner, Jewel" }
-];
+  {
+    id: 1,
+    src: '/assets/images/gallery/AmanWebAppPresentation.jpg',
+    alt: 'Christian presenting to a seated audience at a brokers meeting',
+    caption: "Presenting the Aman Group Web App at ERDC's brokers meeting",
+  },
+  {
+    id: 2,
+    src: '/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg',
+    alt: 'Group photograph at an outdoor team workshop',
+    caption: 'Team building workshop in Tagaytay with Enjoy Realty and Development Corporation',
+  },
+  {
+    id: 3,
+    src: '/assets/images/gallery/ElNidoSolo3.jpg',
+    alt: 'Christian on a beach in El Nido',
+    caption: 'El Nido, sponsored by the client I built the internal NFC card system for',
+  },
+  {
+    id: 4,
+    src: '/assets/images/gallery/BeachBusatPort.jpg',
+    alt: 'A BeachBus vehicle arriving at a port',
+    caption: 'BeachBus at El Nido Port — I built its website and its internal NFC card system',
+  },
+  {
+    id: 5,
+    src: '/assets/images/gallery/InsideBeachBuswithBosses.jpg',
+    alt: 'Interior of the BeachBus with passengers seated',
+    caption: 'Test ride aboard the BeachBus in El Nido',
+  },
+  {
+    id: 6,
+    src: '/assets/images/gallery/AtokwithJewel3.jpg',
+    alt: 'Two people on a highland road in the Cordilleras',
+    caption: 'Exploring the Cordillera highlands with my partner, Jewel',
+  },
+]
 
 export const achievements: Achievement[] = [
   {
