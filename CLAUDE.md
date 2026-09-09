@@ -97,9 +97,9 @@ this; keep it that way.
 ## Client/Server Boundary
 
 Almost everything is `'use client'` because of framer-motion and hooks. Only
-`app/layout.tsx`, `app/projects/page.tsx`, and `components/footer.tsx` are server
-components. Add `'use client'` to any component using motion, state, or
-`next-themes`.
+`app/layout.tsx` and `components/footer.tsx` are server components —
+`app/projects/page.tsx` is a client component; it filters by band with `useState`.
+Add `'use client'` to any component using motion, state, or `next-themes`.
 
 ## Animation
 
