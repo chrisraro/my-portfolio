@@ -58,6 +58,65 @@ async function autoScroll(page) {
   await new Promise((r) => setTimeout(r, 1200))
 }
 
+// These are live marketing sites, so a first-time visitor is met with a cookie
+// banner, a newsletter modal, a chat bubble — often all three. Captured as-is,
+// the thumbnail shows someone else's consent UI instead of the work, and a
+// modal backdrop dims the whole page. Dismiss what has a dismiss control, then
+// strip whatever is left.
+async function dismissOverlays(page) {
+  // Prefer the site's own control, and take the privacy-preserving option where
+  // there is one — never "Accept all". Clicking that would register a consent
+  // decision on the site owner's behalf, which is not ours to give.
+  const clicked = await page.evaluate(() => {
+    const DISMISS = [
+      /^reject( all)?$/i, /^decline$/i, /^only (necessary|essential)/i,
+      /^no,? thanks$/i, /^close$/i, /^dismiss$/i, /^[×✕✖x]$/i,
+    ]
+    const notes = []
+    for (const el of document.querySelectorAll('button, a[role="button"], [role="button"], [aria-label]')) {
+      const label = (el.innerText || el.getAttribute('aria-label') || '').trim()
+      if (label && DISMISS.some((re) => re.test(label))) {
+        el.click()
+        notes.push(label)
+      }
+    }
+    return notes
+  })
+
+  await new Promise((r) => setTimeout(r, 800))
+
+  // Anything still floating above the page: remove it. A sticky header sits at
+  // the top and is short, so it survives — that is real chrome and belongs in
+  // the shot. The z-index floor keeps this off fixed-position background
+  // layers, which sit at or below 0.
+  const stripped = await page.evaluate(() => {
+    const vh = window.innerHeight
+    const notes = []
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el)
+      if (cs.position !== 'fixed' && cs.position !== 'sticky') continue
+      const r = el.getBoundingClientRect()
+      if (r.width === 0 || r.height === 0) continue
+      const isTopChrome = r.top <= 8 && r.height < vh * 0.25
+      if (isTopChrome) continue
+      const zIndex = Number(cs.zIndex)
+      const isModal = el.getAttribute('role') === 'dialog' || el.getAttribute('aria-modal') === 'true'
+      if (isModal || (Number.isFinite(zIndex) && zIndex >= 100)) {
+        const cls = String(el.className || '').split(/\s+/)[0]
+        notes.push(el.tagName.toLowerCase() + (cls ? '.' + cls : ''))
+        el.remove()
+      }
+    }
+    // A modal usually locks scrolling; give it back or autoScroll does nothing.
+    document.documentElement.style.overflow = ''
+    document.body.style.overflow = ''
+    return notes
+  })
+
+  if (clicked.length) console.log('  dismissed:', clicked.join(', '))
+  if (stripped.length) console.log('  stripped :', stripped.join(', '))
+}
+
 ;(async () => {
   const browser = await puppeteer.launch({
     executablePath: findBrowser(),
@@ -75,7 +134,10 @@ async function autoScroll(page) {
       console.log('Capturing', t.id, '→', t.url)
       await page.goto(t.url, { waitUntil: 'networkidle2', timeout: 60000 })
       await new Promise((r) => setTimeout(r, 2000))
+      await dismissOverlays(page)
       await autoScroll(page)
+      // Late-firing exit-intent and timed popups reappear after the scroll.
+      await dismissOverlays(page)
       const filePath = path.join(outDir, `${t.id}.png`)
       await page.screenshot({ path: filePath, type: 'png', fullPage: false })
       console.log('  saved:', filePath)
