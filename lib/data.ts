@@ -102,7 +102,7 @@ export const projects: Project[] = [
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
     status: 'live',
     dates: 'March – April 2025',
-    featured: true,
+    featured: false,
   },
 
   // --- Sites ---------------------------------------------------------------
@@ -130,7 +130,7 @@ export const projects: Project[] = [
     links: { live: 'https://elnidoguide.ph' },
     status: 'live',
     dates: 'May – July 2025',
-    featured: false,
+    featured: true,
   },
   {
     id: 'beachbus',
