@@ -16,12 +16,18 @@ export function TopBar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-2 px-5 py-3 sm:px-8">
+      {/*
+        DOM order is visual order at every width — mark, status, then nav — so
+        keyboard focus never jumps against what is on screen (WCAG 2.4.3).
+        Mobile: the controls sit right of the mark and the nav wraps below.
+        Desktop: the controls stay beside the mark and the nav moves right.
+      */}
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-2 px-5 py-3 sm:px-8">
         <Link href="/" className="font-mono text-sm text-ink">
           ~/christian-raro
         </Link>
 
-        <div className="flex items-center gap-3 md:order-last">
+        <div className="ml-auto flex items-center gap-3 md:ml-0">
           <span className="hidden items-center gap-2 font-mono text-xs text-accent sm:inline-flex">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             {availability}
@@ -40,7 +46,7 @@ export function TopBar() {
           </button>
         </div>
 
-        <nav aria-label="Primary" className="w-full md:w-auto">
+        <nav aria-label="Primary" className="w-full md:ml-auto md:w-auto">
           <ul className="flex gap-6 overflow-x-auto font-mono text-xs text-muted-strong">
             {navigationItems.map((item) => (
               <li key={item.href}>
