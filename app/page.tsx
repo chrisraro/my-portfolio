@@ -3,8 +3,8 @@ import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
 import { Systems } from '@/components/sections/systems'
 import { FieldLog } from '@/components/sections/field-log'
-import { ExperienceSection } from '@/components/sections/experience-section'
-import { SkillsSection } from '@/components/sections/skills-section'
+import { Changelog } from '@/components/sections/changelog'
+import { Stack } from '@/components/sections/stack'
 import { ContactSection } from '@/components/sections/contact-section'
 
 // Pre-4.0 sections relied on the old page's max-w-4xl wrapper. Each keeps it
@@ -21,10 +21,8 @@ export default function HomePage() {
       <Products />
       <Systems />
       <FieldLog />
-      <LegacySlot>
-        <ExperienceSection />
-        <SkillsSection />
-      </LegacySlot>
+      <Changelog />
+      <Stack />
       <LegacySlot>
         <ContactSection />
       </LegacySlot>
