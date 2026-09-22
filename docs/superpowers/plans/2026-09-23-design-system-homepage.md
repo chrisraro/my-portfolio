@@ -6,7 +6,9 @@
 
 **Architecture:** Design tokens are raw oklch triplets in `app/globals.css`, exposed as Tailwind colour keys and guarded by a contrast test. Each homepage section is replaced in place, one task at a time, so every commit on `v4` produces a viewable Vercel preview. Pure logic (status mapping, board grouping, field-log interleaving, proof-point parsing, metadata) lives in `lib/` with Vitest coverage. Server components render static data; only components that genuinely need interactivity are client components.
 
-**Tech Stack:** Next.js 14 App Router · React 18 · TypeScript 5 strict · Tailwind CSS 3 · next-themes · next/font (IBM Plex Sans, IBM Plex Mono) · framer-motion 10 · Vitest 3 · `react-dom/server` for markup tests
+**Tech Stack:** Next.js 14 App Router · React 18 · TypeScript 5 strict · Tailwind CSS 3 · next-themes · next/font (Recursive, variable, with its MONO axis) · framer-motion 10 · Vitest 3 · `react-dom/server` for markup tests
+
+**Amended 2026-09-23 during Task 1, by Christian's decision:** the typeface is **Recursive**, not IBM Plex — impeccable flags Plex as a training-data default, and Recursive's sans-to-mono axis gives the Operator world's two voices from one face. `DESIGN.md` is written in **Task 14** from the built site, not in Task 1; Task 1 records a direction contract in `.impeccable/surfaces/app-page-tsx.md` instead.
 
 **Spec:** `docs/superpowers/specs/2026-09-23-design-system-homepage-design.md`
 
@@ -29,7 +31,9 @@ Every task's requirements implicitly include this section.
 - **Code style:** named exports for components (pages keep their required default export), no semicolons, single quotes, kebab-case files, `@/` imports, `cn()` for class merging, braced eyebrow JSX `{'// label'}`.
 - **Both API routes work with no environment variables set.** CI builds with no secrets.
 - **Commits:** `type(scope): summary`, lowercase type, ending with `Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>`.
-- **Before any UI edit, read `C:\Users\raroc\.claude\skills\impeccable\reference\craft-floor.md`** — the design quality floor and its bans. Read `DESIGN.md` (created in Task 1) as the visual authority.
+- **Before any UI edit, read `C:\Users\raroc\.claude\skills\impeccable\reference\craft-floor.md`** — the design quality floor and its bans — and the direction contract in `.impeccable/surfaces/app-page-tsx.md`, which is the visual authority until Task 14 writes `DESIGN.md`.
+- **One grid (the contract's RAISE):** every section uses the same container, `mx-auto max-w-6xl px-5 sm:px-8`, and every numeral — proof band, counts, dates — sets `tabular-nums`.
+- **Type:** one variable family, Recursive. `font-sans` is its linear sans; `font-mono` is the same family with `font-variation-settings: 'MONO' 1`. Never load a second typeface.
 - **Gate for every task:** `npm run type-check && npm run lint && npm test && npm run build` all pass. If `type-check` fails pointing at a file that no longer exists under `.next/types/`, delete `.next` and re-run — it is a stale build artefact (documented in `CLAUDE.md`).
 
 ---
@@ -38,7 +42,8 @@ Every task's requirements implicitly include this section.
 
 | File | Responsibility | Task |
 |---|---|---|
-| `PRODUCT.md`, `DESIGN.md` | Product context and the committed visual world (impeccable) | 1 |
+| `PRODUCT.md`, `.impeccable/surfaces/app-page-tsx.md` | Product truth; the homepage direction contract | 1 |
+| `DESIGN.md` | The built visual world, documented from the code | 14 |
 | `app/globals.css` | Token layer, base styles, type utilities, live pulse | 2 |
 | `tailwind.config.js` | Colour keys and font families | 2, 13 |
 | `app/layout.tsx` | Fonts, theme default, metadata, chrome | 2, 3, 6 |
@@ -80,12 +85,12 @@ Every task's requirements implicitly include this section.
 **Run by the controller, not a subagent** — it drives the `impeccable` skill, which is interactive and loads its own references.
 
 **Files:**
-- Create: `PRODUCT.md`, `DESIGN.md` (via impeccable)
+- Create: `PRODUCT.md`, `.impeccable/surfaces/app-page-tsx.md` (via impeccable)
 - Modify: `CLAUDE.md` (Git section)
 
 **Interfaces:**
 - Consumes: the approved spec
-- Produces: `DESIGN.md`, the visual authority every later UI task reads; the `v4` branch
+- Produces: the direction contract every later UI task reads; the `v4` branch
 
 - [ ] **Step 1: Cut the branch**
 
@@ -106,7 +111,11 @@ Invoke the `impeccable` skill with the `init` command. Answer its questions from
 - **Design mode per surface:** homepage **Persuade**; `/projects` **Operate**; case-study pages (later phase) **Read**.
 - **Success:** a visitor understands within one screen what he builds and how to hire him; every claim on the page is backed by the inventory.
 
-- [ ] **Step 3: Write `DESIGN.md` for the committed world**
+- [ ] **Step 3: Record the direction contract (as executed — see the amendment note)**
+
+impeccable's new-work method writes `DESIGN.md` only at the finish, from the built world. Before code, it records a direction contract in the surface brief. Run `impeccable concept-seed --scope direction --mode persuade`, acknowledge the seed (the user's pinned direction beats the roll), and write the six contract blocks with `impeccable surface-brief write app/page.tsx <body> app/projects/page.tsx`. The paragraph below is the original instruction, kept for the record; it is superseded.
+
+- [ ] ~~**Step 3 (superseded): Write `DESIGN.md` for the committed world**~~
 
 Invoke `impeccable` for new work on the homepage surface and have it record **B3 Signal** as the replacement visual world. Supply spec §2 (colour, including the exact token values from Task 2 Step 4), §3 (type), §4 (status language), §9 (motion), and these rules: green means live only; status never by colour alone; hairline rules and panels, no grid-paper texture; 8px panel radius, 4px chip radius. The incumbent look (Plus Jakarta Sans, Fraunces, red `#FF2D55`, dotted background) is evidence and anti-reference, not something to preserve.
 
@@ -130,8 +139,8 @@ Never merge `v4` into `main` without Christian's sign-off on the preview.
 - [ ] **Step 5: Commit and push the branch**
 
 ```bash
-git add PRODUCT.md DESIGN.md CLAUDE.md
-git commit -m "docs: add PRODUCT.md and DESIGN.md for the B3 Signal redesign
+git add PRODUCT.md .impeccable/surfaces CLAUDE.md docs
+git commit -m "docs: add PRODUCT.md and the homepage direction contract
 
 Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 git push -u origin v4
@@ -155,7 +164,7 @@ Replaces the whole colour system and both typefaces in one atomic change. It has
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: the Tailwind colour keys in Global Constraints; the CSS classes `.eyebrow`, `.text-fluid-h1`, `.text-fluid-h2`, `.live-pulse`; CSS variables `--font-sans` and `--font-mono` from `next/font`. Later tasks use only these.
+- Produces: the Tailwind colour keys in Global Constraints; the CSS classes `.eyebrow`, `.text-fluid-h1`, `.text-fluid-h2`, `.live-pulse`; the CSS variable `--font-sans` (Recursive) from `next/font`. Later tasks use only these; `font-mono` is Recursive with its MONO axis on.
 
 - [ ] **Step 1: Write the failing contrast test**
 
@@ -380,8 +389,11 @@ Replace the entire file with:
 		letter-spacing: -0.02em;
 		font-weight: 600;
 	}
+	/* Recursive is one family; its MONO axis is the monospace voice. */
+	.font-mono { font-variation-settings: 'MONO' 1; }
 	.eyebrow {
-		font-family: var(--font-mono), ui-monospace, monospace;
+		font-family: var(--font-sans), ui-monospace, monospace;
+		font-variation-settings: 'MONO' 1;
 		font-size: 0.75rem;
 		font-weight: 500;
 		letter-spacing: 0.1em;
@@ -454,8 +466,10 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
-        // Temporary alias so legacy `font-display` headings render in Plex Sans
+        // Same family as sans: globals.css adds font-variation-settings 'MONO' 1
+        // to .font-mono, which is what makes Recursive monospaced.
+        mono: ['var(--font-sans)', 'ui-monospace', 'monospace'],
+        // Temporary alias so legacy `font-display` headings render in Recursive
         // until their sections are replaced. Removed in Task 13.
         display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
@@ -539,38 +553,37 @@ In `components/ui/chat-widget.tsx`, delete this prop from the main chat button, 
 
 - [ ] **Step 8: Switch fonts and the theme default in `app/layout.tsx`**
 
-Replace the font imports and declarations:
+Replace the font import:
 
 ```tsx
 import { Plus_Jakarta_Sans, Fraunces } from 'next/font/google'
 ```
 
+with:
+
 ```tsx
-import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
+import { Recursive } from 'next/font/google'
 ```
 
 and replace the two `const` font declarations (`plusJakartaSans` and `fraunces`) with:
 
 ```tsx
-const plexSans = IBM_Plex_Sans({
+// One variable family for both voices. Its MONO axis turns the same face
+// monospaced for labels, numerals and domains — `.font-mono` and `.eyebrow`
+// set it in globals.css. Loading only the MONO axis (weight is included by
+// default for variable fonts) keeps the file small.
+const recursive = Recursive({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
   variable: '--font-sans',
   display: 'swap',
-})
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
-  display: 'swap',
+  axes: ['MONO'],
 })
 ```
 
 Replace the `<html>` and `<body>` opening tags:
 
 ```tsx
-    <html lang="en" suppressHydrationWarning className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={recursive.variable}>
       <body>
 ```
 
@@ -594,7 +607,7 @@ Expected: all pass.
 
 - [ ] **Step 11: Look at it**
 
-Run `npm run dev` and open `http://localhost:3000` in both themes. The existing layout should now render in warm graphite with amber accents and Plex type. Layout is unchanged — that is Tasks 6–11. Note anything unreadable in the task report; do not fix layout here.
+Run `npm run dev` and open `http://localhost:3000` in both themes. The existing layout should now render in warm graphite with amber accents and Recursive type, with mono labels visibly monospaced. Layout is unchanged — that is Tasks 6–11. Note anything unreadable in the task report; do not fix layout here.
 
 - [ ] **Step 12: Commit**
 
@@ -2983,7 +2996,8 @@ Replace the whole **Styling** section with:
 ```markdown
 ## Styling
 
-- Visual authority is `DESIGN.md` (B3 Signal). Read it before UI work.
+- Visual authority is `DESIGN.md` (B3 Signal), with the homepage's direction
+  contract in `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
 - Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
   `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
   them and checks WCAG contrast in both themes; keep the format exact.
@@ -2994,8 +3008,11 @@ Replace the whole **Styling** section with:
   use `accent`.
 - **Status is never colour alone.** Render it only through `StatusBadge`, which
   pairs a glyph shape with a text label.
-- Type: IBM Plex Sans (`font-sans`) and IBM Plex Mono (`font-mono`) via
-  `next/font`. Utilities: `.eyebrow`, `.text-fluid-h1`, `.text-fluid-h2`.
+- Type: one variable family, Recursive, via `next/font`. `font-sans` is its
+  linear sans; `font-mono` is the same family with its MONO axis on. Never add a
+  second typeface. Numerals use `tabular-nums`. Utilities: `.eyebrow`,
+  `.text-fluid-h1`, `.text-fluid-h2`.
+- One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
 - Section headings: `<p className="eyebrow">{sectionContent.x.eyebrow}</p>` then an
   `<h2 className="text-fluid-h2">`. Copy lives in `lib/data.ts`.
 - The live pulse (`.live-pulse`) runs twice and stops, and is removed under
@@ -3104,6 +3121,16 @@ Dispatch one fix subagent with the complete findings list from Steps 1–4, then
 - [ ] **Step 6: `impeccable polish`**
 
 One final pass on the homepage.
+
+- [ ] **Step 6a: Run the mechanical detector**
+
+`impeccable context` reported no automatic design hook, so run it once over the finished UI:
+`C:/Users/raroc/.claude/skills/impeccable/scripts/impeccable detect --json app components`
+Fix what it reports in the same batch as Step 5's findings, or log why a finding does not apply.
+
+- [ ] **Step 6b: Write `DESIGN.md` from the built world**
+
+Follow impeccable's new-work section 7 (finish): the shipped documenter writes `DESIGN.md` from the code as built, and the finish review audits the build against the direction contract in `.impeccable/surfaces/app-page-tsx.md`. Every shipping raster needs its provenance recorded — the project screenshots come from `npm run capture` against the live sites; the gallery photos are Christian's own.
 
 - [ ] **Step 7: Hand the decision to Christian**
 

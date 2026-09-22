@@ -123,12 +123,19 @@ brand elements only — never as body text colour on large areas.
 
 ### §3. Typography
 
-- **IBM Plex Sans** — reading text and headlines. Weights 400, 500, 600.
-- **IBM Plex Mono** — labels, numbers, domains, stack names, status text, metadata.
-  Weights 400, 500.
+**Amended 2026-09-23 (Christian's decision during Task 1):** the face is
+**Recursive**, not IBM Plex. impeccable flags Plex as a training-data default for
+persuasion surfaces; Recursive earns its place with a reason no other face
+satisfies here — one variable family whose MONO axis slides the same letterforms
+from a human sans to a monospace, so the Operator world's two voices (the person,
+the systems) come from one face.
 
-Both load through `next/font/google`, replacing Plus Jakarta Sans and Fraunces. The
-mono carries the engineering signal so the headline can stay plain and human.
+- **Recursive, linear sans** — reading text and headlines.
+- **Recursive with `MONO 1`** — labels, numbers, domains, stack names, status text,
+  metadata. Every numeral is tabular.
+
+Loaded through `next/font/google` with only the MONO axis, replacing Plus Jakarta
+Sans and Fraunces.
 
 Sizes are fluid `clamp()` values. The H1 scales from 40px on a 360px viewport to
 64px at 1280px and above, weight 600, tracking −0.025em. Body is 16px minimum.
@@ -264,7 +271,7 @@ Each tool has one job and one point in the process.
 | Step | Tool | Output |
 |---|---|---|
 | 1 | `impeccable init` | `PRODUCT.md` — audience, positioning, and design mode per surface: homepage **Persuade**, `/projects` **Operate**, case studies (later) **Read**. |
-| 2 | `impeccable document` | `DESIGN.md` — B3 Signal as the committed world: tokens, type, status language, motion. The design authority every later iteration reads. |
+| 2 | `impeccable` new-work: direction contract | Recorded before code in `.impeccable/surfaces/app-page-tsx.md` (seed `2f5d7c31`; the user's pinned direction beats the roll). **`DESIGN.md` is written at the finish, from the built site** — impeccable's rule, adopted by Christian's decision during Task 1. |
 | 3 | `writing-plans` → `subagent-driven-development` | The build, with impeccable's craft-floor loaded for every UI task. |
 | 4 | `impeccable critique` + `impeccable audit` | Gate after the design system lands, and again after the homepage is assembled. |
 | 5 | `design-taste-frontend` | Independent second opinion on the assembled homepage. |
@@ -293,7 +300,7 @@ changes made on `v4` are the §1 additions, `navigationItems`, and the §7
 | `PRODUCT.md`, `DESIGN.md` | New (impeccable) |
 | `app/globals.css` | Token layer rewritten (§2); type utilities rewritten (§3) |
 | `tailwind.config.js` | Token mapping and font families |
-| `app/layout.tsx` | Plex fonts, `defaultTheme="dark"`, metadata from `heroContent` |
+| `app/layout.tsx` | Recursive (via `next/font`), `defaultTheme="dark"`, metadata from `heroContent` |
 | `app/page.tsx` | Recomposed (§6) |
 | `app/projects/page.tsx` | Full board with filter (§7) |
 | `components/navigation.tsx` | Replaced by `TopBar` |
