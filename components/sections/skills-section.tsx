@@ -22,14 +22,14 @@ export function SkillsSection() {
 
         {categories.map((category) => (
           <div key={category} className="mb-5">
-            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            <p className="text-sm font-semibold text-muted uppercase tracking-wider mb-3">
               {category}
             </p>
             <div className="flex flex-wrap gap-2">
               {getSkillsByCategory(category).map((skill) => (
                 <span
                   key={skill.id}
-                  className="bg-muted border border-border rounded-full px-3 py-1.5 text-sm font-medium text-foreground"
+                  className="bg-panel border border-line rounded-full px-3 py-1.5 text-sm font-medium text-ink"
                 >
                   {skill.name}
                 </span>

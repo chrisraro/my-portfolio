@@ -21,10 +21,10 @@ export function ProjectCard({ project }: { project: Project }) {
         href={href}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noopener noreferrer' : undefined}
-        className="group block h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+        className="group block h-full overflow-hidden rounded-xl border border-line bg-panel transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
       >
         {/* Thumbnail */}
-        <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-panel">
           {!imgError ? (
             <Image
               src={project.image}
@@ -38,7 +38,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <div
               role="img"
               aria-label={`${project.title} screenshot`}
-              className="flex h-full w-full items-center justify-center text-xs text-muted-foreground"
+              className="flex h-full w-full items-center justify-center text-xs text-muted"
             >
               {project.title}
             </div>
@@ -47,23 +47,23 @@ export function ProjectCard({ project }: { project: Project }) {
 
         {/* Body */}
         <div className="p-4">
-          <h3 className="font-display text-base font-semibold tracking-tight text-foreground">
+          <h3 className="font-display text-base font-semibold tracking-tight text-ink">
             {project.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-sm text-muted">
             {project.description}
           </p>
           <div className="mt-3 flex flex-wrap gap-1">
             {project.technologies.slice(0, 4).map((tech) => (
               <span
                 key={tech}
-                className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                className="rounded bg-panel px-2 py-0.5 text-xs text-muted"
               >
                 {tech}
               </span>
             ))}
           </div>
-          <p className="mt-3 inline-flex items-center gap-1 text-xs text-primary">
+          <p className="mt-3 inline-flex items-center gap-1 text-xs text-accent">
             {isExternal && <ExternalLink className="h-3 w-3" />}
             {label}
           </p>

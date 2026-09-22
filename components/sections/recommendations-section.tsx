@@ -59,7 +59,7 @@ export function RecommendationsSection() {
       id="recommendations"
       className="py-8 md:py-12 text-center"
     >
-      <h2 className="font-display text-xl font-bold tracking-tight mb-6 text-foreground">
+      <h2 className="font-display text-xl font-bold tracking-tight mb-6 text-ink">
         Recommendations
       </h2>
 
@@ -78,10 +78,10 @@ export function RecommendationsSection() {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="text-lg md:text-xl text-foreground leading-relaxed italic">
+            <p className="text-lg md:text-xl text-ink leading-relaxed italic">
               &ldquo;{currentRecommendation.quote}&rdquo;
             </p>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-sm text-muted mt-4">
               — {currentRecommendation.authorName}, {currentRecommendation.authorTitle}
             </p>
           </motion.div>
@@ -96,7 +96,7 @@ export function RecommendationsSection() {
             onClick={() => goToSlide(index)}
             aria-label={`Go to recommendation ${index + 1}`}
             className={`w-2 h-2 rounded-full transition-colors ${
-              index === activeIndex ? "bg-primary" : "bg-muted-foreground/40"
+              index === activeIndex ? "bg-accent" : "bg-muted/40"
             }`}
           />
         ))}

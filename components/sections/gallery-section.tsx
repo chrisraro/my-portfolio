@@ -109,7 +109,7 @@ export function GallerySection() {
   return (
     <section id="gallery" className="py-8 md:py-12">
       <div className="mb-6">
-        <h2 className="font-display text-xl font-bold tracking-tight text-foreground">Gallery</h2>
+        <h2 className="font-display text-xl font-bold tracking-tight text-ink">Gallery</h2>
       </div>
 
       <motion.div
@@ -123,10 +123,10 @@ export function GallerySection() {
           {/* Previous Button */}
           <button
             onClick={() => scroll("left")}
-            className="flex-shrink-0 w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+            className="flex-shrink-0 w-10 h-10 rounded-full border border-line flex items-center justify-center hover:bg-panel transition-colors"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-5 h-5 text-foreground" />
+            <ChevronLeft className="w-5 h-5 text-ink" />
           </button>
 
           {/* Scrollable Gallery */}
@@ -151,7 +151,7 @@ export function GallerySection() {
             {loopedImages.map((image: GalleryImage, index: number) => (
               <div
                 key={`${image.id}-${index}`}
-                className="relative flex-shrink-0 w-56 h-40 md:w-72 md:h-48 rounded-lg overflow-hidden bg-muted cursor-pointer group"
+                className="relative flex-shrink-0 w-56 h-40 md:w-72 md:h-48 rounded-lg overflow-hidden bg-panel cursor-pointer group"
                 onClick={() => setSelectedImage(image)}
               >
                 <Image
@@ -173,10 +173,10 @@ export function GallerySection() {
           {/* Next Button */}
           <button
             onClick={() => scroll("right")}
-            className="flex-shrink-0 w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+            className="flex-shrink-0 w-10 h-10 rounded-full border border-line flex items-center justify-center hover:bg-panel transition-colors"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-5 h-5 text-foreground" />
+            <ChevronRight className="w-5 h-5 text-ink" />
           </button>
         </div>
       </motion.div>

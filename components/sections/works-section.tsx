@@ -31,7 +31,7 @@ export function WorksSection() {
       </motion.div>
 
       <Reveal delay={0.2} className="mt-6">
-        <Link href="/projects" className="text-sm text-primary font-medium hover:underline">
+        <Link href="/projects" className="text-sm text-accent font-medium hover:underline">
           View All →
         </Link>
       </Reveal>

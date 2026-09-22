@@ -41,7 +41,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section id="home" className="relative bg-background">
+    <section id="home" className="relative bg-canvas">
       {/* Theme Toggle - Top Right */}
       {mounted && (
         <motion.button
@@ -49,7 +49,7 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="absolute top-4 right-0 p-2 rounded-md text-foreground/70 hover:text-foreground hover:bg-muted transition-colors z-10"
+          className="absolute top-4 right-0 p-2 rounded-md text-ink/70 hover:text-ink hover:bg-panel transition-colors z-10"
           aria-label="Toggle theme"
         >
           {theme === 'dark' ? (
@@ -68,7 +68,7 @@ export function HeroSection() {
         {/* Profile Image */}
         <motion.div variants={itemVariants} className="flex-shrink-0">
           <ImageLightbox src="/assets/images/about/profile-hiking.jpg" alt="Christian Raro">
-            <div className="relative w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-border shadow-lg bg-muted">
+            <div className="relative w-[100px] h-[125px] sm:w-[130px] sm:h-[165px] md:w-[180px] md:h-[220px] rounded-xl overflow-hidden border-2 border-line shadow-lg bg-panel">
               <Image
                 src="/assets/images/about/profile-hiking.jpg"
                 alt="Christian Raro"
@@ -92,7 +92,7 @@ export function HeroSection() {
           {/* Name with Verified Badge */}
           <motion.h1
             variants={itemVariants}
-            className="font-display text-lg sm:text-2xl md:text-4xl font-semibold tracking-tight text-foreground flex items-center gap-1.5"
+            className="font-display text-lg sm:text-2xl md:text-4xl font-semibold tracking-tight text-ink flex items-center gap-1.5"
           >
             <span className="flex flex-wrap gap-x-2">
               {'Christian Raro'.split(' ').map((word, i) => (
@@ -123,7 +123,7 @@ export function HeroSection() {
           {/* Location Badge */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center gap-1 text-[11px] sm:text-xs md:text-sm text-muted-foreground"
+            className="flex items-center gap-1 text-[11px] sm:text-xs md:text-sm text-muted"
           >
             <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0" />
             <span>Naga City, Camarines Sur, Philippines</span>
@@ -132,7 +132,7 @@ export function HeroSection() {
           {/* Professional Titles */}
           <motion.p
             variants={itemVariants}
-            className="text-[11px] sm:text-xs md:text-lg text-muted-foreground"
+            className="text-[11px] sm:text-xs md:text-lg text-muted"
           >
             Software Engineer / Full-Stack Developer
           </motion.p>
@@ -142,7 +142,7 @@ export function HeroSection() {
             <motion.div variants={itemVariants}>
               <Link
                 href={degreeAchievement.link || '#experience'}
-                className="inline-block bg-primary/10 text-primary rounded-full px-2.5 py-1 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-primary/20 transition-colors"
+                className="inline-block bg-accent/10 text-accent rounded-full px-2.5 py-1 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent/20 transition-colors"
               >
                 {degreeAchievement.title}
               </Link>
@@ -157,21 +157,21 @@ export function HeroSection() {
             <Link
               href="/assets/resume/Raro, Christian F - Resume (DEV).pdf"
               target="_blank"
-              className="inline-flex items-center justify-center gap-1 bg-primary text-primary-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-accent text-on-accent rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent/90 transition-colors whitespace-nowrap"
             >
               <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               Resume
             </Link>
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex items-center justify-center gap-1 bg-muted border border-border text-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-panel border border-line text-ink rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-line-strong transition-colors whitespace-nowrap"
             >
               <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               Email
             </Link>
             <Link
               href="#works"
-              className="inline-flex items-center justify-center gap-1 bg-muted border border-border text-foreground rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-accent transition-colors whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1 bg-panel border border-line text-ink rounded-md px-1.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs md:text-sm font-medium hover:bg-line-strong transition-colors whitespace-nowrap"
             >
               <Briefcase className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               Projects

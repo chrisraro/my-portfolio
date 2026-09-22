@@ -56,7 +56,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
       case 'warning':
         return <AlertTriangle className="h-5 w-5 text-yellow-500" />
       case 'info':
-        return <Info className="h-5 w-5 text-primary" />
+        return <Info className="h-5 w-5 text-accent" />
     }
   }
 
@@ -69,7 +69,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
       case 'warning':
         return 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
       case 'info':
-        return 'bg-primary/10 dark:bg-primary/20 border-primary/30 dark:border-primary/30'
+        return 'bg-accent/10 dark:bg-accent/20 border-accent/30 dark:border-accent/30'
     }
   }
 
@@ -91,13 +91,13 @@ export function ToastProvider({ children }: ToastProviderProps) {
               className={`flex items-center space-x-3 p-4 rounded-lg border shadow-lg max-w-sm ${getToastStyles(toast.type)}`}
             >
               {getToastIcon(toast.type)}
-              <p className="flex-1 text-sm text-foreground">
+              <p className="flex-1 text-sm text-ink">
                 {toast.message}
               </p>
               <button
                 onClick={() => removeToast(toast.id)}
                 aria-label="Dismiss notification"
-                className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                className="text-muted hover:text-ink transition-colors duration-200"
               >
                 <X className="h-4 w-4" />
               </button>

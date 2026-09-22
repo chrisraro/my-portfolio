@@ -175,11 +175,11 @@ export function ChatWidget() {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.9 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                  className="bg-card border border-border rounded-full px-4 py-2 shadow-lg cursor-pointer"
+                  className="bg-panel border border-line rounded-full px-4 py-2 shadow-lg cursor-pointer"
                   onClick={() => setIsOpen(true)}
                 >
-                  <span className="text-sm font-medium text-foreground whitespace-nowrap flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-sm font-medium text-ink whitespace-nowrap flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-accent" />
                     Chat with Chunks
                   </span>
                 </motion.div>
@@ -189,25 +189,22 @@ export function ChatWidget() {
             {/* Main Chat Button */}
             <button
               onClick={() => setIsOpen(true)}
-              className="relative w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
-              style={{
-                boxShadow: '0 4px 20px rgba(var(--primary-rgb, 220, 38, 38), 0.4), 0 0 40px rgba(var(--primary-rgb, 220, 38, 38), 0.2)'
-              }}
+              className="relative w-16 h-16 rounded-full bg-accent text-on-accent shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
               aria-label="Open chat"
             >
               <MessageCircle className="w-7 h-7 group-hover:scale-110 transition-transform duration-200" />
               
               {/* Enhanced pulse animation rings */}
-              <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping" style={{ animationDuration: '1.5s' }} />
-              <span className="absolute -inset-1 rounded-full bg-primary/20 animate-pulse" style={{ animationDuration: '2s' }} />
+              <span className="absolute inset-0 rounded-full bg-accent/40 animate-ping" style={{ animationDuration: '1.5s' }} />
+              <span className="absolute -inset-1 rounded-full bg-accent/20 animate-pulse" style={{ animationDuration: '2s' }} />
               
               {/* Notification badge/dot */}
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-background flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-canvas flex items-center justify-center">
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
               </span>
               
               {/* Glow ring on hover */}
-              <span className="absolute inset-0 rounded-full bg-transparent ring-2 ring-primary/0 group-hover:ring-primary/50 transition-all duration-300" />
+              <span className="absolute inset-0 rounded-full bg-transparent ring-2 ring-accent/0 group-hover:ring-accent/50 transition-all duration-300" />
             </button>
           </motion.div>
         )}
@@ -221,29 +218,29 @@ export function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] sm:max-w-[380px] h-[520px] max-h-[calc(100vh-3rem)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] sm:max-w-[380px] h-[520px] max-h-[calc(100vh-3rem)] bg-panel border border-line rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-primary text-primary-foreground">
+            <div className="flex items-center justify-between px-4 py-3 bg-accent text-on-accent">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-on-accent/20 flex items-center justify-center">
                     <Bot className="w-5 h-5" />
                   </div>
                   {/* Online status indicator */}
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-primary" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-accent" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm flex items-center gap-1.5">
                     Chunks
-                    <Sparkles className="w-3.5 h-3.5 text-primary-foreground/70" />
+                    <Sparkles className="w-3.5 h-3.5 text-on-accent/70" />
                   </h3>
-                  <p className="text-xs text-primary-foreground/70">AI assistant • Ask me anything</p>
+                  <p className="text-xs text-on-accent/70">AI assistant • Ask me anything</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-primary-foreground/20 rounded-lg transition-colors"
+                className="p-2 hover:bg-on-accent/20 rounded-lg transition-colors"
                 aria-label="Close chat"
               >
                 <X className="w-5 h-5" />
@@ -251,7 +248,7 @@ export function ChatWidget() {
             </div>
 
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background scroll-smooth">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-canvas scroll-smooth">
               {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
@@ -267,13 +264,13 @@ export function ChatWidget() {
                     <div
                       className={`px-4 py-2.5 ${
                         message.sender === 'user'
-                          ? 'bg-primary text-primary-foreground rounded-2xl rounded-br-md'
-                          : 'bg-muted text-foreground rounded-2xl rounded-bl-md'
+                          ? 'bg-accent text-on-accent rounded-2xl rounded-br-md'
+                          : 'bg-panel text-ink rounded-2xl rounded-bl-md'
                       }`}
                     >
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
                     </div>
-                    <span className="text-[10px] text-muted-foreground mt-1 px-1">
+                    <span className="text-[10px] text-muted mt-1 px-1">
                       {formatTime(message.timestamp)}
                     </span>
                   </div>
@@ -289,11 +286,11 @@ export function ChatWidget() {
                     exit={{ opacity: 0, y: -10 }}
                     className="flex justify-start"
                   >
-                    <div className="bg-muted px-4 py-3 rounded-2xl rounded-bl-md">
+                    <div className="bg-panel px-4 py-3 rounded-2xl rounded-bl-md">
                       <div className="flex gap-1.5 items-center">
-                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.6s' }} />
-                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.6s' }} />
-                        <span className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.6s' }} />
+                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.6s' }} />
+                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.6s' }} />
+                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.6s' }} />
                       </div>
                     </div>
                   </motion.div>
@@ -311,7 +308,7 @@ export function ChatWidget() {
                     <button
                       key={suggestion}
                       onClick={() => handleSend(suggestion)}
-                      className="text-xs px-3 py-1.5 bg-muted hover:bg-muted/80 text-foreground rounded-full transition-colors border border-border/50"
+                      className="text-xs px-3 py-1.5 bg-panel hover:bg-panel/80 text-ink rounded-full transition-colors border border-line/50"
                     >
                       {suggestion}
                     </button>
@@ -321,7 +318,7 @@ export function ChatWidget() {
             )}
 
             {/* Input Area */}
-            <div className="p-3 border-t border-border bg-card">
+            <div className="p-3 border-t border-line bg-panel">
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
@@ -331,18 +328,18 @@ export function ChatWidget() {
                   onKeyDown={handleKeyDown}
                   placeholder="Ask about projects, skills, experience..."
                   disabled={isTyping}
-                  className="flex-1 px-4 py-2.5 bg-muted text-foreground rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder:text-muted-foreground disabled:opacity-50 transition-all"
+                  className="flex-1 px-4 py-2.5 bg-panel text-ink rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 placeholder:text-muted disabled:opacity-50 transition-all"
                 />
                 <button
                   onClick={() => handleSend()}
                   disabled={!inputValue.trim() || isTyping}
-                  className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+                  className="w-10 h-10 rounded-full bg-accent text-on-accent flex items-center justify-center hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
                   aria-label="Send message"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-[10px] text-muted-foreground text-center mt-2">
+              <p className="text-[10px] text-muted text-center mt-2">
                 Powered by AI • Portfolio questions only
               </p>
             </div>

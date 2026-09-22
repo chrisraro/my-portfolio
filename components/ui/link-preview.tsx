@@ -198,19 +198,19 @@ export function LinkPreview({ url, children, className = '', fallbackImage }: Li
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: position === 'top' ? 10 : -10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className={`absolute z-50 w-80 bg-background border border-border rounded-lg shadow-lg overflow-hidden pointer-events-none ${
+            className={`absolute z-50 w-80 bg-canvas border border-line rounded-lg shadow-lg overflow-hidden pointer-events-none ${
               position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
             } left-1/2 -translate-x-1/2`}
             style={{ maxWidth: '320px' }}
           >
             {/* Screenshot or Loading Skeleton */}
-            <div className="relative w-full h-44 bg-muted">
+            <div className="relative w-full h-44 bg-panel">
               {previewData.loading ? (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-full h-full animate-pulse bg-muted">
+                  <div className="w-full h-full animate-pulse bg-panel">
                     <div className="flex items-center justify-center h-full">
                       <svg
-                        className="w-8 h-8 text-muted-foreground/50 animate-spin"
+                        className="w-8 h-8 text-muted/50 animate-spin"
                         fill="none"
                         viewBox="0 0 24 24"
                       >
@@ -241,8 +241,8 @@ export function LinkPreview({ url, children, className = '', fallbackImage }: Li
             </div>
             
             {/* Domain name */}
-            <div className="px-3 py-2 border-t border-border bg-muted/50">
-              <p className="text-xs text-muted-foreground truncate flex items-center gap-1.5">
+            <div className="px-3 py-2 border-t border-line bg-panel/50">
+              <p className="text-xs text-muted truncate flex items-center gap-1.5">
                 <svg
                   className="w-3 h-3 flex-shrink-0"
                   fill="none"

@@ -90,8 +90,8 @@ export function ContactSection() {
         viewport={{ once: true }}
         className="text-center mb-8"
       >
-        <h2 className="font-display text-2xl font-bold tracking-tight mb-3 text-foreground">Get In Touch</h2>
-        <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+        <h2 className="font-display text-2xl font-bold tracking-tight mb-3 text-ink">Get In Touch</h2>
+        <p className="text-base text-muted max-w-2xl mx-auto">
           I&apos;m always interested in new opportunities and exciting projects. Feel free to reach out through my social media or the contact form.
         </p>
       </motion.div>
@@ -106,33 +106,33 @@ export function ContactSection() {
           className="space-y-6"
         >
           <div>
-            <h3 className="text-xl font-bold mb-4 text-foreground">Let&apos;s Connect</h3>
-            <p className="text-muted-foreground mb-6">
+            <h3 className="text-xl font-bold mb-4 text-ink">Let&apos;s Connect</h3>
+            <p className="text-muted mb-6">
               I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
             </p>
           </div>
 
           {/* Contact Details */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-4 p-4 bg-muted rounded-lg">
-              <Mail className="h-5 w-5 text-primary" />
+            <div className="flex items-center space-x-4 p-4 bg-panel rounded-lg">
+              <Mail className="h-5 w-5 text-accent" />
               <div>
-                <p className="font-medium text-foreground text-sm">Email</p>
-                <p className="text-muted-foreground text-sm">{contactInfo.email}</p>
+                <p className="font-medium text-ink text-sm">Email</p>
+                <p className="text-muted text-sm">{contactInfo.email}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4 p-4 bg-muted rounded-lg">
-              <MapPin className="h-5 w-5 text-primary" />
+            <div className="flex items-center space-x-4 p-4 bg-panel rounded-lg">
+              <MapPin className="h-5 w-5 text-accent" />
               <div>
-                <p className="font-medium text-foreground text-sm">Location</p>
-                <p className="text-muted-foreground text-sm">{contactInfo.location}</p>
+                <p className="font-medium text-ink text-sm">Location</p>
+                <p className="text-muted text-sm">{contactInfo.location}</p>
               </div>
             </div>
           </div>
 
           {/* Social Links */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">Follow Me</h4>
+            <h4 className="text-sm font-semibold mb-4 text-ink">Follow Me</h4>
             <div className="flex space-x-3">
               {contactInfo.socialLinks.map((social) => {
                 const Icon = socialIcons[social.icon as keyof typeof socialIcons]
@@ -145,10 +145,10 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-3 bg-muted hover:bg-accent rounded-full transition-colors"
+                    className="p-3 bg-panel hover:bg-line-strong rounded-full transition-colors"
                     aria-label={social.name}
                   >
-                    <Icon className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
+                    <Icon className="h-5 w-5 text-muted hover:text-ink transition-colors" />
                   </motion.a>
                 )
               })}
@@ -165,7 +165,7 @@ export function ContactSection() {
         >
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-ink mb-2">
                 Name
               </label>
               <input
@@ -177,13 +177,13 @@ export function ContactSection() {
                 required
                 maxLength={100}
                 autoComplete="name"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors placeholder:text-muted-foreground"
+                className="w-full px-4 py-3 border border-line rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent bg-canvas text-ink transition-colors placeholder:text-muted"
                 placeholder="Your name"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-ink mb-2">
                 Email
               </label>
               <input
@@ -195,13 +195,13 @@ export function ContactSection() {
                 required
                 maxLength={254}
                 autoComplete="email"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors placeholder:text-muted-foreground"
+                className="w-full px-4 py-3 border border-line rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent bg-canvas text-ink transition-colors placeholder:text-muted"
                 placeholder="your.email@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+              <label htmlFor="message" className="block text-sm font-medium text-ink mb-2">
                 Message
               </label>
               <textarea
@@ -212,7 +212,7 @@ export function ContactSection() {
                 required
                 maxLength={5000}
                 rows={5}
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-foreground transition-colors resize-none placeholder:text-muted-foreground"
+                className="w-full px-4 py-3 border border-line rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent bg-canvas text-ink transition-colors resize-none placeholder:text-muted"
                 placeholder="Tell me about your project..."
               />
             </div>
@@ -222,11 +222,11 @@ export function ContactSection() {
               disabled={isSubmitting}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-primary text-primary-foreground font-medium py-3 px-6 rounded-lg transition-all duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-accent text-on-accent font-medium py-3 px-6 rounded-lg transition-all duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center space-x-2">
-                  <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-on-accent border-t-transparent rounded-full animate-spin" />
                   <span>Sending...</span>
                 </div>
               ) : (

@@ -27,7 +27,7 @@ export default function ProjectsPage() {
     <div className="max-w-5xl mx-auto px-6 py-20 md:py-28">
       <p className="eyebrow mb-2">{'// portfolio'}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">All Projects</h1>
-      <p className="text-muted-foreground mb-8">Products I own, custom systems, and client work</p>
+      <p className="text-muted mb-8">Products I own, custom systems, and client work</p>
 
       <div className="flex flex-wrap gap-2 mb-8">
         {bands.map((band) => (
@@ -37,8 +37,8 @@ export default function ProjectsPage() {
             aria-pressed={selectedBand === band}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               selectedBand === band
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-foreground border border-border hover:bg-muted/80"
+                ? "bg-accent text-on-accent"
+                : "bg-panel text-ink border border-line hover:bg-panel/80"
             }`}
           >
             {band}
@@ -61,7 +61,7 @@ export default function ProjectsPage() {
       </motion.div>
 
       {filteredProjects.length === 0 && (
-        <p className="text-center text-muted-foreground py-10">
+        <p className="text-center text-muted py-10">
           No projects in this group.
         </p>
       )}
