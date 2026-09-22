@@ -73,8 +73,15 @@
 		letter-spacing: -0.02em;
 		font-weight: 600;
 	}
-	/* Recursive is one family; its MONO axis is the monospace voice. */
-	.font-mono { font-variation-settings: 'MONO' 1; }
+	/*
+	 * Recursive is one family; its MONO axis is the monospace voice. Every
+	 * numeral in this design — proof band, counts, dates — is set in mono, so
+	 * making mono tabular satisfies the one-grid rule everywhere at once.
+	 */
+	.font-mono {
+		font-variation-settings: 'MONO' 1;
+		font-variant-numeric: tabular-nums;
+	}
 	.eyebrow {
 		font-family: var(--font-sans), ui-monospace, monospace;
 		font-variation-settings: 'MONO' 1;
