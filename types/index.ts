@@ -19,6 +19,10 @@ export type ProjectStatus =
   | 'ua-gated'
   | 'internal'
 
+// What a visitor sees. Five data statuses collapse to four: `ua-gated` sites are
+// live in any browser, and only the preview mechanism needs the distinction.
+export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal'
+
 export interface Project {
   id: string;
   slug: string;
