@@ -30,9 +30,6 @@ module.exports = {
         // Same family as sans: globals.css adds font-variation-settings 'MONO' 1
         // to .font-mono, which is what makes Recursive monospaced.
         mono: ['var(--font-sans)', 'ui-monospace', 'monospace'],
-        // Temporary alias so legacy `font-display` headings render in Recursive
-        // until their sections are replaced. Removed in Task 13.
-        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         sm: 'calc(var(--radius) - 4px)',

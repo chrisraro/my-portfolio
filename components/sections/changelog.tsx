@@ -9,7 +9,7 @@ function Group({ label, entries }: { label: string; entries: TimelineEntry[] }) 
       <h3 className="mb-4 font-mono text-xs font-medium uppercase tracking-[0.1em] text-accent">{label}</h3>
       <ol className="border-l border-line">
         {entries.map((entry) => (
-          <li key={`${entry.title}-${entry.subtitle}`} className="relative pb-6 pl-5 last:pb-0">
+          <li key={`${entry.title}-${entry.subtitle}-${entry.sortKey}`} className="relative pb-6 pl-5 last:pb-0">
             <span aria-hidden="true" className="absolute -left-[3.5px] top-2 h-1.5 w-1.5 rounded-full bg-line-strong" />
             <p className="font-mono text-xs text-muted">{entry.date}</p>
             <p className="mt-1 font-medium text-ink">{entry.title}</p>

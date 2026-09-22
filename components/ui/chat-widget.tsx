@@ -208,13 +208,15 @@ export function ChatWidget() {
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] sm:max-w-[380px] h-[520px] max-h-[calc(100vh-3rem)] bg-panel border border-line rounded-lg shadow-2xl flex flex-col overflow-hidden"
+            role="dialog"
+            aria-labelledby="chat-title"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-3">
               <div className="flex items-center gap-3">
                 <span aria-hidden="true" className="live-pulse relative h-2 w-2 rounded-full bg-live" />
                 <div>
-                  <h3 className="font-mono text-sm text-ink">~/ask chunks</h3>
+                  <h3 id="chat-title" className="font-mono text-sm text-ink">~/ask chunks</h3>
                   <p className="font-mono text-xs text-muted">AI assistant · answers about my work</p>
                 </div>
               </div>

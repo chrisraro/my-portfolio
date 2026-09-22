@@ -87,8 +87,8 @@ public/assets/        images/{about,gallery,projects}, resume/
 ## Editing Content
 
 All content lives in [`lib/data.ts`](lib/data.ts) — `projects`, `skills`,
-`experience`, `education`, `recommendations`, `galleryImages`, `achievements`,
-`socialLinks`, `contactInfo`, `navigationItems`. Components never hardcode copy.
+`experience`, `education`, `recommendations`, `galleryImages`, `socialLinks`,
+`contactInfo`, `navigationItems`. Components never hardcode copy.
 New shapes get an interface in [`types/index.ts`](types/index.ts).
 
 The chat assistant builds its system prompt from `lib/data.ts` at module load,

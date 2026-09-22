@@ -112,6 +112,7 @@ export function ContactConsole() {
                 name="name"
                 type="text"
                 required
+                maxLength={100}
                 autoComplete="name"
                 value={formData.name}
                 onChange={handleChange}
@@ -127,6 +128,7 @@ export function ContactConsole() {
                 name="email"
                 type="email"
                 required
+                maxLength={254}
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -142,6 +144,7 @@ export function ContactConsole() {
               id="contact-message"
               name="message"
               required
+              maxLength={5000}
               rows={5}
               value={formData.message}
               onChange={handleChange}

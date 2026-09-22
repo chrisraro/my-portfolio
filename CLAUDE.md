@@ -23,10 +23,11 @@ Both scripts drive system Chrome/Edge via hardcoded Windows paths (`puppeteer-co
 
 ## Testing
 
-Content-invariant tests live in `tests/content/` and run under Vitest. They assert
-the facts the site claims: the project inventory and its bands, the hero proof
-band's counts, testimonial attachment, experience ordering, and that removed
-content stays removed. There are no component or E2E tests.
+Tests live in `tests/` and run under Vitest. `tests/content/` asserts the facts the
+site claims (inventory, bands, proof band, positioning, testimonials, ordering).
+`tests/design/` asserts design invariants (token contrast, no legacy tokens, client
+boundary, nav anchors). `tests/components/` renders server components with
+`react-dom/server` and checks their markup. There are no E2E tests.
 
 CI (`.github/workflows/ci.yml`) runs type-check, lint, test, and build on push and
 PR to `main`. Run all four locally before committing; they must pass with no
@@ -39,12 +40,14 @@ app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page
-components/sections/ Home page sections (hero, about, works, gallery, contact, …)
-components/ui/       Reusable primitives (project-card, reveal, chat-widget, toaster, …)
-lib/data.ts          Single source of truth for ALL portfolio content
+components/          top-bar.tsx, footer.tsx, theme-provider.tsx
+components/sections/ Homepage sections: hero, products, systems, field-log, changelog, stack, contact-console
+components/ui/       Primitives: status-badge, board-row, systems-board, board-filter, product-panel, proof-band, reveal, chat-widget, toaster, image-lightbox
+lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
-lib/dates.ts         Parses human date ranges into sortable timestamps
-lib/timeline.ts      Pure buildTimeline() the experience section renders
+lib/site-metadata.ts Builds page metadata from heroContent
+lib/board.ts         Board grouping and the /projects ?band= parameter
+lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
 lib/utils.ts         cn(), formatDate, debounce, throttle, extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
 tests/content/       Vitest content invariants
@@ -56,8 +59,16 @@ public/assets/       images/{about,gallery,projects}, resume/
 
 Never hardcode portfolio content in components. Add or edit the typed arrays in
 `lib/data.ts` (`projects`, `skills`, `experience`, `education`, `recommendations`,
-`galleryImages`, `achievements`, `socialLinks`, `contactInfo`, `navigationItems`)
-and add the matching interface in `types/index.ts` if it's new.
+`galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
+`availability`, `resumeUrl`, `sectionContent`, `projectsPageContent`,
+`paymentGateways`, `galleryContent`) and add the matching interface in
+`types/index.ts` if it's new.
+
+What counts as content: facts about Christian and his work, and every section
+heading and eyebrow — those live in `lib/data.ts`. Control and group labels
+that belong to the interface itself ("Start a project", "View work", "All",
+"Work" / "Education", form field labels) are UI chrome and may live in the
+component.
 
 `lib/chat-context.ts` derives the AI assistant's entire system prompt from
 `lib/data.ts`. Adding a project reaches the chatbot automatically. Do not
@@ -87,19 +98,37 @@ this; keep it that way.
 
 ## Styling
 
-- Colors are oklch CSS variables in `app/globals.css` (`:root` + `.dark`), exposed
-  as Tailwind tokens in `tailwind.config.js`. Use `bg-background`, `text-muted-foreground`,
-  `border-border` — never raw hex or `dark:` color pairs.
-- Dark mode is class-based via next-themes; both themes must be defined as variables.
-- Shared utilities: `.eyebrow`, `.text-fluid-h1`, `.text-fluid-h2`, `.font-display` (Fraunces).
-- Section headings follow: `<p className="eyebrow">{'// label'}</p>` + `font-display` `<h2>`.
+- Visual authority is `DESIGN.md` (B3 Signal), with the homepage's direction
+  contract in `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
+- Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
+  `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
+  them and checks WCAG contrast in both themes; keep the format exact.
+- Tailwind colour keys: `canvas` (page), `panel`, `ink`, `muted`, `muted-strong`,
+  `line`, `line-strong`, `accent`, `on-accent`, `live`, `status-early`,
+  `status-private`, `status-internal`. Never raw hex, never `dark:` colour pairs.
+- **Green (`live`) means a live system and nothing else.** Brand and availability
+  use `accent`.
+- **Status is never colour alone.** Render it only through `StatusBadge`, which
+  pairs a glyph shape with a text label.
+- Type: one variable family, Recursive, via `next/font`. `font-sans` is its
+  linear sans; `font-mono` is the same family with its MONO axis on. Never add a
+  second typeface. Numerals use `tabular-nums`. Utilities: `.eyebrow`,
+  `.text-fluid-h1`, `.text-fluid-h2`.
+- One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
+- Section headings: `<p className="eyebrow">{sectionContent.x.eyebrow}</p>` then an
+  `<h2 className="text-fluid-h2">`. Copy lives in `lib/data.ts`.
+- The live pulse (`.live-pulse`) runs twice and stops, and is removed under
+  reduced motion. No continuous animation anywhere (WCAG 2.2.2).
 
 ## Client/Server Boundary
 
-Almost everything is `'use client'` because of framer-motion and hooks. Only
-`app/layout.tsx` and `components/footer.tsx` are server components —
-`app/projects/page.tsx` is a client component; it filters by band with `useState`.
-Add `'use client'` to any component using motion, state, or `next-themes`.
+Components are server components by default. Only these are client components:
+`components/top-bar.tsx` (theme toggle), `components/sections/contact-console.tsx`
+(form), `components/ui/chat-widget.tsx`, `components/ui/image-lightbox.tsx`,
+`components/ui/reveal.tsx`, `components/ui/toaster.tsx` and
+`components/theme-provider.tsx`. A server component may render a client one as a
+child — `FieldLog` renders `ImageLightbox` this way.
+`tests/design/client-boundary.test.ts` keeps the count under 10; do not raise it.
 
 ## Animation
 
