@@ -70,6 +70,39 @@ describe('Products heading', () => {
   })
 })
 
+describe('Product panels', () => {
+  const html = renderToStaticMarkup(<Products />)
+  const products = projects.filter((p) => p.band === 'Products')
+  const panels = html.match(/<article[\s\S]*?<\/article>/g) ?? []
+
+  it('stacks the panels instead of laying out a grid of screenshot cards', () => {
+    expect(panels).toHaveLength(products.length)
+    expect(html).not.toContain('md:grid-cols-3')
+  })
+
+  it('leads each panel with its name, what it does and its status, before any screenshot', () => {
+    products.forEach((project, i) => {
+      const panel = panels[i]
+      const at = (needle: string) => panel.indexOf(needle)
+      expect(at(`>${project.title}</h3>`)).toBeGreaterThan(-1)
+      expect(at(`>${project.summary}<`)).toBeGreaterThan(at(`>${project.title}</h3>`))
+      expect(at('data-status=')).toBeGreaterThan(-1)
+      expect(at(`>${project.description.slice(0, 40)}`)).toBeGreaterThan(at(`>${project.summary}<`))
+      if (project.image) {
+        expect(at('<img')).toBeGreaterThan(at(`>${project.description.slice(0, 40)}`))
+        expect(at('<img')).toBeGreaterThan(at('data-status='))
+      }
+    })
+  })
+
+  it('keeps the screenshot small and gives it a meaningful alt', () => {
+    for (const panel of panels) {
+      expect(panel).toMatch(/<img[^>]*alt="Screenshot of [^"]+"/)
+      expect(panel).toMatch(/sizes="[^"]*240px/)
+    }
+  })
+})
+
 describe('closing sections', () => {
   it('give Changelog and Stack the page’s 8px panel', () => {
     expect(renderToStaticMarkup(<Changelog />)).toContain('rounded-lg border border-line bg-panel')

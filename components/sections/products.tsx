@@ -16,7 +16,8 @@ export function Products() {
           products · {products.length}
         </span>
       </h2>
-      <div className="grid gap-5 md:grid-cols-3">
+      {/* Stacked, full-width panels: a list of running products, not a grid of screenshot cards. */}
+      <div className="grid gap-4">
         {products.map((project) => (
           <ProductPanel key={project.id} project={project} />
         ))}

@@ -1,45 +1,35 @@
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import { StatusBadge } from '@/components/ui/status-badge'
-import { extractDomain } from '@/lib/utils'
+import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
+// A product is a running system first and a picture second: the panel leads
+// with its name, what it does and its status, then the detail and the link.
+// The screenshot is a small supporting inset, never the panel's headline.
 export function ProductPanel({ project }: { project: Project }) {
   const href = project.links.live
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-lg border border-line bg-panel">
-      <div className="relative aspect-[16/10] border-b border-line bg-canvas">
-        {/*
-          The screenshot is decorative (the heading names it) and, when there is
-          a live site, a pointer shortcut to it. It is kept out of the tab order
-          and the accessibility tree: the domain link below is the real link.
-        */}
-        {project.image && href ? (
-          <a href={href} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="absolute inset-0">
-            <Image src={project.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover object-top" />
-          </a>
-        ) : project.image ? (
-          <Image src={project.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover object-top" />
-        ) : (
-          <div className="flex h-full items-center justify-center font-mono text-sm text-muted">
-            {project.title}
-          </div>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg font-semibold text-ink">{project.title}</h3>
+    <article
+      className={cn(
+        'grid gap-5 rounded-lg border border-line bg-panel p-5 md:p-6',
+        project.image && 'sm:grid-cols-[1fr_12rem] sm:gap-8 md:grid-cols-[1fr_15rem]',
+      )}
+    >
+      <div className="flex min-w-0 flex-col">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <h3 className="text-xl font-semibold text-ink">{project.title}</h3>
           <StatusBadge status={project.status} />
         </div>
-        <p className="text-sm leading-relaxed text-muted-strong">{project.description}</p>
-        <p className="font-mono text-xs text-muted">{project.technologies.slice(0, 4).join(' · ')}</p>
+        <p className="mt-1.5 text-base text-ink">{project.summary}</p>
+        <p className="mt-3 max-w-[65ch] text-sm leading-relaxed text-muted-strong">{project.description}</p>
         {href && (
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-auto inline-flex min-h-[32px] items-center gap-1.5 font-mono text-sm text-accent hover:underline"
+            className="mt-4 inline-flex min-h-[32px] items-center gap-1.5 self-start font-mono text-sm text-accent hover:underline sm:mt-auto sm:pt-4"
           >
             {extractDomain(href)}
             <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
@@ -47,6 +37,17 @@ export function ProductPanel({ project }: { project: Project }) {
           </a>
         )}
       </div>
+      {project.image && (
+        <div className="relative aspect-[16/10] w-full max-w-[14rem] self-start overflow-hidden rounded border border-line bg-canvas sm:max-w-none">
+          <Image
+            src={project.image}
+            alt={`Screenshot of ${href ? extractDomain(href) : project.title}`}
+            fill
+            sizes="(min-width: 768px) 240px, (min-width: 640px) 192px, 224px"
+            className="object-cover object-top"
+          />
+        </div>
+      )}
     </article>
   )
 }
