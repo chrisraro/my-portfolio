@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Hero } from '@/components/sections/hero'
-import { WorksSection } from '@/components/sections/works-section'
+import { Products } from '@/components/sections/products'
+import { Systems } from '@/components/sections/systems'
 import { GallerySection } from '@/components/sections/gallery-section'
 import { RecommendationsSection } from '@/components/sections/recommendations-section'
 import { ExperienceSection } from '@/components/sections/experience-section'
@@ -18,9 +19,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <LegacySlot>
-        <WorksSection />
-      </LegacySlot>
+      <Products />
+      <Systems />
       <LegacySlot>
         <GallerySection />
         <RecommendationsSection />
