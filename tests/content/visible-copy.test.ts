@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { OFFLINE_REPLY } from '@/lib/chat-context'
-import { galleryImages, projects, projectsPageContent } from '@/lib/data'
+import { galleryImages, heroContent, projects, projectsPageContent } from '@/lib/data'
 import { buildProjectsTitle, buildSiteMetadata } from '@/lib/site-metadata'
 
-// House style: no em-dash in copy a visitor reads. The hero lede is not
-// covered here: its wording awaits Christian's decision.
+// House style: no em-dash in copy a visitor reads.
 const EM_DASH = '—'
 
 describe('visible copy', () => {
-  it('uses no em-dash in captions, descriptions, the offline reply or titles', () => {
+  it('uses no em-dash in the hero, captions, descriptions, the offline reply or titles', () => {
     const surfaces = [
+      heroContent.lede,
+      heroContent.specialism,
       ...galleryImages.map((g) => g.caption),
       ...projects.map((p) => p.description),
       projectsPageContent.description,

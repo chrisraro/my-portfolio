@@ -1,4 +1,4 @@
-import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem } from '@/types'
+import { Project, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
 
 // The four gateways actually integrated across the WooCommerce projects. The
 // hero proof band cites this count and a test enforces the match — an early
@@ -10,19 +10,38 @@ export const paymentGateways: readonly string[] = [
   'Xendit',
 ]
 
-// Positioning stays broad, so the entire differentiation burden sits on these
-// claims. Every one is checkable against the data below. No years-of-experience
-// figure is claimed; the dated timeline carries that.
+// How the specialism line names each sector: plural, as a buyer would say it.
+const sectorLabels: Record<ProjectSector, string> = {
+  hotel: 'hotels',
+  tours: 'tours',
+  restaurant: 'restaurants',
+  'review-centre': 'review centres',
+  education: 'education',
+  'real-estate': 'real estate',
+  product: 'products',
+  'internal-tool': 'internal tools',
+}
+
+// The first viewport names the verticals a hospitality owner is looking for.
+// Every claim is checkable against the data below. No years-of-experience
+// figure is claimed; the dated timeline carries that. The lede says "with
+// online booking and payments where they need them" rather than "booking and
+// payment websites": Graceland has neither, and the lede must not overclaim.
 export const heroContent = {
   name: 'Christian Raro',
   title: 'Full-stack developer',
   location: 'Naga City',
-  lede: 'I build products, WordPress platforms, and the systems between them — from Naga City, for clients anywhere.',
+  lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
   // reading it eagerly here would hit the temporal dead zone at module load.
+  // The count is the Sites band; the list is its distinct sectors in
+  // hospitality-first order, capped at four so the line stays one line.
   get specialism(): string {
-    const sites = projects.filter((p) => p.band === 'Sites').length
-    return `WordPress specialist · ${sites} production sites · WooCommerce`
+    const sites = projects.filter((p) => p.band === 'Sites')
+    const sectors = SECTOR_ORDER.filter((sector) => sites.some((p) => p.sector === sector))
+      .slice(0, 4)
+      .map((sector) => sectorLabels[sector])
+    return `${sites.length} live sites · ${sectors.join(', ')}`
   },
   // Skill ids for the hero chips; tests/content/positioning.test.ts checks each exists.
   stack: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
@@ -46,6 +65,7 @@ export const projects: Project[] = [
     title: 'Iskotify',
     description: 'Scholarship and exam-prep platform for Filipino students: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw."',
     band: 'Products',
+    sector: 'product',
     image: '/assets/images/projects/iskotify.png',
     technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
     links: { live: 'https://iskotify.ph' },
@@ -59,6 +79,7 @@ export const projects: Project[] = [
     title: 'Giya',
     description: 'Receipt-scanning rewards app for Philippine food and retail: customers scan the receipts they already get, earn points at partner venues and redeem real rewards, with business and admin modules behind it.',
     band: 'Products',
+    sector: 'product',
     image: '/assets/images/projects/naga-perks-giya-app.png',
     technologies: ['Next.js', 'Node.js', 'Tailwind CSS', 'Supabase', 'PWA'],
     links: { live: 'https://giya.ph' },
@@ -71,6 +92,7 @@ export const projects: Project[] = [
     title: 'Latag',
     description: 'Offline-first inventory and storefront tool for Philippine ukay-ukay resellers: catalogue every piece once, then share a single link buyers can browse. Free tier with a paid Pro storefront.',
     band: 'Products',
+    sector: 'product',
     image: '/assets/images/projects/latag.png',
     technologies: ['Next.js', 'React', 'Tailwind CSS'],
     links: { live: 'https://latag.vercel.app' },
@@ -85,6 +107,7 @@ export const projects: Project[] = [
     title: 'BeachBus NFC Card System',
     description: 'Internal NFC card system built for BeachBus Palawan, the Palawan shuttle operator whose website I also built.',
     band: 'Custom systems',
+    sector: 'internal-tool',
     image: '',
     technologies: ['NFC'],
     links: {},
@@ -97,6 +120,7 @@ export const projects: Project[] = [
     title: 'OCS WP Control Panel',
     description: 'Internal tool for Online Creative Solutions to manage, secure, and report on client WordPress sites from one dashboard.',
     band: 'Custom systems',
+    sector: 'internal-tool',
     image: '',
     technologies: ['Next.js', 'WordPress'],
     links: { live: 'https://ocs-wp-control.vercel.app' },
@@ -111,6 +135,7 @@ export const projects: Project[] = [
     title: 'Aman Group Web App',
     description: 'Full-stack Next.js app for a real estate company: projects and properties showcase, visit scheduling, loan calculator, and broker referral links.',
     band: 'Applications',
+    sector: 'real-estate',
     image: '/assets/images/projects/aman-webapp.png',
     technologies: ['Next.js', 'React', 'Vercel', 'Supabase', 'Upstash'],
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
@@ -126,6 +151,7 @@ export const projects: Project[] = [
     title: 'Graceland Bicolano Dining',
     description: 'Website for a heritage Bicolano restaurant chain (est. 1976): menu showcase, branch locations, brand story, and promos.',
     band: 'Sites',
+    sector: 'restaurant',
     image: '/assets/images/projects/graceland.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'SEO'],
     links: { live: 'https://graceland.ph' },
@@ -139,6 +165,7 @@ export const projects: Project[] = [
     title: 'El Nido Guide PH',
     description: 'WooCommerce storefront and booking site for an El Nido tour operator, with a custom child theme covering product add-ons, invoice printing, and PayPal and PayMongo payments.',
     band: 'Sites',
+    sector: 'tours',
     image: '/assets/images/projects/elnido.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'PayPal', 'PayMongo'],
     links: { live: 'https://elnidoguide.ph' },
@@ -152,6 +179,7 @@ export const projects: Project[] = [
     title: 'BeachBus Palawan',
     description: 'Website and WooCommerce storefront for a Palawan shuttle operator, selling digital products with integrated payments.',
     band: 'Sites',
+    sector: 'tours',
     image: '/assets/images/projects/beachbus.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'PayPal', 'PayMongo', 'Maya'],
     links: { live: 'https://beachbus.ph' },
@@ -165,6 +193,7 @@ export const projects: Project[] = [
     title: 'Review Masters Bicol',
     description: 'Review centre website with online reservation powered by WooCommerce and an event entry system using QR codes.',
     band: 'Sites',
+    sector: 'review-centre',
     image: '/assets/images/projects/upcat-review-plus.png',
     technologies: ['WordPress', 'WooCommerce', 'QR Code', 'Online Reservation'],
     links: { live: 'https://upcatreviewplus.com' },
@@ -177,6 +206,7 @@ export const projects: Project[] = [
     title: 'ACAD1 Review Center',
     description: 'Entrance-test review centre with nine branches across Luzon: programme tiers and class schedules per branch, plus online reservation with a downpayment through WooCommerce and Xendit.',
     band: 'Sites',
+    sector: 'review-centre',
     image: '/assets/images/projects/acad1.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Xendit'],
     links: { live: 'https://acad1.ph' },
@@ -190,6 +220,7 @@ export const projects: Project[] = [
     title: 'Downtown District Hotel',
     description: 'Hotel website with room booking, amenities showcase, and contact management.',
     band: 'Sites',
+    sector: 'hotel',
     image: '/assets/images/projects/downtown-district-hotel.png',
     technologies: ['WordPress', 'Booking System'],
     links: { live: 'https://downtowndistricthotel.ph' },
@@ -202,6 +233,7 @@ export const projects: Project[] = [
     title: 'Azalea Baguio',
     description: 'Production website for Azalea Hotels & Residences Baguio: rooms and serviced residences, amenities, and seasonal packages for the City of Pines property.',
     band: 'Sites',
+    sector: 'hotel',
     image: '/assets/images/projects/azalea-baguio.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://azaleabaguio.com' },
@@ -214,6 +246,7 @@ export const projects: Project[] = [
     title: 'Azalea Boracay',
     description: 'Production website for Azalea Hotels & Residences Boracay: hotel rooms and serviced holiday apartments a few steps from Station 2.',
     band: 'Sites',
+    sector: 'hotel',
     image: '/assets/images/projects/azalea-boracay.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://azaleaboracay.com' },
@@ -226,6 +259,7 @@ export const projects: Project[] = [
     title: 'AralAbroad',
     description: 'Independent study-abroad guidance for Filipino students: visa steps, real costs in pesos, scholarships, and reviews of the agencies themselves. Built for a site that deliberately is not an agency.',
     band: 'Sites',
+    sector: 'education',
     image: '/assets/images/projects/aralabroad.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://aralabroad.com' },

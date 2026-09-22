@@ -10,6 +10,31 @@ export const BAND_ORDER: readonly ProjectBand[] = [
   'Sites',
 ]
 
+// Who a project was built for. Closed vocabulary; the hero's specialism line
+// names the sectors of the Sites band, and the board sorts client work by it.
+export type ProjectSector =
+  | 'hotel'
+  | 'tours'
+  | 'restaurant'
+  | 'review-centre'
+  | 'education'
+  | 'real-estate'
+  | 'product'
+  | 'internal-tool'
+
+// Hospitality first: the primary buyer is a Philippine tourism or hospitality
+// owner. The last two never occur among client work.
+export const SECTOR_ORDER: readonly ProjectSector[] = [
+  'hotel',
+  'tours',
+  'restaurant',
+  'review-centre',
+  'education',
+  'real-estate',
+  'product',
+  'internal-tool',
+]
+
 // Drives how a project can be previewed. Three of fifteen cannot be embedded
 // live: two reject non-browser user-agents and one sits behind a login.
 export type ProjectStatus =
@@ -29,6 +54,8 @@ export interface Project {
   title: string;
   description: string;
   band: ProjectBand;
+  /** Who it was built for, from what the description already says. */
+  sector: ProjectSector;
   image: string;
   technologies: string[];
   links: {
