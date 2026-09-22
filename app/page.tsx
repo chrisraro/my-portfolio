@@ -2,8 +2,7 @@ import type { ReactNode } from 'react'
 import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
 import { Systems } from '@/components/sections/systems'
-import { GallerySection } from '@/components/sections/gallery-section'
-import { RecommendationsSection } from '@/components/sections/recommendations-section'
+import { FieldLog } from '@/components/sections/field-log'
 import { ExperienceSection } from '@/components/sections/experience-section'
 import { SkillsSection } from '@/components/sections/skills-section'
 import { ContactSection } from '@/components/sections/contact-section'
@@ -21,10 +20,7 @@ export default function HomePage() {
       <Hero />
       <Products />
       <Systems />
-      <LegacySlot>
-        <GallerySection />
-        <RecommendationsSection />
-      </LegacySlot>
+      <FieldLog />
       <LegacySlot>
         <ExperienceSection />
         <SkillsSection />
