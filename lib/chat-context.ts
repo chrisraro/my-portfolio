@@ -149,4 +149,4 @@ export function numberToWords(n: number): string {
 const productCount = projects.filter((p) => p.band === 'Products').length
 const projectCount = projects.length
 
-export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City — ${numberToWords(productCount)} products of his own, ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`
+export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City, with ${numberToWords(productCount)} products of his own and ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`

@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
     
     return NextResponse.json({
-      response: "I apologize, but I'm having trouble connecting right now. In the meantime, you can explore Christian's portfolio directly — check out the Works section for his projects, or use the contact form to reach out. He'd love to hear from you!",
+      response: "I apologize, but I'm having trouble connecting right now. In the meantime, you can explore Christian's portfolio directly. Check out the Work section for his projects, or use the contact form to reach out. He'd love to hear from you!",
       error: true
     })
   }

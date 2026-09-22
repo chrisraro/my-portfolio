@@ -1,10 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion, type Transition } from 'framer-motion'
 import { MessageCircle, X, Send } from 'lucide-react'
 
-// Types
 interface Message {
   id: string
   text: string
@@ -18,69 +18,82 @@ interface ChatResponse {
   error?: boolean
 }
 
+const WELCOME =
+  "I'm Chunks, Christian's portfolio assistant. Ask me about his projects, skills or experience."
+
+// Questions sent as a chat message. "View projects" is a link instead: the
+// answer to it is a page, not a sentence.
+const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contact info']
+
+const CHIP =
+  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 font-mono text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
+
+// One short ease-out fade for everything that enters. Nothing springs or
+// bounces: the widget sits beside the page's CTAs and must not outshout them.
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+/**
+ * A non-modal dialog: the page stays usable behind it, so there is no focus
+ * trap and no aria-modal. Focus moves into the input on open and back to the
+ * launcher on close, and Escape closes it (WCAG 2.4.3, 2.1.1).
+ */
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
-  const [hasShownWelcome, setHasShownWelcome] = useState(false)
   const [showLabel, setShowLabel] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const [hasMounted, setHasMounted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const launcherRef = useRef<HTMLButtonElement>(null)
+  const wasOpen = useRef(false)
+  const reduce = useReducedMotion()
 
-  // Show the label shortly after mount, then hide it again. Mount-only: the
-  // widget always starts closed, so there is nothing to guard against here.
+  const fade: Transition = reduce ? { duration: 0 } : { duration: 0.2, ease: EASE_OUT }
+
+  // Show the label briefly after mount, on wide screens only: below `sm` it
+  // would sit over the page's content with nothing to dismiss it.
   useEffect(() => {
-    const showTimer = setTimeout(() => {
-      setShowLabel(true)
-      setHasMounted(true)
-    }, 500)
-
-    const hideTimer = setTimeout(() => {
-      setShowLabel(false)
-    }, 4500)
-
+    if (!window.matchMedia('(min-width: 640px)').matches) return
+    const showTimer = setTimeout(() => setShowLabel(true), 1200)
+    const hideTimer = setTimeout(() => setShowLabel(false), 5200)
     return () => {
       clearTimeout(showTimer)
       clearTimeout(hideTimer)
     }
   }, [])
 
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [])
-
   useEffect(() => {
-    scrollToBottom()
-  }, [messages, scrollToBottom])
+    messagesEndRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' })
+  }, [messages, isTyping, reduce])
 
+  // Focus follows the dialog: into the input on open, back to the launcher on
+  // close. The launcher remounts in the same commit that closes the dialog, so
+  // its ref is set by the time this effect runs.
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus()
+    if (isOpen) {
+      inputRef.current?.focus()
+    } else if (wasOpen.current) {
+      launcherRef.current?.focus()
     }
-    // Show welcome message when chat opens for the first time. Built here so
-    // its timestamp is the moment the chat actually opened.
-    if (isOpen && !hasShownWelcome) {
-      setMessages([
-        {
-          id: 'welcome',
-          text: "Hey! 👋 I'm Chunks, Christian's portfolio assistant. Ask me about his projects, skills, or experience!",
-          sender: 'bot',
-          timestamp: new Date(),
-        },
-      ])
-      setHasShownWelcome(true)
-    }
-  }, [isOpen, hasShownWelcome])
+    wasOpen.current = isOpen
+  }, [isOpen])
+
+  // The welcome message is built on first open, so its timestamp is the moment
+  // the chat actually opened.
+  useEffect(() => {
+    if (!isOpen) return
+    setMessages((prev) =>
+      prev.length > 0 ? prev : [{ id: 'welcome', text: WELCOME, sender: 'bot', timestamp: new Date() }],
+    )
+  }, [isOpen])
 
   const sendToAPI = async (userMessage: string, messageHistory: Message[]): Promise<string> => {
     try {
-      // Filter out the welcome message and prepare history
       const history = messageHistory
-        .filter(m => m.id !== 'welcome')
-        .map(m => ({ sender: m.sender, text: m.text }))
+        .filter((m) => m.id !== 'welcome')
+        .map((m) => ({ sender: m.sender, text: m.text }))
 
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -96,38 +109,36 @@ export function ChatWidget() {
       return data.response
     } catch (error) {
       console.error('Chat API error:', error)
-      return "I'm having trouble connecting right now. Feel free to explore the portfolio directly or use the contact form to reach Christian!"
+      return "I'm having trouble connecting right now. Explore the portfolio directly, or use the contact form to reach Christian."
     }
   }
 
-  const handleSend = useCallback(async (overrideText?: string) => {
-    const text = overrideText || inputValue.trim()
-    if (!text || isTyping) return
+  const handleSend = useCallback(
+    async (overrideText?: string) => {
+      const text = overrideText || inputValue.trim()
+      if (!text || isTyping) return
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender: 'user',
-      timestamp: new Date(),
-    }
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text,
+        sender: 'user',
+        timestamp: new Date(),
+      }
 
-    const currentMessages = [...messages, userMessage]
-    setMessages(currentMessages)
-    setInputValue('')
-    setIsTyping(true)
+      setMessages([...messages, userMessage])
+      setInputValue('')
+      setIsTyping(true)
 
-    // Call API
-    const response = await sendToAPI(userMessage.text, messages)
+      const response = await sendToAPI(userMessage.text, messages)
 
-    const botMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      text: response,
-      sender: 'bot',
-      timestamp: new Date(),
-    }
-    setMessages(prev => [...prev, botMessage])
-    setIsTyping(false)
-  }, [inputValue, isTyping, messages])
+      setMessages((prev) => [
+        ...prev,
+        { id: (Date.now() + 1).toString(), text: response, sender: 'bot', timestamp: new Date() },
+      ])
+      setIsTyping(false)
+    },
+    [inputValue, isTyping, messages],
+  )
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -136,46 +147,38 @@ export function ChatWidget() {
     }
   }
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    })
+  const handleDialogKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation()
+      setIsOpen(false)
+    }
   }
+
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
   return (
     <>
-      {/* Floating Chat Button with Label */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
-              scale: 1, 
-              opacity: 1,
-              y: hasMounted ? 0 : [0, -12, 0, -6, 0] // Bounce only on first mount
-            }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ 
-              type: 'spring', 
-              stiffness: 260, 
-              damping: 20,
-              y: { duration: 0.6, ease: 'easeOut' }
-            }}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={fade}
+            className="fixed bottom-4 right-4 z-50 flex items-center gap-3 sm:bottom-6 sm:right-6"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {/* Slide-in Label */}
             <AnimatePresence>
               {(showLabel || isHovered) && (
                 <motion.div
-                  initial={{ opacity: 0, x: 20, scale: 0.9 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                  className="cursor-pointer rounded-lg border border-line bg-panel px-4 py-2 shadow-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fade}
+                  aria-hidden="true"
+                  className="hidden cursor-pointer rounded-lg border border-line bg-panel px-4 py-2 shadow-lg sm:block"
                   onClick={() => setIsOpen(true)}
                 >
                   <span className="whitespace-nowrap font-mono text-xs text-ink">Ask Chunks about my work</span>
@@ -183,13 +186,15 @@ export function ChatWidget() {
               )}
             </AnimatePresence>
 
-            {/* Main Chat Button */}
             <button
+              ref={launcherRef}
+              type="button"
               onClick={() => setIsOpen(true)}
-              className="relative flex h-14 w-14 items-center justify-center rounded-lg border border-line-strong bg-panel text-accent shadow-lg transition-colors hover:border-accent"
+              aria-haspopup="dialog"
+              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-accent shadow-lg transition-colors hover:border-accent sm:h-14 sm:w-14"
               aria-label="Open chat"
             >
-              <MessageCircle className="h-6 w-6" aria-hidden="true" />
+              <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
               <span
                 aria-hidden="true"
                 className="live-pulse absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-canvas bg-live"
@@ -199,19 +204,18 @@ export function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* Chat Dialog */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] sm:max-w-[380px] h-[520px] max-h-[calc(100vh-3rem)] bg-panel border border-line rounded-lg shadow-2xl flex flex-col overflow-hidden"
+            initial={{ opacity: 0, y: reduce ? 0 : 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduce ? 0 : 8 }}
+            transition={fade}
+            className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-line bg-panel shadow-2xl sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
             role="dialog"
             aria-labelledby="chat-title"
+            onKeyDown={handleDialogKeyDown}
           >
-            {/* Header */}
             <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-3">
               <div className="flex items-center gap-3">
                 <span aria-hidden="true" className="live-pulse relative h-2 w-2 rounded-full bg-live" />
@@ -221,6 +225,7 @@ export function ChatWidget() {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded text-muted transition-colors hover:text-accent"
                 aria-label="Close chat"
@@ -229,101 +234,96 @@ export function ChatWidget() {
               </button>
             </div>
 
-            {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-canvas scroll-smooth">
-              {messages.map((message, index) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    duration: 0.3, 
-                    delay: index === messages.length - 1 ? 0.1 : 0 
-                  }}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`max-w-[85%] flex flex-col ${message.sender === 'user' ? 'items-end' : 'items-start'}`}>
-                    <div
-                      className={`px-4 py-2.5 ${
-                        message.sender === 'user'
-                          ? 'bg-accent text-on-accent rounded-2xl rounded-br-md'
-                          : 'bg-panel text-ink rounded-2xl rounded-bl-md'
-                      }`}
-                    >
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                    </div>
-                    <span className="text-[10px] text-muted mt-1 px-1">
-                      {formatTime(message.timestamp)}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-              
-              {/* Typing indicator */}
-              <AnimatePresence>
-                {isTyping && (
+            {/*
+              role="log" is a polite live region: each reply is announced as it
+              arrives, and so is the typing line (WCAG 4.1.3).
+            */}
+            <div
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions"
+              aria-label="Conversation"
+              className="flex-1 space-y-4 overflow-y-auto bg-canvas p-4"
+            >
+              {messages.map((message) => {
+                const mine = message.sender === 'user'
+                return (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex justify-start"
+                    key={message.id}
+                    initial={reduce ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={fade}
+                    className={mine ? 'flex flex-col items-end' : 'flex flex-col items-start'}
                   >
-                    <div className="bg-panel px-4 py-3 rounded-2xl rounded-bl-md">
-                      <div className="flex gap-1.5 items-center">
-                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.6s' }} />
-                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.6s' }} />
-                        <span className="w-2 h-2 bg-muted/60 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.6s' }} />
-                      </div>
+                    <p className="mb-1 font-mono text-xs text-muted">
+                      {mine ? 'you' : 'chunks'} · {formatTime(message.timestamp)}
+                    </p>
+                    <div
+                      className={
+                        mine
+                          ? 'max-w-[85%] rounded-lg border border-line-strong bg-line px-3 py-2 text-ink'
+                          : 'max-w-[85%] rounded-lg border border-line bg-panel px-3 py-2 text-ink'
+                      }
+                    >
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.text}</p>
                     </div>
                   </motion.div>
-                )}
-              </AnimatePresence>
-              
+                )
+              })}
+
+              {isTyping && (
+                <div className="flex items-center gap-2 font-mono text-xs text-muted">
+                  <span>chunks is typing</span>
+                  <span aria-hidden="true" className="flex items-center gap-1">
+                    <span className="typing-dot h-1.5 w-1.5 rounded-full bg-muted" />
+                    <span className="typing-dot h-1.5 w-1.5 rounded-full bg-muted [animation-delay:200ms]" />
+                    <span className="typing-dot h-1.5 w-1.5 rounded-full bg-muted [animation-delay:400ms]" />
+                  </span>
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick suggestions (shown when no messages or only welcome) */}
             {messages.length <= 1 && !isTyping && (
-              <div className="px-4 pb-2">
-                <div className="flex flex-wrap gap-2">
-                  {['Tell me about Christian', 'View projects', 'Skills & tech stack', 'Contact info'].map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      onClick={() => handleSend(suggestion)}
-                      className="text-xs px-3 py-1.5 bg-panel hover:bg-panel/80 text-ink rounded-full transition-colors border border-line/50"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2 bg-canvas px-4 pb-3">
+                {SUGGESTIONS.map((suggestion) => (
+                  <button key={suggestion} type="button" onClick={() => handleSend(suggestion)} className={CHIP}>
+                    {suggestion}
+                  </button>
+                ))}
+                <Link href="/projects" onClick={() => setIsOpen(false)} className={CHIP}>
+                  View projects
+                </Link>
               </div>
             )}
 
-            {/* Input Area */}
-            <div className="p-3 border-t border-line bg-panel">
+            <div className="border-t border-line bg-panel p-3">
               <div className="flex items-center gap-2">
+                <label htmlFor="chat-input" className="sr-only">
+                  Message Chunks
+                </label>
                 <input
+                  id="chat-input"
                   ref={inputRef}
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask about projects, skills, experience..."
-                  disabled={isTyping}
-                  className="flex-1 px-4 py-2.5 bg-panel text-ink rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 placeholder:text-muted disabled:opacity-50 transition-all"
+                  placeholder="Ask about projects, skills, experience"
+                  className="min-h-[40px] flex-1 rounded border border-line-strong bg-canvas px-3 text-sm text-ink placeholder:text-muted focus-visible:border-accent"
                 />
                 <button
+                  type="button"
                   onClick={() => handleSend()}
                   disabled={!inputValue.trim() || isTyping}
-                  className="w-10 h-10 rounded-full bg-accent text-on-accent flex items-center justify-center hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded bg-accent text-on-accent transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Send message"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
-              <p className="text-[10px] text-muted text-center mt-2">
-                Powered by AI • Portfolio questions only
-              </p>
+              <p className="mt-2 text-center font-mono text-xs text-muted">Powered by AI · portfolio questions only</p>
             </div>
           </motion.div>
         )}

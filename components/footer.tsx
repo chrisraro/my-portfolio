@@ -5,7 +5,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      {/* pb-20 below sm keeps the last row clear of the fixed chat launcher. */}
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 pb-20 pt-8 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:pb-8">
         <p>
           © {new Date().getFullYear()} {heroContent.name}
         </p>
@@ -16,9 +17,10 @@ export function Footer() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[32px] items-center transition-colors hover:text-accent"
+                className="inline-flex min-h-[44px] items-center transition-colors hover:text-accent sm:min-h-[32px]"
               >
                 {link.name}
+                <span className="sr-only">(opens in a new tab)</span>
               </a>
             </li>
           ))}

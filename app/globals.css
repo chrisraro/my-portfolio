@@ -112,6 +112,19 @@
 	animation: live-pulse 2.4s ease-out 2;
 }
 
+/*
+ * Chat typing indicator: three dots fading in turn, opacity only, ease-out.
+ * It exists only while a reply is loading and unmounts with it. Under reduced
+ * motion the rule below collapses it to a static row of dots.
+ */
+@keyframes typing-fade {
+	0%, 100% { opacity: 0.25; }
+	40% { opacity: 1; }
+}
+.typing-dot {
+	animation: typing-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.live-pulse::after { display: none; }
 	*, *::before, *::after {
