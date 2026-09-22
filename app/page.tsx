@@ -1,19 +1,13 @@
-import type { ReactNode } from 'react'
+import { Changelog } from '@/components/sections/changelog'
+import { ContactConsole } from '@/components/sections/contact-console'
+import { FieldLog } from '@/components/sections/field-log'
 import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
-import { Systems } from '@/components/sections/systems'
-import { FieldLog } from '@/components/sections/field-log'
-import { Changelog } from '@/components/sections/changelog'
 import { Stack } from '@/components/sections/stack'
-import { ContactSection } from '@/components/sections/contact-section'
+import { Systems } from '@/components/sections/systems'
 
-// Pre-4.0 sections relied on the old page's max-w-4xl wrapper. Each keeps it
-// until the task that replaces it; new sections manage their own width.
-function LegacySlot({ children }: { children: ReactNode }) {
-  return <div className="mx-auto max-w-4xl px-4 sm:px-6">{children}</div>
-}
-
-// Section order is final (spec §6). Tasks 7–11 each swap one slot.
+// Section order: spec §6. Products lead the work because three products of
+// Christian's own are the differentiator the broad positioning rests on.
 export default function HomePage() {
   return (
     <>
@@ -23,9 +17,7 @@ export default function HomePage() {
       <FieldLog />
       <Changelog />
       <Stack />
-      <LegacySlot>
-        <ContactSection />
-      </LegacySlot>
+      <ContactConsole />
     </>
   )
 }
