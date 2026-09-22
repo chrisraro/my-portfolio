@@ -1,4 +1,5 @@
 import {
+  availability,
   contactInfo,
   education,
   experience,
@@ -67,6 +68,8 @@ export function buildPortfolioContext(): string {
 OWNER INFORMATION:
 - Name: Christian Raro
 - Title: ${heroContent.title}
+- Specialism: ${heroContent.specialism}
+- Availability: ${availability}
 - Location: ${contactInfo.location}
 - Email: ${contactInfo.email}
 - Proof points: ${heroContent.proofPoints.join('. ')}.

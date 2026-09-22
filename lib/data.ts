@@ -1,4 +1,4 @@
-import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, Achievement } from '@/types'
+import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, Achievement, NavigationItem } from '@/types'
 
 // The four gateways actually integrated across the WooCommerce projects. The
 // hero proof band cites this count and a test enforces the match — an early
@@ -11,11 +11,21 @@ export const paymentGateways: readonly string[] = [
 ]
 
 // Positioning stays broad, so the entire differentiation burden sits on these
-// four claims. Every one is checkable against the data below. No
-// years-of-experience figure is claimed; the dated timeline carries that.
+// claims. Every one is checkable against the data below. No years-of-experience
+// figure is claimed; the dated timeline carries that.
 export const heroContent = {
-  title: 'Full-stack web developer',
+  name: 'Christian Raro',
+  title: 'Full-stack developer',
   location: 'Naga City',
+  lede: 'I build products, WordPress platforms, and the systems between them — from Naga City, for clients anywhere.',
+  // A getter, not a value: `projects` is declared further down this file, and
+  // reading it eagerly here would hit the temporal dead zone at module load.
+  get specialism(): string {
+    const sites = projects.filter((p) => p.band === 'Sites').length
+    return `WordPress specialist · ${sites} production sites · WooCommerce`
+  },
+  // Skill ids for the hero chips; tests/content/positioning.test.ts checks each exists.
+  stack: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
   proofPoints: [
     'Three products of my own',
     'Fifteen projects shipped',
@@ -23,6 +33,10 @@ export const heroContent = {
     'One NFC card system',
   ],
 }
+
+export const availability = 'Open to freelance and full-time roles'
+
+export const resumeUrl = '/assets/resume/Raro, Christian F - Resume (DEV).pdf'
 
 export const projects: Project[] = [
   // --- Products ------------------------------------------------------------
@@ -288,14 +302,31 @@ export const contactInfo: ContactInfo = {
   socialLinks,
 }
 
-export const navigationItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Works', href: '#works' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Experience', href: '#experience' },
+export const navigationItems: NavigationItem[] = [
+  { label: 'Work', href: '#work' },
+  { label: 'Changelog', href: '#changelog' },
+  { label: 'Stack', href: '#stack' },
   { label: 'Contact', href: '#contact' },
 ]
+
+// Headings for each homepage section. The Field log uses `galleryContent`.
+export const sectionContent = {
+  work: { eyebrow: '// products', title: 'Products of my own' },
+  systems: {
+    eyebrow: '// systems',
+    title: 'Custom systems and client work',
+    cta: 'Browse every project',
+  },
+  changelog: { eyebrow: '// changelog', title: "Where I've worked" },
+  stack: { eyebrow: '// stack', title: 'What I ship with' },
+  contact: { eyebrow: '// contact', title: 'Start a project' },
+}
+
+export const projectsPageContent = {
+  eyebrow: '// all projects',
+  title: 'Everything I have shipped',
+  description: 'Products of my own, custom systems, and client work — each with its live status.',
+}
 
 export const recommendations: Recommendation[] = [
   {
