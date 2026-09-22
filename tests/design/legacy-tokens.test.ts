@@ -11,7 +11,7 @@ const LEGACY = new RegExp(
     'card|card-foreground|popover|popover-foreground|muted-foreground|accent-foreground|border|input)' +
     '(?![\\w-])',
 )
-const LEGACY_VAR = /var\(--(?:background|foreground|primary|primary-rgb|secondary|card|popover|border|input|font-display)\b/
+const LEGACY_VAR = /var\(--(?:background|foreground|primary|primary-rgb|secondary|card|popover|border|input|font-display|font-mono)\b/
 
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
