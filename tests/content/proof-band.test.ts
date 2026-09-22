@@ -27,6 +27,15 @@ describe('hero proof band', () => {
     expect(heroContent.proofPoints[2]).toBe('Four payment gateways')
   })
 
+  // The count above compares two hand-typed values; this is what makes the claim
+  // real. Each gateway must appear on a project that actually integrated it.
+  it('attaches every claimed gateway to a project that used it', () => {
+    const onProjects = projects.flatMap((p) => p.technologies)
+    for (const gateway of paymentGateways) {
+      expect(onProjects, `${gateway} is on no project`).toContain(gateway)
+    }
+  })
+
   it('claims one NFC card system and has the project to back it', () => {
     const nfc = projects.filter((p) => p.technologies.includes('NFC'))
     expect(nfc).toHaveLength(1)
