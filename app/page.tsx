@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-import { HeroSection } from '@/components/sections/hero-section'
-import { AboutSection } from '@/components/sections/about-section'
+import { Hero } from '@/components/sections/hero'
 import { WorksSection } from '@/components/sections/works-section'
 import { GallerySection } from '@/components/sections/gallery-section'
 import { RecommendationsSection } from '@/components/sections/recommendations-section'
@@ -18,10 +17,7 @@ function LegacySlot({ children }: { children: ReactNode }) {
 export default function HomePage() {
   return (
     <>
-      <LegacySlot>
-        <HeroSection />
-        <AboutSection />
-      </LegacySlot>
+      <Hero />
       <LegacySlot>
         <WorksSection />
       </LegacySlot>

@@ -128,10 +128,3 @@ export interface GalleryImage {
   /** Visible caption. This is the proof; it must not hide behind a hover. */
   caption: string;
 }
-
-export interface Achievement {
-  id: number;
-  title: string;
-  description?: string;
-  link?: string;
-}

@@ -1,4 +1,4 @@
-import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, Achievement, NavigationItem } from '@/types'
+import { Project, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem } from '@/types'
 
 // The four gateways actually integrated across the WooCommerce projects. The
 // hero proof band cites this count and a test enforces the match — an early
@@ -404,16 +404,3 @@ export const galleryImages: GalleryImage[] = [
     caption: 'Exploring the Cordillera highlands with my partner, Jewel',
   },
 ]
-
-export const achievements: Achievement[] = [
-  {
-    id: 1,
-    title: "Software Engineer & Frontend Developer",
-    description: "Building modern web experiences"
-  },
-  {
-    id: 2,
-    title: "B.S. Computer Science Graduate",
-    link: "#experience"
-  }
-];
