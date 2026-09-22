@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Recursive } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Navigation } from '@/components/navigation'
+import { TopBar } from '@/components/top-bar'
 import { Footer } from '@/components/footer'
 import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
@@ -33,11 +33,15 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <ToastProvider>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+            >
+              Skip to content
+            </a>
             <div className="min-h-screen bg-canvas text-ink">
-              <Navigation />
-              <main>
-                {children}
-              </main>
+              <TopBar />
+              <main id="main">{children}</main>
               <Footer />
               <ChatWidget />
             </div>
