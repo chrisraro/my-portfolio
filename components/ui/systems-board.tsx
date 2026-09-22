@@ -26,7 +26,7 @@ export function SystemsBoard({ groups, groupHeading: Heading, outOf }: SystemsBo
       <div className={cn(BOARD_COLUMNS, 'border-b border-line py-2.5 font-mono text-xs text-muted')}>
         <span>projects · {count}</span>
         <span className="hidden sm:block">domain</span>
-        <span className="hidden md:block">stack</span>
+        <span className="hidden md:block">what it does</span>
         <span className="justify-self-end">status</span>
       </div>
       {groups.map((group) => {

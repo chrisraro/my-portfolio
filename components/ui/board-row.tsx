@@ -6,9 +6,10 @@ import type { Project } from '@/types'
 // One column system for the header and every row. The status track is a fixed
 // width: an `auto` track sized itself to each row's label ("Live" versus
 // "Early access"), so the domain column started at a different x on each row.
+// The "what it does" track is the widest: it is the column a client reads.
 export const BOARD_COLUMNS =
   'grid grid-cols-[1fr_7.5rem] items-center gap-4 px-4 ' +
-  'sm:grid-cols-[1.2fr_1fr_7.5rem] md:grid-cols-[1.2fr_1fr_1.3fr_7.5rem]'
+  'sm:grid-cols-[1.2fr_1fr_7.5rem] md:grid-cols-[1.1fr_1fr_1.7fr_7.5rem]'
 
 const GRID = cn(BOARD_COLUMNS, 'border-t border-line py-3')
 
@@ -35,14 +36,14 @@ export function BoardRow({ project, showBand = true }: BoardRowProps) {
             />
           )}
         </span>
+        {/* Below md there is no summary column, so what it does sits under the name. */}
+        <span className="mt-0.5 block text-sm text-muted-strong md:hidden">{project.summary}</span>
         {showBand && <span className="block font-mono text-xs text-muted">{project.band}</span>}
       </span>
       <span className="hidden truncate font-mono text-xs text-muted sm:block">
         {href ? extractDomain(href) : 'no public URL'}
       </span>
-      <span className="hidden truncate font-mono text-xs text-muted md:block">
-        {project.technologies.slice(0, 3).join(' · ')}
-      </span>
+      <span className="hidden min-w-0 text-sm leading-snug text-muted-strong md:block">{project.summary}</span>
       <StatusBadge status={project.status} className="justify-self-end" />
     </>
   )

@@ -53,6 +53,12 @@ export interface Project {
   slug: string;
   title: string;
   description: string;
+  /**
+   * What it does, at most 56 characters: "Who it's for · what it does ·
+   * gateways". Written only from `description` and `technologies`; a gateway
+   * is named only when it is in `technologies`. Shown on the board.
+   */
+  summary: string;
   band: ProjectBand;
   /** Who it was built for, from what the description already says. */
   sector: ProjectSector;

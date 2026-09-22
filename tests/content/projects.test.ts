@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
-import { projects } from '@/lib/data'
-import { BAND_ORDER } from '@/types'
+import { paymentGateways, projects } from '@/lib/data'
+import { BAND_ORDER, SECTOR_ORDER } from '@/types'
 
 const REMOVED_IDS = ['azalea-main', 'fish2go', 'online-creative-solutions']
 
@@ -59,6 +59,38 @@ describe('project taxonomy', () => {
       if ('dates' in project) expect(project.dates).not.toBe('')
       if ('contribution' in project) expect(project.contribution).not.toBe('')
     }
+  })
+})
+
+describe('project summaries', () => {
+  const named = (summary: string, gateway: string) => new RegExp(`\\b${gateway}\\b`).test(summary)
+
+  it('gives every project a non-empty summary of at most 56 characters', () => {
+    for (const project of projects) {
+      expect(project.summary.trim(), project.slug).not.toBe('')
+      expect(project.summary.length, project.slug).toBeLessThanOrEqual(56)
+      expect(project.summary, project.slug).not.toContain('—')
+    }
+  })
+
+  it('names a payment gateway only when the project integrates it', () => {
+    for (const project of projects) {
+      for (const gateway of paymentGateways) {
+        if (named(project.summary, gateway)) expect(project.technologies, project.slug).toContain(gateway)
+      }
+    }
+  })
+
+  it('names every gateway a project integrates, so the proof band is visible on the board', () => {
+    for (const project of projects) {
+      for (const gateway of paymentGateways) {
+        if (project.technologies.includes(gateway)) expect(named(project.summary, gateway), project.slug).toBe(true)
+      }
+    }
+  })
+
+  it('gives every project a sector from the closed vocabulary', () => {
+    for (const project of projects) expect(SECTOR_ORDER, project.slug).toContain(project.sector)
   })
 })
 

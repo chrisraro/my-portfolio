@@ -1,15 +1,29 @@
-import { BAND_ORDER, type Project, type ProjectBand } from '@/types'
+import { BAND_ORDER, SECTOR_ORDER, type Project, type ProjectBand } from '@/types'
 
 export interface BoardGroup {
   heading: string
   projects: Project[]
 }
 
+/**
+ * Hospitality first, by SECTOR_ORDER. Stable: projects in the same sector keep
+ * their order in `lib/data.ts`, whose own order a test pins and this leaves alone.
+ */
+export function bySector(projects: Project[]): Project[] {
+  return projects
+    .map((project, index) => ({ project, index }))
+    .sort(
+      (a, b) =>
+        SECTOR_ORDER.indexOf(a.project.sector) - SECTOR_ORDER.indexOf(b.project.sector) || a.index - b.index,
+    )
+    .map(({ project }) => project)
+}
+
 /** One group per band, in the canonical BAND_ORDER, with empty groups dropped. */
 export function groupByBand(projects: Project[]): BoardGroup[] {
   return BAND_ORDER.map((band) => ({
     heading: band,
-    projects: projects.filter((p) => p.band === band),
+    projects: bySector(projects.filter((p) => p.band === band)),
   })).filter((group) => group.projects.length > 0)
 }
 
@@ -19,10 +33,10 @@ export function groupByBand(projects: Project[]): BoardGroup[] {
  */
 export function groupForHomepage(projects: Project[]): BoardGroup[] {
   return [
-    { heading: 'Custom systems', projects: projects.filter((p) => p.band === 'Custom systems') },
+    { heading: 'Custom systems', projects: bySector(projects.filter((p) => p.band === 'Custom systems')) },
     {
       heading: 'Client work',
-      projects: projects.filter((p) => p.band === 'Applications' || p.band === 'Sites'),
+      projects: bySector(projects.filter((p) => p.band === 'Applications' || p.band === 'Sites')),
     },
   ].filter((group) => group.projects.length > 0)
 }

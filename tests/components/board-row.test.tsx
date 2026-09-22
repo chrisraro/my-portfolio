@@ -39,8 +39,19 @@ describe('BoardRow', () => {
   it('shares one fixed-width status column with every other row', () => {
     for (const project of projects) {
       const html = renderToStaticMarkup(<BoardRow project={project} />)
-      expect(html).toContain('md:grid-cols-[1.2fr_1fr_1.3fr_7.5rem]')
+      expect(html).toContain('md:grid-cols-[1.1fr_1fr_1.7fr_7.5rem]')
       expect(html).not.toContain('_auto]')
+    }
+  })
+
+  it('says what each project does in place of its tech stack', () => {
+    for (const project of projects) {
+      const html = renderToStaticMarkup(<BoardRow project={project} />)
+      expect(html).toContain(`>${project.summary}<`)
+      // A one-entry stack ("NFC") can legitimately appear inside the summary.
+      if (project.technologies.length > 1) {
+        expect(html).not.toContain(project.technologies.slice(0, 3).join(' · '))
+      }
     }
   })
 

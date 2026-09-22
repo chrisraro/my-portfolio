@@ -9,9 +9,10 @@ const rest = projects.filter((p) => p.band !== 'Products')
 describe('SystemsBoard', () => {
   it('labels every column it shows, on the rows’ own grid', () => {
     const html = renderToStaticMarkup(<SystemsBoard groups={groupForHomepage(rest)} groupHeading="h3" />)
-    for (const label of ['domain', 'stack', 'status']) expect(html).toContain(`>${label}<`)
+    for (const label of ['domain', 'what it does', 'status']) expect(html).toContain(`>${label}<`)
+    expect(html).not.toContain('>stack<')
     expect(html).toContain(`projects · ${rest.length}`)
-    expect(html).toContain('md:grid-cols-[1.2fr_1fr_1.3fr_7.5rem]')
+    expect(html).toContain('md:grid-cols-[1.1fr_1fr_1.7fr_7.5rem]')
   })
 
   it('shows each row’s band only in a group that mixes bands', () => {
