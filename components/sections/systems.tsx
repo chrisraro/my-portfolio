@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { Reveal } from '@/components/ui/reveal'
 import { SystemsBoard } from '@/components/ui/systems-board'
 import { groupForHomepage } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
 
+// No Reveal here: the board is the page's primary proof, and it must be
+// visible in the server HTML rather than waiting at opacity 0 for hydration.
 export function Systems() {
   const rest = projects.filter((p) => p.band !== 'Products')
 
@@ -13,11 +14,9 @@ export function Systems() {
       <h2 id="systems-title" className="text-fluid-h2 mb-8 text-ink">
         {sectionContent.systems.title}
       </h2>
-      <Reveal>
-        <SystemsBoard groups={groupForHomepage(rest)} label="systems" groupHeading="h3" />
-      </Reveal>
+      <SystemsBoard groups={groupForHomepage(rest)} groupHeading="h3" />
       <p className="mt-5">
-        <Link href="/projects" className="inline-flex min-h-[32px] items-center font-mono text-sm text-accent hover:underline">
+        <Link href="/projects" className="inline-flex min-h-[44px] items-center font-mono text-sm text-accent hover:underline sm:min-h-[32px]">
           {sectionContent.systems.cta} →
         </Link>
       </p>

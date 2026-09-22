@@ -1,7 +1,8 @@
 import { ProductPanel } from '@/components/ui/product-panel'
-import { Reveal } from '@/components/ui/reveal'
 import { projects, sectionContent } from '@/lib/data'
 
+// No Reveal here: the products are primary proof and render visible from the
+// server HTML instead of waiting at opacity 0 for hydration.
 export function Products() {
   const products = projects.filter((p) => p.band === 'Products')
 
@@ -10,13 +11,14 @@ export function Products() {
       <p className="eyebrow mb-3">{sectionContent.work.eyebrow}</p>
       <h2 id="work-title" className="text-fluid-h2 mb-8 text-ink">
         {sectionContent.work.title}
-        <span className="ml-3 font-mono text-base font-normal text-muted">{products.length}</span>
+        {/* The board's "label · count" grammar. Hidden from the heading's name: three panels follow. */}
+        <span aria-hidden="true" className="ml-3 font-mono text-sm font-normal text-muted">
+          products · {products.length}
+        </span>
       </h2>
       <div className="grid gap-5 md:grid-cols-3">
-        {products.map((project, i) => (
-          <Reveal key={project.id} delay={i * 0.06} className="h-full">
-            <ProductPanel project={project} />
-          </Reveal>
+        {products.map((project) => (
+          <ProductPanel key={project.id} project={project} />
         ))}
       </div>
     </section>

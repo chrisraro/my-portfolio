@@ -26,12 +26,15 @@ export function Changelog() {
   const timeline = buildTimeline()
 
   return (
-    <section id="changelog" aria-labelledby="changelog-title" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-20">
+    // Changelog and Stack sit last before the ask. They share the page's 8px
+    // panel language, and a tighter gap between them, so the descent to
+    // Contact reads as one closing run rather than two bare afterthoughts.
+    <section id="changelog" aria-labelledby="changelog-title" className="mx-auto max-w-6xl px-5 pb-12 pt-16 sm:px-8 md:pb-14 md:pt-20">
       <p className="eyebrow mb-3">{sectionContent.changelog.eyebrow}</p>
-      <h2 id="changelog-title" className="text-fluid-h2 mb-10 text-ink">
+      <h2 id="changelog-title" className="text-fluid-h2 mb-8 text-ink">
         {sectionContent.changelog.title}
       </h2>
-      <div className="grid gap-10 md:grid-cols-[2fr_1fr]">
+      <div className="grid gap-10 rounded-lg border border-line bg-panel p-5 sm:p-6 md:grid-cols-[2fr_1fr]">
         <Group label="Work" entries={timeline.filter((e) => e.type === 'work')} />
         <Group label="Education" entries={timeline.filter((e) => e.type === 'education')} />
       </div>

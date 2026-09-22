@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { ProofBand } from '@/components/ui/proof-band'
-import { heroContent, resumeUrl, skills } from '@/lib/data'
+import { availability, heroContent, resumeUrl, skills } from '@/lib/data'
 import { cn } from '@/lib/utils'
 import type { Skill } from '@/types'
 
@@ -18,10 +18,28 @@ export function Hero() {
 
   return (
     <section id="top" aria-labelledby="hero-title" className="border-b border-line">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-10 pt-14 sm:px-8 md:grid-cols-[1fr_auto] md:items-end md:pt-20">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-10 pt-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-end md:pt-20">
         <div>
-          <p className="eyebrow mb-4">
-            {heroContent.name} · {heroContent.location}
+          {/*
+            Below md the portrait shrinks to an avatar beside the name, so the
+            proof band is not pushed under the fold by a 260px photo.
+          */}
+          <div className="mb-4 flex items-center gap-3">
+            <Image
+              src={PORTRAIT}
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded border border-line-strong object-cover md:hidden"
+            />
+            <p className="eyebrow">
+              {heroContent.name} · {heroContent.location}
+            </p>
+          </div>
+          {/* The top bar hides availability below sm; it is stated here instead. */}
+          <p className="mb-4 inline-flex items-center gap-2 font-mono text-xs text-accent sm:hidden">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+            {availability}
           </p>
           <h1 id="hero-title" className="text-fluid-h1 text-ink">
             {heroContent.title}
@@ -29,15 +47,17 @@ export function Hero() {
           </h1>
           <p className="mt-5 max-w-[34rem] text-lg leading-relaxed text-muted-strong">{heroContent.lede}</p>
           <p className="mt-4 font-mono text-sm text-accent">{heroContent.specialism}</p>
+          {/*
+            The specialism chip is marked by fill and ink, not amber: an amber
+            outline is the board filter's "selected" state.
+          */}
           <ul aria-label="Core stack" className="mt-5 flex flex-wrap gap-2">
             {chips.map((skill) => (
               <li
                 key={skill.id}
                 className={cn(
-                  'rounded border px-2.5 py-1 font-mono text-xs',
-                  skill.id === 'wordpress'
-                    ? 'border-accent text-accent'
-                    : 'border-line-strong text-muted-strong',
+                  'rounded border border-line-strong px-2.5 py-1 font-mono text-xs',
+                  skill.id === 'wordpress' ? 'bg-panel text-ink' : 'text-muted-strong',
                 )}
               >
                 {skill.name}
@@ -62,11 +82,12 @@ export function Hero() {
           </div>
         </div>
 
-        <ImageLightbox src={PORTRAIT} alt={heroContent.name} className="justify-self-start md:justify-self-end">
+        <ImageLightbox src={PORTRAIT} alt={heroContent.name} className="hidden justify-self-end md:block">
           <span className="block rounded-lg border border-line-strong bg-panel p-1.5">
+            {/* alt="" because the button around it is labelled with the same name. */}
             <Image
               src={PORTRAIT}
-              alt={heroContent.name}
+              alt=""
               width={220}
               height={260}
               priority

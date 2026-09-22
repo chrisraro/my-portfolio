@@ -3,13 +3,24 @@ import { StatusBadge } from '@/components/ui/status-badge'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
-const GRID =
-  'grid grid-cols-[1fr_auto] items-center gap-4 border-t border-line px-4 py-3 ' +
-  'sm:grid-cols-[1.2fr_1fr_auto] md:grid-cols-[1.2fr_1fr_1.3fr_auto]'
+// One column system for the header and every row. The status track is a fixed
+// width: an `auto` track sized itself to each row's label ("Live" versus
+// "Early access"), so the domain column started at a different x on each row.
+export const BOARD_COLUMNS =
+  'grid grid-cols-[1fr_7.5rem] items-center gap-4 px-4 ' +
+  'sm:grid-cols-[1.2fr_1fr_7.5rem] md:grid-cols-[1.2fr_1fr_1.3fr_7.5rem]'
+
+const GRID = cn(BOARD_COLUMNS, 'border-t border-line py-3')
+
+interface BoardRowProps {
+  project: Project
+  /** Show the band under the title. Off inside a group that is all one band. */
+  showBand?: boolean
+}
 
 // A row links only when there is somewhere to go. A project with no live URL
 // renders as a plain row rather than a focusable href="#".
-export function BoardRow({ project }: { project: Project }) {
+export function BoardRow({ project, showBand = true }: BoardRowProps) {
   const href = project.links.live
 
   const cells = (
@@ -20,14 +31,14 @@ export function BoardRow({ project }: { project: Project }) {
           {href && (
             <ArrowUpRight
               aria-hidden="true"
-              className="h-3.5 w-3.5 text-accent opacity-0 transition-opacity group-hover:opacity-100"
+              className="h-3.5 w-3.5 text-muted transition-colors group-hover:text-accent"
             />
           )}
         </span>
-        <span className="block font-mono text-xs text-muted">{project.band}</span>
+        {showBand && <span className="block font-mono text-xs text-muted">{project.band}</span>}
       </span>
       <span className="hidden truncate font-mono text-xs text-muted sm:block">
-        {href ? extractDomain(href) : '—'}
+        {href ? extractDomain(href) : 'no public URL'}
       </span>
       <span className="hidden truncate font-mono text-xs text-muted md:block">
         {project.technologies.slice(0, 3).join(' · ')}
@@ -47,6 +58,9 @@ export function BoardRow({ project }: { project: Project }) {
         className={cn(
           GRID,
           'group relative transition-colors hover:bg-canvas/60',
+          // The board clips its overflow for the rounded frame, so the focus
+          // ring is drawn inside the row rather than around it.
+          'focus-visible:outline-offset-[-2px]',
           'before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-accent',
           'before:opacity-0 before:transition-opacity hover:before:opacity-100',
         )}

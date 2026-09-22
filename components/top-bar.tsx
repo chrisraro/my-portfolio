@@ -21,9 +21,11 @@ export function TopBar() {
         keyboard focus never jumps against what is on screen (WCAG 2.4.3).
         Mobile: the controls sit right of the mark and the nav wraps below.
         Desktop: the controls stay beside the mark and the nav moves right.
+        Below md the links are 44px tall for touch; the tighter padding and row
+        gap there keep the bar about as tall as it was with 32px links.
       */}
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-2 px-5 py-3 sm:px-8">
-        <Link href="/" className="font-mono text-sm text-ink">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-0.5 px-5 py-1.5 sm:px-8 md:gap-y-2 md:py-3">
+        <Link href="/" className="inline-flex min-h-[44px] items-center font-mono text-sm text-ink md:min-h-[36px]">
           ~/christian-raro
         </Link>
 
@@ -51,8 +53,8 @@ export function TopBar() {
             {navigationItems.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={`/${item.href}`}
-                  className="inline-flex min-h-[32px] items-center transition-colors hover:text-accent"
+                  href={item.href.startsWith('#') ? `/${item.href}` : item.href}
+                  className="inline-flex min-h-[44px] items-center transition-colors hover:text-accent md:min-h-[32px]"
                 >
                   {item.label}
                 </Link>

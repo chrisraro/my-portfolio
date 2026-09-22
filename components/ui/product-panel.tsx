@@ -10,14 +10,17 @@ export function ProductPanel({ project }: { project: Project }) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-lg border border-line bg-panel">
       <div className="relative aspect-[16/10] border-b border-line bg-canvas">
-        {project.image ? (
-          <Image
-            src={project.image}
-            alt={`${project.title} homepage`}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover object-top"
-          />
+        {/*
+          The screenshot is decorative (the heading names it) and, when there is
+          a live site, a pointer shortcut to it. It is kept out of the tab order
+          and the accessibility tree: the domain link below is the real link.
+        */}
+        {project.image && href ? (
+          <a href={href} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="absolute inset-0">
+            <Image src={project.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover object-top" />
+          </a>
+        ) : project.image ? (
+          <Image src={project.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover object-top" />
         ) : (
           <div className="flex h-full items-center justify-center font-mono text-sm text-muted">
             {project.title}

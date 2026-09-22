@@ -31,8 +31,11 @@ export function bandSlug(band: ProjectBand): string {
   return band.toLowerCase().replace(/\s+/g, '-')
 }
 
-/** Reads `?band=` from /projects. Missing or unknown means "show everything". */
+/**
+ * Reads `?band=` from /projects. Missing or unknown means "show everything".
+ * Case-insensitive: a hand-typed `?band=Sites` should not silently show all.
+ */
 export function parseBandParam(value: string | string[] | undefined): ProjectBand | null {
-  const slug = Array.isArray(value) ? value[0] : value
+  const slug = (Array.isArray(value) ? value[0] : value)?.trim().toLowerCase()
   return BAND_ORDER.find((band) => bandSlug(band) === slug) ?? null
 }

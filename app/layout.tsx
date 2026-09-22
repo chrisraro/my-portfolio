@@ -6,7 +6,7 @@ import { TopBar } from '@/components/top-bar'
 import { Footer } from '@/components/footer'
 import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
-import { buildSiteMetadata } from '@/lib/site-metadata'
+import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
 
 // One variable family for both voices. Its MONO axis turns the same face
 // monospaced for labels, numerals and domains — `.font-mono` and `.eyebrow`
@@ -19,9 +19,7 @@ const recursive = Recursive({
   axes: ['MONO'],
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app'
-
-export const metadata: Metadata = buildSiteMetadata(siteUrl)
+export const metadata: Metadata = buildSiteMetadata(SITE_URL)
 
 export default function RootLayout({
   children,

@@ -24,7 +24,7 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
               href={item.href}
               aria-current={item.current ? 'page' : undefined}
               className={cn(
-                'inline-flex min-h-[32px] items-center rounded border px-3 font-mono text-xs transition-colors',
+                'inline-flex min-h-[44px] items-center rounded border px-3 font-mono text-xs transition-colors sm:min-h-[32px]',
                 item.current
                   ? 'border-accent text-accent'
                   : 'border-line-strong text-muted-strong hover:border-accent hover:text-accent',

@@ -40,4 +40,9 @@ describe('band parameter', () => {
     expect(parseBandParam('nonsense')).toBeNull()
     expect(parseBandParam(['sites', 'products'])).toBe('Sites')
   })
+
+  it('matches a band regardless of case', () => {
+    expect(parseBandParam('Sites')).toBe('Sites')
+    expect(parseBandParam('CUSTOM-SYSTEMS')).toBe('Custom systems')
+  })
 })

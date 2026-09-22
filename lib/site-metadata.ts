@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
 import { heroContent } from '@/lib/data'
+import type { ProjectBand } from '@/types'
+
+/** Falls back to this when NEXT_PUBLIC_SITE_URL is unset (CI, local builds). */
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app'
 
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
 export function buildSiteMetadata(siteUrl: string): Metadata {
-  const title = `${heroContent.name} — ${heroContent.title}`
+  const title = `${heroContent.name} · ${heroContent.title}`
   const description = heroContent.lede
   const image = { url: '/assets/images/og-image.png', width: 1200, height: 630, alt: title }
 
@@ -51,4 +55,9 @@ export function buildSiteMetadata(siteUrl: string): Metadata {
       },
     },
   }
+}
+
+/** /projects gets its own title, naming the band when a filter is applied. */
+export function buildProjectsTitle(band: ProjectBand | null): string {
+  return band ? `${band} · Projects · ${heroContent.name}` : `Projects · ${heroContent.name}`
 }

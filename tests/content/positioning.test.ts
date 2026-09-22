@@ -46,8 +46,8 @@ describe('positioning', () => {
     }
   })
 
-  it('navigates to the four homepage sections', () => {
-    expect(navigationItems.map((n) => n.href)).toEqual(['#work', '#changelog', '#stack', '#contact'])
+  it('navigates to the work, the full project list, experience and contact', () => {
+    expect(navigationItems.map((n) => n.href)).toEqual(['#work', '/projects', '#changelog', '#contact'])
   })
 })
 

@@ -224,7 +224,7 @@ export const projects: Project[] = [
     id: 'aralabroad',
     slug: 'aralabroad',
     title: 'AralAbroad',
-    description: 'Independent study-abroad guidance for Filipino students — visa steps, real costs in pesos, scholarships, and reviews of the agencies themselves — built for a site that deliberately is not an agency.',
+    description: 'Independent study-abroad guidance for Filipino students: visa steps, real costs in pesos, scholarships, and reviews of the agencies themselves. Built for a site that deliberately is not an agency.',
     band: 'Sites',
     image: '/assets/images/projects/aralabroad.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
@@ -302,10 +302,12 @@ export const contactInfo: ContactInfo = {
   socialLinks,
 }
 
+// Labels a client understands. `#` targets are homepage sections; `/` targets
+// are pages. tests/design/nav-anchors.test.ts checks both kinds resolve.
 export const navigationItems: NavigationItem[] = [
   { label: 'Work', href: '#work' },
-  { label: 'Changelog', href: '#changelog' },
-  { label: 'Stack', href: '#stack' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Experience', href: '#changelog' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -325,7 +327,7 @@ export const sectionContent = {
 export const projectsPageContent = {
   eyebrow: '// all projects',
   title: 'Everything I have shipped',
-  description: 'Products of my own, custom systems, and client work — each with its live status.',
+  description: 'Products of my own, custom systems, and client work, each with its live status.',
 }
 
 export const recommendations: Recommendation[] = [
@@ -358,15 +360,21 @@ export const recommendations: Recommendation[] = [
   }
 ];
 
-// Retitled from "Gallery". These six photographs carry the most specific,
-// least reproducible content on the site; naming the section for what it shows
-// is the difference between decoration and proof.
+// Retitled from "Gallery", then from "On-site delivery": three of the six
+// photos are client work and three are the life around it, so the heading
+// names both rather than overclaiming. Client-work photos lead.
 export const galleryContent = {
-  eyebrow: '// working with clients',
-  title: 'On-site delivery',
+  eyebrow: '// field log',
+  title: 'On site and on the road',
 }
 
 export const galleryImages: GalleryImage[] = [
+  {
+    id: 4,
+    src: '/assets/images/gallery/BeachBusatPort.jpg',
+    alt: 'A BeachBus vehicle arriving at a port',
+    caption: 'BeachBus at El Nido Port. I built its website and its internal NFC card system',
+  },
   {
     id: 1,
     src: '/assets/images/gallery/AmanWebAppPresentation.jpg',
@@ -374,9 +382,15 @@ export const galleryImages: GalleryImage[] = [
     caption: "Presenting the Aman Group Web App at ERDC's brokers meeting",
   },
   {
+    id: 5,
+    src: '/assets/images/gallery/InsideBeachBuswithBosses.jpg',
+    alt: 'Interior of the BeachBus with passengers seated',
+    caption: 'Test ride aboard the BeachBus in El Nido',
+  },
+  {
     id: 2,
     src: '/assets/images/gallery/TeamBuildingWorkshopTagaytayEnjoyRealty.jpg',
-    alt: 'Group photograph at an outdoor team workshop',
+    alt: 'Group photograph of the workshop team, seated and standing indoors',
     caption: 'Team building workshop in Tagaytay with Enjoy Realty and Development Corporation',
   },
   {
@@ -384,18 +398,6 @@ export const galleryImages: GalleryImage[] = [
     src: '/assets/images/gallery/ElNidoSolo3.jpg',
     alt: 'Christian on a beach in El Nido',
     caption: 'El Nido, sponsored by the client I built the internal NFC card system for',
-  },
-  {
-    id: 4,
-    src: '/assets/images/gallery/BeachBusatPort.jpg',
-    alt: 'A BeachBus vehicle arriving at a port',
-    caption: 'BeachBus at El Nido Port — I built its website and its internal NFC card system',
-  },
-  {
-    id: 5,
-    src: '/assets/images/gallery/InsideBeachBuswithBosses.jpg',
-    alt: 'Interior of the BeachBus with passengers seated',
-    caption: 'Test ride aboard the BeachBus in El Nido',
   },
   {
     id: 6,

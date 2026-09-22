@@ -1,10 +1,18 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { BoardFilter } from '@/components/ui/board-filter'
 import { SystemsBoard } from '@/components/ui/systems-board'
 import { groupByBand, parseBandParam } from '@/lib/board'
 import { projects, projectsPageContent } from '@/lib/data'
+import { buildProjectsTitle } from '@/lib/site-metadata'
 
 interface ProjectsPageProps {
   searchParams: { band?: string | string[] }
+}
+
+export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata {
+  return { title: buildProjectsTitle(parseBandParam(searchParams.band)) }
 }
 
 // Filters on the server from ?band=, so this page ships no JavaScript of its
@@ -22,7 +30,19 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
       <div className="mb-6">
         <BoardFilter active={band} />
       </div>
-      <SystemsBoard groups={groupByBand(visible)} label={band ?? 'all projects'} groupHeading="h2" />
+      <SystemsBoard groups={groupByBand(visible)} groupHeading="h2" outOf={projects.length} />
+      <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-8">
+        <Link
+          href="/#contact"
+          className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 font-medium text-on-accent transition-colors hover:bg-accent/90"
+        >
+          Start a project
+          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        </Link>
+        <Link href="/" className="inline-flex min-h-[44px] items-center font-mono text-sm text-muted-strong hover:text-accent">
+          Back to the homepage
+        </Link>
+      </div>
     </div>
   )
 }
