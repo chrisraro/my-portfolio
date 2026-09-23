@@ -3,7 +3,7 @@ import { SystemsBoard } from '@/components/ui/systems-board'
 import { groupForHomepage } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
 
-// No Reveal here: the board is the page's primary proof, and it must be
+// No entrance animation: the board is the page's primary proof, and it must be
 // visible in the server HTML rather than waiting at opacity 0 for hydration.
 export function Systems() {
   const rest = projects.filter((p) => p.band !== 'Products')

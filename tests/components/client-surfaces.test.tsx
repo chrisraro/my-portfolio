@@ -95,6 +95,27 @@ describe('ChatWidget', () => {
     expect(source).not.toContain('focus:outline-none')
   })
 
+  // Green means a live system and nothing else. The widget cannot know the
+  // assistant is online until a reply arrives, and with no GROQ_API_KEY it
+  // answers offline, so it must never wear the live dot or its pulse.
+  it('never claims to be live: no green, no pulse', () => {
+    expect(source).not.toMatch(/(?<![\w-])(?:bg|text|border|ring|fill|stroke)-live(?![\w-])/)
+    expect(source).not.toContain('live-pulse')
+    const html = renderToStaticMarkup(<ChatWidget />)
+    expect(html).not.toContain('bg-live')
+    expect(html).not.toContain('live-pulse')
+  })
+
+  it('marks the launcher with a still amber dot', () => {
+    const html = renderToStaticMarkup(<ChatWidget />)
+    expect(html).toMatch(/<span aria-hidden="true" class="[^"]*rounded-full[^"]*bg-accent"/)
+  })
+
+  it('says so in words, not colour alone, when the API answers offline', () => {
+    expect(source).toContain('data.offline === true')
+    expect(source).toContain("'offline · set replies only'")
+  })
+
   it('speaks the Operator world: no bounce, no pill bubbles, no emoji', () => {
     expect(source).not.toContain('animate-bounce')
     expect(source).not.toMatch(/rounded-2xl|text-\[10px\]|type: 'spring'/)

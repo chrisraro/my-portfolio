@@ -1,7 +1,7 @@
 import { ProductPanel } from '@/components/ui/product-panel'
 import { projects, sectionContent } from '@/lib/data'
 
-// No Reveal here: the products are primary proof and render visible from the
+// No entrance animation: the products are primary proof and render visible from the
 // server HTML instead of waiting at opacity 0 for hydration.
 export function Products() {
   const products = projects.filter((p) => p.band === 'Products')

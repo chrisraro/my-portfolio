@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion, type Transition } from 'framer-motion'
 import { MessageCircle, X, Send } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Message {
   id: string
@@ -16,6 +17,11 @@ interface ChatResponse {
   response: string
   offline?: boolean
   error?: boolean
+}
+
+interface Reply {
+  text: string
+  offline: boolean
 }
 
 const WELCOME =
@@ -32,6 +38,13 @@ const CHIP =
 // bounces: the widget sits beside the page's CTAs and must not outshout them.
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
+// The status dots are amber, never green: green means a live system and
+// nothing else, and the widget cannot know the assistant is online until a
+// reply arrives. Once the API answers `offline: true`, the header says so in
+// words (status is never colour alone) and the launcher drops its dot.
+const DOT_READY = 'bg-accent'
+const DOT_OFFLINE = 'bg-muted'
+
 /**
  * A non-modal dialog: the page stays usable behind it, so there is no focus
  * trap and no aria-modal. Focus moves into the input on open and back to the
@@ -44,6 +57,7 @@ export function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false)
   const [showLabel, setShowLabel] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [isOffline, setIsOffline] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const launcherRef = useRef<HTMLButtonElement>(null)
@@ -89,7 +103,7 @@ export function ChatWidget() {
     )
   }, [isOpen])
 
-  const sendToAPI = async (userMessage: string, messageHistory: Message[]): Promise<string> => {
+  const sendToAPI = async (userMessage: string, messageHistory: Message[]): Promise<Reply> => {
     try {
       const history = messageHistory
         .filter((m) => m.id !== 'welcome')
@@ -106,10 +120,13 @@ export function ChatWidget() {
       }
 
       const data: ChatResponse = await response.json()
-      return data.response
+      return { text: data.response, offline: data.offline === true }
     } catch (error) {
       console.error('Chat API error:', error)
-      return "I'm having trouble connecting right now. Explore the portfolio directly, or use the contact form to reach Christian."
+      return {
+        text: "I'm having trouble connecting right now. Explore the portfolio directly, or use the contact form to reach Christian.",
+        offline: false,
+      }
     }
   }
 
@@ -129,11 +146,12 @@ export function ChatWidget() {
       setInputValue('')
       setIsTyping(true)
 
-      const response = await sendToAPI(userMessage.text, messages)
+      const reply = await sendToAPI(userMessage.text, messages)
 
+      setIsOffline(reply.offline)
       setMessages((prev) => [
         ...prev,
-        { id: (Date.now() + 1).toString(), text: response, sender: 'bot', timestamp: new Date() },
+        { id: (Date.now() + 1).toString(), text: reply.text, sender: 'bot', timestamp: new Date() },
       ])
       setIsTyping(false)
     },
@@ -195,10 +213,12 @@ export function ChatWidget() {
               aria-label="Open chat"
             >
               <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-              <span
-                aria-hidden="true"
-                className="live-pulse absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-canvas bg-live"
-              />
+              {!isOffline && (
+                <span
+                  aria-hidden="true"
+                  className={cn('absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-canvas', DOT_READY)}
+                />
+              )}
             </button>
           </motion.div>
         )}
@@ -218,10 +238,15 @@ export function ChatWidget() {
           >
             <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-3">
               <div className="flex items-center gap-3">
-                <span aria-hidden="true" className="live-pulse relative h-2 w-2 rounded-full bg-live" />
+                <span
+                  aria-hidden="true"
+                  className={cn('h-2 w-2 rounded-full', isOffline ? DOT_OFFLINE : DOT_READY)}
+                />
                 <div>
                   <h3 id="chat-title" className="font-mono text-sm text-ink">~/ask chunks</h3>
-                  <p className="font-mono text-xs text-muted">AI assistant · answers about my work</p>
+                  <p className="font-mono text-xs text-muted">
+                    {isOffline ? 'offline · set replies only' : 'AI assistant · answers about my work'}
+                  </p>
                 </div>
               </div>
               <button
