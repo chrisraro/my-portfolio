@@ -100,16 +100,22 @@ new client components: screenshots reuse `ImageLightbox`.
 existing `description`, the stack, and links. No invented prose. A
 `contribution` line, if one is later written, renders automatically.
 
-**Live link rule.** "Open live site" renders only for `live` and `early-access`
-projects with `links.live`. `auth-gated`, `ua-gated` and `internal` never show it.
+**Live link rule.** "Open live site" renders for `live`, `early-access` and
+`ua-gated` projects with `links.live` (`ua-gated` sites refuse automated clients
+but open in any browser). `auth-gated` and `internal` never show it.
 
-**No preview.** Projects without a capture (`auth-gated`, `ua-gated`,
-`internal`: OCS WP Control, Downtown District Hotel, Aralabroad, BeachBus NFC)
-show a screenshot Christian supplies and approves, or a plain panel saying why
-there is no preview.
+**No preview.** Projects without a capture (`auth-gated` and `internal`: OCS
+WP Control, BeachBus NFC) show a screenshot Christian supplies and approves, or
+a plain panel saying why there is no preview. `ua-gated` projects keep their
+existing desktop shots; their mobile capture is attempted and may be absent.
 
-**Linking.** Board rows on the homepage and `/projects`, and the homepage
-product panels, link to `/projects/<slug>` instead of the live site.
+**Linking.** Board rows on the homepage and `/projects` link to
+`/projects/<slug>` instead of the live site. Product panels link their title to
+the project page and keep their external link, because a product is there to
+be tried.
+
+**Client quote.** A flagship shows the recommendation whose `projectId` matches
+its project (BeachBus, Aman), under "From the client". Existing data only.
 
 **Screenshots.** `scripts/capture-screenshots.mjs` keeps writing
 `<id>.png` (desktop) and adds `<id>-mobile.png` at 390×844.
