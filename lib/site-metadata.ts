@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { heroContent } from '@/lib/data'
-import type { ProjectBand } from '@/types'
+import type { Project, ProjectBand } from '@/types'
 
 /** Falls back to this when NEXT_PUBLIC_SITE_URL is unset (CI, local builds). */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app'
@@ -59,4 +59,9 @@ export function buildSiteMetadata(siteUrl: string): Metadata {
 /** /projects gets its own title, naming the band when a filter is applied. */
 export function buildProjectsTitle(band: ProjectBand | null): string {
   return band ? `${band} · Projects · ${heroContent.name}` : `Projects · ${heroContent.name}`
+}
+
+/** Each project page is titled for its project. */
+export function buildProjectPageTitle(project: Project): string {
+  return `${project.title} · ${heroContent.name}`
 }

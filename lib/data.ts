@@ -455,3 +455,36 @@ export const galleryImages: GalleryImage[] = [
     caption: 'Exploring the Cordillera highlands with my partner, Jewel',
   },
 ]
+
+// Singular sector names for a project's own page ("Sites · tours").
+export const sectorNames: Record<ProjectSector, string> = {
+  hotel: 'hotel',
+  tours: 'tours',
+  restaurant: 'restaurant',
+  'review-centre': 'review centre',
+  education: 'education',
+  'real-estate': 'real estate',
+  product: 'product',
+  'internal-tool': 'internal tool',
+}
+
+// Copy for /projects/[slug]. Flagships read as case studies; every other
+// project gets a short page built only from its entry in `projects`.
+export const caseStudyContent = {
+  eyebrow: { caseStudy: '// case study', project: '// project' },
+  headings: {
+    brief: 'The brief',
+    built: 'What I built',
+    decisions: 'Decisions',
+    stack: 'Stack',
+    outcome: 'Outcome',
+    client: 'From the client',
+    about: 'About the project',
+    next: 'Next case study',
+  },
+  noPreview: {
+    'auth-gated': 'This system sits behind a login, so there is no public preview.',
+    internal: 'This is an internal system with no public screen to show.',
+    fallback: 'No screenshot of this project yet.',
+  },
+}
