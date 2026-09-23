@@ -34,11 +34,11 @@ describe('structured data', () => {
     expect(person.address).toMatchObject({ '@type': 'PostalAddress', addressLocality: 'Naga City', addressCountry: 'PH' })
   })
 
-  it('offers every service, provided by the Person', () => {
+  it('offers every service, founded by the Person', () => {
     const service = serviceSchema()
     expect(service['@type']).toBe('ProfessionalService')
     expect(service['@id']).toBe(SERVICE_ID)
-    expect(service.provider).toEqual({ '@id': PERSON_ID })
+    expect(service.founder).toEqual({ '@id': PERSON_ID })
     const text = JSON.stringify(service)
     for (const s of services) expect(text).toContain(JSON.stringify(s))
   })

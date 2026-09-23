@@ -48,7 +48,7 @@ export function serviceSchema(): JsonLdNode {
       { '@type': 'City', name: locality },
       { '@type': 'Country', name: country },
     ],
-    provider: { '@id': PERSON_ID },
+    founder: { '@id': PERSON_ID },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Services',
