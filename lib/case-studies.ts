@@ -57,6 +57,44 @@ export const caseStudies: CaseStudy[] = [
       'I have built every version of the site, from the first to the latest, and I still maintain it.',
     ],
   },
+  {
+    slug: 'beachbus-palawan',
+    role: 'Sole developer: website, NFC card system and ongoing maintenance',
+    brief: [
+      'BeachBus runs a hop-on, hop-off shuttle between the beaches of El Nido, Palawan. It needed a website where travellers could see the routes and the timetable and buy passes.',
+      'It also needed a way to get riders on board without handling cash on every trip.',
+    ],
+    built: [
+      'I built the website on WordPress and WooCommerce, with a GeneratePress child theme and GenerateBlocks. It has a route map, a trip planner, the timetable and a catalog of 1, 3 and 5 day passes. Checkout takes PayPal, PayMongo and Maya.',
+      'Local businesses act as Partner Hubs. They sell or redeem passes and earn a commission, which runs on Dokan and a coupon-affiliates plugin.',
+      'I also built a separate NFC card system. It is a web dashboard that issues cards and records taps from NFC readers, and it runs apart from the WooCommerce orders. A rider collects a physical card at a Partner Hub or from the conductor, then taps it to board. Later I added monthly passes for residents and workers.',
+    ],
+    decisions: [
+      {
+        chose: 'NFC tap cards',
+        over: 'QR codes or an app',
+        because: 'Riders need no phone, battery or signal at the beach. A tap is also quicker than scanning, and conductors no longer handle cash.',
+      },
+      {
+        chose: 'Three payment gateways',
+        over: 'a single payment gateway',
+        because: 'PayPal serves international tourists, and PayMongo and Maya serve Filipino riders who pay by card or e-wallet. With three, a sale still goes through if one gateway is down or declines.',
+      },
+    ],
+    stack: [
+      { name: 'WordPress and WooCommerce', why: 'Run the pass catalog and checkout.' },
+      { name: 'GeneratePress and GenerateBlocks', why: 'The base of the child theme and the page layouts.' },
+      { name: 'Dokan and Coupon Affiliates for WooCommerce', why: 'Let Partner Hubs sell passes and earn a commission.' },
+      { name: 'WooCommerce PayPal Payments', why: 'Takes payment from international tourists.' },
+      { name: 'PayMongo and Maya for WooCommerce', why: 'Take card and e-wallet payment from Filipino riders.' },
+      { name: 'NFC readers and a custom web dashboard', why: 'Issue cards and record each tap when a rider boards.' },
+    ],
+    outcome: [
+      'The route, the timetable and the pass catalog are public at beachbus.ph. Boarding is a card tap, with no cash.',
+      'I still maintain both the site and the card system, and I later added monthly passes. The operator has paused online pass sales for now.',
+    ],
+    related: ['beachbus-nfc-card-system'],
+  },
 ]
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
