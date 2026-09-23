@@ -24,11 +24,14 @@ framer-motion 10 · next-themes · lucide-react · Groq (chat) · Resend (email)
 ## Testing
 
 Tests live in `tests/` and run under Vitest. `tests/content/` asserts the facts the
-site claims (inventory, bands, proof band, positioning, testimonials, ordering).
-`tests/design/` asserts design invariants (token contrast, no legacy tokens, green
-only on the live status, the social card's palette, client boundary, nav anchors). `tests/components/`
-renders components with `react-dom/server` and checks their markup, plus source
-guards for behaviour static markup cannot reach. There are no E2E tests.
+site claims (inventory, bands, proof band, positioning, testimonials, ordering,
+structured data, the AI files). `tests/design/` asserts design invariants (token
+contrast, no legacy tokens, green only on the live status, the social card's
+palette, client boundary, nav anchors). `tests/components/` renders components
+with `react-dom/server` and checks their markup, plus source guards for
+behaviour static markup cannot reach. `tests/helpers/` holds helpers shared
+across those folders — `privacy.ts` is the phone-number guard the JSON-LD and
+AI-file tests reuse. There are no E2E tests.
 
 CI (`.github/workflows/ci.yml`) runs type-check, lint, test, and build on push and
 PR to `main`. Run all four locally before committing; they must pass with no
@@ -37,13 +40,14 @@ environment variables set.
 ## Project Structure
 
 ```
-app/                 App Router: layout.tsx (font, providers, chrome), page.tsx (homepage), not-found.tsx (the 404), robots.ts, sitemap.ts
+app/                 App Router: layout.tsx (font, providers, chrome), page.tsx (homepage), not-found.tsx (the 404), robots.ts, sitemap.ts (lists the homepage, /projects and every project page)
 app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og); fonts in app/fonts/
+app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
-components/          top-bar.tsx, footer.tsx, theme-provider.tsx
+components/          top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
 components/sections/ Homepage sections, in page order: hero, products, systems, field-log, changelog, stack, contact-console
 components/ui/       Primitives: status-badge, board-row, systems-board, board-filter, product-panel, proof-band, chat-widget, toaster, image-lightbox
 components/case-study/ project-header, project-screenshots, project-summary, case-study-body — /projects/[slug]'s parts
@@ -51,12 +55,14 @@ lib/data.ts          Single source of truth for ALL portfolio content, including
 lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
 lib/project-page.ts  Server-only helpers for /projects/[slug] (reads the filesystem — never import from a client component)
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts and lib/case-studies.ts
+lib/structured-data.ts Builds JSON-LD (Person, ProfessionalService, WebSite, BreadcrumbList, CreativeWork) from lib/data.ts and lib/case-studies.ts
+lib/llms.ts           Builds /llms.txt and /llms-full.txt from the same content modules
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Board grouping and the /projects ?band= parameter
 lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
 lib/utils.ts         cn(), extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
-tests/               content/, design/, components/ (Vitest)
+tests/               content/, design/, components/ (Vitest); tests/helpers/ holds shared test helpers (privacy.ts)
 scripts/             Puppeteer utilities (screenshots, resume PDF)
 public/assets/       images/{about,gallery,projects}, resume/
 ```
@@ -67,8 +73,13 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `lib/data.ts` (`projects`, `skills`, `experience`, `education`, `recommendations`,
 `galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
 `availability`, `resumeUrl`, `sectionContent`, `projectsPageContent`,
-`paymentGateways`, `galleryContent`, `caseStudyContent`, `sectorNames`) and add
-the matching interface in `types/index.ts` if it's new.
+`paymentGateways`, `galleryContent`, `caseStudyContent`, `sectorNames`, `services`)
+and add the matching interface in `types/index.ts` if it's new.
+
+`lib/structured-data.ts` (JSON-LD), `app/sitemap.ts` and `lib/llms.ts`
+(`/llms.txt`, `/llms-full.txt`) are all built from `lib/data.ts` and
+`lib/case-studies.ts`, the same as the page and the chat assistant. Adding a
+project reaches all of them automatically; nothing there needs hand-editing.
 
 `lib/case-studies.ts` is the second content source: it holds the five flagship
 case studies, keyed by project slug. A number from a client's business goes in
@@ -97,6 +108,11 @@ if you change the inventory, the band changes with it.
 **Do not put private contact details in the chat prompt.** Public email and social
 links only — no phone number, no home address. Rule 8 of the system prompt states
 this; keep it that way.
+
+The same rule applies to the JSON-LD (`lib/structured-data.ts`) and the AI files
+(`lib/llms.ts`): public email and social links only, and the address is the
+public locality (Naga City, Camarines Sur, Philippines), never a street. No
+telephone field anywhere.
 
 ## Code Style
 
@@ -185,7 +201,8 @@ the action succeeded.
 ## Environment
 
 All optional; see `.env.example`. Real keys live in `.env.local` (gitignored).
-`GROQ_API_KEY`, `GROQ_MODEL`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`.
+`GROQ_API_KEY`, `GROQ_MODEL`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`,
+`GOOGLE_SITE_VERIFICATION` (optional; adds the Google Search Console verification meta tag).
 
 Five things that have already bitten:
 

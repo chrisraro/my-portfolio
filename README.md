@@ -71,6 +71,7 @@ each feature degrades honestly instead of erroring. See
 | `RESEND_API_KEY` | The contact form opens the visitor's mail app (`mailto:`) instead |
 | `CONTACT_FROM_EMAIL` | Defaults to Resend's shared test sender |
 | `NEXT_PUBLIC_SITE_URL` | Defaults to `https://christian-digital-portfolio.vercel.app` for metadata |
+| `GOOGLE_SITE_VERIFICATION` | Google Search Console verification meta tag is omitted |
 
 ## Project Structure
 
@@ -87,9 +88,10 @@ app/
   globals.css         Colour tokens (oklch) and shared utilities
   opengraph-image.tsx Link-preview card, rendered from heroContent by next/og
   fonts/              Recursive instances for the preview card
-  robots.ts, sitemap.ts
+  robots.ts, sitemap.ts  sitemap.ts lists the homepage, /projects and every project page
+  llms.txt/, llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 components/
-  top-bar.tsx, footer.tsx, theme-provider.tsx
+  top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
   sections/           One file per homepage section
   ui/                 Primitives: status-badge, board-row, systems-board,
                       board-filter, product-panel, proof-band, chat-widget,
@@ -97,12 +99,14 @@ components/
 lib/
   data.ts             Single source of truth for all content, including headings
   chat-context.ts     Builds the chat assistant's system prompt from data.ts
+  structured-data.ts  Builds JSON-LD from data.ts and case-studies.ts
+  llms.ts             Builds /llms.txt and /llms-full.txt from the same content
   site-metadata.ts    Builds page metadata from heroContent
   board.ts, display-status.ts, proof.ts, field-log.ts, dates.ts, timeline.ts
                       Pure helpers, all tested
   utils.ts            cn(), extractDomain
 types/index.ts        Shared interfaces
-tests/                content/, design/, components/
+tests/                content/, design/, components/, helpers/ (shared test helpers)
 scripts/              Screenshot capture, résumé PDF, URL check
 public/assets/        images/{about,gallery,projects}, resume/
 ```
@@ -112,9 +116,17 @@ public/assets/        images/{about,gallery,projects}, resume/
 All content lives in [`lib/data.ts`](lib/data.ts): `heroContent`,
 `availability`, `resumeUrl`, `projects`, `paymentGateways`, `skills`,
 `experience`, `education`, `recommendations`, `galleryContent`, `galleryImages`,
-`sectionContent`, `projectsPageContent`, `socialLinks`, `contactInfo` and
-`navigationItems`. Components never hardcode facts, headings or eyebrows. New
-shapes get an interface in [`types/index.ts`](types/index.ts).
+`sectionContent`, `projectsPageContent`, `socialLinks`, `contactInfo`,
+`navigationItems` and `services`. Components never hardcode facts, headings or
+eyebrows. New shapes get an interface in [`types/index.ts`](types/index.ts).
+
+The JSON-LD ([`lib/structured-data.ts`](lib/structured-data.ts)), the sitemap
+and the AI files ([`lib/llms.ts`](lib/llms.ts), served at `/llms.txt` and
+`/llms-full.txt`) are all built from `lib/data.ts` and `lib/case-studies.ts`,
+so a new project reaches them the same way it reaches the chat assistant: no
+hand-editing needed. Only public email and social links appear in any of
+them, and the address is the public locality, never a street or a phone
+number.
 
 Each project carries a `band` (`Products`, `Custom systems`, `Applications` or
 `Sites`) and a `status`. Several lines on the page are derived from the data
@@ -164,6 +176,9 @@ visible from the server, with no entrance animation.
   the social card's palette, the client-component count and nav anchors.
 - [`tests/components/`](tests/components/) renders components with
   `react-dom/server` and checks their markup.
+
+[`tests/helpers/`](tests/helpers/) holds helpers shared across those folders,
+such as the phone-number guard the JSON-LD and AI-file tests reuse.
 
 There are no end-to-end tests. CI
 ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs type-check, lint,
