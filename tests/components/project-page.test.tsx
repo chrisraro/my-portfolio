@@ -60,6 +60,15 @@ describe('/projects/[slug]', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
     expect(String(md.title)).toMatch(/^Latag · /)
   })
+
+  it('omits the sector from the header meta when it just repeats the band', () => {
+    expect(render('latag')).not.toContain('Products · product')
+    expect(render('el-nido-guide-ph')).toContain('Sites · tours')
+  })
+
+  it('phrases the header dates as what was built, not the whole engagement', () => {
+    expect(render('el-nido-guide-ph')).toContain('Built May – July 2025')
+  })
 })
 
 describe('flagship case studies', () => {

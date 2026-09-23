@@ -14,9 +14,11 @@ interface ProjectHeaderProps {
 
 export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHeaderProps) {
   const gateways = project.technologies.filter((t) => paymentGateways.indexOf(t) !== -1)
-  const meta = [role, project.dates, gateways.length ? `Payments: ${gateways.join(', ')}` : undefined].filter(
-    (m): m is string => Boolean(m),
-  )
+  const meta = [
+    role,
+    project.dates ? `Built ${project.dates}` : undefined,
+    gateways.length ? `Payments: ${gateways.join(', ')}` : undefined,
+  ].filter((m): m is string => Boolean(m))
 
   return (
     <header className="mx-auto max-w-6xl px-5 pt-10 sm:px-8 md:pt-14">
@@ -36,7 +38,8 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
       </div>
       <p className="mt-4 max-w-2xl text-lg text-muted-strong">{project.summary}</p>
       <p className="mt-3 font-mono text-xs text-muted">
-        {project.band} · {sectorNames[project.sector]}
+        {project.band}
+        {project.sector !== 'product' ? ` · ${sectorNames[project.sector]}` : ''}
       </p>
       {meta.length > 0 && (
         <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted-strong">

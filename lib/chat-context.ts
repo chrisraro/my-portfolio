@@ -32,7 +32,7 @@ export function buildCaseStudyContext(studies: CaseStudy[]): string {
       `Role: ${s.role}`,
       `Brief: ${s.brief.join(' ')}`,
       `Built: ${s.built.join(' ')}`,
-      ...s.decisions.map((d) => `Decision: Chose ${d.chose} over ${d.over} because ${d.because}`),
+      ...s.decisions.map((d) => `Decision: ${d.chose} over ${d.over}. Why: ${d.because}`),
       `Stack: ${s.stack.map((i) => `${i.name}: ${i.why}`).join('; ')}`,
       `Outcome: ${s.outcome.join(' ')}`,
     ]

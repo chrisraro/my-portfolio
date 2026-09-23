@@ -148,7 +148,7 @@ describe('case study context', () => {
 
   it('states every section of a case study under its project title', () => {
     const text = buildCaseStudyContext([study])
-    for (const s of ['Giya', 'Sole developer', 'The brief paragraph.', 'What was built.', 'Chose A over B because reason one', 'Next.js: server rendering', 'It shipped.', '10+ partners']) {
+    for (const s of ['Giya', 'Sole developer', 'The brief paragraph.', 'What was built.', 'A over B. Why: reason one', 'Next.js: server rendering', 'It shipped.', '10+ partners']) {
       expect(text).toContain(s)
     }
   })
