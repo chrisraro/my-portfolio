@@ -96,4 +96,9 @@ describe('site metadata', () => {
     expect(serialized).not.toMatch(/software engineer/i)
     expect(serialized).not.toMatch(/frontend developer/i)
   })
+
+  it('leaves the preview image to app/opengraph-image.tsx, not the retired PNG', () => {
+    expect(serialized).not.toContain('og-image.png')
+    expect(existsSync('app/opengraph-image.tsx')).toBe(true)
+  })
 })

@@ -8,10 +8,11 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-d
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
+// The link-preview image comes from app/opengraph-image.tsx through Next's file
+// convention, which fills in openGraph.images and twitter.images itself.
 export function buildSiteMetadata(siteUrl: string): Metadata {
   const title = `${heroContent.name} · ${heroContent.title}`
   const description = heroContent.lede
-  const image = { url: '/assets/images/og-image.png', width: 1200, height: 630, alt: title }
 
   return {
     metadataBase: new URL(siteUrl),
@@ -35,13 +36,11 @@ export function buildSiteMetadata(siteUrl: string): Metadata {
       title,
       description,
       siteName: heroContent.name,
-      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [image.url],
     },
     robots: {
       index: true,

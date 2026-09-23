@@ -427,7 +427,7 @@ Every raster the site ships, and where it came from.
 | `public/assets/images/projects/*.png` (13: `iskotify`, `naga-perks-giya-app`, `latag`, `aman-webapp`, `graceland`, `elnido`, `beachbus`, `upcat-review-plus`, `acad1`, `downtown-district-hotel`, `azalea-baguio`, `azalea-boracay`, `aralabroad`) | Captured from each project's live site | `npm run capture` (`scripts/capture-screenshots.mjs`) drives system Chrome/Edge through `puppeteer-core` at a 1440×900 viewport. It reads the inventory from `lib/data.ts`, captures only projects with a public URL that are not `auth-gated` or `internal`, and writes `<id>.png`. Re-run it when a site changes. |
 | `public/assets/images/gallery/*.jpg` (6 field-log photos) | Christian's own photographs | Resized to at most 2400px on the long edge (commit `be97fe4`). Captions and alt text live in `galleryImages` in `lib/data.ts`. |
 | `public/assets/images/about/profile-hiking.jpg` (hero portrait) | Christian's own photograph | Shown as the framed hero portrait and the mobile avatar. |
-| `public/assets/images/og-image.png` (1200×630 social card) | Generated 2026-06-16 (commit `bde1e1e`) | It predates B3 Signal. See Open Points. |
+| `/opengraph-image` (1200×630 social card) | Rendered by `app/opengraph-image.tsx` | Rendered by `next/og` on the edge runtime from `heroContent` and `availability`, in the dark palette (`lib/og-palette.ts`, held to `globals.css` by `tests/design/og-palette.test.ts`) and Recursive (two static instances from Google Fonts, SIL Open Font License, in `app/fonts/`). It replaced the Portfolio 3.0 `og-image.png`. |
 
 Auth-gated and internal projects (the OCS control panel, the BeachBus NFC system) have no screenshot. Their interiors need client clearance, and any screenshot must be supplied by hand.
 
@@ -435,7 +435,7 @@ Auth-gated and internal projects (the OCS control panel, the BeachBus NFC system
 
 These are recorded rather than resolved. The owner has approved the direction, and these points are left for follow-up.
 
-1. **The OG image is off-system.** `og-image.png` is in the Portfolio 3.0 look: a crimson top rule and eyebrow, a serif display face, and the title "Software Engineer". That breaks the One Amber Rule and the One Family Rule and contradicts the H1 "Full-stack developer." Regenerate it in B3 Signal (graphite, amber, Recursive) from `heroContent`.
+1. **Resolved: the OG image is on-system.** The Portfolio 3.0 `og-image.png` (crimson, a serif face, "Software Engineer") is deleted. `app/opengraph-image.tsx` renders the card from `heroContent` in graphite, amber and Recursive, so it follows the page.
 2. **Legacy rasters still ship.** `public/assets/images/projects/` holds `.webp` files and `ARway Screenshot.jpg`, and `about/` holds five portraits, none of which the code references. They deploy with `public/` and have no recorded provenance. Remove them or record their provenance.
 3. **Resolved: the chat no longer uses the live dot.** Its dots are a still amber, and the header says "offline" in words when `/api/chat` answers offline. `tests/design/green-means-live.test.ts` keeps `live` and `.live-pulse` inside `StatusBadge`.
 4. **Motion that is bounded by a request, not a timer.** The typing dots loop, and the "Sending" loader spins, for as long as a request takes. A slow Groq reply could hold them past five seconds. Reduced motion stops both.

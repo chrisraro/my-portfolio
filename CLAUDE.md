@@ -26,7 +26,7 @@ framer-motion 10 · next-themes · lucide-react · Groq (chat) · Resend (email)
 Tests live in `tests/` and run under Vitest. `tests/content/` asserts the facts the
 site claims (inventory, bands, proof band, positioning, testimonials, ordering).
 `tests/design/` asserts design invariants (token contrast, no legacy tokens, green
-only on the live status, client boundary, nav anchors). `tests/components/`
+only on the live status, the social card's palette, client boundary, nav anchors). `tests/components/`
 renders components with `react-dom/server` and checks their markup, plus source
 guards for behaviour static markup cannot reach. There are no E2E tests.
 
@@ -38,6 +38,7 @@ environment variables set.
 
 ```
 app/                 App Router: layout.tsx (font, providers, chrome), page.tsx (homepage), robots.ts, sitemap.ts
+app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og); fonts in app/fonts/
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page
@@ -46,7 +47,7 @@ components/sections/ Homepage sections, in page order: hero, products, systems, 
 components/ui/       Primitives: status-badge, board-row, systems-board, board-filter, product-panel, proof-band, chat-widget, toaster, image-lightbox
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
-lib/site-metadata.ts Builds page metadata from heroContent
+lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Board grouping and the /projects ?band= parameter
 lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
 lib/utils.ts         cn(), extractDomain (other helpers there have no callers)
@@ -175,7 +176,7 @@ the action succeeded.
 All optional; see `.env.example`. Real keys live in `.env.local` (gitignored).
 `GROQ_API_KEY`, `GROQ_MODEL`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`.
 
-Four things that have already bitten:
+Five things that have already bitten:
 
 - `RESEND_API_KEY` may also be set in the developer's shell environment, which
   overrides nothing but means a stray `/api/contact` POST sends a real email.
@@ -188,6 +189,8 @@ Four things that have already bitten:
 - Deleting a route leaves a stale `.next/types/app/<route>/page.ts` artifact behind.
   `npm run type-check` then fails pointing at a file no longer in the source tree.
   Clear `.next` and re-run.
+- `next/og`'s Node build throws "Invalid URL" on Windows, which failed `next build`.
+  `app/opengraph-image.tsx` runs on the edge runtime for that reason; keep it there.
 
 ## Git
 

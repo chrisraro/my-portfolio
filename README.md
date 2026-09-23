@@ -83,6 +83,8 @@ app/
   api/chat/           Groq-backed chat endpoint
   api/contact/        Resend-backed contact endpoint
   globals.css         Colour tokens (oklch) and shared utilities
+  opengraph-image.tsx Link-preview card, rendered from heroContent by next/og
+  fonts/              Recursive instances for the preview card
   robots.ts, sitemap.ts
 components/
   top-bar.tsx, footer.tsx, theme-provider.tsx
@@ -157,7 +159,7 @@ visible from the server, with no entrance animation.
   dates and ordering.
 - [`tests/design/`](tests/design/) checks design invariants: WCAG contrast of
   the tokens in both themes, no legacy tokens, green only on the live status,
-  the client-component count and nav anchors.
+  the social card's palette, the client-component count and nav anchors.
 - [`tests/components/`](tests/components/) renders components with
   `react-dom/server` and checks their markup.
 
