@@ -5,6 +5,18 @@ import type { Project, ProjectBand } from '@/types'
 /** Falls back to this when NEXT_PUBLIC_SITE_URL is unset (CI, local builds). */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app'
 
+// A page that sets its own openGraph replaces the layout's whole object, so
+// these ride along with every one.
+const OPEN_GRAPH_BASE = { locale: 'en_US', siteName: heroContent.name }
+
+/** The social card app/opengraph-image.tsx renders, and the route it serves at. */
+export const OG_IMAGE = {
+  url: '/opengraph-image',
+  width: 1200,
+  height: 630,
+  alt: `${heroContent.name} · ${heroContent.title}. ${heroContent.specialism}.`,
+}
+
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
@@ -30,12 +42,11 @@ export function buildSiteMetadata(siteUrl: string): Metadata {
     authors: [{ name: heroContent.name }],
     creator: heroContent.name,
     openGraph: {
+      ...OPEN_GRAPH_BASE,
       type: 'website',
-      locale: 'en_US',
       url: siteUrl,
       title,
       description,
-      siteName: heroContent.name,
     },
     twitter: {
       card: 'summary_large_image',
@@ -64,4 +75,21 @@ export function buildProjectsTitle(band: ProjectBand | null): string {
 /** Each project page is titled for its project. */
 export function buildProjectPageTitle(project: Project): string {
   return `${project.title} · ${heroContent.name}`
+}
+
+/**
+ * A project page's own link preview: an article card with its title and
+ * description, and its own canonical URL. `path` is relative; the layout's
+ * metadataBase resolves it. Setting openGraph here drops the layout's
+ * file-convention image, so the same card (app/opengraph-image.tsx) is named.
+ */
+export function buildProjectPageMetadata(project: Project, description: string, path: string): Metadata {
+  const title = buildProjectPageTitle(project)
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: { ...OPEN_GRAPH_BASE, type: 'article', title, description, url: path, images: [OG_IMAGE] },
+    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
+  }
 }

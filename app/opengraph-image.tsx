@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { availability, heroContent } from '@/lib/data'
 import { ogPalette as c } from '@/lib/og-palette'
+import { OG_IMAGE } from '@/lib/site-metadata'
 
 // The link-preview card, rendered from heroContent so it can never drift from
 // the page again: the old static og-image.png still said "Software Engineer" in
@@ -17,8 +18,9 @@ import { ogPalette as c } from '@/lib/og-palette'
 // routes render per request, so the fonts are fetched as bundled assets.
 export const runtime = 'edge'
 
-export const alt = `${heroContent.name} · ${heroContent.title}. ${heroContent.specialism}.`
-export const size = { width: 1200, height: 630 }
+// Shared with lib/site-metadata.ts, which names this card on project pages.
+export const alt = OG_IMAGE.alt
+export const size = { width: OG_IMAGE.width, height: OG_IMAGE.height }
 export const contentType = 'image/png'
 
 const SANS = 'Recursive'

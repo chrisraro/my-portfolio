@@ -54,8 +54,9 @@ export const caseStudies: CaseStudy[] = [
     ],
     outcome: [
       'I have built every version of the site, from the first to the latest, and I still maintain it.',
-      'Its homepage lists 41 verified local operators, and every booking pays the operator directly.',
+      'Its homepage lists verified local operators, and every booking pays the operator directly.',
     ],
+    metrics: [{ value: '41', label: 'verified local operators listed on the site', clientApproved: true }],
   },
   {
     slug: 'beachbus-palawan',
@@ -65,9 +66,9 @@ export const caseStudies: CaseStudy[] = [
       'It also needed a way to get riders on board without handling cash on every trip.',
     ],
     built: [
-      'I built the website on WordPress and WooCommerce, with a GeneratePress child theme and GenerateBlocks. It has a route map, a trip planner, the timetable and a catalog of 1, 3 and 5 day passes. Checkout takes PayPal, PayMongo and Maya.',
+      'I built the website on WordPress and WooCommerce, with a GeneratePress child theme and GenerateBlocks. It has a route map, a trip planner, the timetable and a catalog of 1, 3 and 5 day passes. Later I added monthly passes for residents and workers. Checkout takes PayPal, PayMongo and Maya.',
       'Local businesses act as Partner Hubs. They sell or redeem passes and earn a commission, which runs on Dokan and a coupon-affiliates plugin.',
-      'I also built a separate NFC card system. It is a web dashboard that issues cards and records taps from NFC readers, and it runs apart from the WooCommerce orders. A rider collects a physical card at a Partner Hub or from the conductor, then taps it to board. Later I added monthly passes for residents and workers.',
+      'I also built a separate NFC card system. It is a web dashboard that issues cards and records taps from NFC readers, and it runs apart from the WooCommerce orders. A rider collects a physical card at a Partner Hub or from the conductor, then taps it to board.',
     ],
     decisions: [
       {
@@ -142,7 +143,7 @@ export const caseStudies: CaseStudy[] = [
       'The group needed one place to show its projects and properties. Its buyers and brokers also needed a way to work out how to finance a home.',
     ],
     built: [
-      'I built the Aman Group web app in Next.js 14 and host it on Vercel. It has pages for the properties, the developers, a loan calculator and contact details.',
+      'I built the Aman Group web app in Next.js 14, hosted on Vercel. It has pages for the properties, the developers, a loan calculator and contact details.',
       'The properties page shows each property series under its residence project, such as the townhouse and lot series of Parkview Naga Urban Residence. Each series has an image, a description and its key features.',
       'The loan calculator compares Pag-IBIG, bank and in-house financing and estimates the monthly payment for each. The app keeps its listings, settings and leads in Upstash Redis through Vercel KV.',
     ],
@@ -208,13 +209,17 @@ export const caseStudies: CaseStudy[] = [
     ],
     outcome: [
       'Giya 2.0 is live at giya.ph in a free pilot for customers and businesses. Paid tiers for businesses are planned.',
-      'The fraud review and the points ledger are partly live. Some checks already run, and I am still building the rest.',
     ],
   },
 ]
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return caseStudies.find((s) => s.slug === slug)
+}
+
+/** The case study that tells a project as part of its story, via `related`. */
+export function caseStudyFor(slug: string): CaseStudy | undefined {
+  return caseStudies.find((s) => (s.related ?? []).indexOf(slug) !== -1)
 }
 
 /** Every string a visitor can read on the case study, for copy checks. */

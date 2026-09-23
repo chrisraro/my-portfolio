@@ -481,10 +481,20 @@ export const caseStudyContent = {
     client: 'From the client',
     about: 'About the project',
     next: 'Next case study',
+    related: 'Related',
   },
+  // A short page told inside a flagship's story links back to it.
+  partOf: 'Part of the {title} case study',
   noPreview: {
     'auth-gated': 'This system sits behind a login, so there is no public preview.',
     internal: 'This is an internal system with no public screen to show.',
     fallback: 'No screenshot of this project yet.',
   },
+}
+
+// app/not-found.tsx: any unknown address, including an unknown /projects/<slug>.
+export const notFoundContent = {
+  eyebrow: '// 404',
+  title: 'Nothing lives at this address',
+  description: 'The link may be old or mistyped. Every project I have shipped is on the projects page.',
 }

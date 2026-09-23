@@ -1,8 +1,9 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
+import { alt, size } from '@/app/opengraph-image'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { ProductPanel } from '@/components/ui/product-panel'
-import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
+import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
@@ -12,8 +13,18 @@ describe('/projects/[slug]', () => {
     expect(generateStaticParams().map((p) => p.slug)).toEqual(projects.map((p) => p.slug))
   })
 
-  it('404s an unknown slug', () => {
-    expect(() => render('no-such-project')).toThrow()
+  // notFound() throws an Error whose message and digest are both NEXT_NOT_FOUND;
+  // a render crash from a data bug would throw something else.
+  it('404s an unknown slug through the Next not-found error', () => {
+    let error: unknown
+    try {
+      render('no-such-project')
+    } catch (e) {
+      error = e
+    }
+    expect(error).toBeInstanceOf(Error)
+    expect((error as Error).message).toBe('NEXT_NOT_FOUND')
+    expect((error as { digest?: string }).digest).toBe('NEXT_NOT_FOUND')
   })
 
   it('gives every page exactly one h1, its project title', () => {
@@ -59,6 +70,33 @@ describe('/projects/[slug]', () => {
   it('titles each page for its project', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
     expect(String(md.title)).toMatch(/^Latag · /)
+  })
+
+  it('gives a flagship its own link preview and canonical URL, described by its brief', () => {
+    const md = generateMetadata({ params: { slug: 'el-nido-guide-ph' } })
+    const description = getCaseStudy('el-nido-guide-ph')!.brief[0]
+    expect(md.description).toBe(description)
+    expect(md.alternates?.canonical).toBe('/projects/el-nido-guide-ph')
+    expect(md.openGraph).toMatchObject({ type: 'article', title: md.title, description, url: '/projects/el-nido-guide-ph' })
+    expect(md.twitter).toMatchObject({ card: 'summary_large_image', title: md.title, description })
+  })
+
+  // A page that sets its own openGraph loses the layout's file-convention image,
+  // so it names the same card, app/opengraph-image.tsx, itself.
+  it('keeps the site social card as the preview image', () => {
+    const md = generateMetadata({ params: { slug: 'latag' } })
+    const card = { url: '/opengraph-image', width: size.width, height: size.height, alt }
+    expect(md.openGraph).toMatchObject({ images: [card] })
+    expect(md.twitter).toMatchObject({ images: [card] })
+  })
+
+  it('describes a short page by its description, not the summary fragment', () => {
+    const latag = projects.find((p) => p.slug === 'latag')!
+    const md = generateMetadata({ params: { slug: 'latag' } })
+    expect(md.description).toBe(latag.description)
+    expect(md.alternates?.canonical).toBe('/projects/latag')
+    expect(md.openGraph).toMatchObject({ type: 'article', description: latag.description, url: '/projects/latag' })
+    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: latag.description })
   })
 
   it('omits the sector from the header meta when it just repeats the band', () => {
@@ -185,6 +223,47 @@ describe('flagship case studies', () => {
   it('leaves short pages short', () => {
     const shortSlugs = projects.map((p) => p.slug).filter((slug) => FLAGSHIP_SLUGS.indexOf(slug) === -1)
     for (const slug of shortSlugs) expect(render(slug)).not.toContain(`>${h.decisions}</h2>`)
+  })
+})
+
+describe('related work', () => {
+  const h = caseStudyContent.headings
+  const title = (slug: string) => projects.find((p) => p.slug === slug)!.title
+  const withRelated = caseStudies.filter((s) => (s.related ?? []).length > 0)
+  // The visible text of the first link to `href`, tags stripped. Project titles
+  // here have nothing renderToStaticMarkup would escape.
+  const linkText = (html: string, href: string) =>
+    html.match(new RegExp(`<a [^>]*href="${href}"[^>]*>([\\s\\S]*?)</a>`))?.[1].replace(/<[^>]*>/g, '')
+
+  it('has at least one case study that names related work', () => {
+    expect(withRelated.length).toBeGreaterThan(0)
+  })
+
+  it('links a flagship to each related project page by its title, after the outcome', () => {
+    for (const s of withRelated) {
+      const html = render(s.slug)
+      expect(html).toContain(`>${h.related}<`)
+      expect(html.indexOf(`>${h.related}<`)).toBeGreaterThan(html.indexOf(`>${h.outcome}</h2>`))
+      for (const slug of s.related!) {
+        expect(linkText(html, `/projects/${slug}`)).toBe(title(slug))
+      }
+    }
+  })
+
+  it('links a related short page back to the case study it is part of', () => {
+    for (const s of withRelated) {
+      const text = caseStudyContent.partOf.replace('{title}', title(s.slug))
+      for (const slug of s.related!) {
+        expect(linkText(render(slug), `/projects/${s.slug}`)).toBe(text)
+        // A wrapped label keeps its arrow beside the last word, not alone on a line.
+        expect(render(slug)).toContain(`<span class="whitespace-nowrap">${text.split(' ').pop()}<svg`)
+      }
+    }
+  })
+
+  it('gives other pages no related line and no part-of link', () => {
+    expect(render('el-nido-guide-ph')).not.toContain(`>${h.related}<`)
+    expect(render('latag')).not.toContain(caseStudyContent.partOf.split('{title}')[0])
   })
 })
 

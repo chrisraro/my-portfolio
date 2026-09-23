@@ -37,7 +37,7 @@ environment variables set.
 ## Project Structure
 
 ```
-app/                 App Router: layout.tsx (font, providers, chrome), page.tsx (homepage), robots.ts, sitemap.ts
+app/                 App Router: layout.tsx (font, providers, chrome), page.tsx (homepage), not-found.tsx (the 404), robots.ts, sitemap.ts
 app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og); fonts in app/fonts/
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
@@ -50,7 +50,7 @@ components/case-study/ project-header, project-screenshots, project-summary, cas
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
 lib/project-page.ts  Server-only helpers for /projects/[slug] (reads the filesystem — never import from a client component)
-lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
+lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts and lib/case-studies.ts
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Board grouping and the /projects ?band= parameter
 lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
@@ -83,7 +83,8 @@ that belong to the interface itself ("Start a project", "View work", "All",
 component.
 
 `lib/chat-context.ts` derives the AI assistant's entire system prompt from
-`lib/data.ts`. Adding a project reaches the chatbot automatically. Do not
+`lib/data.ts` and the approved case studies in `lib/case-studies.ts`. Adding a
+project or a case study reaches the chatbot automatically. Do not
 reintroduce hand-written portfolio prose into `app/api/chat/route.ts` — that
 duplicate existed once and drifted out of date.
 
@@ -141,7 +142,7 @@ components: `components/top-bar.tsx` (theme toggle),
 `components/sections/contact-console.tsx` (form), `components/ui/chat-widget.tsx`,
 `components/ui/image-lightbox.tsx`, `components/ui/toaster.tsx` and
 `components/theme-provider.tsx`. A server component may render a client one as a
-child — `Hero` and `FieldLog` render `ImageLightbox` this way.
+child — `Hero`, `FieldLog` and `ProjectScreenshots` render `ImageLightbox` this way.
 `tests/design/client-boundary.test.ts` keeps the count under 10; do not raise it.
 
 ## Animation

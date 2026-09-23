@@ -8,7 +8,8 @@ import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { ProjectSummary } from '@/components/case-study/project-summary'
 import { getCaseStudy } from '@/lib/case-studies'
 import { projects } from '@/lib/data'
-import { buildProjectPageTitle } from '@/lib/site-metadata'
+import { projectHref } from '@/lib/project-page'
+import { buildProjectPageMetadata } from '@/lib/site-metadata'
 
 interface ProjectPageProps {
   params: { slug: string }
@@ -25,7 +26,9 @@ export function generateMetadata({ params }: ProjectPageProps): Metadata {
   const project = projects.find((p) => p.slug === params.slug)
   if (!project) return {}
   const study = getCaseStudy(project.slug)
-  return { title: buildProjectPageTitle(project), description: study ? study.brief[0] : project.summary }
+  // The summary is a dot-separated fragment; the description reads as a sentence.
+  const description = study ? study.brief[0] : project.description
+  return buildProjectPageMetadata(project, description, projectHref(project))
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {

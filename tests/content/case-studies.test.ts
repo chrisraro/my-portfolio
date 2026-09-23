@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { FLAGSHIP_SLUGS, caseStudies, caseStudyText, getCaseStudy } from '@/lib/case-studies'
+import { FLAGSHIP_SLUGS, caseStudies, caseStudyFor, caseStudyText, getCaseStudy } from '@/lib/case-studies'
 import { contactInfo, projects } from '@/lib/data'
 import type { CaseStudyMetric } from '@/types'
 
 const slugs = projects.map((p) => p.slug)
+
+// Mobile (+63 917 123 4567, 09171234567), area-code landlines ((054) 884-5188,
+// 054-884-5188) and bare seven-digit local numbers (884-5188).
+const PHONE = [/\+?\d[\d\s-]{8,}\d/, /\(\d{2,4}\)\s*\d{3}[\s-]?\d{4}/, /\b\d{3}-\d{4}\b/]
+const hasPhone = (text: string) => PHONE.some((re) => re.test(text))
 
 // Compile-time guard, checked by `npm run type-check`: a metric the client has
 // not approved cannot be written down at all.
@@ -56,11 +61,37 @@ describe('case studies', () => {
   it('contain no phone number, no private email and no em-dash', () => {
     for (const s of caseStudies) {
       for (const text of caseStudyText(s)) {
-        expect(text).not.toMatch(/\+?\d[\d\s-]{8,}\d/)
+        expect(hasPhone(text)).toBe(false)
         for (const email of text.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) ?? []) expect(email).toBe(contactInfo.email)
         expect(text).not.toContain('—')
       }
     }
+  })
+
+  it('catch every phone format and pass years and ranges', () => {
+    for (const t of ['(054) 884-5188', '054-884-5188', '884-5188', '+63 917 123 4567', '09171234567']) {
+      expect(hasPhone(t), t).toBe(true)
+    }
+    for (const t of ['Built in 2025', 'May – July 2025', '2019-2025', '1, 3 and 5 day passes', 'Giya 2.0', 'since 1989']) {
+      expect(hasPhone(t), t).toBe(false)
+    }
+  })
+
+  it('keep the El Nido operator count in approved metrics, not in prose', () => {
+    const s = getCaseStudy('el-nido-guide-ph')!
+    expect(s.metrics).toEqual([{ value: '41', label: 'verified local operators listed on the site', clientApproved: true }])
+    for (const p of [...s.brief, ...s.built, ...s.outcome]) expect(p).not.toContain('41')
+    expect(s.outcome.join(' ')).toContain('every booking pays the operator directly')
+  })
+
+  it('say "partly live" once in the Giya study', () => {
+    const text = caseStudyText(getCaseStudy('giya')!).join(' ')
+    expect(text.split('partly live')).toHaveLength(2)
+  })
+
+  it('find the case study a related project belongs to', () => {
+    expect(caseStudyFor('beachbus-nfc-card-system')?.slug).toBe('beachbus-palawan')
+    expect(caseStudyFor('latag')).toBeUndefined()
   })
 
   it('has a case study for every flagship', () => {

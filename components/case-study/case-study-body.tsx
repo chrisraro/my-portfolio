@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { ArrowLinkText } from '@/components/case-study/arrow-link-text'
 import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
 import { caseStudyContent, projects } from '@/lib/data'
 import { nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
@@ -37,6 +38,9 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
   const order = FLAGSHIP_SLUGS.filter((slug) => caseStudies.some((s) => s.slug === slug))
   const nextSlug = nextInOrder(order, study.slug)
   const next = nextSlug ? projects.find((p) => p.slug === nextSlug) : undefined
+  const related = (study.related ?? [])
+    .map((slug) => projects.find((p) => p.slug === slug))
+    .filter((p): p is Project => Boolean(p))
 
   return (
     <>
@@ -115,6 +119,25 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
                 </figcaption>
               </figure>
             </Section>
+          )}
+
+          {/* Work told inside this story that also has its own page, e.g. the BeachBus NFC system. */}
+          {related.length > 0 && (
+            <div className="mt-12 flex flex-wrap items-center gap-x-5 border-t border-line pt-4">
+              <p className="font-mono text-xs text-muted-strong">{h.related}</p>
+              <ul className="flex flex-wrap gap-x-5">
+                {related.map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      href={projectHref(p)}
+                      className="inline-block min-h-[44px] py-2.5 text-base font-medium text-ink transition-colors hover:text-accent"
+                    >
+                      <ArrowLinkText text={p.title} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
 
