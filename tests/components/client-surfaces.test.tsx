@@ -66,6 +66,27 @@ describe('ImageLightbox', () => {
     expect(source).toContain('triggerRef.current?.focus()')
     expect(source).toContain("e.key === 'Escape'")
   })
+
+  // aria-modal is only a hint: browse-mode screen readers can still reach the
+  // page behind. The dialog is portalled to <body> and every other body child
+  // is made inert while it is open, then restored.
+  it('portals the open dialog to body and makes the rest of the page inert', () => {
+    const source = readFileSync('components/ui/image-lightbox.tsx', 'utf8')
+    expect(source).toContain('createPortal(')
+    expect(source).toContain('document.body')
+    expect(source).toContain("setAttribute('inert', '')")
+    expect(source).toContain("removeAttribute('inert')")
+  })
+
+  it('renders only its trigger on the server', () => {
+    const html = renderToStaticMarkup(
+      <ImageLightbox src="/x.jpg" alt="A photo">
+        <span />
+      </ImageLightbox>,
+    )
+    expect(html).toContain('<button')
+    expect(html).not.toContain('role="dialog"')
+  })
 })
 
 describe('ChatWidget', () => {

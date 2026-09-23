@@ -36,13 +36,20 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article>
       <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
-      <ProjectScreenshots project={project} />
-      {study ? <CaseStudyBody study={study} project={project} /> : <ProjectSummary project={project} />}
+      {/* A flagship leads with the brief; its screenshots follow it. */}
+      {study ? (
+        <CaseStudyBody study={study} project={project} screenshots={<ProjectScreenshots project={project} />} />
+      ) : (
+        <>
+          <ProjectScreenshots project={project} />
+          <ProjectSummary project={project} />
+        </>
+      )}
       <div className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-8">
           <Link
             href="/#contact"
-            className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 font-medium text-on-accent transition-colors hover:bg-accent/90"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 font-medium text-on-accent transition-colors hover:bg-accent/90"
           >
             Start a project
             <ArrowRight aria-hidden="true" className="h-4 w-4" />

@@ -15,7 +15,6 @@ interface ProjectHeaderProps {
 export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHeaderProps) {
   const gateways = project.technologies.filter((t) => paymentGateways.indexOf(t) !== -1)
   const meta = [
-    role,
     project.dates ? `Built ${project.dates}` : undefined,
     gateways.length ? `Payments: ${gateways.join(', ')}` : undefined,
   ].filter((m): m is string => Boolean(m))
@@ -37,6 +36,8 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
         <StatusBadge status={project.status} />
       </div>
       <p className="mt-4 max-w-2xl text-lg text-muted-strong">{project.summary}</p>
+      {/* The role is the fact a hiring reader came for: its own line, in readable type. */}
+      {role && <p className="mt-3 max-w-2xl text-base text-ink">{role}</p>}
       <p className="mt-3 font-mono text-xs text-muted">
         {project.band}
         {project.sector !== 'product' ? ` · ${sectorNames[project.sector]}` : ''}
@@ -53,7 +54,8 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
           href={project.links.live}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 font-medium text-on-accent transition-colors hover:bg-accent/90"
+          // Secondary: it leaves the site. "Start a project" keeps the amber fill.
+          className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink transition-colors hover:border-accent hover:text-accent"
         >
           Open live site
           <ArrowUpRight aria-hidden="true" className="h-4 w-4" />

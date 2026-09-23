@@ -46,7 +46,8 @@ export function ProjectScreenshots({ project }: { project: Project }) {
         </span>
       </ImageLightbox>
       {shots.mobile && (
-        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="mx-auto w-40 sm:w-full">
+        // Below sm the desktop shot already fills the screen; the phone shot would only repeat it.
+        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="hidden w-full sm:block">
           <span className="block overflow-hidden rounded-lg border border-line bg-panel">
             <Image src={shots.mobile} alt="" width={390} height={844} sizes="176px" className="h-auto w-full" />
           </span>

@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { BoardRow } from '@/components/ui/board-row'
 import { projects } from '@/lib/data'
+import { extractDomain } from '@/lib/utils'
 
 describe('BoardRow', () => {
   it('links every row to its project page, in the same tab', () => {
@@ -53,6 +54,16 @@ describe('BoardRow', () => {
   it('draws the focus ring inside the row, where the board cannot clip it', () => {
     const giya = projects.find((p) => p.slug === 'giya')!
     expect(renderToStaticMarkup(<BoardRow project={giya} />)).toContain('focus-visible:outline-offset-[-2px]')
+  })
+
+  // The row opens the project page, not the live site, so the domain it shows
+  // must not enter the link's accessible name.
+  it('keeps the domain out of the row link name, while still showing it', () => {
+    for (const project of projects) {
+      const html = renderToStaticMarkup(<BoardRow project={project} />)
+      const label = project.links.live ? extractDomain(project.links.live) : 'no public URL'
+      expect(html).toMatch(new RegExp(`<span aria-hidden="true" class="[^"]*sm:block[^"]*">${label.replace(/\./g, '\\.')}</span>`))
+    }
   })
 
   it('always states the status in words', () => {
