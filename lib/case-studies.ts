@@ -91,7 +91,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     outcome: [
       'The route, the timetable and the pass catalog are public at beachbus.ph. Boarding is a card tap, with no cash.',
-      'I still maintain both the site and the card system, and I later added monthly passes. The operator has paused online pass sales for now.',
+      'I still maintain both the site and the card system, and I later added monthly passes. Online pass sales are paused for now.',
     ],
     related: ['beachbus-nfc-card-system'],
   },
