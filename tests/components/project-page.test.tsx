@@ -276,3 +276,18 @@ describe('ProductPanel', () => {
     }
   })
 })
+
+const ldTypes = (slug: string): string[] => {
+  const json = render(slug).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? '{}'
+  return ((JSON.parse(json)['@graph'] ?? []) as { '@type': string }[]).map((n) => n['@type'])
+}
+
+describe('project page JSON-LD', () => {
+  it('gives a flagship a breadcrumb and its CreativeWork', () => {
+    expect(ldTypes('el-nido-guide-ph')).toEqual(['BreadcrumbList', 'CreativeWork'])
+  })
+
+  it('gives a short page only a breadcrumb', () => {
+    expect(ldTypes('latag')).toEqual(['BreadcrumbList'])
+  })
+})

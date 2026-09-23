@@ -6,10 +6,12 @@ import { CaseStudyBody } from '@/components/case-study/case-study-body'
 import { ProjectHeader } from '@/components/case-study/project-header'
 import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { ProjectSummary } from '@/components/case-study/project-summary'
+import { JsonLd } from '@/components/json-ld'
 import { getCaseStudy } from '@/lib/case-studies'
 import { projects } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
 import { buildProjectPageMetadata } from '@/lib/site-metadata'
+import { breadcrumbSchema, caseStudySchema, graph } from '@/lib/structured-data'
 
 interface ProjectPageProps {
   params: { slug: string }
@@ -38,6 +40,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <article>
+      <JsonLd data={study ? graph(breadcrumbSchema(project), caseStudySchema(project, study)) : graph(breadcrumbSchema(project))} />
       <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
       {/* A flagship leads with the brief; its screenshots follow it. */}
       {study ? (

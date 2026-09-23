@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { Recursive } from 'next/font/google'
 import './globals.css'
+import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
 import { TopBar } from '@/components/top-bar'
 import { Footer } from '@/components/footer'
 import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
+import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structured-data'
 
 // One variable family for both voices. Its MONO axis turns the same face
 // monospaced for labels, numerals and domains — `.font-mono` and `.eyebrow`
@@ -29,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={recursive.variable}>
       <body>
+        <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <ToastProvider>
             <a
