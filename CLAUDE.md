@@ -1,7 +1,7 @@
 # Project Instructions
 
-Personal portfolio site for Christian Raro: a homepage and a `/projects` index,
-two API routes, no database — all content is static data.
+Personal portfolio site for Christian Raro: a homepage, a `/projects` index and
+a page per project, two API routes, no database — all content is static data.
 
 ## Tech Stack
 
@@ -42,10 +42,14 @@ app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og); 
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page
+app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
 components/          top-bar.tsx, footer.tsx, theme-provider.tsx
 components/sections/ Homepage sections, in page order: hero, products, systems, field-log, changelog, stack, contact-console
 components/ui/       Primitives: status-badge, board-row, systems-board, board-filter, product-panel, proof-band, chat-widget, toaster, image-lightbox
+components/case-study/ project-header, project-screenshots, project-summary, case-study-body — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
+lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
+lib/project-page.ts  Server-only helpers for /projects/[slug] (reads the filesystem — never import from a client component)
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Board grouping and the /projects ?band= parameter
@@ -63,8 +67,14 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `lib/data.ts` (`projects`, `skills`, `experience`, `education`, `recommendations`,
 `galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
 `availability`, `resumeUrl`, `sectionContent`, `projectsPageContent`,
-`paymentGateways`, `galleryContent`) and add the matching interface in
-`types/index.ts` if it's new.
+`paymentGateways`, `galleryContent`, `caseStudyContent`, `sectorNames`) and add
+the matching interface in `types/index.ts` if it's new.
+
+`lib/case-studies.ts` is the second content source: it holds the five flagship
+case studies, keyed by project slug. A number from a client's business goes in
+`metrics` with `clientApproved: true`, and only after Christian confirms the
+client agreed. Research dossiers live in `docs/case-studies/research/` and are
+gitignored.
 
 What counts as content: facts about Christian and his work, and every section
 heading and eyebrow — those live in `lib/data.ts`. Control and group labels

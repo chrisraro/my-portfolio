@@ -53,13 +53,14 @@ production sites — not stated as a title.
 - Next.js 14 App Router, TypeScript, Tailwind CSS. All content lives in
   `lib/data.ts`; Vitest content tests assert every factual claim the site makes.
 - Surfaces: the homepage; `/projects`, an index of 15 projects in four bands
-  (Products, Custom systems, Applications, Sites); and case-study pages at
-  `/projects/[slug]`, planned for a later phase.
+  (Products, Custom systems, Applications, Sites); and a page per project at
+  `/projects/[slug]` — five flagships with a full case study, the other ten
+  with a short page built only from data they already have.
 - Both API routes must work with no environment variables set.
 - Payment gateways, confirmed by Christian on 2026-09-23 and corroborated by the
   live sites: **PayPal, PayMongo and Maya on BeachBus Palawan; Xendit on ACAD1
-  Review Center; PayPal and PayMongo on El Nido Guide PH.** Four distinct
-  gateways in all.
+  Review Center; PayPal and Maya on El Nido Guide PH**, a multi-operator
+  booking marketplace built on Dokan. Four distinct gateways in all.
 
 ## Brand Commitments
 

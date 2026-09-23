@@ -80,6 +80,8 @@ app/
   page.tsx            Homepage: hero, products, systems board, field log,
                       changelog, stack, contact
   projects/           /projects: every project, filterable by band (?band=)
+  projects/[slug]/    One page per project: a case study for five flagships,
+                      a short page for the rest
   api/chat/           Groq-backed chat endpoint
   api/contact/        Resend-backed contact endpoint
   globals.css         Colour tokens (oklch) and shared utilities

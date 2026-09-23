@@ -263,9 +263,9 @@ and checks WCAG contrast in both themes, so the one-per-line format is load-bear
 ### Hierarchy
 - **Display** (600, `clamp(2.5rem, 1.913rem + 2.609vw, 4rem)` meaning 40px at a 360px viewport and 64px at 1280px, line-height 1.02, tracking -0.025em): `.text-fluid-h1`. The hero H1 ("Full-stack developer" followed by an amber period) and the `/projects` H1.
 - **Headline** (600, `clamp(1.5rem, 1.2rem + 1.25vw, 2.125rem)`, 1.1, -0.02em): `.text-fluid-h2`. Every section H2. It may carry a trailing mono count in `muted` ("products · 3").
-- **Title** (600, 1.25rem): product panel names.
+- **Title** (600, 1.25rem, `text-xl font-semibold`): product panel names, and, as a second heading tier below `.text-fluid-h2`, every section heading inside a Read-mode page (the case-study and short-page sections on `/projects/[slug]`, "The brief" through "From the client").
 - **Lede** (400, 1.125rem, 1.625): the hero lede, capped at `34rem`, and the `/projects` description. Set in `muted-strong`.
-- **Body** (400, 1rem, 1.6): the page default. Long descriptions cap at `65ch`.
+- **Body** (400, 1rem, 1.6): the page default. Long descriptions cap at `65ch`, except Read-mode prose on `/projects/[slug]` (case-study and short-page body copy), which is held to a wider `68ch` measure.
 - **Body small** (400, 0.875rem): summaries, captions and timeline subtitles.
 - **Label** (500, 0.75rem, tracking 0.1em, uppercase, MONO, amber): `.eyebrow`, board group headings, timeline group labels and stack category terms.
 - **Mono** (400, 0.75–0.875rem, MONO, tabular): the top-bar mark `~/christian-raro`, nav, chips, domains, dates, status labels, form labels and the footer.
@@ -364,10 +364,20 @@ Status is never colour alone. It renders only through `StatusBadge`, which pairs
 Amber is both the brand colour and the early-access colour, so the shape is what tells them apart. `compact` hides the label visually but keeps it in the accessibility tree.
 
 ### Systems Board (signature)
-A single `panel` frame with 8px corners and clipped overflow. A mono header row (`projects · 15`, `domain`, `what it does`, `status`, or `9 of 15` when filtered) sits on the rows' own grid, so each label names the column below it. Group headings use the amber label style. Each row is one hairline-topped grid line: the name in medium sans with a trailing `ArrowUpRight`, the band in mono `muted` only when the group mixes bands, the domain in mono `muted`, the summary in `muted-strong`, and the status badge at the right. On hover a linked row gets a faint `canvas/60` wash, a 2px amber rule on its left edge, and an amber arrow. The focus outline is drawn inside the row (offset -2px) because the frame clips overflow. A row with no public URL renders as a plain row with "no public URL", never as `href="#"`.
+A single `panel` frame with 8px corners and clipped overflow. A mono header row (`projects · 15`, `domain`, `what it does`, `status`, or `9 of 15` when filtered) sits on the rows' own grid, so each label names the column below it. Group headings use the amber label style. Each row is one hairline-topped grid line: the name in medium sans with a trailing `ArrowRight`, the band in mono `muted` only when the group mixes bands, the domain in mono `muted`, the summary in `muted-strong`, and the status badge at the right. Every row is a link to its project page (`/projects/<slug>`), never the live site directly; the live link moved to that page. On hover a row gets a faint `canvas/60` wash, a 2px amber rule on its left edge, and an amber arrow. The focus outline is drawn inside the row (offset -2px) because the frame clips overflow. A project with no public URL still links to its page; only the domain column reads "no public URL" in its place.
 
 ### Product Panel (signature)
-A product is a running system first and a picture second. The panel leads with the name (Title), the status badge, the one-line summary in `ink`, the description in `muted-strong` (capped at 65ch) and an amber mono domain link. The screenshot is a supporting inset of 12–15rem at a 16:10 ratio, with 4px corners, a hairline border and top-anchored crop, placed to the right from 640px. It is never the panel's headline.
+A product is a running system first and a picture second. The panel leads with the name (Title), which links to the project page, the status badge, the one-line summary in `ink`, the description in `muted-strong` (capped at 65ch) and an amber mono domain link, which stays and opens the live site directly, because a product's point is to be tried. The screenshot is a supporting inset of 12–15rem at a 16:10 ratio, with 4px corners, a hairline border and top-anchored crop, placed to the right from 640px. It is never the panel's headline.
+
+### Project Pages (signature)
+`/projects/[slug]` is Read mode: the board and the panels are for scanning, this is where a visitor reads. Every page shares a header and a screenshot pair, then branches into a flagship's case study or a short page built only from `lib/data.ts`.
+
+- **Header** (`ProjectHeader`): "← All projects", an eyebrow ("// case study" or "// project"), the H1 title beside `StatusBadge`, the one-line summary, a mono `band · sector` line, a meta strip (role, dates, payment gateways) where each applies, and "Open live site" when `canLinkLive` allows it.
+- **Screenshots** (`ProjectScreenshots`): the desktop and mobile pair inside `ImageLightbox`, the same component the field log uses. A project with no capture shows a plain panel naming why (`caseStudyContent.noPreview`): behind a login, an internal system, or simply not captured yet.
+- **Short page** (`ProjectSummary`, ten of the fifteen projects): "About the project" (`description`, then `contribution` if the project has one) and "Stack" as a chip list. Nothing invented; every line already lived in `lib/data.ts`.
+- **Flagship body** (`CaseStudyBody`, the five researched case studies): "The brief", "What I built", "Decisions" (numbered, each "chose X over Y because Z"), "Stack" (a name beside one line of why), "Outcome" (qualitative, then any client-approved metrics as numeral cells), and "From the client" when a recommendation's `projectId` matches. A footer links to the next case study in reading order, then repeats the "Start a project" / "All projects" pair.
+
+**The Read-Mode Measure.** Both the short page and the flagship body hold their prose to a `max-w-[68ch]` column, wider than the panel body's usual 65ch because this is continuous reading, not a summary. Every section heading in both, "About the project" through "From the client", uses the Title tier (`text-xl font-semibold`), one step below `.text-fluid-h2`, because it is a heading inside a page whose H1 already carries that weight.
 
 ### Proof Band (signature)
 Four hairline cells: a zero-padded mono numeral in `ink` above a sans label in `muted`. Screen readers hear the source sentence ("Fifteen projects shipped"). The numeral and label are `aria-hidden`.

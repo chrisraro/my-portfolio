@@ -1,6 +1,6 @@
 # Phase 3 — Case studies
 
-Date: 2026-09-23 · Branch: `v4` · Status: approved in brainstorming, awaiting spec review
+Date: 2026-09-23 · Branch: `v4` · Status: implemented on v4
 
 Phase 2 split case-study research (Phase 3) from the `/projects/[slug]` pages
 (Phase 4). This spec merges them: researched content with nowhere to render is
