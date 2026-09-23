@@ -53,7 +53,7 @@ monthly. 17 URLs, absolute, from `SITE_URL`.
 
 `components/json-ld.tsx`: a server component rendering `<script
 type="application/ld+json">` with `JSON.stringify(data)` escaped so `</script>`
-cannot break out (replace `<` with `<`). The layout renders person +
+cannot break out (replace `<` with the `\u003c` escape). The layout renders person +
 service + website; each project page renders the breadcrumb, plus the
 case-study schema for flagships. Not a client component.
 
