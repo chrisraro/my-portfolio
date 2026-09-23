@@ -134,6 +134,41 @@ export const caseStudies: CaseStudy[] = [
       'The site is live, and I still do occasional work on it when ACAD1 asks.',
     ],
   },
+  {
+    slug: 'aman-group-web-app',
+    role: 'Sole developer: built in-house as IT Staff and Web Developer at Enjoy Realty',
+    brief: [
+      'Aman Group of Companies is a residential developer in Naga City, operating since 1989. Its projects are built by two developers in the group, Enjoy Realty and Development Corporation and Aman Engineering.',
+      'The group needed one place to show its projects and properties. Its buyers and brokers also needed a way to work out how to finance a home.',
+    ],
+    built: [
+      'I built the Aman Group web app in Next.js 14 and host it on Vercel. It has pages for the properties, the developers, a loan calculator and contact details.',
+      'The properties page shows each property series under its residence project, such as the townhouse and lot series of Parkview Naga Urban Residence. Each series has an image, a description and its key features.',
+      'The loan calculator compares Pag-IBIG, bank and in-house financing and estimates the monthly payment for each. The app keeps its listings, settings and leads in Upstash Redis through Vercel KV.',
+    ],
+    decisions: [
+      {
+        chose: 'A Next.js app',
+        over: 'a WordPress site',
+        because: 'The loan calculator and the property explorer needed custom interactive UI, which is awkward to build in WordPress. A fast, statically rendered app on Vercel also needs no plugin upkeep.',
+      },
+      {
+        chose: 'Upstash Redis and Vercel KV',
+        over: 'Supabase',
+        because: 'Supabase was the first plan, but the app only stores small key-value data such as listings, settings and leads. It does not need a relational database. Vercel\'s integrated KV also means no separate database to manage or pay for.',
+      },
+    ],
+    stack: [
+      { name: 'Next.js and React', why: 'Build the showcase pages and the interactive loan calculator.' },
+      { name: 'Vercel', why: 'Hosts the app, with no plugins to keep up to date.' },
+      { name: 'Upstash Redis and Vercel KV', why: 'Store the listings, settings and leads as key-value data.' },
+      { name: 'Tailwind CSS', why: 'Styles the pages.' },
+    ],
+    outcome: [
+      'I presented the app at Enjoy Realty\'s brokers\' meeting as the company\'s property showcase.',
+      'Brokers and the sales team use it to show properties to buyers and to run the financing numbers with them.',
+    ],
+  },
 ]
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
