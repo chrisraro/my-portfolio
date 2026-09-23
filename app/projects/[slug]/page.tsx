@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
+import { CaseStudyBody } from '@/components/case-study/case-study-body'
 import { ProjectHeader } from '@/components/case-study/project-header'
 import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { ProjectSummary } from '@/components/case-study/project-summary'
+import { getCaseStudy } from '@/lib/case-studies'
 import { projects } from '@/lib/data'
 import { buildProjectPageTitle } from '@/lib/site-metadata'
 
@@ -22,18 +24,20 @@ export const dynamicParams = false
 export function generateMetadata({ params }: ProjectPageProps): Metadata {
   const project = projects.find((p) => p.slug === params.slug)
   if (!project) return {}
-  return { title: buildProjectPageTitle(project), description: project.summary }
+  const study = getCaseStudy(project.slug)
+  return { title: buildProjectPageTitle(project), description: study ? study.brief[0] : project.summary }
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {
   const project = projects.find((p) => p.slug === params.slug)
   if (!project) notFound()
+  const study = getCaseStudy(project.slug)
 
   return (
     <article>
-      <ProjectHeader project={project} />
+      <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
       <ProjectScreenshots project={project} />
-      <ProjectSummary project={project} />
+      {study ? <CaseStudyBody study={study} project={project} /> : <ProjectSummary project={project} />}
       <div className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-8">
           <Link

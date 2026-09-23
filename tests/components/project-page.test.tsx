@@ -2,7 +2,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { ProductPanel } from '@/components/ui/product-panel'
-import { caseStudyContent, projects } from '@/lib/data'
+import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
+import { caseStudyContent, projects, recommendations } from '@/lib/data'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
 
@@ -58,6 +59,56 @@ describe('/projects/[slug]', () => {
   it('titles each page for its project', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
     expect(String(md.title)).toMatch(/^Latag · /)
+  })
+})
+
+describe('flagship case studies', () => {
+  const h = caseStudyContent.headings
+
+  it('has at least one case study to render', () => {
+    expect(caseStudies.length).toBeGreaterThan(0)
+  })
+
+  it('reads brief, build, decisions, stack, outcome in that order', () => {
+    for (const s of caseStudies) {
+      const html = render(s.slug)
+      const at = [h.brief, h.built, h.decisions, h.stack, h.outcome].map((t) => html.indexOf(`>${t}</h2>`))
+      for (const i of at) expect(i).toBeGreaterThan(-1)
+      expect(at.slice().sort((a, b) => a - b)).toEqual(at)
+      expect(html).toContain(caseStudyContent.eyebrow.caseStudy)
+      expect(html).toContain(s.role)
+    }
+  })
+
+  it('numbers its decisions and states each alternative', () => {
+    for (const s of caseStudies) {
+      const html = render(s.slug)
+      expect(html.match(/<li data-decision/g)).toHaveLength(s.decisions.length)
+      for (const d of s.decisions) expect(html).toContain(d.over)
+    }
+  })
+
+  it('shows the client’s own words where a quote names the project', () => {
+    for (const s of caseStudies) {
+      const project = projects.find((p) => p.slug === s.slug)!
+      const quote = recommendations.find((r) => r.projectId === project.id)
+      const html = render(s.slug)
+      if (quote) expect(html).toContain(quote.authorName)
+      else expect(html).not.toContain(`>${h.client}</h2>`)
+    }
+  })
+
+  it('links to the next case study only when there is another', () => {
+    for (const s of caseStudies) {
+      const html = render(s.slug)
+      if (caseStudies.length > 1) expect(html).toContain(`>${h.next}<`)
+      else expect(html).not.toContain(`>${h.next}<`)
+    }
+  })
+
+  it('leaves short pages short', () => {
+    const shortSlugs = projects.map((p) => p.slug).filter((slug) => FLAGSHIP_SLUGS.indexOf(slug) === -1)
+    for (const slug of shortSlugs) expect(render(slug)).not.toContain(`>${h.decisions}</h2>`)
   })
 })
 
