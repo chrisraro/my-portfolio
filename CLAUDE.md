@@ -50,7 +50,7 @@ lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Board grouping and the /projects ?band= parameter
 lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
-lib/utils.ts         cn(), extractDomain (other helpers there have no callers)
+lib/utils.ts         cn(), extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
 tests/               content/, design/, components/ (Vitest)
 scripts/             Puppeteer utilities (screenshots, resume PDF)

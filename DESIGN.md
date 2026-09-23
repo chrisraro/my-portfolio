@@ -436,7 +436,7 @@ Auth-gated and internal projects (the OCS control panel, the BeachBus NFC system
 These are recorded rather than resolved. The owner has approved the direction, and these points are left for follow-up.
 
 1. **Resolved: the OG image is on-system.** The Portfolio 3.0 `og-image.png` (crimson, a serif face, "Software Engineer") is deleted. `app/opengraph-image.tsx` renders the card from `heroContent` in graphite, amber and Recursive, so it follows the page.
-2. **Legacy rasters still ship.** `public/assets/images/projects/` holds `.webp` files and `ARway Screenshot.jpg`, and `about/` holds five portraits, none of which the code references. They deploy with `public/` and have no recorded provenance. Remove them or record their provenance.
+2. **Resolved: the legacy rasters are gone.** The unreferenced `.webp` thumbnails, `ARway Screenshot.jpg`, `online-creative-solutions.png` and the five spare portraits in `about/` are deleted. Every image left in `public/assets/images/` is referenced by the code.
 3. **Resolved: the chat no longer uses the live dot.** Its dots are a still amber, and the header says "offline" in words when `/api/chat` answers offline. `tests/design/green-means-live.test.ts` keeps `live` and `.live-pulse` inside `StatusBadge`.
 4. **Motion that is bounded by a request, not a timer.** The typing dots loop, and the "Sending" loader spins, for as long as a request takes. A slow Groq reply could hold them past five seconds. Reduced motion stops both.
 5. **Zero-padded numerals.** The proof band's "03" and "01" keep the column tidy, but the latest critique found that they read as code to a non-technical first-time visitor.
