@@ -22,12 +22,16 @@ export const OG_IMAGE = {
 // Engineer & Frontend Developer" long after the page stopped saying it.
 // The link-preview image comes from app/opengraph-image.tsx through Next's file
 // convention, which fills in openGraph.images and twitter.images itself.
-export function buildSiteMetadata(siteUrl: string): Metadata {
+export function buildSiteMetadata(
+  siteUrl: string,
+  googleVerification: string | undefined = process.env.GOOGLE_SITE_VERIFICATION,
+): Metadata {
   const title = `${heroContent.name} · ${heroContent.title}`
   const description = heroContent.lede
 
   return {
     metadataBase: new URL(siteUrl),
+    ...(googleVerification ? { verification: { google: googleVerification } } : {}),
     title,
     description,
     keywords: [

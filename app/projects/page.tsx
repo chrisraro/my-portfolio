@@ -12,7 +12,9 @@ interface ProjectsPageProps {
 }
 
 export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata {
-  return { title: buildProjectsTitle(parseBandParam(searchParams.band)) }
+  // Every filtered view (?band=...) is the same page to a search engine, so
+  // they all canonicalise to the unfiltered /projects.
+  return { title: buildProjectsTitle(parseBandParam(searchParams.band)), alternates: { canonical: '/projects' } }
 }
 
 // Filters on the server from ?band=, so this page ships no JavaScript of its
