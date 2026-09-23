@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { caseStudies } from '@/lib/case-studies'
 import { contactInfo, projects, services } from '@/lib/data'
@@ -14,6 +15,7 @@ import {
   websiteSchema,
 } from '@/lib/structured-data'
 import { hasPhone } from '@/tests/helpers/privacy'
+import type { Project } from '@/types'
 
 const all = () => {
   const nodes = [personSchema(), serviceSchema(), websiteSchema()]
@@ -43,6 +45,13 @@ describe('structured data', () => {
     for (const s of services) expect(text).toContain(JSON.stringify(s))
   })
 
+  it("shares the Person's locality-only address, never a street", () => {
+    const service = serviceSchema()
+    expect(service.address).toEqual(personSchema().address)
+    expect(service.address).toMatchObject({ '@type': 'PostalAddress', addressLocality: 'Naga City', addressCountry: 'PH' })
+    expect(JSON.stringify(service.address)).not.toMatch(/streetAddress/)
+  })
+
   it('names the site, published by the Person', () => {
     expect(websiteSchema()).toMatchObject({ '@type': 'WebSite', '@id': WEBSITE_ID, url: SITE_URL, publisher: { '@id': PERSON_ID } })
   })
@@ -65,6 +74,13 @@ describe('structured data', () => {
     }
   })
 
+  it('drops sameAs when the project cannot link live (gated on canLinkLive)', () => {
+    const giya = projects.find((p) => p.slug === 'giya')!
+    const study = caseStudies.find((s) => s.slug === 'giya')!
+    const unlinkable: Project = { ...giya, status: 'internal', links: {} }
+    expect(caseStudySchema(unlinkable, study).sameAs).toBeUndefined()
+  })
+
   it('wraps nodes in one schema.org graph', () => {
     expect(graph(personSchema())).toEqual({ '@context': 'https://schema.org', '@graph': [personSchema()] })
   })
@@ -77,5 +93,13 @@ describe('structured data', () => {
       for (const email of text.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) ?? []) expect(email).toBe(contactInfo.email)
       expect(text).not.toContain('—')
     }
+  })
+})
+
+describe('layout wiring', () => {
+  it('renders JsonLd with the site graph on every page', () => {
+    const source = readFileSync('app/layout.tsx', 'utf8')
+    expect(source).toMatch(/<JsonLd/)
+    expect(source).toMatch(/graph\(\s*personSchema\(\),\s*serviceSchema\(\),\s*websiteSchema\(\)\s*\)/)
   })
 })

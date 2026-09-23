@@ -20,6 +20,12 @@ const [locality, region, country] = contactInfo.location.split(', ')
 
 const publicLinks = () => contactInfo.socialLinks.filter((l) => l.url.startsWith('https://')).map((l) => l.url)
 
+// Shared by Person and ProfessionalService so the two addresses can never
+// drift apart. Locality only, never a street: privacy constraint.
+function localityAddress(): JsonLdNode {
+  return { '@type': 'PostalAddress', addressLocality: locality, addressRegion: region, addressCountry: 'PH' }
+}
+
 export function personSchema(): JsonLdNode {
   return {
     '@type': 'Person',
@@ -30,7 +36,7 @@ export function personSchema(): JsonLdNode {
     url: SITE_URL,
     email: contactInfo.email,
     image: absolute(OG_IMAGE.url),
-    address: { '@type': 'PostalAddress', addressLocality: locality, addressRegion: region, addressCountry: 'PH' },
+    address: localityAddress(),
     knowsAbout: skills.map((s) => s.name),
     sameAs: publicLinks(),
   }
@@ -44,6 +50,7 @@ export function serviceSchema(): JsonLdNode {
     url: SITE_URL,
     email: contactInfo.email,
     image: absolute(OG_IMAGE.url),
+    address: localityAddress(),
     areaServed: [
       { '@type': 'City', name: locality },
       { '@type': 'Country', name: country },

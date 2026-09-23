@@ -5,7 +5,7 @@ import { BoardFilter } from '@/components/ui/board-filter'
 import { SystemsBoard } from '@/components/ui/systems-board'
 import { groupByBand, parseBandParam } from '@/lib/board'
 import { projects, projectsPageContent } from '@/lib/data'
-import { buildProjectsTitle } from '@/lib/site-metadata'
+import { buildProjectsMetadata } from '@/lib/site-metadata'
 
 interface ProjectsPageProps {
   searchParams: { band?: string | string[] }
@@ -14,7 +14,7 @@ interface ProjectsPageProps {
 export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata {
   // Every filtered view (?band=...) is the same page to a search engine, so
   // they all canonicalise to the unfiltered /projects.
-  return { title: buildProjectsTitle(parseBandParam(searchParams.band)), alternates: { canonical: '/projects' } }
+  return buildProjectsMetadata(parseBandParam(searchParams.band))
 }
 
 // Filters on the server from ?band=, so this page ships no JavaScript of its

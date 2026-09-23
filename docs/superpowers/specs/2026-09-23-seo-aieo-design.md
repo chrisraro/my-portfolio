@@ -1,6 +1,6 @@
 # Phase 5 — SEO and AIEO
 
-Date: 2026-09-23 · Branch: `v4` · Status: approved in brainstorming, awaiting spec review
+Date: 2026-09-23 · Branch: `v4` · Status: implemented on v4
 
 Make the site legible to search engines and AI tools, derived entirely from
 `lib/data.ts` and `lib/case-studies.ts`, with no hand-copied portfolio prose.
@@ -39,7 +39,7 @@ monthly. 17 URLs, absolute, from `SITE_URL`.
   (public social links, excluding mailto), `image` (the site's OG image URL).
 - `serviceSchema()` → `ProfessionalService` with `@id: SITE_URL/#service`,
   `name` built from heroContent (name + title), `url`, `email`, `areaServed`
-  [Naga City, Philippines], `provider: { @id person }`, `hasOfferCatalog`
+  [Naga City, Philippines], `founder: { @id person }`, `hasOfferCatalog`
   listing `services` as `Offer` → `Service` names. No `telephone`, no
   `streetAddress`.
 - `websiteSchema()` → `WebSite` with `@id: SITE_URL/#website`, `url`, `name`,

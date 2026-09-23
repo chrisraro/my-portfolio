@@ -74,7 +74,7 @@ export function buildLlmsFullTxt(): string {
       header(),
       servicesSection(),
       ['## Projects', '', ordered.map(projectBlock).join('\n\n')].join('\n'),
-      ['## Experience', '', ...experience.map((e) => `- ${e.title}, ${e.company}, ${e.location} (${e.dates}): ${e.responsibilities.join(' ')}`)].join('\n'),
+      ['## Experience', '', ...experience.map((e) => `- ${e.title}, ${e.company}, ${e.location} (${e.dates}): ${e.responsibilities.join('; ')}`)].join('\n'),
       ['## Education', '', ...education.map((e) => `- ${e.degree}, ${e.school} (${e.dates})${e.honors ? `, ${e.honors}` : ''}`)].join('\n'),
       contact(),
     ].join('\n\n') + '\n'

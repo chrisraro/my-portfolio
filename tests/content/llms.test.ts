@@ -1,6 +1,7 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { caseStudies } from '@/lib/case-studies'
-import { contactInfo, projects, services } from '@/lib/data'
+import { contactInfo, experience, projects, services } from '@/lib/data'
 import { buildLlmsFullTxt, buildLlmsTxt } from '@/lib/llms'
 import { SITE_URL } from '@/lib/site-metadata'
 import { hasPhone } from '@/tests/helpers/privacy'
@@ -40,6 +41,10 @@ describe('llms-full.txt', () => {
   it('carries every project description', () => {
     for (const p of projects) expect(text).toContain(p.description)
   })
+
+  it('semicolon-joins each role\'s responsibilities, as the chat prompt does', () => {
+    for (const e of experience) expect(text).toContain(e.responsibilities.join('; '))
+  })
 })
 
 describe('both AI files', () => {
@@ -48,6 +53,23 @@ describe('both AI files', () => {
       expect(hasPhone(text)).toBe(false)
       for (const email of text.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) ?? []) expect(email).toBe(contactInfo.email)
       expect(text).not.toContain('—')
+    }
+  })
+})
+
+describe('AI route handlers', () => {
+  const ROUTES = [
+    ['app/llms.txt/route.ts', '@/app/llms.txt/route', '# Christian Raro'],
+    ['app/llms-full.txt/route.ts', '@/app/llms-full.txt/route', '# Christian Raro'],
+  ] as const
+
+  it('are force-static and serve text/plain', async () => {
+    for (const [sourcePath, modulePath, bodyStart] of ROUTES) {
+      expect(readFileSync(sourcePath, 'utf8')).toMatch(/export const dynamic = 'force-static'/)
+      const { GET } = await import(modulePath)
+      const response: Response = GET()
+      expect(response.headers.get('Content-Type')).toBe('text/plain; charset=utf-8')
+      expect(await response.text()).toMatch(new RegExp(`^${bodyStart}`))
     }
   })
 })
