@@ -205,6 +205,9 @@ exists. `beachbus-nfc` becomes a non-interactive row instead of an `<a href="#">
 console, the lightbox, `Reveal`, the toaster and the theme provider need to be
 client components — eight in all. Everything else renders static data and becomes
 a server component. Target: fewer than 10 `'use client'` files, down from 18.
+**Amended 2026-09-23 (final review):** six at the finish. `FieldLog` stayed a
+server component that renders the client `ImageLightbox`, and `Reveal` was
+deleted as unused.
 
 ### §6. Homepage composition
 
@@ -260,6 +263,10 @@ move into `lib/data.ts` alongside the other copy.
 
 - The live status dot has a slow pulse ring (2.4s, opacity only).
 - Board rows and panels reveal on mount through the existing `Reveal` primitive.
+  **Amended 2026-09-23 (final review):** dropped. Products and Systems are primary
+  proof and must be visible in the server HTML, so they have no entrance
+  animation, and `Reveal` was deleted once nothing rendered it. See `DESIGN.md`
+  → Motion.
 - Row hover: an amber left rule and an arrow, 150ms.
 - **Under `prefers-reduced-motion`, all three are removed**, not merely shortened.
 - Not used: count-up numbers, scroll-linked animation, parallax, page transitions.

@@ -230,7 +230,7 @@ and checks WCAG contrast in both themes, so the one-per-line format is load-bear
 - **On Amber** (`on-accent`): text on an amber fill. It is the canvas colour, so the CTA reads as a cut-out of the ground.
 
 ### Secondary
-- **Signal Green** (`live`): a live system and nothing else. It appears as the live status dot and its pulse ring. Brand, success and availability never use it.
+- **Signal Green** (`live`): a live system and nothing else. It appears as the live status dot and its pulse ring, only inside `StatusBadge`. Brand, success, availability and the chat assistant never use it.
 
 ### Tertiary
 - **Early-access Amber** (`status-early`): the same value as `accent`, used only as the 1.5px ring of the early-access glyph. The shape, a hollow ring rather than a filled dot, separates it from brand amber.
@@ -379,7 +379,7 @@ Photo cards (a 4:3 image that opens the lightbox, with an always-visible caption
 One panel with two labelled groups, "Work" and "Education", split `2fr 1fr`. Each group is an ordered list on a hairline left rule with 6px `line-strong` node dots. Dates are mono `muted`.
 
 ### Chat (Chunks)
-A non-modal dialog, 380×520 at most, in `panel` with an Overlay shadow. The header shows the live dot and a mono title `~/ask chunks`. The log is a `canvas` well: the visitor's bubbles are `line` fill with a `line-strong` border, and the bot's are `panel` with a `line` border. Mono meta lines read `you · 3:04 PM`. The launcher is a 44–56px `panel` square with an amber icon and a small live dot.
+A non-modal dialog, 380×520 at most, in `panel` with an Overlay shadow. The header shows a still amber dot and a mono title `~/ask chunks`. The widget cannot know the assistant is online until a reply arrives, so it never wears the live dot. Once `/api/chat` answers `offline: true`, the dot turns `muted` and the subtitle says "offline · set replies only". The log is a `canvas` well: the visitor's bubbles are `line` fill with a `line-strong` border, and the bot's are `panel` with a `line` border. Mono meta lines read `you · 3:04 PM`. The launcher is a 44–56px `panel` square with an amber icon and a small still amber dot, which it drops once the assistant has answered offline.
 
 ### Toasts
 `panel` cards with 8px corners and the Float shadow, top right. Success and info use an amber check or info glyph with a `line-strong` border and dismiss after 5s. Warning and error use an `ink` triangle or octagon with an `ink` border and stay until dismissed. There is no green.
@@ -388,7 +388,7 @@ A non-modal dialog, 380×520 at most, in `panel` with an Overlay shadow. The hea
 - **Live pulse** (`.live-pulse`): an opacity-only 1px `live` ring (inset -3px) that fades from 0.7 to 0 over 2.4s ease-out, **twice**, then stops (4.8s in all). Reduced motion removes it.
 - **Hover:** colour and opacity transitions only, at Tailwind's default 150ms.
 - **Enter/exit:** 200ms fades with `cubic-bezier(0.22, 1, 0.36, 1)` for the chat, toasts and lightbox, with a small 8px or 0.98-scale offset. Under reduced motion they switch instantly with no offset.
-- **Reveal:** `Reveal` fades and slides in on mount (0.5s, `cubic-bezier(0.21, 0.47, 0.32, 0.98)`, 20px). It is deliberately not triggered on scroll. Primary proof (Products, Systems) does not use it and renders visible from the server.
+- **No entrance animation:** sections render visible from the server. Primary proof (Products, Systems) must never wait at opacity 0 for hydration; a markup test forbids it.
 - **Typing dots** (`.typing-dot`): three dots fading in turn (1.2s) that exist only while a reply loads.
 - **Reduced motion:** `globals.css` collapses every animation and transition to about 0ms and one iteration. `useReducedMotion` removes movement in framer-motion.
 
@@ -414,7 +414,7 @@ A non-modal dialog, 380×520 at most, in `panel` with an Overlay shadow. The hea
 - **Don't** use red for errors. Use `ink` with an octagon glyph.
 - **Don't** put shadows on in-flow panels. Use a tonal step and a hairline.
 - **Don't** build a hero over a grid of screenshot cards. Screenshots are insets inside panels that lead with name, summary and status.
-- **Don't** animate continuously, count up numbers, use parallax or trigger motion from scroll position. Don't wrap primary proof in `Reveal`.
+- **Don't** animate continuously, count up numbers, use parallax or trigger motion from scroll position. Don't give primary proof an entrance animation.
 - **Don't** mark a selected-looking state with an amber outline unless it is actually selected. That treatment belongs to the board filter.
 - **Don't** hardcode portfolio content (headings, eyebrows, facts) in components.
 
@@ -437,7 +437,7 @@ These are recorded rather than resolved. The owner has approved the direction, a
 
 1. **The OG image is off-system.** `og-image.png` is in the Portfolio 3.0 look: a crimson top rule and eyebrow, a serif display face, and the title "Software Engineer". That breaks the One Amber Rule and the One Family Rule and contradicts the H1 "Full-stack developer." Regenerate it in B3 Signal (graphite, amber, Recursive) from `heroContent`.
 2. **Legacy rasters still ship.** `public/assets/images/projects/` holds `.webp` files and `ARway Screenshot.jpg`, and `about/` holds five portraits, none of which the code references. They deploy with `public/` and have no recorded provenance. Remove them or record their provenance.
-3. **The chat's live dot stretches the Green Means Live Rule.** The chat launcher and header use the pulsing live dot to mean that the assistant is available, and it stays green when `/api/chat` answers in offline mode. Decide whether Chunks counts as a live system or should take the amber availability dot.
+3. **Resolved: the chat no longer uses the live dot.** Its dots are a still amber, and the header says "offline" in words when `/api/chat` answers offline. `tests/design/green-means-live.test.ts` keeps `live` and `.live-pulse` inside `StatusBadge`.
 4. **Motion that is bounded by a request, not a timer.** The typing dots loop, and the "Sending" loader spins, for as long as a request takes. A slow Groq reply could hold them past five seconds. Reduced motion stops both.
 5. **Zero-padded numerals.** The proof band's "03" and "01" keep the column tidy, but the latest critique found that they read as code to a non-technical first-time visitor.
 6. **There is no status legend.** Glyph and label always travel together, but the board has no key explaining what Early access, Private and Internal mean to a client.
