@@ -161,3 +161,40 @@ export interface GalleryImage {
   /** Visible caption. This is the proof; it must not hide behind a hover. */
   caption: string;
 }
+
+/** A published number. The literal `true` makes an unapproved number a compile error. */
+export interface CaseStudyMetric {
+  value: string
+  label: string
+  /** Christian confirmed the client agreed to publish this number. */
+  clientApproved: true
+}
+
+export interface CaseStudyDecision {
+  chose: string
+  over: string
+  because: string
+}
+
+export interface CaseStudyStackItem {
+  name: string
+  why: string
+}
+
+/** A flagship's researched case study. Every sentence traces to a dossier source or to Christian. */
+export interface CaseStudy {
+  /** Equals a Project.slug. */
+  slug: string
+  /** What Christian did, e.g. "Sole developer: design, build and payments". */
+  role: string
+  brief: string[]
+  built: string[]
+  /** Two to four. */
+  decisions: CaseStudyDecision[]
+  stack: CaseStudyStackItem[]
+  /** Qualitative. Numbers go in `metrics`. */
+  outcome: string[]
+  metrics?: CaseStudyMetric[]
+  /** Other project slugs told as part of this story, e.g. the BeachBus NFC system. */
+  related?: string[]
+}

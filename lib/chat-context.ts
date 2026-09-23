@@ -1,3 +1,4 @@
+import { caseStudies } from '@/lib/case-studies'
 import {
   availability,
   contactInfo,
@@ -9,7 +10,7 @@ import {
   recommendations,
   skills,
 } from '@/lib/data'
-import { BAND_ORDER } from '@/types'
+import { BAND_ORDER, type CaseStudy } from '@/types'
 
 // The portfolio facts in this file derive from lib/data.ts. The route used to
 // carry a hand-written prose copy alongside the generated one, and the two
@@ -20,6 +21,27 @@ import { BAND_ORDER } from '@/types'
 // OFFERED block (a positioning statement, not an inventory of lib/data.ts) and
 // the rules in SYSTEM_PROMPT (behavioral instructions to the model, not facts
 // about Christian).
+// Case studies are approved text only (see lib/case-studies.ts), so the
+// assistant can explain how a flagship was built without inventing detail.
+export function buildCaseStudyContext(studies: CaseStudy[]): string {
+  if (studies.length === 0) return ''
+  const blocks = studies.map((s) => {
+    const title = projects.find((p) => p.slug === s.slug)?.title ?? s.slug
+    const lines = [
+      `## ${title}`,
+      `Role: ${s.role}`,
+      `Brief: ${s.brief.join(' ')}`,
+      `Built: ${s.built.join(' ')}`,
+      ...s.decisions.map((d) => `Decision: Chose ${d.chose} over ${d.over} because ${d.because}`),
+      `Stack: ${s.stack.map((i) => `${i.name}: ${i.why}`).join('; ')}`,
+      `Outcome: ${s.outcome.join(' ')}`,
+    ]
+    if (s.metrics?.length) lines.push(`Figures: ${s.metrics.map((m) => `${m.value} ${m.label}`).join('; ')}`)
+    return lines.join('\n')
+  })
+  return `\nCASE STUDIES:\n${blocks.join('\n\n')}\n`
+}
+
 export function buildPortfolioContext(): string {
   const projectsList = projects
     .map((p) => {
@@ -76,6 +98,7 @@ OWNER INFORMATION:
 
 PROJECTS (${projects.length} total, grouped into ${bandList}):
 ${projectsList}
+${buildCaseStudyContext(caseStudies)}
 
 TECHNICAL SKILLS:
 ${skillsList}

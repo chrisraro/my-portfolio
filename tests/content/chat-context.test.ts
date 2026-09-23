@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { OFFLINE_REPLY, SYSTEM_PROMPT, buildPortfolioContext, numberToWords } from '@/lib/chat-context'
+import { OFFLINE_REPLY, SYSTEM_PROMPT, buildCaseStudyContext, buildPortfolioContext, numberToWords } from '@/lib/chat-context'
 import { experience, projects, skills } from '@/lib/data'
+import type { CaseStudy } from '@/types'
 
 // Third-party names that appeared in the hand-written prose this task removed
 // from a client-facing LLM prompt (a passage naming two people and their
@@ -127,5 +128,32 @@ describe('privacy and factual guards apply to every shipped string', () => {
 
   it.each(shippedStrings)('claims no years-of-experience figure in %s', (_label, text) => {
     expect(text).not.toMatch(/\d+\+?\s*years? of experience/i)
+  })
+})
+
+describe('case study context', () => {
+  const study: CaseStudy = {
+    slug: 'giya',
+    role: 'Sole developer',
+    brief: ['The brief paragraph.'],
+    built: ['What was built.'],
+    decisions: [
+      { chose: 'A', over: 'B', because: 'reason one' },
+      { chose: 'C', over: 'D', because: 'reason two' },
+    ],
+    stack: [{ name: 'Next.js', why: 'server rendering' }],
+    outcome: ['It shipped.'],
+    metrics: [{ value: '10+', label: 'partners', clientApproved: true }],
+  }
+
+  it('states every section of a case study under its project title', () => {
+    const text = buildCaseStudyContext([study])
+    for (const s of ['Giya', 'Sole developer', 'The brief paragraph.', 'What was built.', 'Chose A over B because reason one', 'Next.js: server rendering', 'It shipped.', '10+ partners']) {
+      expect(text).toContain(s)
+    }
+  })
+
+  it('says nothing when there are no case studies', () => {
+    expect(buildCaseStudyContext([])).toBe('')
   })
 })

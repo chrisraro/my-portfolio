@@ -92,3 +92,6 @@ pids
 
 # brainstorm mockups, subagent reports and progress ledgers
 .superpowers/
+
+# Case-study research dossiers may hold client numbers; never commit them.
+docs/case-studies/research/
