@@ -63,6 +63,10 @@ describe('case studies', () => {
     }
   })
 
+  it('has a case study for every flagship', () => {
+    expect(caseStudies.map((s) => s.slug).sort()).toEqual(FLAGSHIP_SLUGS.slice().sort())
+  })
+
   it('looks a case study up by slug', () => {
     expect(getCaseStudy('no-such-project')).toBeUndefined()
     for (const s of caseStudies) expect(getCaseStudy(s.slug)).toBe(s)
