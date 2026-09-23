@@ -95,6 +95,45 @@ export const caseStudies: CaseStudy[] = [
     ],
     related: ['beachbus-nfc-card-system'],
   },
+  {
+    slug: 'acad1-review-center',
+    role: 'Sole developer: full build and occasional support',
+    brief: [
+      'ACAD1 Review Center runs entrance-test review programmes for college, senior high school, science high school and medical school admission. It teaches at several branches and also runs an online programme.',
+      'Students reserved a slot in person or by chat, and staff checked each payment by hand. ACAD1 needed a way for students to reserve and pay online.',
+    ],
+    built: [
+      'I built the whole WordPress site: the theme, the pages and the programme listings. It runs on GeneratePress and GenerateBlocks. A branches page lists every branch and the online programme, and the listings show each programme\'s tiers and class schedules per branch.',
+      'Reservations run on WooCommerce. Each programme listing has an Enroll Now button that leads to the cart and checkout. A student reserves a slot with a 50% downpayment and settles the balance before the first session. A deposits plugin I set up and configured handles the downpayment and the balance, and checkout goes through Xendit.',
+    ],
+    decisions: [
+      {
+        chose: 'Xendit',
+        over: 'PayMongo',
+        because: 'ACAD1 already had a Xendit merchant account, so I built checkout on it.',
+      },
+      {
+        chose: 'A 50% downpayment',
+        over: 'full payment up front',
+        because: 'It mirrors the reservation policy ACAD1 already used in person. Families can secure a slot without paying everything at once and settle the balance later.',
+      },
+      {
+        chose: 'A configured deposits plugin',
+        over: 'custom code',
+        because: 'A maintained plugin handles deposits, balances and emails reliably, and the client can manage it without a developer. It was also faster to launch, and reservations had to be live before a review season.',
+      },
+    ],
+    stack: [
+      { name: 'WordPress and WooCommerce', why: 'Run the site, the programme listings and the reservation checkout.' },
+      { name: 'GeneratePress and GenerateBlocks', why: 'The theme and the page layouts.' },
+      { name: 'A WooCommerce deposits plugin', why: 'Takes the downpayment and handles the balance and its emails.' },
+      { name: 'Xendit', why: 'Takes payment at checkout on ACAD1\'s existing merchant account.' },
+    ],
+    outcome: [
+      'Students now reserve a slot at any branch online, instead of in person or by chat. Xendit confirms each payment, so staff no longer check transfers by hand.',
+      'The site is live, and I still do occasional work on it when ACAD1 asks.',
+    ],
+  },
 ]
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
