@@ -1,5 +1,7 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -19,8 +21,7 @@ interface BoardRowProps {
   showBand?: boolean
 }
 
-// A row links only when there is somewhere to go. A project with no live URL
-// renders as a plain row rather than a focusable href="#".
+// Every row opens its project's page; the live site is linked from there.
 export function BoardRow({ project, showBand = true }: BoardRowProps) {
   const href = project.links.live
 
@@ -29,12 +30,10 @@ export function BoardRow({ project, showBand = true }: BoardRowProps) {
       <span className="min-w-0">
         <span className="flex items-center gap-1.5 font-medium text-ink">
           {project.title}
-          {href && (
-            <ArrowUpRight
-              aria-hidden="true"
-              className="h-3.5 w-3.5 text-muted transition-colors group-hover:text-accent"
-            />
-          )}
+          <ArrowRight
+            aria-hidden="true"
+            className="h-3.5 w-3.5 text-muted transition-colors group-hover:text-accent"
+          />
         </span>
         {/* Below md there is no summary column, so what it does sits under the name. */}
         <span className="mt-0.5 block text-sm text-muted-strong md:hidden">{project.summary}</span>
@@ -48,14 +47,10 @@ export function BoardRow({ project, showBand = true }: BoardRowProps) {
     </>
   )
 
-  if (!href) return <li className={GRID}>{cells}</li>
-
   return (
     <li>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        href={projectHref(project)}
         className={cn(
           GRID,
           'group relative transition-colors hover:bg-canvas/60',
@@ -67,8 +62,7 @@ export function BoardRow({ project, showBand = true }: BoardRowProps) {
         )}
       >
         {cells}
-        <span className="sr-only">(opens in a new tab)</span>
-      </a>
+      </Link>
     </li>
   )
 }

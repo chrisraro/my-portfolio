@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -19,7 +21,11 @@ export function ProductPanel({ project }: { project: Project }) {
     >
       <div className="flex min-w-0 flex-col">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <h3 className="text-xl font-semibold text-ink">{project.title}</h3>
+          <h3 className="text-xl font-semibold text-ink">
+            <Link href={projectHref(project)} className="transition-colors hover:text-accent">
+              {project.title}
+            </Link>
+          </h3>
           <StatusBadge status={project.status} />
         </div>
         <p className="mt-1.5 text-base text-ink">{project.summary}</p>

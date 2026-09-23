@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
+import { ProductPanel } from '@/components/ui/product-panel'
 import { caseStudyContent, projects } from '@/lib/data'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
@@ -57,5 +58,15 @@ describe('/projects/[slug]', () => {
   it('titles each page for its project', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
     expect(String(md.title)).toMatch(/^Latag · /)
+  })
+})
+
+describe('ProductPanel', () => {
+  it('links each product title to its page and keeps the external link to try it', () => {
+    for (const p of projects.filter((x) => x.band === 'Products')) {
+      const html = renderToStaticMarkup(<ProductPanel project={p} />)
+      expect(html).toContain(`href="/projects/${p.slug}"`)
+      if (p.links.live) expect(html).toContain(`href="${p.links.live}"`)
+    }
   })
 })

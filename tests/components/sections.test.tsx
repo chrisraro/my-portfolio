@@ -84,8 +84,9 @@ describe('Product panels', () => {
     products.forEach((project, i) => {
       const panel = panels[i]
       const at = (needle: string) => panel.indexOf(needle)
-      expect(at(`>${project.title}</h3>`)).toBeGreaterThan(-1)
-      expect(at(`>${project.summary}<`)).toBeGreaterThan(at(`>${project.title}</h3>`))
+      const titleAt = at(`>${project.title}<`)
+      expect(titleAt).toBeGreaterThan(-1)
+      expect(at(`>${project.summary}<`)).toBeGreaterThan(titleAt)
       expect(at('data-status=')).toBeGreaterThan(-1)
       expect(at(`>${project.description.slice(0, 40)}`)).toBeGreaterThan(at(`>${project.summary}<`))
       if (project.image) {
