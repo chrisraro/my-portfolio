@@ -169,6 +169,48 @@ export const caseStudies: CaseStudy[] = [
       'Brokers and the sales team use it to show properties to buyers and to run the financing numbers with them.',
     ],
   },
+  {
+    slug: 'giya',
+    role: 'Sole developer: my own product',
+    brief: [
+      'Food and retail customers in the Philippines already get a paper receipt when they buy. I wanted those receipts to earn them points they can turn into real rewards.',
+      'Small food and retail businesses also want a loyalty programme. Giya had to give them one with no POS integration and no new hardware.',
+    ],
+    built: [
+      'Giya is a PWA. A customer scans a printed receipt, earns points at partner businesses and redeems them for rewards. Sign-in is Google or Facebook only.',
+      'When a customer scans a receipt, AI reads its details, then a fraud review checks it before any points are awarded. The points sit in a ledger. The fraud review and the ledger are partly live, and I am building the rest.',
+      'Businesses get a module for their campaigns, points and customers, and an admin module sits behind both sides. The live version, Giya 2.0, is a rebuild of my first version. Giya is free for customers, and free for businesses during the pilot.',
+    ],
+    decisions: [
+      {
+        chose: 'Rebuilding as Giya 2.0',
+        over: 'extending the first version',
+        because: 'The product changed. The first version was a hyperlocal discovery and privileges app, and 2.0 focuses on receipt-scanning rewards and a CRM for businesses. The first version also began as a quick prototype, so 2.0 starts from a clean, maintainable codebase.',
+      },
+      {
+        chose: 'Supabase',
+        over: 'a custom backend',
+        because: 'It gives me Postgres, sign-in and file storage for receipt images in one service, so I can ship fast as the only developer. Postgres row-level security also keeps customer, business and admin data apart.',
+      },
+      {
+        chose: 'Google and Facebook sign-in only',
+        over: 'email and password',
+        because: 'Real social accounts make it harder to farm points with throwaway emails. One-tap sign-in also leaves no passwords to reset.',
+      },
+    ],
+    stack: [
+      { name: 'Next.js and React', why: 'Build the customer app and the business and admin modules.' },
+      { name: 'Supabase', why: 'Holds the database, sign-in and receipt images, with row-level security between customers, businesses and admins.' },
+      { name: 'Receipt OCR', why: 'Reads the details of each scanned receipt before the fraud review.' },
+      { name: 'Tailwind CSS', why: 'Styles the app.' },
+      { name: 'PWA', why: 'Makes Giya an installable app that runs in the browser.' },
+      { name: 'Sentry', why: 'Reports errors from the live app.' },
+    ],
+    outcome: [
+      'Giya 2.0 is live at giya.ph in a free pilot for customers and businesses. Paid tiers for businesses are planned.',
+      'The fraud review and the points ledger are partly live. Some checks already run, and I am still building the rest.',
+    ],
+  },
 ]
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
