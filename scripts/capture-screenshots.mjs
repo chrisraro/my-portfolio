@@ -1,5 +1,5 @@
 // Capture above-the-fold desktop mockups for portfolio projects using the
-// system Chrome via puppeteer-core. Output: public/assets/images/projects/<id>.png
+// system Chrome via puppeteer-core. Output: public/assets/images/projects/<id>.png and <id>-mobile.png
 //
 // Usage: node scripts/capture-screenshots.mjs [id ...]
 //   - no args: capture all targets
@@ -35,7 +35,12 @@ fs.mkdirSync(outDir, { recursive: true })
 const onlyIds = process.argv.slice(2)
 const queue = onlyIds.length ? targets.filter((t) => onlyIds.includes(t.id)) : targets
 
-const viewport = { width: 1440, height: 900, deviceScaleFactor: 1 }
+// Desktop keeps writing <id>.png, the file lib/data.ts already points at.
+// Mobile writes <id>-mobile.png; lib/project-page.ts shows it when it exists.
+const VIEWPORTS = [
+  { suffix: '', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } },
+  { suffix: '-mobile', viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } },
+]
 
 // Scroll through the page to trigger lazy-loaded images/sliders, then return to top.
 async function autoScroll(page) {
@@ -127,26 +132,29 @@ async function dismissOverlays(page) {
   const results = { ok: [], failed: [] }
 
   for (const t of queue) {
-    const page = await browser.newPage()
-    await page.setViewport(viewport)
-    await page.setDefaultNavigationTimeout(60000)
-    try {
-      console.log('Capturing', t.id, '→', t.url)
-      await page.goto(t.url, { waitUntil: 'networkidle2', timeout: 60000 })
-      await new Promise((r) => setTimeout(r, 2000))
-      await dismissOverlays(page)
-      await autoScroll(page)
-      // Late-firing exit-intent and timed popups reappear after the scroll.
-      await dismissOverlays(page)
-      const filePath = path.join(outDir, `${t.id}.png`)
-      await page.screenshot({ path: filePath, type: 'png', fullPage: false })
-      console.log('  saved:', filePath)
-      results.ok.push(t.id)
-    } catch (e) {
-      console.error('  FAILED:', t.id, e?.message)
-      results.failed.push(t.id)
-    } finally {
-      await page.close()
+    for (const { suffix, viewport } of VIEWPORTS) {
+      const label = `${t.id}${suffix}`
+      const page = await browser.newPage()
+      await page.setViewport(viewport)
+      await page.setDefaultNavigationTimeout(60000)
+      try {
+        console.log('Capturing', label, '→', t.url)
+        await page.goto(t.url, { waitUntil: 'networkidle2', timeout: 60000 })
+        await new Promise((r) => setTimeout(r, 2000))
+        await dismissOverlays(page)
+        await autoScroll(page)
+        // Late-firing exit-intent and timed popups reappear after the scroll.
+        await dismissOverlays(page)
+        const filePath = path.join(outDir, `${label}.png`)
+        await page.screenshot({ path: filePath, type: 'png', fullPage: false })
+        console.log('  saved:', filePath)
+        results.ok.push(label)
+      } catch (e) {
+        console.error('  FAILED:', label, e?.message)
+        results.failed.push(label)
+      } finally {
+        await page.close()
+      }
     }
   }
 
