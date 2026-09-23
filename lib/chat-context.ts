@@ -8,6 +8,7 @@ import {
   paymentGateways,
   projects,
   recommendations,
+  services,
   skills,
 } from '@/lib/data'
 import { BAND_ORDER, type CaseStudy } from '@/types'
@@ -17,12 +18,11 @@ import { BAND_ORDER, type CaseStudy } from '@/types'
 // diverged: the prose advertised projects that were not on the site and omitted
 // ones that were. That drift cannot recur here.
 //
-// Two things below are deliberately hand-written, not derived: the SERVICES
-// OFFERED block (a positioning statement, not an inventory of lib/data.ts) and
-// the rules in SYSTEM_PROMPT (behavioral instructions to the model, not facts
-// about Christian).
-// Case studies are approved text only (see lib/case-studies.ts), so the
-// assistant can explain how a flagship was built without inventing detail.
+// One thing below is deliberately hand-written, not derived: the rules in
+// SYSTEM_PROMPT (behavioral instructions to the model, not facts about Christian).
+// SERVICES OFFERED and case studies derive from lib/data.ts and lib/case-studies.ts
+// respectively, so the assistant can explain how a flagship was built without
+// inventing detail.
 export function buildCaseStudyContext(studies: CaseStudy[]): string {
   if (studies.length === 0) return ''
   const blocks = studies.map((s) => {
@@ -114,11 +114,7 @@ RECOMMENDATIONS:
 ${recommendationsList}
 
 SERVICES OFFERED:
-- Full-stack web application development (Next.js, React, Node.js)
-- WordPress website development and customisation
-- E-commerce with WooCommerce and Philippine payment gateways
-- Custom internal tools and hardware integrations
-- API integrations
+${services.map((s) => `- ${s}`).join('\n')}
 
 CONTACT:
 - Email: ${contactInfo.email}

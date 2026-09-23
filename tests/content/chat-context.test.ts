@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { OFFLINE_REPLY, SYSTEM_PROMPT, buildCaseStudyContext, buildPortfolioContext, numberToWords } from '@/lib/chat-context'
-import { experience, projects, skills } from '@/lib/data'
+import { experience, projects, services, skills } from '@/lib/data'
 import type { CaseStudy } from '@/types'
 
 // Third-party names that appeared in the hand-written prose this task removed
@@ -155,5 +155,19 @@ describe('case study context', () => {
 
   it('says nothing when there are no case studies', () => {
     expect(buildCaseStudyContext([])).toBe('')
+  })
+})
+
+describe('services', () => {
+  it('lists what Christian offers, once, in the SERVICES OFFERED section of the chat prompt', () => {
+    // The experience section of the prompt also mentions "API integrations",
+    // so a whole-prompt substring count is not a valid uniqueness check.
+    // Isolate the SERVICES OFFERED block (it ends at the next blank line) and
+    // check uniqueness only there.
+    expect(services.length).toBeGreaterThan(0)
+    const servicesBlock = SYSTEM_PROMPT.split('SERVICES OFFERED:')[1].split('\n\n')[0]
+    const bulletLines = servicesBlock.split('\n').filter((line) => line.startsWith('- '))
+    expect(bulletLines).toHaveLength(services.length)
+    for (const s of services) expect(servicesBlock.split(s).length - 1).toBe(1)
   })
 })

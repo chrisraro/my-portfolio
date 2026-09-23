@@ -1,14 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_SLUGS, caseStudies, caseStudyFor, caseStudyText, getCaseStudy } from '@/lib/case-studies'
 import { contactInfo, projects } from '@/lib/data'
+import { hasPhone } from '@/tests/helpers/privacy'
 import type { CaseStudyMetric } from '@/types'
 
 const slugs = projects.map((p) => p.slug)
-
-// Mobile (+63 917 123 4567, 09171234567), area-code landlines ((054) 884-5188,
-// 054-884-5188) and bare seven-digit local numbers (884-5188).
-const PHONE = [/\+?\d[\d\s-]{8,}\d/, /\(\d{2,4}\)\s*\d{3}[\s-]?\d{4}/, /\b\d{3}-\d{4}\b/]
-const hasPhone = (text: string) => PHONE.some((re) => re.test(text))
 
 // Compile-time guard, checked by `npm run type-check`: a metric the client has
 // not approved cannot be written down at all.

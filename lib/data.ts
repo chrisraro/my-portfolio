@@ -498,3 +498,13 @@ export const notFoundContent = {
   title: 'Nothing lives at this address',
   description: 'The link may be old or mistyped. Every project I have shipped is on the projects page.',
 }
+
+// What Christian offers. The chat prompt, the ProfessionalService structured
+// data and /llms.txt all read this list, so it is stated once.
+export const services: string[] = [
+  'Full-stack web application development (Next.js, React, Node.js)',
+  'WordPress website development and customisation',
+  'E-commerce with WooCommerce and Philippine payment gateways',
+  'Custom internal tools and hardware integrations',
+  'API integrations',
+]
