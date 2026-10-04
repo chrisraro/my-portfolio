@@ -1,7 +1,8 @@
 // Capture above-the-fold desktop mockups for portfolio projects using the
 // system Chrome via puppeteer-core. Output: public/assets/images/projects/<id>.png and <id>-mobile.png
 //
-// Usage: node scripts/capture-screenshots.mjs [id ...]
+// Usage: node scripts/capture-screenshots.mjs [--full] [id ...]
+//   - --full: write <id>-full.webp instead (1440 wide, whole page, capped at 6000px)
 //   - no args: capture all targets
 //   - with ids: capture only those targets (e.g. `node scripts/capture-screenshots.mjs graceland iskotify`)
 
@@ -32,12 +33,16 @@ function findBrowser() {
 const outDir = path.resolve('public/assets/images/projects')
 fs.mkdirSync(outDir, { recursive: true })
 
-const onlyIds = process.argv.slice(2)
+const args = process.argv.slice(2)
+const FULL = args.includes('--full')
+const onlyIds = args.filter((a) => !a.startsWith('--'))
 const queue = onlyIds.length ? targets.filter((t) => onlyIds.includes(t.id)) : targets
 
 // Desktop keeps writing <id>.png, the file lib/data.ts already points at.
 // Mobile writes <id>-mobile.png; lib/project-page.ts shows it when it exists.
-const VIEWPORTS = [
+const VIEWPORTS = FULL
+  ? [{ suffix: '-full', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } }]
+  : [
   { suffix: '', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } },
   { suffix: '-mobile', viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } },
 ]
@@ -145,8 +150,23 @@ async function dismissOverlays(page) {
         await autoScroll(page)
         // Late-firing exit-intent and timed popups reappear after the scroll.
         await dismissOverlays(page)
-        const filePath = path.join(outDir, `${label}.png`)
-        await page.screenshot({ path: filePath, type: 'png', fullPage: false })
+        let filePath
+        if (FULL) {
+          const height = await page.evaluate(() =>
+            Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
+          )
+          filePath = path.join(outDir, `${label}.webp`)
+          await page.screenshot({
+            path: filePath,
+            type: 'webp',
+            quality: 70,
+            clip: { x: 0, y: 0, width: 1440, height: Math.min(height, 6000) },
+            captureBeyondViewport: true,
+          })
+        } else {
+          filePath = path.join(outDir, `${label}.png`)
+          await page.screenshot({ path: filePath, type: 'png', fullPage: false })
+        }
         console.log('  saved:', filePath)
         results.ok.push(label)
       } catch (e) {

@@ -1,8 +1,8 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { caseStudyContent, projects, sectorNames } from '@/lib/data'
-import { canLinkLive, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, isEmbeddable, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
 import { buildProjectPageTitle } from '@/lib/site-metadata'
 import type { Project, ProjectStatus } from '@/types'
 
@@ -66,6 +66,39 @@ describe('project page helpers', () => {
       const title = buildProjectPageTitle(p)
       expect(title.startsWith(`${p.title} · `)).toBe(true)
       expect(title).not.toContain('—')
+    }
+  })
+})
+
+describe('preview assets and embeddability', () => {
+  const embeds = JSON.parse(readFileSync(join(process.cwd(), 'lib/embeddable.json'), 'utf8'))
+
+  it('records an embeddability flag for every project with a live URL', () => {
+    expect(Number.isNaN(Date.parse(embeds.checkedAt))).toBe(false)
+    for (const p of projects.filter((p) => p.links.live)) {
+      expect(typeof embeds.projects[p.slug], p.slug).toBe('boolean')
+    }
+  })
+
+  it('returns a full-page shot path only when the file exists', () => {
+    for (const p of projects) {
+      const path = `/assets/images/projects/${p.id}-full.webp`
+      const exists = existsSync(join(process.cwd(), 'public', path))
+      expect(fullShotFor(p)).toBe(exists ? path : undefined)
+    }
+    expect(fullShotFor({ ...bySlug('giya'), id: 'no-such-project' })).toBeUndefined()
+  })
+
+  it('never calls an auth-gated, internal or unknown project embeddable', () => {
+    expect(isEmbeddable(withStatus('auth-gated', 'https://x.test'))).toBe(false)
+    expect(isEmbeddable(withStatus('internal', 'https://x.test'))).toBe(false)
+    expect(isEmbeddable({ ...withStatus('live', 'https://x.test'), slug: 'unknown-slug' })).toBe(false)
+    expect(isEmbeddable(withStatus('live'))).toBe(false)
+  })
+
+  it('reads the recorded flag for a linkable project', () => {
+    for (const p of projects.filter((p) => canLinkLive(p))) {
+      expect(isEmbeddable(p), p.slug).toBe(embeds.projects[p.slug] === true)
     }
   })
 })

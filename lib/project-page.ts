@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { recommendations } from '@/lib/data'
+import embeddable from '@/lib/embeddable.json'
 import type { Project, ProjectStatus, Recommendation } from '@/types'
 
 // Server-only helpers for /projects/[slug]. They read the filesystem, so never
@@ -29,6 +30,20 @@ export function screenshotsFor(project: Project): { desktop?: string; mobile?: s
   const mobile = project.image.replace(/\.png$/, '-mobile.png')
   const hasMobile = mobile !== project.image && existsSync(join(process.cwd(), 'public', mobile))
   return hasMobile ? { desktop: project.image, mobile } : { desktop: project.image }
+}
+
+// `npm run capture -- --full` writes <id>-full.webp: the whole page, capped at
+// 6000px. Optional, like the mobile shot.
+export function fullShotFor(project: Project): string | undefined {
+  const path = `/assets/images/projects/${project.id}-full.webp`
+  return existsSync(join(process.cwd(), 'public', path)) ? path : undefined
+}
+
+// lib/embeddable.json is written by `npm run check:embeds`. Only a site that
+// permits cross-origin framing, and that a visitor may open, can be previewed live.
+export function isEmbeddable(project: Project): boolean {
+  const flags: Record<string, boolean> = embeddable.projects
+  return flags[project.slug] === true && canLinkLive(project)
 }
 
 export function nextInOrder(order: readonly string[], current: string): string | undefined {
