@@ -38,7 +38,7 @@ describe('/projects/[slug]', () => {
   it('states status in words and links back to all projects', () => {
     for (const p of projects) {
       const html = render(p.slug)
-      expect(html).toMatch(/>(Live|Early access|Private|Internal)</)
+      expect(html).toMatch(/>(Live|Early access|Private|Internal|Staging)</)
       expect(html).toContain('href="/projects"')
     }
   })
@@ -48,6 +48,13 @@ describe('/projects/[slug]', () => {
     expect(render('downtown-district-hotel')).toContain('Open live site')
     expect(render('ocs-wp-control-panel')).not.toContain('Open live site')
     expect(render('beachbus-nfc-card-system')).not.toContain('Open live site')
+  })
+
+  it('calls Eastwind a staging site, in words, and labels its link that way', () => {
+    const html = render('eastwind-beach-villas')
+    expect(html).toContain('Open staging site')
+    expect(html).toContain('>Staging<')
+    expect(html).not.toContain('Open live site')
   })
 
   it('explains a missing preview instead of showing an empty frame', () => {

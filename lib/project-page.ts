@@ -12,10 +12,14 @@ export function projectHref(project: Project): string {
 
 // ua-gated sites refuse automated clients but open in any browser, so a
 // visitor can follow the link. Login-walled and internal systems cannot.
-const LINKABLE: readonly ProjectStatus[] = ['live', 'early-access', 'ua-gated']
+const LINKABLE: readonly ProjectStatus[] = ['live', 'early-access', 'ua-gated', 'staging']
 
 export function canLinkLive(project: Project): boolean {
   return Boolean(project.links.live) && LINKABLE.indexOf(project.status) !== -1
+}
+
+export function liveLinkLabel(project: Project): string {
+  return project.status === 'staging' ? 'Open staging site' : 'Open live site'
 }
 
 // scripts/capture-screenshots.mjs writes <id>.png and <id>-mobile.png side by

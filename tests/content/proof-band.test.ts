@@ -18,7 +18,8 @@ describe('hero proof band', () => {
   })
 
   it('claims as many shipped projects as the inventory holds', () => {
-    expect(projects).toHaveLength(17)
+    const shipped = projects.filter((p) => p.status !== 'staging')
+    expect(shipped).toHaveLength(17)
     expect(heroContent.proofPoints[1]).toBe('Seventeen projects shipped')
   })
 

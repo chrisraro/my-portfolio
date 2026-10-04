@@ -21,6 +21,7 @@ export type ProjectSector =
   | 'real-estate'
   | 'product'
   | 'internal-tool'
+  | 'directory'
 
 // Hospitality first: the primary buyer is a Philippine tourism or hospitality
 // owner. The last two never occur among client work.
@@ -29,6 +30,7 @@ export const SECTOR_ORDER: readonly ProjectSector[] = [
   'tours',
   'restaurant',
   'review-centre',
+  'directory',
   'education',
   'real-estate',
   'product',
@@ -43,10 +45,11 @@ export type ProjectStatus =
   | 'auth-gated'
   | 'ua-gated'
   | 'internal'
+  | 'staging'
 
 // What a visitor sees. Five data statuses collapse to four: `ua-gated` sites are
 // live in any browser, and only the preview mechanism needs the distinction.
-export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal'
+export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal' | 'staging'
 
 export interface Project {
   id: string;

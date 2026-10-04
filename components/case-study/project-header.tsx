@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { caseStudyContent, paymentGateways, sectorNames } from '@/lib/data'
-import { canLinkLive } from '@/lib/project-page'
+import { canLinkLive, liveLinkLabel } from '@/lib/project-page'
 import type { Project } from '@/types'
 
 interface ProjectHeaderProps {
@@ -57,7 +57,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
           // Secondary: it leaves the site. "Start a project" keeps the amber fill.
           className="mt-6 inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink transition-colors hover:border-accent hover:text-accent"
         >
-          Open live site
+          {liveLinkLabel(project)}
           <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">(opens in a new tab)</span>
         </a>

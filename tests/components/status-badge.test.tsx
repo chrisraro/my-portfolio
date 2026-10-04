@@ -9,6 +9,7 @@ const CASES: [ProjectStatus, string][] = [
   ['early-access', 'Early access'],
   ['auth-gated', 'Private'],
   ['internal', 'Internal'],
+  ['staging', 'Staging'],
 ]
 
 describe('StatusBadge', () => {
@@ -26,6 +27,17 @@ describe('StatusBadge', () => {
   it('hides the glyph from assistive technology', () => {
     const html = renderToStaticMarkup(<StatusBadge status="auth-gated" />)
     expect(html).toContain('aria-hidden="true"')
+  })
+
+  it('draws staging as its own shape, never the live glyph', () => {
+    const staging = renderToStaticMarkup(<StatusBadge status="staging" />)
+    const internal = renderToStaticMarkup(<StatusBadge status="internal" />)
+    expect(staging).toContain('data-status="staging"')
+    expect(staging).not.toContain('live-pulse')
+    expect(staging).not.toContain('bg-live')
+    const glyph = (html: string) => html.match(/<span aria-hidden="true" class="([^"]*)"/)?.[1]
+    expect(glyph(staging)).toBeTruthy()
+    expect(glyph(staging)).not.toBe(glyph(internal))
   })
 
   it('pulses only the live glyph', () => {

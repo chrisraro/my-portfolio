@@ -68,7 +68,7 @@ describe('BoardRow', () => {
 
   it('always states the status in words', () => {
     for (const project of projects) {
-      expect(renderToStaticMarkup(<BoardRow project={project} />)).toMatch(/>(Live|Early access|Private|Internal)</)
+      expect(renderToStaticMarkup(<BoardRow project={project} />)).toMatch(/>(Live|Early access|Private|Internal|Staging)</)
     }
   })
 })

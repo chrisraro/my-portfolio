@@ -20,6 +20,7 @@ const sectorLabels: Record<ProjectSector, string> = {
   'real-estate': 'real estate',
   product: 'products',
   'internal-tool': 'internal tools',
+  directory: 'directories',
 }
 
 // The first viewport names the verticals a hospitality owner is looking for.
@@ -37,7 +38,7 @@ export const heroContent = {
   // The count is the Sites band; the list is its distinct sectors in
   // hospitality-first order, capped at four so the line stays one line.
   get specialism(): string {
-    const sites = projects.filter((p) => p.band === 'Sites')
+    const sites = projects.filter((p) => p.band === 'Sites' && p.status !== 'staging')
     const sectors = SECTOR_ORDER.filter((sector) => sites.some((p) => p.sector === sector))
       .slice(0, 4)
       .map((sector) => sectorLabels[sector])
@@ -107,6 +108,8 @@ export const projects: Project[] = [
     slug: 'connecta-ph',
     title: 'Connecta PH',
     description: 'NFC and QR business cards that open a professional profile on any phone with no app to install, and send every visitor enquiry back to the card owner. Built for Naga first.',
+    summary: 'Naga professionals · NFC cards, no app needed',
+    sector: 'product',
     band: 'Products',
     image: '/assets/images/projects/connecta-ph.png',
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend', 'Vercel', 'NFC'],
@@ -298,11 +301,27 @@ export const projects: Project[] = [
     slug: 'naga-city-guide',
     title: 'Naga City Guide',
     description: 'A WordPress directory and blog for Naga City and Camarines Sur, with ten listing categories including hotels, restaurants, events and jobs, built on a custom theme and plug-in. Businesses can submit listings for free.',
+    summary: 'Naga visitors and locals · city directory and blog',
+    sector: 'directory',
     band: 'Sites',
     image: '/assets/images/projects/naga-city-guide.png',
     technologies: ['WordPress', 'Custom theme', 'Custom plug-in', 'CMB2', 'Google Maps', 'Yoast SEO'],
     links: { live: 'https://nagacityguide.com' },
     status: 'live',
+    featured: false,
+  },
+  {
+    id: 'eastwind-beach-villas',
+    slug: 'eastwind-beach-villas',
+    title: 'Eastwind Beach Villas',
+    description: 'A WordPress site for eight beachfront villas on an east-facing cove in San Fernando, El Nido, Palawan, with direct booking through Cloudbeds.',
+    summary: 'Villa guests · direct booking via Cloudbeds',
+    band: 'Sites',
+    sector: 'hotel',
+    image: '/assets/images/projects/eastwind-beach-villas.png',
+    technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'Fluent Forms', 'Rank Math', 'Cloudbeds'],
+    links: { live: 'https://onlinecreativesolutions.com/eastwind/' },
+    status: 'staging',
     featured: false,
   },
 ]
@@ -490,6 +509,7 @@ export const sectorNames: Record<ProjectSector, string> = {
   'real-estate': 'real estate',
   product: 'product',
   'internal-tool': 'internal tool',
+  directory: 'directory',
 }
 
 // Copy for /projects/[slug]. Flagships read as case studies; every other

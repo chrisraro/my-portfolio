@@ -27,11 +27,13 @@ describe('groupByBand', () => {
       'downtown-district-hotel',
       'azalea-baguio',
       'azalea-boracay',
+      'eastwind-beach-villas',
       'elnido',
       'beachbus',
       'graceland',
       'upcat-review-plus',
       'acad1',
+      'naga-city-guide',
       'aralabroad',
     ])
   })
@@ -58,11 +60,13 @@ describe('groupForHomepage', () => {
       'downtown-district-hotel',
       'azalea-baguio',
       'azalea-boracay',
+      'eastwind-beach-villas',
       'elnido',
       'beachbus',
       'graceland',
       'upcat-review-plus',
       'acad1',
+      'naga-city-guide',
       'aralabroad',
       'aman-webapp',
     ])

@@ -95,8 +95,8 @@ describe('project summaries', () => {
 })
 
 describe('project inventory', () => {
-  it('holds exactly seventeen projects', () => {
-    expect(projects).toHaveLength(17)
+  it('holds exactly eighteen projects', () => {
+    expect(projects).toHaveLength(18)
   })
 
   it('distributes them across the four bands as designed', () => {
@@ -104,7 +104,7 @@ describe('project inventory', () => {
     expect(count('Products')).toBe(4)
     expect(count('Custom systems')).toBe(2)
     expect(count('Applications')).toBe(1)
-    expect(count('Sites')).toBe(10)
+    expect(count('Sites')).toBe(11)
   })
 
   it('carries the full inventory by slug', () => {
@@ -126,6 +126,7 @@ describe('project inventory', () => {
       'azalea-boracay',
       'aralabroad',
       'naga-city-guide',
+      'eastwind-beach-villas',
     ])
   })
 

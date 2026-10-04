@@ -26,6 +26,7 @@ function StatusGlyph({ status }: { status: DisplayStatus }) {
     live: 'live-pulse relative h-2 w-2 rounded-full bg-live',
     'early-access': 'h-2 w-2 rounded-full border-[1.5px] border-status-early',
     internal: 'h-2 w-2 rounded-[1px] bg-status-internal',
+    staging: 'h-2 w-2 rounded-[1px] border-[1.5px] border-status-internal',
   }
   return <span aria-hidden="true" className={cn('inline-block shrink-0', shape[status])} />
 }

@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { caseStudyContent, projects, sectorNames } from '@/lib/data'
-import { canLinkLive, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
+import { canLinkLive, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
 import { buildProjectPageTitle } from '@/lib/site-metadata'
 import type { Project, ProjectStatus } from '@/types'
 
@@ -23,9 +23,15 @@ describe('project page helpers', () => {
     expect(canLinkLive(withStatus('live', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('early-access', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('ua-gated', 'https://x.test'))).toBe(true)
+    expect(canLinkLive(withStatus('staging', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('auth-gated', 'https://x.test'))).toBe(false)
     expect(canLinkLive(withStatus('internal', 'https://x.test'))).toBe(false)
     expect(canLinkLive(withStatus('live'))).toBe(false)
+  })
+
+  it('labels the outbound link for staging or live', () => {
+    expect(liveLinkLabel(withStatus('staging', 'https://x.test'))).toBe('Open staging site')
+    expect(liveLinkLabel(withStatus('live', 'https://x.test'))).toBe('Open live site')
   })
 
   it('finds the desktop shot, and a mobile shot only where the file exists', () => {

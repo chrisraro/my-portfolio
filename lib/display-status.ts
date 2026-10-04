@@ -7,6 +7,7 @@ const MAP: Record<ProjectStatus, DisplayStatus> = {
   'early-access': 'early-access',
   'auth-gated': 'private',
   internal: 'internal',
+  staging: 'staging',
 }
 
 export const DISPLAY_STATUS_LABEL: Record<DisplayStatus, string> = {
@@ -14,6 +15,7 @@ export const DISPLAY_STATUS_LABEL: Record<DisplayStatus, string> = {
   'early-access': 'Early access',
   private: 'Private',
   internal: 'Internal',
+  staging: 'Staging',
 }
 
 export function displayStatus(status: ProjectStatus): DisplayStatus {

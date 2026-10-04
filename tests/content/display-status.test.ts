@@ -3,7 +3,7 @@ import { DISPLAY_STATUS_LABEL, displayStatus } from '@/lib/display-status'
 import { projects } from '@/lib/data'
 import type { ProjectStatus } from '@/types'
 
-const ALL: ProjectStatus[] = ['live', 'early-access', 'auth-gated', 'ua-gated', 'internal']
+const ALL: ProjectStatus[] = ['live', 'early-access', 'auth-gated', 'ua-gated', 'internal', 'staging']
 
 describe('displayStatus', () => {
   it('maps every data status to a labelled display status', () => {
@@ -15,6 +15,10 @@ describe('displayStatus', () => {
 
   it('shows UA-gated sites as live, because to a visitor they are', () => {
     expect(displayStatus('ua-gated')).toBe('live')
+  })
+
+  it('shows a staging site as staging, not live', () => {
+    expect(displayStatus('staging')).toBe('staging')
   })
 
   it('calls the auth-gated panel private', () => {

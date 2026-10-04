@@ -14,6 +14,7 @@ import { buildSiteMetadata } from '@/lib/site-metadata'
 import { existsSync } from 'node:fs'
 
 const sites = projects.filter((p) => p.band === 'Sites')
+const liveSites = sites.filter((p) => p.status !== 'staging')
 
 describe('positioning', () => {
   it('leads with the full-stack title', () => {
@@ -28,13 +29,13 @@ describe('positioning', () => {
     expect(heroContent.specialism).not.toContain('—')
   })
 
-  it('states the same number of live sites as the Sites band holds', () => {
+  it('states the same number of live sites as the Sites band holds that are not staging', () => {
     const claimed = Number(heroContent.specialism.match(/^(\d+) live sites · /)?.[1])
-    expect(claimed).toBe(sites.length)
+    expect(claimed).toBe(liveSites.length)
   })
 
-  it('calls the sites live only because every one of them displays as live', () => {
-    for (const site of sites) expect(displayStatus(site.status), site.slug).toBe('live')
+  it('calls the sites live only because every non-staging one displays as live', () => {
+    for (const site of liveSites) expect(displayStatus(site.status), site.slug).toBe('live')
   })
 
   // Pinned, so the line cannot drift silently: re-sectoring any site fails
@@ -50,9 +51,11 @@ describe('positioning', () => {
       'azalea-baguio: hotel',
       'azalea-boracay: hotel',
       'aralabroad: education',
+      'naga-city-guide: directory',
+      'eastwind-beach-villas: hotel',
     ])
-    expect(heroContent.specialism).toBe(`${sites.length} live sites · hotels, tours, restaurants, review centres`)
-    expect(heroContent.specialism).toBe('9 live sites · hotels, tours, restaurants, review centres')
+    expect(heroContent.specialism).toBe(`${liveSites.length} live sites · hotels, tours, restaurants, review centres`)
+    expect(heroContent.specialism).toBe('10 live sites · hotels, tours, restaurants, review centres')
   })
 
   it('only names stack chips that exist in the skills list', () => {

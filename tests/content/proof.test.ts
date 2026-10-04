@@ -17,7 +17,7 @@ describe('splitProofPoint', () => {
   it('shows numerals that agree with the data', () => {
     const [products, shipped, gateways] = heroContent.proofPoints.map((p) => Number(splitProofPoint(p).value))
     expect(products).toBe(projects.filter((p) => p.band === 'Products').length)
-    expect(shipped).toBe(projects.length)
+    expect(shipped).toBe(projects.filter((p) => p.status !== 'staging').length)
     expect(gateways).toBe(paymentGateways.length)
   })
 
