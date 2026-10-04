@@ -5,32 +5,16 @@
 //
 // A site is embeddable only when it forbids neither X-Frame-Options (DENY or
 // SAMEORIGIN) nor a CSP frame-ancestors directive that excludes other origins.
-// An unreachable site is recorded as not embeddable.
+// A site that does not answer 2xx (after redirects), or is unreachable, is
+// recorded as not embeddable.
 
 import fs from 'node:fs'
 import path from 'node:path'
 import { readProjects } from './lib/read-projects.mjs'
+import { allowsFraming } from './lib/embeddability.mjs'
 
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
-
-export function allowsFraming(headers) {
-  const xfo = (headers.get('x-frame-options') || '').toLowerCase()
-  if (xfo.includes('deny') || xfo.includes('sameorigin') || xfo.includes('allow-from')) return false
-
-  const csp = headers.get('content-security-policy') || ''
-  for (const policy of csp.split(',')) {
-    const directive = policy
-      .split(';')
-      .map((d) => d.trim())
-      .find((d) => d.toLowerCase().startsWith('frame-ancestors'))
-    if (!directive) continue
-    const sources = directive.split(/\s+/).slice(1).map((s) => s.toLowerCase())
-    // Only a bare wildcard allows arbitrary origins.
-    if (!sources.includes('*')) return false
-  }
-  return true
-}
 
 async function check(url) {
   const res = await fetch(url, {
@@ -40,7 +24,7 @@ async function check(url) {
     signal: AbortSignal.timeout(30000),
   })
   await res.body?.cancel()
-  return { embeddable: allowsFraming(res.headers), status: res.status }
+  return { embeddable: res.ok && allowsFraming(res.headers), status: res.status }
 }
 
 const out = path.resolve('lib/embeddable.json')

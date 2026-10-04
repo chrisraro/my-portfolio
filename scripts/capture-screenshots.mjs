@@ -43,9 +43,13 @@ const queue = onlyIds.length ? targets.filter((t) => onlyIds.includes(t.id)) : t
 const VIEWPORTS = FULL
   ? [{ suffix: '-full', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } }]
   : [
-  { suffix: '', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } },
-  { suffix: '-mobile', viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } },
-]
+      { suffix: '', viewport: { width: 1440, height: 900, deviceScaleFactor: 1 } },
+      { suffix: '-mobile', viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } },
+    ]
+
+// Full-page shots that were tried and dropped; --full skips them so a rerun
+// does not bring them back.
+const FULL_SKIP = { 'connecta-ph': 'scroll-reveal sections capture blank' }
 
 // Scroll through the page to trigger lazy-loaded images/sliders, then return to top.
 async function autoScroll(page) {
@@ -137,6 +141,10 @@ async function dismissOverlays(page) {
   const results = { ok: [], failed: [] }
 
   for (const t of queue) {
+    if (FULL && FULL_SKIP[t.id]) {
+      console.log(`Skipping ${t.id}-full: ${FULL_SKIP[t.id]}`)
+      continue
+    }
     for (const { suffix, viewport } of VIEWPORTS) {
       const label = `${t.id}${suffix}`
       const page = await browser.newPage()
