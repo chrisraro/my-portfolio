@@ -35,9 +35,6 @@ const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contac
 const CHIP =
   'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 font-mono text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
 
-// One short ease-out fade for everything that enters. Nothing springs or
-// bounces: the widget sits beside the page's CTAs and must not outshout them.
-
 // The status dots are amber, never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
 // reply arrives. Once the API answers `offline: true`, the header says so in
@@ -64,6 +61,8 @@ export function ChatWidget() {
   const wasOpen = useRef(false)
   const reduce = useReducedMotion()
 
+  // One short ease-out fade for everything that enters. Nothing springs or
+  // bounces: the widget sits beside the page's CTAs and must not outshout them.
   const fade: Transition = reduce ? { duration: 0 } : { duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }
 
   // Show the label briefly after mount, on wide screens only: below `sm` it

@@ -141,7 +141,7 @@
 		.reveal {
 			animation: reveal-rise var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
+			animation-range: entry 0% entry 100%;
 		}
 	}
 }
