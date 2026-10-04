@@ -11,7 +11,15 @@ const LEGACY = new RegExp(
     'card|card-foreground|popover|popover-foreground|muted-foreground|accent-foreground|border|input)' +
     '(?![\\w-])',
 )
-const LEGACY_VAR = /var\(--(?:background|foreground|primary|primary-rgb|secondary|card|popover|border|input|font-display|font-mono)\b/
+// --font-display came back in Lobby Rack as the Anybody display face, so it is
+// no longer legacy; --font-mono stays retired.
+const LEGACY_VAR = /var\(--(?:background|foreground|primary|primary-rgb|secondary|card|popover|border|input|font-mono)\b/
+
+// B3 Signal (retired by Lobby Rack) set labels in Recursive's MONO axis. The new
+// world has no mono family: edge codes use .edge-code. Tailwind no longer
+// defines a mono key, so a stray `font-mono` would silently fall back to the
+// system monospace, a second typeface.
+const B3_TYPE = /(?<![\w-])font-mono(?![\w-])|['"]MONO['"]|Recursive\(/
 
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
@@ -26,6 +34,11 @@ describe('legacy colour tokens', () => {
 
   it('no component uses a legacy colour utility', () => {
     const offenders = files.filter((f) => LEGACY.test(readFileSync(f, 'utf8')))
+    expect(offenders).toEqual([])
+  })
+
+  it('no file uses the retired B3 mono voice', () => {
+    const offenders = files.filter((f) => B3_TYPE.test(readFileSync(f, 'utf8')))
     expect(offenders).toEqual([])
   })
 

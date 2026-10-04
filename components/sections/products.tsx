@@ -12,7 +12,7 @@ export function Products() {
       <h2 id="work-title" className="text-fluid-h2 mb-8 text-ink">
         {sectionContent.work.title}
         {/* The board's "label · count" grammar. Hidden from the heading's name: three panels follow. */}
-        <span aria-hidden="true" className="ml-3 font-mono text-sm font-normal text-muted">
+        <span aria-hidden="true" className="ml-3 edge-code text-sm font-normal text-muted">
           products · {products.length}
         </span>
       </h2>

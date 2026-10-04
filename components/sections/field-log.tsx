@@ -70,7 +70,7 @@ export function FieldLog() {
                     {entry.recommendation.quote}
                     {'”'}
                   </blockquote>
-                  <figcaption className={cn('font-mono text-xs leading-relaxed text-muted', wide && 'lg:shrink-0 lg:text-right')}>
+                  <figcaption className={cn('edge-code text-xs leading-relaxed text-muted', wide && 'lg:shrink-0 lg:text-right')}>
                     <span className="text-ink">{entry.recommendation.authorName}</span>
                     {' · '}
                     {entry.recommendation.authorTitle}

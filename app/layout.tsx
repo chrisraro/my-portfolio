@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Recursive } from 'next/font/google'
+import { Anybody, Figtree } from 'next/font/google'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -10,15 +10,22 @@ import { ChatWidget } from '@/components/ui/chat-widget'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
 import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structured-data'
 
-// One variable family for both voices. Its MONO axis turns the same face
-// monospaced for labels, numerals and domains — `.font-mono` and `.eyebrow`
-// set it in globals.css. Loading only the MONO axis (weight is included by
-// default for variable fonts) keeps the file small.
-const recursive = Recursive({
+// Two families (see .impeccable/surfaces/app-page-tsx.md). Anybody is the
+// display voice: headings condensed on its width axis, edge codes and numerals
+// at normal width with tabular figures. Figtree reads: body, ledes, forms, chat.
+// Both are variable; weight comes with the variable file, and Anybody also
+// loads its wdth axis.
+const anybody = Anybody({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  axes: ['wdth'],
+})
+
+const figtree = Figtree({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
-  axes: ['MONO'],
 })
 
 export const metadata: Metadata = buildSiteMetadata(SITE_URL)
@@ -29,14 +36,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={recursive.variable}>
+    <html lang="en" suppressHydrationWarning className={`${anybody.variable} ${figtree.variable}`}>
       <body>
         <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <ToastProvider>
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:font-display focus:px-4 focus:py-2 focus:text-on-accent"
             >
               Skip to content
             </a>

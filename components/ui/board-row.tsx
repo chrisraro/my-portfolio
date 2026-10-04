@@ -37,11 +37,11 @@ export function BoardRow({ project, showBand = true }: BoardRowProps) {
         </span>
         {/* Below md there is no summary column, so what it does sits under the name. */}
         <span className="mt-0.5 block text-sm text-muted-strong md:hidden">{project.summary}</span>
-        {showBand && <span className="block font-mono text-xs text-muted">{project.band}</span>}
+        {showBand && <span className="block edge-code text-xs text-muted">{project.band}</span>}
       </span>
       {/* Visual only: the row opens the project page, not this domain, so it
           stays out of the link's accessible name. */}
-      <span aria-hidden="true" className="hidden truncate font-mono text-xs text-muted sm:block">
+      <span aria-hidden="true" className="hidden truncate edge-code text-xs text-muted sm:block">
         {href ? extractDomain(href) : 'no public URL'}
       </span>
       <span className="hidden min-w-0 text-sm leading-snug text-muted-strong md:block">{project.summary}</span>

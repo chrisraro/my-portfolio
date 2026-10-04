@@ -41,7 +41,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
           Start a project
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </Link>
-        <Link href="/" className="inline-flex min-h-[44px] items-center font-mono text-sm text-muted-strong hover:text-accent">
+        <Link href="/" className="inline-flex min-h-[44px] items-center edge-code text-sm text-muted-strong hover:text-accent">
           Back to the homepage
         </Link>
       </div>

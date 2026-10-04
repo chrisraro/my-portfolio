@@ -6,12 +6,12 @@ import { buildTimeline, type TimelineEntry } from '@/lib/timeline'
 function Group({ label, entries }: { label: string; entries: TimelineEntry[] }) {
   return (
     <div>
-      <h3 className="mb-4 font-mono text-xs font-medium uppercase tracking-[0.1em] text-accent">{label}</h3>
+      <h3 className="mb-4 edge-code text-xs font-medium uppercase tracking-[0.1em] text-accent">{label}</h3>
       <ol className="border-l border-line">
         {entries.map((entry) => (
           <li key={`${entry.title}-${entry.subtitle}-${entry.sortKey}`} className="relative pb-6 pl-5 last:pb-0">
             <span aria-hidden="true" className="absolute -left-[3.5px] top-2 h-1.5 w-1.5 rounded-full bg-line-strong" />
-            <p className="font-mono text-xs text-muted">{entry.date}</p>
+            <p className="edge-code text-xs text-muted">{entry.date}</p>
             <p className="mt-1 font-medium text-ink">{entry.title}</p>
             <p className="text-sm text-muted-strong">{entry.subtitle}</p>
             {entry.note && <p className="mt-1 text-sm italic text-muted">{entry.note}</p>}

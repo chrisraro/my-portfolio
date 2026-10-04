@@ -33,7 +33,7 @@ const WELCOME =
 const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contact info']
 
 const CHIP =
-  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 font-mono text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
+  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
 
 // The status dots are amber, never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
@@ -195,10 +195,10 @@ export function ChatWidget() {
                   exit={{ opacity: 0 }}
                   transition={fade}
                   aria-hidden="true"
-                  className="hidden cursor-pointer rounded-lg border border-line bg-panel px-4 py-2 shadow-lg sm:block"
+                  className="hidden cursor-pointer rounded-lg border border-line bg-panel px-4 py-2 shadow-overlay sm:block"
                   onClick={() => setIsOpen(true)}
                 >
-                  <span className="whitespace-nowrap font-mono text-xs text-ink">Ask Chunks about my work</span>
+                  <span className="whitespace-nowrap edge-code text-xs text-ink">Ask Chunks about my work</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -208,7 +208,7 @@ export function ChatWidget() {
               type="button"
               onClick={() => setIsOpen(true)}
               aria-haspopup="dialog"
-              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-accent shadow-lg transition-colors hover:border-accent sm:h-14 sm:w-14"
+              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-accent shadow-overlay transition-colors hover:border-accent sm:h-14 sm:w-14"
               aria-label="Open chat"
             >
               <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
@@ -230,7 +230,7 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: reduce ? 0 : 8 }}
             transition={fade}
-            className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-line bg-panel shadow-2xl sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
+            className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-overlay sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
             role="dialog"
             aria-labelledby="chat-title"
             onKeyDown={handleDialogKeyDown}
@@ -242,8 +242,8 @@ export function ChatWidget() {
                   className={cn('h-2 w-2 rounded-full', isOffline ? DOT_OFFLINE : DOT_READY)}
                 />
                 <div>
-                  <h3 id="chat-title" className="font-mono text-sm text-ink">~/ask chunks</h3>
-                  <p className="font-mono text-xs text-muted">
+                  <h3 id="chat-title" className="edge-code text-sm text-ink">~/ask chunks</h3>
+                  <p className="edge-code text-xs text-muted">
                     {isOffline ? 'offline · set replies only' : 'AI assistant · answers about my work'}
                   </p>
                 </div>
@@ -279,7 +279,7 @@ export function ChatWidget() {
                     transition={fade}
                     className={mine ? 'flex flex-col items-end' : 'flex flex-col items-start'}
                   >
-                    <p className="mb-1 font-mono text-xs text-muted">
+                    <p className="mb-1 edge-code text-xs text-muted">
                       {mine ? 'you' : 'chunks'} · {formatTime(message.timestamp)}
                     </p>
                     <div
@@ -296,7 +296,7 @@ export function ChatWidget() {
               })}
 
               {isTyping && (
-                <div className="flex items-center gap-2 font-mono text-xs text-muted">
+                <div className="flex items-center gap-2 edge-code text-xs text-muted">
                   <span>chunks is typing</span>
                   <span aria-hidden="true" className="flex items-center gap-1">
                     <span className="typing-dot h-1.5 w-1.5 rounded-full bg-muted" />
@@ -347,7 +347,7 @@ export function ChatWidget() {
                   <Send className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
-              <p className="mt-2 text-center font-mono text-xs text-muted">Powered by AI · portfolio questions only</p>
+              <p className="mt-2 text-center edge-code text-xs text-muted">Powered by AI · portfolio questions only</p>
             </div>
           </motion.div>
         )}

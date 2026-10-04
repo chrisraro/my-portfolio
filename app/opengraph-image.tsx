@@ -7,7 +7,7 @@ import { OG_IMAGE } from '@/lib/site-metadata'
 // the page again: the old static og-image.png still said "Software Engineer" in
 // the retired crimson-and-serif look long after the page changed.
 //
-// It mirrors the hero: the amber name line, the H1 with its amber period, and
+// It mirrors the hero: the accent name line, the H1 with its accent period, and
 // the specialism line. Recursive is the only face: two static instances from
 // Google Fonts (SIL Open Font License) live in app/fonts, because
 // ImageResponse cannot read the variable font's MONO axis.

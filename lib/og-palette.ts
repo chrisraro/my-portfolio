@@ -3,11 +3,11 @@
 // colours. tests/design/og-palette.test.ts converts each `.dark` oklch triplet
 // in app/globals.css to sRGB and fails if these drift from it.
 export const ogPalette = {
-  bg: '#141210',
-  ink: '#F1ECE4',
-  muted: '#968D82',
-  line: '#2B2621',
-  accent: '#F2A23A',
+  bg: '#05212E',
+  ink: '#F5F3EB',
+  muted: '#87A0AB',
+  line: '#213D4B',
+  accent: '#FC82BC',
 } as const
 
 export type OgToken = keyof typeof ogPalette

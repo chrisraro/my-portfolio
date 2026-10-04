@@ -7,7 +7,7 @@ import { Products } from '@/components/sections/products'
 import { Stack } from '@/components/sections/stack'
 import { Systems } from '@/components/sections/systems'
 import { Changelog } from '@/components/sections/changelog'
-import { availability, contactInfo, galleryImages, projects, recommendations } from '@/lib/data'
+import { availability, contactInfo, footerContent, galleryImages, projects, recommendations } from '@/lib/data'
 import { buildFieldLog } from '@/lib/field-log'
 
 describe('Hero', () => {
@@ -66,7 +66,7 @@ describe('Products heading', () => {
   it('keeps the count out of the heading’s accessible name', () => {
     const html = renderToStaticMarkup(<Products />)
     const count = projects.filter((p) => p.band === 'Products').length
-    expect(html).toContain(`<span aria-hidden="true" class="ml-3 font-mono text-sm font-normal text-muted">products · ${count}</span>`)
+    expect(html).toContain(`<span aria-hidden="true" class="ml-3 edge-code text-sm font-normal text-muted">products · ${count}</span>`)
   })
 })
 
@@ -116,5 +116,9 @@ describe('Footer', () => {
     const html = renderToStaticMarkup(<Footer />)
     const links = contactInfo.socialLinks.filter((l) => l.icon !== 'mail')
     expect(html.match(/\(opens in a new tab\)/g)).toHaveLength(links.length)
+  })
+
+  it('signs off with the colophon from lib/data.ts', () => {
+    expect(renderToStaticMarkup(<Footer />)).toContain(footerContent.colophon)
   })
 })

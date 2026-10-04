@@ -115,7 +115,7 @@ export function ImageLightbox({ src, alt, children, className, describedBy }: Im
             exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
             transition={transition}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-[90vh] max-w-full rounded-lg border border-line object-contain shadow-2xl"
+            className="max-h-[90vh] max-w-full rounded-lg border border-line object-contain shadow-overlay"
           />
         </motion.div>
       )}

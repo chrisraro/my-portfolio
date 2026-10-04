@@ -16,7 +16,7 @@ export function Systems() {
       </h2>
       <SystemsBoard groups={groupForHomepage(rest)} groupHeading="h3" />
       <p className="mt-5">
-        <Link href="/projects" className="inline-flex min-h-[44px] items-center font-mono text-sm text-accent hover:underline sm:min-h-[32px]">
+        <Link href="/projects" className="inline-flex min-h-[44px] items-center edge-code text-sm text-accent hover:underline sm:min-h-[32px]">
           {sectionContent.systems.cta} →
         </Link>
       </p>

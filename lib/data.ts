@@ -405,19 +405,24 @@ export const navigationItems: NavigationItem[] = [
 
 // Headings for each homepage section. The Field log uses `galleryContent`.
 export const sectionContent = {
-  work: { eyebrow: '// products', title: 'Products of my own' },
+  work: { eyebrow: 'Products', title: 'Products of my own' },
   systems: {
-    eyebrow: '// systems',
+    eyebrow: 'Systems',
     title: 'Custom systems and client work',
     cta: 'Browse every project',
   },
-  changelog: { eyebrow: '// changelog', title: "Where I've worked" },
-  stack: { eyebrow: '// stack', title: 'What I ship with' },
-  contact: { eyebrow: '// contact', title: 'Start a project' },
+  changelog: { eyebrow: 'Changelog', title: "Where I've worked" },
+  stack: { eyebrow: 'Stack', title: 'What I ship with' },
+  contact: { eyebrow: 'Contact', title: 'Start a project' },
+}
+
+// The footer's colophon, set as a small edge code.
+export const footerContent = {
+  colophon: 'Printed in Naga City',
 }
 
 export const projectsPageContent = {
-  eyebrow: '// all projects',
+  eyebrow: 'All projects',
   title: 'Everything I have shipped',
   description: 'Products of my own, custom systems, and client work, each with its live status.',
 }
@@ -456,7 +461,7 @@ export const recommendations: Recommendation[] = [
 // photos are client work and three are the life around it, so the heading
 // names both rather than overclaiming. Client-work photos lead.
 export const galleryContent = {
-  eyebrow: '// field log',
+  eyebrow: 'Field log',
   title: 'On site and on the road',
 }
 
@@ -515,7 +520,7 @@ export const sectorNames: Record<ProjectSector, string> = {
 // Copy for /projects/[slug]. Flagships read as case studies; every other
 // project gets a short page built only from its entry in `projects`.
 export const caseStudyContent = {
-  eyebrow: { caseStudy: '// case study', project: '// project' },
+  eyebrow: { caseStudy: 'Case study', project: 'Project' },
   headings: {
     brief: 'The brief',
     built: 'What I built',
@@ -538,7 +543,7 @@ export const caseStudyContent = {
 
 // app/not-found.tsx: any unknown address, including an unknown /projects/<slug>.
 export const notFoundContent = {
-  eyebrow: '// 404',
+  eyebrow: '404',
   title: 'Nothing lives at this address',
   description: 'The link may be old or mistyped. Every project I have shipped is on the projects page.',
 }

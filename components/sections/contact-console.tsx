@@ -105,11 +105,11 @@ export function ContactConsole() {
           <h2 id="contact-title" className="text-fluid-h2 mb-5 text-ink">
             {sectionContent.contact.title}
           </h2>
-          <p className="mb-6 inline-flex items-center gap-2 font-mono text-sm text-accent">
+          <p className="mb-6 inline-flex items-center gap-2 edge-code text-sm text-accent">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             {availability}
           </p>
-          <ul className="space-y-2 font-mono text-sm">
+          <ul className="space-y-2 edge-code text-sm">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
                 {contactInfo.email}
@@ -141,7 +141,7 @@ export function ContactConsole() {
         <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-panel p-5 sm:p-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="contact-name" className="mb-1.5 block font-mono text-xs text-muted-strong">
+              <label htmlFor="contact-name" className="mb-1.5 block edge-code text-xs text-muted-strong">
                 Name
               </label>
               <input
@@ -158,7 +158,7 @@ export function ContactConsole() {
               />
             </div>
             <div>
-              <label htmlFor="contact-email" className="mb-1.5 block font-mono text-xs text-muted-strong">
+              <label htmlFor="contact-email" className="mb-1.5 block edge-code text-xs text-muted-strong">
                 Email
               </label>
               <input
@@ -176,7 +176,7 @@ export function ContactConsole() {
             </div>
           </div>
           <div>
-            <label htmlFor="contact-message" className="mb-1.5 block font-mono text-xs text-muted-strong">
+            <label htmlFor="contact-message" className="mb-1.5 block edge-code text-xs text-muted-strong">
               What are you building?
             </label>
             <textarea

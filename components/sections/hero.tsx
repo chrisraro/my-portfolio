@@ -37,7 +37,7 @@ export function Hero() {
             </p>
           </div>
           {/* The top bar hides availability below sm; it is stated here instead. */}
-          <p className="mb-4 inline-flex items-center gap-2 font-mono text-xs text-accent sm:hidden">
+          <p className="mb-4 inline-flex items-center gap-2 edge-code text-xs text-accent sm:hidden">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             {availability}
           </p>
@@ -46,7 +46,7 @@ export function Hero() {
             <span className="text-accent">.</span>
           </h1>
           <p className="mt-5 max-w-[34rem] text-lg leading-relaxed text-muted-strong">{heroContent.lede}</p>
-          <p className="mt-4 font-mono text-sm text-accent">{heroContent.specialism}</p>
+          <p className="mt-4 edge-code text-sm text-accent">{heroContent.specialism}</p>
           {/*
             The specialism chip is marked by fill and ink, not amber: an amber
             outline is the board filter's "selected" state.
@@ -56,7 +56,7 @@ export function Hero() {
               <li
                 key={skill.id}
                 className={cn(
-                  'rounded border border-line-strong px-2.5 py-1 font-mono text-xs',
+                  'rounded border border-line-strong px-2.5 py-1 edge-code text-xs',
                   skill.id === 'wordpress' ? 'bg-panel text-ink' : 'text-muted-strong',
                 )}
               >

@@ -68,7 +68,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             <ol className="mt-4 grid gap-4">
               {study.decisions.map((d, i) => (
                 <li data-decision key={d.chose} className="grid grid-cols-[2rem_1fr] gap-x-3 border-t border-line pt-4">
-                  <span aria-hidden="true" className="font-mono text-sm text-accent">
+                  <span aria-hidden="true" className="edge-code text-sm text-accent">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <div>
@@ -86,7 +86,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             <dl className="mt-4 grid gap-3">
               {study.stack.map((s) => (
                 <div key={s.name} className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                  <dt className="font-mono text-sm text-ink">{s.name}</dt>
+                  <dt className="edge-code text-sm text-ink">{s.name}</dt>
                   <dd className="text-sm leading-relaxed text-muted-strong">{s.why}</dd>
                 </div>
               ))}
@@ -103,7 +103,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
                   // dt before dd, as HTML requires; flex-col-reverse puts the number on top.
                   <div key={m.label} className="flex flex-col-reverse rounded-lg border border-line bg-panel p-4">
                     <dt className="mt-1 text-sm text-muted-strong">{m.label}</dt>
-                    <dd className="font-mono text-2xl text-ink">{m.value}</dd>
+                    <dd className="edge-code text-2xl text-ink">{m.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -114,7 +114,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             <Section id="client" title={h.client}>
               <figure className="mt-4 border-l-2 border-accent pl-5">
                 <blockquote className="text-base leading-relaxed text-ink">{quote.quote}</blockquote>
-                <figcaption className="mt-3 font-mono text-xs text-muted-strong">
+                <figcaption className="mt-3 edge-code text-xs text-muted-strong">
                   {quote.authorName}, {quote.authorTitle}
                 </figcaption>
               </figure>
@@ -124,7 +124,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
           {/* Work told inside this story that also has its own page, e.g. the BeachBus NFC system. */}
           {related.length > 0 && (
             <div className="mt-12 flex flex-wrap items-center gap-x-5 border-t border-line pt-4">
-              <p className="font-mono text-xs text-muted-strong">{h.related}</p>
+              <p className="edge-code text-xs text-muted-strong">{h.related}</p>
               <ul className="flex flex-wrap gap-x-5">
                 {related.map((p) => (
                   <li key={p.slug}>
@@ -143,7 +143,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
 
         {next && (
           <nav aria-label={h.next} className="mt-16 border-t border-line pt-8">
-            <p className="font-mono text-xs text-muted">{h.next}</p>
+            <p className="edge-code text-xs text-muted">{h.next}</p>
             <Link
               href={projectHref(next)}
               className="mt-2 inline-flex min-h-[44px] items-center gap-2 text-xl font-semibold text-ink transition-colors hover:text-accent"

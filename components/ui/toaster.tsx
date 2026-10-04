@@ -78,7 +78,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={transition}
-          className={`flex max-w-sm items-start gap-3 rounded-lg border bg-panel p-4 shadow-lg ${
+          className={`flex max-w-sm items-start gap-3 rounded-lg border bg-panel p-4 shadow-overlay ${
             isUrgent(toast.type) ? 'border-ink' : 'border-line-strong'
           }`}
         >

@@ -26,16 +26,23 @@ module.exports = {
         'status-internal': token('status-internal'),
       },
       fontFamily: {
+        // Figtree reads; Anybody (variable, with a width axis) shouts. There is
+        // no mono family: edge codes use .edge-code (Anybody, tabular numerals).
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        // Same family as sans: globals.css adds font-variation-settings 'MONO' 1
-        // to .font-mono, which is what makes Recursive monospaced.
-        mono: ['var(--font-sans)', 'ui-monospace', 'monospace'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
       },
+      // --radius is 6px: sm 2px (postcards), md 4px, DEFAULT/lg 6px (cards,
+      // panels, buttons), xl 10px (dialog). Chips use rounded-full.
       borderRadius: {
+        DEFAULT: 'var(--radius)',
         sm: 'calc(var(--radius) - 4px)',
         md: 'calc(var(--radius) - 2px)',
         lg: 'var(--radius)',
         xl: 'calc(var(--radius) + 4px)',
+      },
+      boxShadow: {
+        lift: 'var(--shadow-lift)',
+        overlay: 'var(--shadow-overlay)',
       },
     },
   },

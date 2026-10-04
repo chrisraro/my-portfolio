@@ -60,7 +60,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             Start a project
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </Link>
-          <Link href="/projects" className="inline-flex min-h-[44px] items-center font-mono text-sm text-muted-strong hover:text-accent">
+          <Link href="/projects" className="inline-flex min-h-[44px] items-center edge-code text-sm text-muted-strong hover:text-accent">
             All projects
           </Link>
         </div>

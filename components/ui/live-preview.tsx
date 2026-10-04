@@ -165,13 +165,13 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
             animate={{ opacity: 1, y: 0, transition: scrim }}
             exit={{ opacity: 0, y: rise, transition: exit }}
             onClick={(e) => e.stopPropagation()}
-            className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-lg border border-line-strong bg-panel shadow-2xl"
+            className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-line-strong bg-panel shadow-overlay"
           >
             <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
               <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
                 Live preview: {title}
                 {staging && (
-                  <span className="ml-3 rounded border border-line-strong px-2 py-0.5 font-mono text-xs font-normal text-muted-strong">
+                  <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
                     Staging site
                   </span>
                 )}
@@ -229,7 +229,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                 )}
               >
                 {!loaded && (
-                  <p role="status" className="absolute inset-0 flex items-center justify-center font-mono text-sm text-muted">
+                  <p role="status" className="absolute inset-0 flex items-center justify-center edge-code text-sm text-muted">
                     Loading preview…
                   </p>
                 )}

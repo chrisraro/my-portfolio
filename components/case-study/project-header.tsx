@@ -23,7 +23,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
     <header className="mx-auto max-w-6xl px-5 pt-10 sm:px-8 md:pt-14">
       <Link
         href="/projects"
-        className="inline-flex min-h-[44px] items-center gap-2 font-mono text-sm text-muted-strong transition-colors hover:text-accent"
+        className="inline-flex min-h-[44px] items-center gap-2 edge-code text-sm text-muted-strong transition-colors hover:text-accent"
       >
         <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         All projects
@@ -38,12 +38,12 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
       <p className="mt-4 max-w-2xl text-lg text-muted-strong">{project.summary}</p>
       {/* The role is the fact a hiring reader came for: its own line, in readable type. */}
       {role && <p className="mt-3 max-w-2xl text-base text-ink">{role}</p>}
-      <p className="mt-3 font-mono text-xs text-muted">
+      <p className="mt-3 edge-code text-xs text-muted">
         {project.band}
         {project.sector !== 'product' ? ` · ${sectorNames[project.sector]}` : ''}
       </p>
       {meta.length > 0 && (
-        <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted-strong">
+        <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 edge-code text-xs text-muted-strong">
           {meta.map((m) => (
             <li key={m}>{m}</li>
           ))}

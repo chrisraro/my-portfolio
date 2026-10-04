@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- B3 Signal: graphite panel, sodium-amber prompt caret. Colours are the dark-theme --panel and --accent tokens as sRGB hex; favicon renderers do not all read oklch. -->
-  <rect width="32" height="32" rx="6" fill="#1b1815"/>
-  <path d="M9 10.5 L15 16 L9 21.5" fill="none" stroke="#f2a23a" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="17" y="19.5" width="7" height="2.75" rx="1.375" fill="#f2a23a"/>
+  <!-- Lobby Rack: a tri-fold on lagoon night, the front panel a flat bougainvillea plane, a dashed fold crease beside it. Colours are the dark-theme --bg, --accent and --muted tokens as sRGB hex; favicon renderers do not all read oklch. -->
+  <rect width="32" height="32" rx="6" fill="#05212E"/>
+  <rect x="5" y="5" width="13" height="22" rx="1.5" fill="#FC82BC"/>
+  <path d="M22.5 6 V26" fill="none" stroke="#87A0AB" stroke-width="2" stroke-dasharray="3 2.5"/>
 </svg>

@@ -23,7 +23,7 @@ export function SystemsBoard({ groups, groupHeading: Heading, outOf }: SystemsBo
   return (
     <div className="overflow-hidden rounded-lg border border-line bg-panel">
       {/* Column labels sit on the rows' own grid, so each names the column under it. */}
-      <div className={cn(BOARD_COLUMNS, 'border-b border-line py-2.5 font-mono text-xs text-muted')}>
+      <div className={cn(BOARD_COLUMNS, 'border-b border-line py-2.5 edge-code text-xs text-muted')}>
         <span>projects · {count}</span>
         <span className="hidden sm:block">domain</span>
         <span className="hidden md:block">what it does</span>
@@ -36,7 +36,7 @@ export function SystemsBoard({ groups, groupHeading: Heading, outOf }: SystemsBo
           <section key={group.heading} aria-labelledby={id}>
             <Heading
               id={id}
-              className="px-4 pb-2 pt-5 font-mono text-xs font-medium uppercase tracking-[0.1em] text-accent"
+              className="px-4 pb-2 pt-5 edge-code text-xs font-medium uppercase tracking-[0.1em] text-accent"
             >
               {group.heading}
             </Heading>

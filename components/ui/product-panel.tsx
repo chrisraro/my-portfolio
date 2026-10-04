@@ -35,7 +35,7 @@ export function ProductPanel({ project }: { project: Project }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex min-h-[32px] items-center gap-1.5 self-start font-mono text-sm text-accent hover:underline sm:mt-auto sm:pt-4"
+            className="mt-4 inline-flex min-h-[32px] items-center gap-1.5 self-start edge-code text-sm text-accent hover:underline sm:mt-auto sm:pt-4"
           >
             {extractDomain(href)}
             <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />

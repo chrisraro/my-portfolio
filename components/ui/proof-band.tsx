@@ -11,7 +11,7 @@ export function ProofBand() {
         return (
           <li key={point} className="flex flex-col bg-canvas px-4 py-4">
             <span className="sr-only">{point}</span>
-            <span aria-hidden="true" className="font-mono text-3xl font-medium text-ink">
+            <span aria-hidden="true" className="edge-code text-3xl font-medium text-ink">
               {value}
             </span>
             <span aria-hidden="true" className="mt-1 text-sm text-muted">

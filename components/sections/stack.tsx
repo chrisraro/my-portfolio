@@ -14,11 +14,11 @@ export function Stack() {
         <dl className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
           {categories.map((category) => (
             <div key={category} className="bg-panel p-5">
-              <dt className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.1em] text-accent">
+              <dt className="mb-3 edge-code text-xs font-medium uppercase tracking-[0.1em] text-accent">
                 {category}
               </dt>
               <dd>
-                <ul className="space-y-1.5 font-mono text-sm text-ink">
+                <ul className="space-y-1.5 edge-code text-sm text-ink">
                   {skills
                     .filter((s) => s.category === category)
                     .map((skill) => (
