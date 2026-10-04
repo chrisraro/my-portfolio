@@ -40,7 +40,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
       <div className="mt-4 grid md:grid-cols-[7fr_auto_5fr]">
         <div
           className={cn(
-            'flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10',
+            'on-plane flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10',
             // A flagship's leaf carries the role and meta; a short page's cover stays compact.
             role && 'md:min-h-[26rem]',
           )}
@@ -88,7 +88,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
                 href={live}
                 target="_blank"
                 rel="noopener noreferrer"
-                // Secondary: it leaves the site. "Start a project" keeps the magenta fill.
+                // Secondary: it leaves the site, so it is outlined; "Start a project" beside it is the filled primary.
                 className="press inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink hover:border-accent hover:text-accent"
               >
                 {liveLinkLabel(project)}

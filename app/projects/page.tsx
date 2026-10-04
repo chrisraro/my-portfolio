@@ -35,17 +35,8 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
       <p className="eyebrow mb-3">{projectsPageContent.eyebrow}</p>
       <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
       <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>
-      <p className="mt-8">
-        <Link
-          href="/#contact"
-          className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
-        >
-          Start a project
-          <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-        </Link>
-      </p>
 
-      <div className="mb-12 mt-14 sm:mb-16">
+      <div className="mb-12 mt-12 sm:mb-16">
         <BoardFilter active={band} />
         <p className="edge-code mt-3 text-xs text-muted" aria-live="polite">
           {count}

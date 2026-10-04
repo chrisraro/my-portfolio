@@ -35,7 +35,7 @@ describe('ContactConsole', () => {
   )
 
   it('offers the public Facebook link beside email, opening in a new tab', () => {
-    expect(html).toMatch(/href="https:\/\/www\.facebook\.com\/[^"]+"[^>]*>Facebook<span class="sr-only">\(opens in a new tab\)<\/span>/)
+    expect(html).toMatch(/href="https:\/\/www\.facebook\.com\/[^"]+"[^>]*><span class="link-draw">Facebook<\/span><span class="sr-only">\(opens in a new tab\)<\/span>/)
   })
 
   it('starts with no field marked invalid', () => {

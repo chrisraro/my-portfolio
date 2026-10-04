@@ -44,6 +44,7 @@ export function RackCard({ project, code, column, labelPrefix }: RackCardProps) 
               </span>
               <span className="text-title text-[1.3125rem] text-ink">{project.title}</span>
               <StatusBadge status={project.status} />
+              <span className="line-clamp-2 text-sm leading-snug text-muted-strong">{project.summary}</span>
               {/* Visual only: the card opens the project page, not this domain. */}
               <span aria-hidden="true" className="edge-code mt-auto truncate text-xs text-muted">
                 {domain ?? 'no public URL'}

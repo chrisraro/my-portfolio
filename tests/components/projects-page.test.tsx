@@ -72,9 +72,13 @@ describe('/projects as the rack', () => {
     expect(new Set(codes).size).toBe(projects.length)
   })
 
-  it('offers Start a project under the heading, before the rack', () => {
-    expect(html.indexOf('href="/#contact"')).toBeGreaterThan(-1)
-    expect(html.indexOf('href="/#contact"')).toBeLessThan(html.indexOf('class="rack-card'))
+  it('shows each project one-line summary on its card', () => {
+    for (const p of projects) expect(cardFor(p), p.slug).toContain(escape(p.summary))
+  })
+
+  it('offers one Start a project, after the rack', () => {
+    expect(html.match(/href="\/#contact"/g)).toHaveLength(1)
+    expect(html.indexOf('href="/#contact"')).toBeGreaterThan(html.lastIndexOf('class="rack-card'))
   })
 })
 
@@ -88,6 +92,7 @@ describe('/projects filter', () => {
       expect(cards, band).toHaveLength(inBand.length)
       for (const p of inBand) {
         const code = (s: string) => s.match(new RegExp(`(\\d{2} / \\d{2} · ${band})[\\s\\S]{0,400}?>${p.title}<`))?.[1]
+        expect(code(all), p.slug).toBeDefined()
         expect(code(html), p.slug).toBe(code(all))
       }
     }
@@ -110,8 +115,9 @@ describe('/projects filter', () => {
 describe('rack card focus', () => {
   // Lifted 38%, a card's lower edge still sat under the pocket's clip-path, so
   // the bottom of its focus ring was cut off. Focus takes the card out whole.
-  it('lifts the pocket clip while a card inside it has focus', () => {
+  it('lifts the pocket clip while a card inside it has keyboard focus', () => {
     const css = readFileSync('app/globals.css', 'utf8')
-    expect(css).toMatch(/\.rack-pocket:focus-within \{ clip-path: none; \}/)
+    expect(css).toMatch(/\.rack-pocket:has\(:focus-visible\) \{ clip-path: none; \}/)
+    expect(css).not.toContain('.rack-pocket:focus-within')
   })
 })

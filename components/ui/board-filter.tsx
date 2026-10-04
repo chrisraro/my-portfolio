@@ -27,7 +27,7 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
               className={cn(
                 'button-label inline-flex min-h-[44px] items-center rounded-b-none rounded-t px-4 text-sm transition-colors',
                 item.current
-                  ? 'bg-accent text-on-accent'
+                  ? 'border border-b-0 border-transparent bg-accent text-on-accent'
                   : 'border border-b-0 border-line bg-panel text-muted-strong hover:text-ink',
               )}
             >

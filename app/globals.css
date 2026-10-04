@@ -93,6 +93,11 @@
 		outline: 2px solid oklch(var(--accent));
 		outline-offset: 3px;
 	}
+	/* The accent ring vanishes on a magenta plane: inside one, focus is drawn in
+	 * the plane's own ink. */
+	.on-plane :focus-visible {
+		outline-color: oklch(var(--on-accent));
+	}
 }
 
 @layer components {
@@ -373,7 +378,7 @@
 	/* Lifted 38%, a card's lower edge still sits under the pocket's clip, which
 	 * cut the bottom of its focus ring. Keyboard focus takes the whole card out
 	 * of the pocket, so the ring is drawn on all four sides. */
-	.rack-pocket:focus-within { clip-path: none; }
+	.rack-pocket:has(:focus-visible) { clip-path: none; }
 	/* Focus lifts it even under reduced motion: a state change without travel. */
 	.rack-card:focus-visible {
 		transform: translateY(-38%);
@@ -429,6 +434,10 @@
 		from { opacity: 0.01; transform: translateY(var(--rise, 16px)); }
 		to { opacity: 1; transform: none; }
 	}
+	@keyframes hero-lift {
+		from { transform: translateY(var(--rise, 16px)); }
+		to { transform: none; }
+	}
 	@keyframes hero-unfold-y {
 		from { transform: rotateY(-88deg); }
 		to { transform: none; }
@@ -467,7 +476,7 @@
 	.hero-crease-2 { animation-delay: var(--t-crease-2); }
 	.hero-proof-item {
 		--rise: 8px;
-		animation: hero-rise var(--dur-normal) var(--ease-smooth) both;
+		animation: hero-lift var(--dur-normal) var(--ease-smooth) both;
 		animation-delay: calc(var(--t-proof) + var(--i, 0) * var(--stagger-proof));
 	}
 	/* Stacked below 768px: panels unfold from their top edge, creases run across. */

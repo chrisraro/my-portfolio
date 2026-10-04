@@ -72,6 +72,20 @@ const UI_PAIRS: [Token, Token][] = [
   ['accent', 'bg'], ['accent', 'panel'],
 ]
 
+describe('focus on magenta planes', () => {
+  it('draws the ring in --on-accent inside an .on-plane container', () => {
+    expect(CSS).toMatch(/\.on-plane :focus-visible \{\s*outline-color: oklch\(var\(--on-accent\)\);\s*\}/)
+  })
+
+  it.each([
+    ['light', ':root'],
+    ['dark', '.dark'],
+  ])('%s: --on-accent against --accent reaches 3:1', (_name, selector) => {
+    const theme = readTheme(selector)
+    expect(contrast(theme['on-accent'], theme.accent)).toBeGreaterThanOrEqual(3)
+  })
+})
+
 describe.each([
   ['light', ':root'],
   ['dark', '.dark'],

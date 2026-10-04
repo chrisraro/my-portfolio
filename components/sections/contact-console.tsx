@@ -106,7 +106,7 @@ export function ContactConsole() {
         draws; at rest (reduced motion, no support) it is simply there.
       */}
       <div className="reveal-reply grid md:grid-cols-[5fr_auto_7fr]">
-        <div className="flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
+        <div className="on-plane flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
           <p className="eyebrow mb-3 text-on-accent">{sectionContent.contact.eyebrow}</p>
           <h2 id="contact-title" className="text-fluid-h2">
             {sectionContent.contact.title}
@@ -127,7 +127,7 @@ export function ContactConsole() {
             {facebook && (
               <li>
                 <a href={facebook.url} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
-                  {facebook.name}
+                  <span className="link-draw">{facebook.name}</span>
                   <span className="sr-only">(opens in a new tab)</span>
                 </a>
               </li>

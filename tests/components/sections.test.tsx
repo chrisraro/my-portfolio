@@ -278,6 +278,11 @@ describe('primary proof renders visible without JavaScript', () => {
       expect(frames, name).toBeDefined()
       expect(frames).not.toContain('opacity')
     }
+    // The hero proof numerals rise on their own transform-only keyframes.
+    const lift = css.match(/@keyframes hero-lift \{[\s\S]*?\n\t+\}/)?.[0]
+    expect(lift).toBeDefined()
+    expect(lift).not.toContain('opacity')
+    expect(css).toMatch(/\.hero-proof-item \{[^}]*animation: hero-lift/)
   })
 })
 
