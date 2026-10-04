@@ -37,8 +37,9 @@ export const SECTOR_ORDER: readonly ProjectSector[] = [
   'internal-tool',
 ]
 
-// Drives how a project can be previewed. Three of fifteen cannot be embedded
-// live: two reject non-browser user-agents and one sits behind a login.
+// Drives how a project can be previewed. Three of eighteen cannot be embedded
+// live: two reject non-browser user-agents and one sits behind a login. `staging`
+// is a pre-launch site: linked, but neither live nor shipped.
 export type ProjectStatus =
   | 'live'
   | 'early-access'
@@ -47,7 +48,7 @@ export type ProjectStatus =
   | 'internal'
   | 'staging'
 
-// What a visitor sees. Five data statuses collapse to four: `ua-gated` sites are
+// What a visitor sees. Six data statuses collapse to five: `ua-gated` sites are
 // live in any browser, and only the preview mechanism needs the distinction.
 export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal' | 'staging'
 

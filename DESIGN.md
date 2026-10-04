@@ -313,7 +313,7 @@ The sticky top bar is the one translucent surface: `canvas` at 90% with a backdr
 
 - **Panels: 8px** (`rounded-lg`, from `--radius: 0.5rem`). This covers the board, product panels, the proof band, the stack grid, the field log cards, the changelog panel, the contact form, the chat dialog and bubbles, toasts, and the portrait frame.
 - **Controls and chips: 4px** (`rounded`). Buttons, chips, filter links, inputs, the theme toggle, the portrait image inside its frame, and screenshot insets.
-- **Glyphs:** the live dot and early-access ring are circles, the internal square has a 1px corner, and the private glyph is a 12px outlined padlock.
+- **Glyphs:** the live dot and early-access ring are circles, the internal square has a 1px corner, the staging square is its hollow twin, and the private glyph is a 12px outlined padlock.
 - **Rules:** all borders are 1px. The one heavier stroke is the 2px amber left rule a board row draws on hover.
 
 **The Hairline Rule.** Structure is drawn with 1px lines in `line`, and interactive controls step up to `line-strong`. No border is decorative. Each one either separates content or outlines something you can press.
@@ -352,7 +352,7 @@ Buttons are confident and plain, with no gradients and no icons beyond a trailin
 - **Footer:** a hairline top rule, the year and name, and social links, all in mono xs `muted`, turning amber on hover.
 
 ### Status Badge (signature)
-Status is never colour alone. It renders only through `StatusBadge`, which pairs a glyph with a mono xs `muted` label. `lib/display-status.ts` maps the data's five `ProjectStatus` values to four display states:
+Status is never colour alone. It renders only through `StatusBadge`, which pairs a glyph with a mono xs `muted` label. `lib/display-status.ts` maps the data's six `ProjectStatus` values to five display states:
 
 | Display | Data status | Glyph | Colour |
 |---|---|---|---|
@@ -360,8 +360,9 @@ Status is never colour alone. It renders only through `StatusBadge`, which pairs
 | Early access | `early-access` | 8px ring, 1.5px stroke | `status-early` (amber) |
 | Private | `auth-gated` | 12px outlined padlock | `status-private` |
 | Internal | `internal` | 8px square, 1px corner | `status-internal` |
+| Staging | `staging` | 8px hollow square, 1.5px stroke, 1px corner | `status-internal` |
 
-Amber is both the brand colour and the early-access colour, so the shape is what tells them apart. `compact` hides the label visually but keeps it in the accessibility tree.
+Amber is both the brand colour and the early-access colour, so the shape is what tells them apart. Staging is a pre-launch site, so it reads as a quiet grey hollow square labelled "Staging"; its project page offers "Open staging site". `compact` hides the label visually but keeps it in the accessibility tree.
 
 ### Systems Board (signature)
 A single `panel` frame with 8px corners and clipped overflow. A mono header row (`projects · 15`, `domain`, `what it does`, `status`, or `9 of 15` when filtered) sits on the rows' own grid, so each label names the column below it. Group headings use the amber label style. Each row is one hairline-topped grid line: the name in medium sans with a trailing `ArrowRight`, the band in mono `muted` only when the group mixes bands, the domain in mono `muted`, the summary in `muted-strong`, and the status badge at the right. Every row is a link to its project page (`/projects/<slug>`), never the live site directly; the live link moved to that page. On hover a row gets a faint `canvas/60` wash, a 2px amber rule on its left edge, and an amber arrow. The focus outline is drawn inside the row (offset -2px) because the frame clips overflow. A project with no public URL still links to its page; only the domain column reads "no public URL" in its place.

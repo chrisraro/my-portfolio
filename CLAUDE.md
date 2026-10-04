@@ -81,7 +81,7 @@ and add the matching interface in `types/index.ts` if it's new.
 `lib/case-studies.ts`, the same as the page and the chat assistant. Adding a
 project reaches all of them automatically; nothing there needs hand-editing.
 
-`lib/case-studies.ts` is the second content source: it holds the five flagship
+`lib/case-studies.ts` is the second content source: it holds the six flagship
 case studies, keyed by project slug. A number from a client's business goes in
 `metrics` with `clientApproved: true`, and only after Christian confirms the
 client agreed. Research dossiers live in `docs/case-studies/research/` and are
@@ -101,7 +101,9 @@ duplicate existed once and drifted out of date.
 
 Projects carry a `band` from a closed four-value vocabulary — `Products`,
 `Custom systems`, `Applications`, `Sites` — and a `status` that tells Phase 3
-whether a live preview is possible. The hero's proof band in `heroContent` makes
+whether a live preview is possible. `staging` (label "Staging", a hollow-square glyph, header link
+"Open staging site") marks a pre-launch site and counts as neither live nor shipped in the hero.
+Sectors are a closed vocabulary too; `directory` sits after `review-centre` in `SECTOR_ORDER`. The hero's proof band in `heroContent` makes
 factual claims that `tests/content/proof-band.test.ts` checks against the data;
 if you change the inventory, the band changes with it.
 
@@ -136,7 +138,7 @@ telephone field anywhere.
 - Tailwind colour keys: `canvas` (page), `panel`, `ink`, `muted`, `muted-strong`,
   `line`, `line-strong`, `accent`, `on-accent`, `live`, `status-early`,
   `status-private`, `status-internal`. Never raw hex, never `dark:` colour pairs.
-- **Green (`live`) means a live system and nothing else.** Brand and availability
+- **Green (`live`) means a live system and nothing else.** `staging` is not live: it uses `status-internal`. Brand and availability
   use `accent`, and so do the chat assistant's dots. `live` and `.live-pulse`
   appear only in `StatusBadge`; `tests/design/green-means-live.test.ts` enforces it.
 - **Status is never colour alone.** Render it only through `StatusBadge`, which
