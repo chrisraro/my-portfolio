@@ -146,8 +146,58 @@
 	}
 }
 
+/* ScrollPreview (components/ui/scroll-preview.tsx): a full-page shot in a fixed
+ * frame. Hover or keyboard focus on the frame (or on a .scroll-preview-host card
+ * around it) scrolls it top to bottom over --scroll-dur, scaled from the shot's
+ * height (--shot-h, set inline) and clamped to crawl..crawl x 3.75, sharp easing;
+ * a 3px accent rule on the right edge grows with it. Leaving returns it over
+ * slow/smooth. It stops at the bottom and never loops. Touch gets no auto-scroll
+ * (hover: hover), and reduced motion pins it to the top (block below). */
+.scroll-preview {
+	--scroll-dur: clamp(var(--dur-crawl), calc(var(--shot-h, 4500) * 1s / 1500), calc(var(--dur-crawl) * 3.75));
+}
+.scroll-preview__shot {
+	object-fit: cover;
+	object-position: 50% 0%;
+	transition: object-position var(--dur-slow) var(--ease-smooth);
+}
+.scroll-preview__progress {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 3px;
+	background: oklch(var(--accent));
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: transform var(--dur-slow) var(--ease-smooth);
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+	:is(.scroll-preview, .scroll-preview-host):hover .scroll-preview__shot {
+		object-position: 50% 100%;
+		transition: object-position var(--scroll-dur) var(--ease-sharp);
+	}
+	:is(.scroll-preview, .scroll-preview-host):hover .scroll-preview__progress {
+		transform: scaleY(1);
+		transition: transform var(--scroll-dur) var(--ease-sharp);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	:is(.scroll-preview:focus-visible, .scroll-preview:focus-within, .scroll-preview-host:focus-within) .scroll-preview__shot {
+		object-position: 50% 100%;
+		transition: object-position var(--scroll-dur) var(--ease-sharp);
+	}
+	:is(.scroll-preview:focus-visible, .scroll-preview:focus-within, .scroll-preview-host:focus-within) .scroll-preview__progress {
+		transform: scaleY(1);
+		transition: transform var(--scroll-dur) var(--ease-sharp);
+	}
+}
+/* /ScrollPreview */
+
 @media (prefers-reduced-motion: reduce) {
 	.reveal { animation: none !important; opacity: 1; transform: none; }
+	.scroll-preview__shot { object-position: 50% 0% !important; transition: none !important; }
+	.scroll-preview__progress { display: none; }
 	.live-pulse::after { display: none; }
 	*, *::before, *::after {
 		animation-duration: 0.001ms !important;
