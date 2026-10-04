@@ -13,13 +13,13 @@ describe('hero proof band', () => {
 
   it('claims as many products as the inventory holds', () => {
     const products = projects.filter((p) => p.band === 'Products')
-    expect(products).toHaveLength(3)
-    expect(heroContent.proofPoints[0]).toBe('Three products of my own')
+    expect(products).toHaveLength(4)
+    expect(heroContent.proofPoints[0]).toBe('Four products of my own')
   })
 
   it('claims as many shipped projects as the inventory holds', () => {
-    expect(projects).toHaveLength(15)
-    expect(heroContent.proofPoints[1]).toBe('Fifteen projects shipped')
+    expect(projects).toHaveLength(17)
+    expect(heroContent.proofPoints[1]).toBe('Seventeen projects shipped')
   })
 
   it('claims as many payment gateways as are actually integrated', () => {
@@ -36,10 +36,10 @@ describe('hero proof band', () => {
     }
   })
 
-  it('claims one NFC card system and has the project to back it', () => {
+  it('claims two NFC card systems and has the project to back it', () => {
     const nfc = projects.filter((p) => p.technologies.includes('NFC'))
-    expect(nfc).toHaveLength(1)
-    expect(heroContent.proofPoints[3]).toBe('One NFC card system')
+    expect(nfc).toHaveLength(2)
+    expect(heroContent.proofPoints[3]).toBe('Two NFC card systems')
   })
 
   it('claims no years-of-experience figure', () => {
