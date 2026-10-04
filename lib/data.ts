@@ -46,10 +46,10 @@ export const heroContent = {
   // Skill ids for the hero chips; tests/content/positioning.test.ts checks each exists.
   stack: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
   proofPoints: [
-    'Three products of my own',
-    'Fifteen projects shipped',
+    'Four products of my own',
+    'Seventeen projects shipped',
     'Four payment gateways',
-    'One NFC card system',
+    'Two NFC card systems',
   ],
 }
 
@@ -101,6 +101,18 @@ export const projects: Project[] = [
     links: { live: 'https://latag.vercel.app' },
     status: 'live',
     featured: true,
+  },
+  {
+    id: 'connecta-ph',
+    slug: 'connecta-ph',
+    title: 'Connecta PH',
+    description: 'NFC and QR business cards that open a professional profile on any phone with no app to install, and send every visitor enquiry back to the card owner. Built for Naga first.',
+    band: 'Products',
+    image: '/assets/images/projects/connecta-ph.png',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend', 'Vercel', 'NFC'],
+    links: { live: 'https://connectaph.vercel.app' },
+    status: 'live',
+    featured: false,
   },
 
   // --- Custom systems --------------------------------------------------------
@@ -279,6 +291,18 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://aralabroad.com' },
     status: 'ua-gated',
+    featured: false,
+  },
+  {
+    id: 'naga-city-guide',
+    slug: 'naga-city-guide',
+    title: 'Naga City Guide',
+    description: 'A WordPress directory and blog for Naga City and Camarines Sur, with ten listing categories including hotels, restaurants, events and jobs, built on a custom theme and plug-in. Businesses can submit listings for free.',
+    band: 'Sites',
+    image: '/assets/images/projects/naga-city-guide.png',
+    technologies: ['WordPress', 'Custom theme', 'Custom plug-in', 'CMB2', 'Google Maps', 'Yoast SEO'],
+    links: { live: 'https://nagacityguide.com' },
+    status: 'live',
     featured: false,
   },
 ]

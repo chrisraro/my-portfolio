@@ -95,16 +95,16 @@ describe('project summaries', () => {
 })
 
 describe('project inventory', () => {
-  it('holds exactly fifteen projects', () => {
-    expect(projects).toHaveLength(15)
+  it('holds exactly seventeen projects', () => {
+    expect(projects).toHaveLength(17)
   })
 
   it('distributes them across the four bands as designed', () => {
     const count = (band: string) => projects.filter((p) => p.band === band).length
-    expect(count('Products')).toBe(3)
+    expect(count('Products')).toBe(4)
     expect(count('Custom systems')).toBe(2)
     expect(count('Applications')).toBe(1)
-    expect(count('Sites')).toBe(9)
+    expect(count('Sites')).toBe(10)
   })
 
   it('carries the full inventory by slug', () => {
@@ -112,6 +112,7 @@ describe('project inventory', () => {
       'iskotify',
       'giya',
       'latag',
+      'connecta-ph',
       'beachbus-nfc-card-system',
       'ocs-wp-control-panel',
       'aman-group-web-app',
@@ -124,6 +125,7 @@ describe('project inventory', () => {
       'azalea-baguio',
       'azalea-boracay',
       'aralabroad',
+      'naga-city-guide',
     ])
   })
 
