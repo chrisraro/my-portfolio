@@ -13,6 +13,12 @@
  * Green (--live) means a live system and nothing else.
  */
 :root {
+	--dur-fast: 0.18s;
+	--dur-normal: 0.35s;
+	--dur-slow: 0.6s;
+	--dur-crawl: 1.2s;
+	--ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
 	--bg: 0.9620 0.0115 84.58;
 	--panel: 0.9798 0.0086 84.57;
 	--ink: 0.2070 0.0075 67.39;
@@ -125,7 +131,23 @@
 	animation: typing-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
+/* Scroll-driven reveal: CSS only. Outside both gates content is simply visible. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes reveal-rise {
+			from { opacity: 0.01; transform: translateY(16px); }
+			to { opacity: 1; transform: none; }
+		}
+		.reveal {
+			animation: reveal-rise var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 10% cover 30%;
+		}
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
+	.reveal { animation: none !important; opacity: 1; transform: none; }
 	.live-pulse::after { display: none; }
 	*, *::before, *::after {
 		animation-duration: 0.001ms !important;

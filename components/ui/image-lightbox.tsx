@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence, useReducedMotion, type Transition } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import { motionTokens } from '@/lib/motion-tokens'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -77,7 +78,7 @@ export function ImageLightbox({ src, alt, children, className, describedBy }: Im
     }
   }, [open])
 
-  const transition: Transition = reduce ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }
+  const transition: Transition = reduce ? { duration: 0 } : { duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }
 
   const dialog = (
     <AnimatePresence>

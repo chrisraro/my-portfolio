@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence, useReducedMotion, type Transition } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import { motionTokens } from '@/lib/motion-tokens'
 import { MessageCircle, X, Send } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -36,7 +37,6 @@ const CHIP =
 
 // One short ease-out fade for everything that enters. Nothing springs or
 // bounces: the widget sits beside the page's CTAs and must not outshout them.
-const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 // The status dots are amber, never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
@@ -64,7 +64,7 @@ export function ChatWidget() {
   const wasOpen = useRef(false)
   const reduce = useReducedMotion()
 
-  const fade: Transition = reduce ? { duration: 0 } : { duration: 0.2, ease: EASE_OUT }
+  const fade: Transition = reduce ? { duration: 0 } : { duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }
 
   // Show the label briefly after mount, on wide screens only: below `sm` it
   // would sit over the page's content with nothing to dismiss it.
