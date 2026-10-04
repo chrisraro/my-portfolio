@@ -249,6 +249,329 @@
 	}
 }
 
+/*
+ * Homepage (Lobby Rack, .impeccable/surfaces/app-page-tsx.md). Paper that
+ * unfolds when you pay attention: three verbs, unfold, lift and slide.
+ * Layout pieces first (always on), then the hero's load sequence and the
+ * scroll reveals, each behind its gates. Outside the gates every piece sits at
+ * rest, fully visible.
+ */
+
+/* Fold creases: 1px dashes, 6 on 5 off, in line-strong. */
+/* An upright crease inside one sheet (a closed cover's flap edge). */
+.crease-v {
+	pointer-events: none;
+	color: oklch(var(--line-strong));
+	width: 1px;
+	background: linear-gradient(to bottom, currentColor 6px, transparent 6px) 0 0 / 1px 11px repeat-y;
+}
+
+/* A fold between two panels: across when they stack, upright from 768px. */
+.crease-fold {
+	pointer-events: none;
+	color: oklch(var(--line-strong));
+	align-self: stretch;
+	height: 1px;
+	background: linear-gradient(to right, currentColor 6px, transparent 6px) 0 0 / 11px 1px repeat-x;
+}
+@media (min-width: 768px) {
+	.crease-fold {
+		height: auto;
+		width: 1px;
+		background: linear-gradient(to bottom, currentColor 6px, transparent 6px) 0 0 / 1px 11px repeat-y;
+	}
+}
+
+/* The reply card's perforation: 2px dots with a half-circle notch cut at each
+ * end. Across the card when it stacks, upright from 768px. */
+.perforation {
+	position: relative;
+	z-index: 1;
+	align-self: stretch;
+	height: 0;
+	border-top: 2px dotted oklch(var(--line-strong));
+}
+.perforation::before,
+.perforation::after {
+	content: '';
+	position: absolute;
+	top: -11px;
+	width: 20px;
+	height: 20px;
+	border-radius: 9999px;
+	background: oklch(var(--bg));
+}
+.perforation::before { left: -10px; }
+.perforation::after { right: -10px; }
+@media (min-width: 768px) {
+	.perforation {
+		height: auto;
+		width: 0;
+		border-top: 0;
+		border-left: 2px dotted oklch(var(--line-strong));
+	}
+	.perforation::before,
+	.perforation::after {
+		left: -11px;
+		right: auto;
+	}
+	.perforation::before { top: -10px; }
+	.perforation::after { top: auto; bottom: -10px; }
+}
+
+/* Hero tri-fold: the whole load timeline in one place (1.9s, runs once). */
+.hero-fold {
+	--t-lede: 250ms;
+	--t-mid: 400ms;
+	--t-right: 650ms;
+	--t-crease-1: 450ms;
+	--t-crease-2: 700ms;
+	--t-proof: 1100ms;
+	--stagger-word: 90ms;
+	--stagger-proof: 60ms;
+	perspective: 1600px;
+}
+.hero-word { display: inline-block; }
+/* The H1 is sized to its panel, so "Full-stack" never breaks out of the plane. */
+.hero-front { container-type: inline-size; }
+.hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
+
+/* The rack: a pocket shows the top 44% of a 9:16 card over its lip. Below
+ * 640px (touch) the cards sit unsunk in a scroll-snap strip. */
+.rack-card {
+	transition:
+		transform var(--dur-normal) var(--ease-smooth),
+		box-shadow var(--dur-normal) var(--ease-smooth);
+}
+@media (min-width: 640px) {
+	.rack-pocket {
+		/* 9:16 card, 44% of it visible: width / (16/9 x 0.44). */
+		aspect-ratio: 100 / 78;
+		/* Without this the taller card would stretch the pocket to fit it. */
+		min-height: 0;
+		overflow: visible;
+		clip-path: inset(-100vh -24px 0 -24px);
+	}
+	.rack-slot:is(:hover, :focus-within) { z-index: 10; }
+	/* Focus lifts it even under reduced motion: a state change without travel. */
+	.rack-card:focus-visible {
+		transform: translateY(-38%);
+		box-shadow: var(--shadow-lift);
+	}
+}
+@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+	.rack-pocket:hover .rack-card {
+		transform: translateY(-38%);
+		box-shadow: var(--shadow-lift);
+	}
+	.rack-pocket .rack-card:active {
+		transform: translateY(-34%);
+		transition-duration: var(--dur-fast);
+	}
+	/* The sunk preview starts scrolling once the card has lifted. */
+	.rack-pocket:hover .rack-card :is(.scroll-preview__shot, .scroll-preview__progress) {
+		transition-delay: var(--dur-normal);
+	}
+}
+
+/* Product spread: the flap tilts on hover, inviting the open. */
+.spread { perspective: 1600px; }
+.flap-tilt {
+	transform-origin: var(--hinge, right) center;
+	transition: transform var(--dur-normal) var(--ease-smooth);
+}
+
+/* Postcards rest at a slight tilt; attention straightens and lifts them. */
+.postcard {
+	transform: rotate(var(--tilt, 0deg));
+	transition:
+		transform var(--dur-normal) var(--ease-smooth),
+		box-shadow var(--dur-normal) var(--ease-smooth);
+}
+
+/* The primary's arrow slides right on hover. */
+.arrow-nudge { transition: transform var(--dur-fast) var(--ease-sharp); }
+
+@media (prefers-reduced-motion: no-preference) {
+	.spread:hover .flap-tilt { transform: rotateY(var(--tilt-to, -4deg)); }
+	.postcard:is(:hover, :focus-within) {
+		transform: translateY(-8px);
+		box-shadow: var(--shadow-lift);
+	}
+	:is(a, button):hover .arrow-nudge { transform: translateX(8px); }
+
+	@keyframes hero-word {
+		from { transform: translateY(0.35em); }
+		to { transform: none; }
+	}
+	@keyframes hero-rise {
+		from { opacity: 0.01; transform: translateY(var(--rise, 16px)); }
+		to { opacity: 1; transform: none; }
+	}
+	@keyframes hero-unfold-y {
+		from { transform: rotateY(-88deg); }
+		to { transform: none; }
+	}
+	@keyframes hero-unfold-x {
+		from { transform: rotateX(88deg); }
+		to { transform: none; }
+	}
+	@keyframes hero-draw-y {
+		from { transform: scaleY(0); }
+		to { transform: none; }
+	}
+	@keyframes hero-draw-x {
+		from { transform: scaleX(0); }
+		to { transform: none; }
+	}
+	/* Words are painted from frame one (no opacity), so LCP is unaffected. */
+	.hero-word {
+		animation: hero-word var(--dur-slow) var(--ease-smooth) both;
+		animation-delay: calc(var(--i, 0) * var(--stagger-word));
+	}
+	.hero-rise {
+		animation: hero-rise var(--dur-normal) var(--ease-smooth) var(--t-lede) both;
+	}
+	.hero-unfold-mid,
+	.hero-unfold-right {
+		transform-origin: left center;
+		animation: hero-unfold-y var(--dur-slow) var(--ease-smooth) var(--t-mid) both;
+	}
+	.hero-unfold-right { animation-delay: var(--t-right); }
+	.hero-crease-1,
+	.hero-crease-2 {
+		transform-origin: center top;
+		animation: hero-draw-y var(--dur-crawl) var(--ease-smooth) var(--t-crease-1) both;
+	}
+	.hero-crease-2 { animation-delay: var(--t-crease-2); }
+	.hero-proof-item {
+		--rise: 8px;
+		animation: hero-rise var(--dur-normal) var(--ease-smooth) both;
+		animation-delay: calc(var(--t-proof) + var(--i, 0) * var(--stagger-proof));
+	}
+	/* Stacked below 768px: panels unfold from their top edge, creases run across. */
+	@media (max-width: 767px) {
+		.hero-unfold-mid,
+		.hero-unfold-right {
+			transform-origin: center top;
+			animation-name: hero-unfold-x;
+		}
+		.hero-crease-1,
+		.hero-crease-2 {
+			transform-origin: left center;
+			animation-name: hero-draw-x;
+		}
+	}
+}
+
+/*
+ * Scroll choreography. Proof (products, the rack) moves by transform only,
+ * never opacity, so the server HTML is the finished page. Ranges end at
+ * `entry 100%`, which the last section on the page can always reach. Rows
+ * stagger by starting later in the range (--i), since a time delay means
+ * nothing on a scroll timeline.
+ */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes reveal-flap {
+			from { transform: rotateY(var(--flap-from, 14deg)); }
+			to { transform: none; }
+		}
+		@keyframes reveal-slide {
+			from { transform: translateX(var(--slide-from, 24px)); }
+			to { transform: none; }
+		}
+		@keyframes reveal-drop {
+			from { transform: translateY(-24px); }
+			to { transform: none; }
+		}
+		@keyframes reveal-draw-x {
+			from { transform: scaleX(0); }
+			to { transform: none; }
+		}
+		@keyframes reveal-draw-y {
+			from { transform: scaleY(0); }
+			to { transform: none; }
+		}
+		@keyframes reveal-cover {
+			from { opacity: 0.2; transform: translateY(16px); }
+			to { opacity: 1; transform: none; }
+		}
+		@keyframes reveal-lift {
+			from { transform: translateY(24px); }
+			to { transform: none; }
+		}
+		@keyframes reveal-pop {
+			from { transform: scale(0.6); }
+			to { transform: none; }
+		}
+		.reveal-flap {
+			transform-origin: var(--hinge, right) center;
+			animation: reveal-flap var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+		.reveal-leaf,
+		.reveal-postcard {
+			animation: reveal-slide var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+		.reveal-postcard { --slide-from: 40px; }
+		.reveal-drop {
+			animation: reveal-drop var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry calc(var(--i, 0) * 8%) entry 100%;
+		}
+		.reveal-lip {
+			transform-origin: left center;
+			animation: reveal-draw-x var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry calc(var(--i, 0) * 8%) entry 100%;
+		}
+		.reveal-cover {
+			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry calc(var(--i, 0) * 10%) entry 100%;
+		}
+		.reveal-reply {
+			animation: reveal-lift var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+		.reveal-perf {
+			transform-origin: center top;
+			animation: reveal-draw-y var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+		/* The route line draws across its own section; stops pop as it passes. */
+		.route { view-timeline-name: --route; }
+		.reveal-route {
+			transform-origin: left center;
+			animation: reveal-draw-x var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: --route;
+			animation-range: entry 20% entry 100%;
+		}
+		.reveal-stop {
+			animation: reveal-pop var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: --route;
+			animation-range: entry calc(30% + var(--i, 0) * 20%) entry 100%;
+		}
+		@media (max-width: 767px) {
+			.reveal-route {
+				transform-origin: center top;
+				animation-name: reveal-draw-y;
+			}
+			.reveal-perf {
+				transform-origin: left center;
+				animation-name: reveal-draw-x;
+			}
+		}
+	}
+}
+/* /Homepage */
+
 /* ScrollPreview (components/ui/scroll-preview.tsx): a full-page shot in a fixed
  * frame. Hover or keyboard focus on the frame (or on a .scroll-preview-host card
  * around it) scrolls it top to bottom over --scroll-dur, scaled from the shot's
@@ -299,6 +622,17 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.reveal { animation: none !important; opacity: 1; transform: none; }
+	:is(.reveal-flap, .reveal-leaf, .reveal-postcard, .reveal-drop, .reveal-lip, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop) {
+		animation: none !important;
+		opacity: 1;
+		transform: none;
+	}
+	/* Hero: every piece in its final state at first paint, creases drawn. */
+	:is(.hero-word, .hero-rise, .hero-unfold-mid, .hero-unfold-right, .hero-crease-1, .hero-crease-2, .hero-proof-item) {
+		animation: none !important;
+		transform: none;
+	}
+	.rack-card, .flap-tilt, .postcard, .arrow-nudge { transition: none; }
 	.scroll-preview__shot { object-position: 50% 0% !important; transition: none !important; }
 	.scroll-preview__progress { display: none; }
 	.live-pulse::after { display: none; }

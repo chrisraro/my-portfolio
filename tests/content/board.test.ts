@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bandSlug, bySector, groupByBand, groupForHomepage, parseBandParam } from '@/lib/board'
+import { bandSlug, bySector, edgeCode, groupByBand, groupForHomepage, homepageOrder, parseBandParam } from '@/lib/board'
 import { projects } from '@/lib/data'
 import { BAND_ORDER, SECTOR_ORDER } from '@/types'
 
@@ -109,5 +109,23 @@ describe('band parameter', () => {
   it('matches a band regardless of case', () => {
     expect(parseBandParam('Sites')).toBe('Sites')
     expect(parseBandParam('CUSTOM-SYSTEMS')).toBe('Custom systems')
+  })
+})
+
+describe('homepageOrder', () => {
+  it('lists every project exactly once, Products first', () => {
+    const order = homepageOrder(projects)
+    expect(order).toHaveLength(projects.length)
+    expect(new Set(order.map((p) => p.id)).size).toBe(projects.length)
+    const products = projects.filter((p) => p.band === 'Products').length
+    expect(order.slice(0, products).every((p) => p.band === 'Products')).toBe(true)
+  })
+})
+
+describe('edgeCode', () => {
+  it('pads the running index to the width of the total', () => {
+    expect(edgeCode(4, 18, 'Products')).toBe('04 / 18 · Products')
+    expect(edgeCode(12, 18, 'Sites')).toBe('12 / 18 · Sites')
+    expect(edgeCode(3, 6, 'Case study')).toBe('3 / 6 · Case study')
   })
 })

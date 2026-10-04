@@ -1,14 +1,39 @@
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { Footer } from '@/components/footer'
+import { CaseStudies } from '@/components/sections/case-studies'
 import { FieldLog } from '@/components/sections/field-log'
 import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
+import { Rack } from '@/components/sections/rack'
+import { RouteLine } from '@/components/sections/route-line'
 import { Stack } from '@/components/sections/stack'
-import { Systems } from '@/components/sections/systems'
-import { Changelog } from '@/components/sections/changelog'
-import { availability, contactInfo, footerContent, galleryImages, projects, recommendations } from '@/lib/data'
+import { noPreviewCopy } from '@/components/ui/no-preview-tag'
+import { groupForHomepage } from '@/lib/board'
+import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
+import {
+  availability,
+  contactInfo,
+  education,
+  experience,
+  footerContent,
+  galleryContent,
+  galleryImages,
+  heroContent,
+  projects,
+  recommendations,
+  sectionContent,
+  skills,
+} from '@/lib/data'
 import { buildFieldLog } from '@/lib/field-log'
+import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
+import type { Project } from '@/types'
+
+const products = projects.filter((p) => p.band === 'Products')
+const racked = projects.filter((p) => p.band !== 'Products')
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
 
 describe('Hero', () => {
   const html = renderToStaticMarkup(<Hero />)
@@ -19,19 +44,171 @@ describe('Hero', () => {
     expect(line?.[1]).toContain('sm:hidden')
   })
 
+  it('sets the title as the H1, word by word, with the lede and specialism', () => {
+    const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ''
+    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.title)
+    expect(html).toContain(escape(heroContent.lede))
+    expect(html).toContain(heroContent.specialism)
+  })
+
+  it('leads with Start a project and the résumé', () => {
+    expect(html).toMatch(/<a [^>]*href="#contact"[^>]*>Start a project/)
+    expect(html).toContain('Résumé')
+  })
+
+  it('reads each proof point as its sentence, with a plain numeral beside it', () => {
+    for (const point of heroContent.proofPoints) expect(html).toContain(`<span class="sr-only">${point}</span>`)
+    expect(html).not.toMatch(/aria-hidden="true" class="text-numeral[^"]*">0\d</)
+  })
+
   it('does not repeat the portrait’s name inside its labelled button', () => {
     expect(html).toContain('aria-label="View larger image: Christian Raro"')
     expect(html).not.toMatch(/<img[^>]*alt="Christian Raro"/)
   })
 
-  it('keeps amber off the stack chips: an amber outline means "selected filter"', () => {
+  it('keeps magenta off the stack chips: colour arrives only as whole planes', () => {
     const chips = html.match(/<ul aria-label="Core stack"[\s\S]*?<\/ul>/)?.[0] ?? ''
     expect(chips).not.toContain('accent')
   })
 })
 
+describe('Products', () => {
+  const html = renderToStaticMarkup(<Products />)
+  const spreads = html.match(/<article[\s\S]*?<\/article>/g) ?? []
+
+  it('takes its heading from lib/data.ts', () => {
+    expect(html).toContain(`>${sectionContent.work.eyebrow}<`)
+    expect(html).toMatch(new RegExp(`<h2 id="work-title"[^>]*>${sectionContent.work.title}<`))
+  })
+
+  it('opens one spread per product, in order', () => {
+    expect(spreads).toHaveLength(products.length)
+    products.forEach((p, i) => expect(spreads[i]).toContain(`>${p.title}<`))
+  })
+
+  it('leads each spread with name, summary and status, before the detail and the preview', () => {
+    products.forEach((project, i) => {
+      const spread = spreads[i]
+      const at = (needle: string) => spread.indexOf(needle)
+      const title = at(`>${project.title}<`)
+      expect(title).toBeGreaterThan(-1)
+      expect(at(`>${escape(project.summary)}<`)).toBeGreaterThan(title)
+      expect(at('data-status=')).toBeGreaterThan(at(`>${escape(project.summary)}<`))
+      expect(at(escape(project.description.slice(0, 40)))).toBeGreaterThan(at('data-status='))
+    })
+  })
+
+  it('links each product to its page, and to the live site a visitor can open', () => {
+    products.forEach((project, i) => {
+      expect(spreads[i]).toContain(`href="/projects/${project.slug}"`)
+      if (canLinkLive(project) && project.links.live) expect(spreads[i]).toContain(`href="${project.links.live}"`)
+    })
+  })
+
+  it('shows the real site scrolling, or says honestly why there is no picture', () => {
+    products.forEach((project, i) => {
+      if (fullShotFor(project)) {
+        expect(spreads[i]).toContain('scroll-preview__shot')
+        expect(spreads[i]).toMatch(/aria-label="Scroll preview of [^"]+, opens project page"/)
+      } else {
+        expect(spreads[i]).not.toContain('scroll-preview__shot')
+        expect(spreads[i]).toContain(escape(noPreviewCopy(project)))
+      }
+    })
+  })
+
+  it('offers a live preview exactly where the site can be framed', () => {
+    products.forEach((project, i) => {
+      expect(spreads[i].includes('aria-haspopup="dialog"'), project.slug).toBe(isEmbeddable(project))
+    })
+  })
+})
+
+describe('Rack', () => {
+  const html = renderToStaticMarkup(<Rack />)
+  const cards = html.match(/<a [^>]*class="rack-card[\s\S]*?<\/a>/g) ?? []
+  const cardFor = (p: Project) => cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
+
+  it('takes its heading from lib/data.ts and names each tier', () => {
+    expect(html).toMatch(new RegExp(`<h2 id="systems-title"[^>]*>${sectionContent.systems.title}<`))
+    for (const group of groupForHomepage(racked)) expect(html).toMatch(new RegExp(`<h3 [^>]*>${group.heading}`))
+  })
+
+  it('puts every project that is not a product in the rack, once, linking to its page', () => {
+    expect(cards).toHaveLength(racked.length)
+    for (const p of racked) expect(cardFor(p), p.slug).toContain(`>${p.title}<`)
+  })
+
+  it('shows each card’s status through StatusBadge', () => {
+    for (const p of racked) expect(cardFor(p), p.slug).toContain('data-status=')
+  })
+
+  it('numbers the cards as one strip across the whole rack', () => {
+    const codes = html.match(/\d{2} \/ \d{2} · /g) ?? []
+    expect(codes).toHaveLength(racked.length)
+    expect(new Set(codes).size).toBe(racked.length)
+    expect(codes.every((c) => c.includes(` / ${projects.length} · `))).toBe(true)
+  })
+
+  it('keeps one interactive target per card: nothing focusable inside it', () => {
+    for (const card of cards) {
+      expect(card.slice(3)).not.toContain('<a ')
+      expect(card).not.toContain('<button')
+      expect(card).not.toMatch(/tabindex/i)
+    }
+  })
+
+  it('sinks a scroll preview in each pocket, or a printed tag where there is none', () => {
+    for (const p of racked) {
+      const card = cardFor(p)
+      if (fullShotFor(p)) expect(card, p.slug).toContain('scroll-preview__shot')
+      else expect(card, p.slug).toContain(escape(noPreviewCopy(p)))
+    }
+  })
+
+  it('marks a staging site on its card', () => {
+    for (const p of racked.filter((x) => x.status === 'staging')) expect(cardFor(p)).toContain('>Staging<')
+  })
+
+  it('leads on to every project', () => {
+    expect(html).toContain('href="/projects"')
+  })
+})
+
+describe('every project is reachable from the homepage', () => {
+  it('links each project page from Products or the rack', () => {
+    const html = renderToStaticMarkup(<Products />) + renderToStaticMarkup(<Rack />)
+    for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+  })
+})
+
+describe('Case studies', () => {
+  const html = renderToStaticMarkup(<CaseStudies />)
+
+  it('takes its heading from lib/data.ts', () => {
+    expect(html).toContain(`>${sectionContent.caseStudies.eyebrow}<`)
+    expect(html).toMatch(new RegExp(`<h2 id="case-studies-title"[^>]*>${sectionContent.caseStudies.title}<`))
+  })
+
+  it('shows a cover for every flagship, in reading order, with role and brief', () => {
+    let last = -1
+    for (const slug of FLAGSHIP_SLUGS) {
+      const study = getCaseStudy(slug)!
+      const at = html.indexOf(`href="/projects/${slug}"`)
+      expect(at, slug).toBeGreaterThan(last)
+      last = at
+      expect(html).toContain(escape(study.role))
+      expect(html).toContain(escape(briefLead(study)))
+    }
+  })
+})
+
 describe('Field log', () => {
   const html = renderToStaticMarkup(<FieldLog />)
+
+  it('takes its heading from lib/data.ts', () => {
+    expect(html).toMatch(new RegExp(`<h2 id="field-log-title"[^>]*>${galleryContent.title}<`))
+  })
 
   it('ties every photo button to its visible caption', () => {
     for (const image of galleryImages) {
@@ -47,67 +224,80 @@ describe('Field log', () => {
     }
   })
 
+  it('attributes every testimonial and links it to the project it is about', () => {
+    for (const r of recommendations) {
+      expect(html).toContain(escape(r.authorName))
+      const project = projects.find((p) => p.id === r.projectId)
+      if (project) expect(html).toContain(`href="/projects/${project.slug}"`)
+    }
+  })
+
   it('never leaves a single card alone on the last three-column row', () => {
     const entries = buildFieldLog(galleryImages, recommendations, projects)
     if (entries.length % 3 === 1) expect(html).toContain('lg:col-span-3')
   })
 })
 
+describe('Route line', () => {
+  const html = renderToStaticMarkup(<RouteLine />)
+
+  it('keeps the #changelog anchor and its heading from lib/data.ts', () => {
+    expect(html).toContain('id="changelog"')
+    expect(html).toMatch(new RegExp(`<h2 id="changelog-title"[^>]*>${escape(sectionContent.changelog.title)}<`))
+  })
+
+  it('stops at every role and every degree, in two lanes', () => {
+    for (const e of experience) expect(html).toContain(escape(e.title))
+    for (const e of education) expect(html).toContain(escape(e.degree))
+    expect(html).toContain('>Work<')
+    expect(html).toContain('>Education<')
+  })
+})
+
+describe('Stack', () => {
+  const html = renderToStaticMarkup(<Stack />)
+
+  it('lists every skill under its category', () => {
+    for (const s of skills) expect(html).toContain(`>${s.name}<`)
+  })
+})
+
 describe('primary proof renders visible without JavaScript', () => {
   it.each([
+    ['Hero', <Hero key="h" />],
     ['Products', <Products key="p" />],
-    ['Systems', <Systems key="s" />],
+    ['Rack', <Rack key="r" />],
   ])('%s ships no opacity:0 entrance', (_name, node) => {
     expect(renderToStaticMarkup(node)).not.toMatch(/opacity:\s*0/)
   })
-})
 
-describe('Products heading', () => {
-  it('keeps the count out of the heading’s accessible name', () => {
-    const html = renderToStaticMarkup(<Products />)
-    const count = projects.filter((p) => p.band === 'Products').length
-    expect(html).toContain(`<span aria-hidden="true" class="ml-3 edge-code text-sm font-normal text-muted">products · ${count}</span>`)
-  })
-})
-
-describe('Product panels', () => {
-  const html = renderToStaticMarkup(<Products />)
-  const products = projects.filter((p) => p.band === 'Products')
-  const panels = html.match(/<article[\s\S]*?<\/article>/g) ?? []
-
-  it('stacks the panels instead of laying out a grid of screenshot cards', () => {
-    expect(panels).toHaveLength(products.length)
-    expect(html).not.toContain('md:grid-cols-3')
-  })
-
-  it('leads each panel with its name, what it does and its status, before any screenshot', () => {
-    products.forEach((project, i) => {
-      const panel = panels[i]
-      const at = (needle: string) => panel.indexOf(needle)
-      const titleAt = at(`>${project.title}<`)
-      expect(titleAt).toBeGreaterThan(-1)
-      expect(at(`>${project.summary}<`)).toBeGreaterThan(titleAt)
-      expect(at('data-status=')).toBeGreaterThan(-1)
-      expect(at(`>${project.description.slice(0, 40)}`)).toBeGreaterThan(at(`>${project.summary}<`))
-      if (project.image) {
-        expect(at('<img')).toBeGreaterThan(at(`>${project.description.slice(0, 40)}`))
-        expect(at('<img')).toBeGreaterThan(at('data-status='))
-      }
-    })
-  })
-
-  it('keeps the screenshot small and gives it a meaningful alt', () => {
-    for (const panel of panels) {
-      expect(panel).toMatch(/<img[^>]*alt="Screenshot of [^"]+"/)
-      expect(panel).toMatch(/sizes="[^"]*240px/)
+  it('moves proof by transform only as it scrolls in, never by opacity', () => {
+    const css = readFileSync('app/globals.css', 'utf8')
+    for (const name of ['reveal-flap', 'reveal-slide', 'reveal-drop', 'reveal-draw-x']) {
+      const frames = css.match(new RegExp(`@keyframes ${name} \\{[\\s\\S]*?\\n\\t\\t\\}`))?.[0]
+      expect(frames, name).toBeDefined()
+      expect(frames).not.toContain('opacity')
     }
   })
 })
 
-describe('closing sections', () => {
-  it('give Changelog and Stack the page’s 8px panel', () => {
-    expect(renderToStaticMarkup(<Changelog />)).toContain('rounded-lg border border-line bg-panel')
-    expect(renderToStaticMarkup(<Stack />)).toContain('rounded-lg border border-line bg-line')
+describe('Lobby Rack type', () => {
+  it('sets no homepage label in the retired B3 caps-and-tracking style', () => {
+    const dir = 'components/sections'
+    for (const f of readdirSync(dir)) {
+      const source = readFileSync(join(dir, f), 'utf8')
+      expect(source, f).not.toMatch(/\buppercase\b|tracking-\[0\.1em\]/)
+    }
+  })
+})
+
+describe('Top bar', () => {
+  it('scrolls the nav only below md, padded so the focus ring is not clipped', () => {
+    const source = readFileSync('components/top-bar.tsx', 'utf8')
+    const ul = source.match(/<ul className="([^"]*)"/)?.[1] ?? ''
+    expect(ul).toContain('max-md:overflow-x-auto')
+    expect(ul).not.toMatch(/(^|\s)overflow-x-auto/)
+    expect(ul).toMatch(/max-md:p-1\.5/)
   })
 })
 

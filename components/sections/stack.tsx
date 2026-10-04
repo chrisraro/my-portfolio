@@ -1,35 +1,44 @@
+import { SectionHeading } from '@/components/ui/section-heading'
 import { sectionContent, skills } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
+/**
+ * The brochure's back panel, its "amenities": each category a column of
+ * skills on dotted leaders. WordPress, the specialism, sits on a paper chip.
+ * No scroll motion: a quiet passage after the dense ones.
+ */
 export function Stack() {
   const categories = Array.from(new Set(skills.map((s) => s.category)))
 
   return (
-    <section id="stack" aria-labelledby="stack-title" className="border-t border-line">
-      <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 md:pb-20 md:pt-14">
-        <p className="eyebrow mb-3">{sectionContent.stack.eyebrow}</p>
-        <h2 id="stack-title" className="text-fluid-h2 mb-8 text-ink">
-          {sectionContent.stack.title}
-        </h2>
-        {/* Hairline cells, the proof band's construction: one grid, gap-px on the line colour. */}
-        <dl className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
-          {categories.map((category) => (
-            <div key={category} className="bg-panel p-5">
-              <dt className="mb-3 edge-code text-xs font-medium uppercase tracking-[0.1em] text-accent">
-                {category}
-              </dt>
-              <dd>
-                <ul className="space-y-1.5 edge-code text-sm text-ink">
-                  {skills
-                    .filter((s) => s.category === category)
-                    .map((skill) => (
-                      <li key={skill.id}>{skill.name}</li>
-                    ))}
-                </ul>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
+    <section id="stack" aria-labelledby="stack-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+      <SectionHeading id="stack-title" eyebrow={sectionContent.stack.eyebrow} title={sectionContent.stack.title} />
+      <dl className="grid gap-x-10 gap-y-10 border-t border-line pt-6 sm:grid-cols-3">
+        {categories.map((category) => (
+          <div key={category}>
+            <dt className="edge-code mb-4 text-sm text-ink">{category}</dt>
+            <dd>
+              <ul>
+                {skills
+                  .filter((s) => s.category === category)
+                  .map((skill) => (
+                    <li key={skill.id} className="flex items-end gap-2 py-1.5">
+                      <span
+                        className={cn(
+                          'shrink-0 text-ink',
+                          skill.id === 'wordpress' && '-mx-2.5 rounded-full bg-panel px-2.5',
+                        )}
+                      >
+                        {skill.name}
+                      </span>
+                      <span aria-hidden="true" className="mb-[0.45em] flex-1 border-b-2 border-dotted border-line-strong" />
+                    </li>
+                  ))}
+              </ul>
+            </dd>
+          </div>
+        ))}
+      </dl>
     </section>
   )
 }

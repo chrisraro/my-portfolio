@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { caseStudyContent, projects, sectorNames } from '@/lib/data'
-import { canLinkLive, fullShotFor, isEmbeddable, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, fullShotHeight, isEmbeddable, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
 import { buildProjectPageTitle } from '@/lib/site-metadata'
 import type { Project, ProjectStatus } from '@/types'
 
@@ -100,5 +100,18 @@ describe('preview assets and embeddability', () => {
     for (const p of projects.filter((p) => canLinkLive(p))) {
       expect(isEmbeddable(p), p.slug).toBe(embeds.projects[p.slug] === true)
     }
+  })
+})
+
+describe('fullShotHeight', () => {
+  it('reads the pixel height from a captured full shot', () => {
+    const h = fullShotHeight(fullShotFor(bySlug('latag')))
+    expect(h).toBeGreaterThan(900)
+    expect(h).toBeLessThanOrEqual(6000)
+  })
+
+  it('returns undefined when there is no shot', () => {
+    expect(fullShotHeight(undefined)).toBeUndefined()
+    expect(fullShotHeight('/assets/images/projects/nope-full.webp')).toBeUndefined()
   })
 })

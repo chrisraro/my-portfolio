@@ -50,6 +50,47 @@ describe('motion tokens', () => {
     }
   })
 
+  it('switches every reveal variant off under prefers-reduced-motion: reduce', () => {
+    const rules = parseRules(css)
+    const animated = rules.filter(
+      (r) => /\.reveal-[\w-]+/.test(r.selector) && /animation\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
+    )
+    const variants = new Set(animated.flatMap((r) => r.selector.match(/\.reveal-[\w-]+/g) ?? []))
+    // The contract's choreography: flap, leaf, drop, lip, cover, postcard, route, stop, reply, perforation.
+    expect(variants.size).toBeGreaterThanOrEqual(10)
+    const off = rules
+      .filter((r) => r.ancestors.includes('@media (prefers-reduced-motion: reduce)') && /animation\s*:\s*none/.test(r.body))
+      .map((r) => r.selector)
+      .join(' ')
+    for (const v of Array.from(variants)) expect(off, `${v} is not switched off under reduce`).toMatch(new RegExp(`${v.replace('.', '\\.')}(?![\\w-])`))
+  })
+
+  it('runs the hero load sequence only under no-preference, and switches it off under reduce', () => {
+    const rules = parseRules(css)
+    const animated = rules.filter(
+      (r) => /\.hero-[\w-]+/.test(r.selector) && /animation(-name)?\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
+    )
+    expect(animated.length).toBeGreaterThan(0)
+    for (const r of animated) {
+      expect(r.ancestors, `${r.selector} needs no-preference`).toContain('@media (prefers-reduced-motion: no-preference)')
+    }
+    const off = rules.find(
+      (r) => r.selector.includes('.hero-word') && r.ancestors.includes('@media (prefers-reduced-motion: reduce)') && /animation\s*:\s*none/.test(r.body),
+    )
+    expect(off).toBeDefined()
+  })
+
+  it('keeps the hero sequence under two seconds', () => {
+    const ms = (name: string) => {
+      const m = css.match(new RegExp(String.raw`${name}:\s*(\d+)ms;`))
+      if (!m) throw new Error(`missing ${name}`)
+      return Number(m[1])
+    }
+    // The last crease starts latest and draws over the crawl duration.
+    const end = ms('--t-crease-2') + motionTokens.duration.crawl * 1000
+    expect(end).toBeLessThan(2000)
+  })
+
   it('switches .reveal off under prefers-reduced-motion: reduce', () => {
     const off = parseRules(css).find(
       (r) =>

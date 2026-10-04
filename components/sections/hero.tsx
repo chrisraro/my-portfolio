@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { ProofBand } from '@/components/ui/proof-band'
@@ -8,96 +9,96 @@ import type { Skill } from '@/types'
 
 const PORTRAIT = '/assets/images/about/profile-hiking.jpg'
 
-const SECONDARY_CTA =
-  'inline-flex min-h-[44px] items-center rounded border border-line-strong px-5 font-medium text-ink transition-colors hover:border-accent hover:text-accent'
+// An outline button on the magenta plane: on-accent ink, never a tint.
+const PLANE_SECONDARY =
+  'press button-label inline-flex min-h-[44px] items-center rounded border border-on-accent/70 px-5 text-on-accent hover:border-on-accent'
 
+/**
+ * The opening brochure: a tri-fold. Front panel (magenta plane) says who and
+ * what, middle panel is the portrait, back panel holds the proof. On load the
+ * H1 words rise, then the two inner panels unfold from their hinges and the
+ * creases draw (CSS only, `.hero-*` in globals.css, 1.9s, once). Under reduced
+ * motion everything is at rest from the first paint.
+ */
 export function Hero() {
   const chips = heroContent.stack
     .map((id) => skills.find((s) => s.id === id))
     .filter((s): s is Skill => Boolean(s))
+  const words = heroContent.title.split(' ')
 
   return (
-    <section id="top" aria-labelledby="hero-title" className="border-b border-line">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-10 pt-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-end md:pt-20">
-        <div>
-          {/*
-            Below md the portrait shrinks to an avatar beside the name, so the
-            proof band is not pushed under the fold by a 260px photo.
-          */}
-          <div className="mb-4 flex items-center gap-3">
+    <section id="top" aria-labelledby="hero-title" className="overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] pt-6 sm:px-8 md:pb-[112px] md:pt-8">
+      <div className="hero-fold grid md:min-h-[640px] md:grid-cols-[1.3fr_auto_0.85fr_auto_0.85fr]">
+        {/* Front panel: the LCP surface, static from the first frame. */}
+        <div className="hero-front relative z-10 flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
+          <p className="eyebrow text-on-accent">
+            {heroContent.name} · {heroContent.location}
+          </p>
+          {/* The top bar hides availability below sm; it is stated here instead. */}
+          <p className="eyebrow mt-2 text-on-accent sm:hidden">{availability}</p>
+          <h1 id="hero-title" className="hero-title text-fluid-h1 mt-6 md:mt-auto">
+            {words.map((word, i) => (
+              <span key={word} className="hero-word" style={{ '--i': i } as CSSProperties}>
+                {word}
+                {i < words.length - 1 ? ' ' : ''}
+              </span>
+            ))}
+          </h1>
+          <div className="hero-rise">
+            <p className="text-lede mt-5 max-w-[34rem]">{heroContent.lede}</p>
+            <p className="edge-code mt-4 text-sm">{heroContent.specialism}</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href="#contact"
+                className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-canvas px-5 text-accent"
+              >
+                Start a project
+                <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
+              </a>
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className={PLANE_SECONDARY}>
+                Résumé
+                <span className="sr-only">(PDF, opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <span aria-hidden="true" className="hero-crease-1 crease-fold" />
+
+        {/* Middle panel: the portrait, full bleed. 4:3 band when stacked. */}
+        <div className="hero-unfold-mid relative aspect-[4/3] md:aspect-auto">
+          <ImageLightbox src={PORTRAIT} alt={heroContent.name} className="absolute inset-0 h-full w-full">
+            {/* alt="" because the button around it is labelled with the same name. */}
             <Image
               src={PORTRAIT}
               alt=""
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded border border-line-strong object-cover md:hidden"
+              fill
+              priority
+              sizes="(min-width: 768px) 280px, 100vw"
+              className="object-cover"
             />
-            <p className="eyebrow">
-              {heroContent.name} · {heroContent.location}
-            </p>
-          </div>
-          {/* The top bar hides availability below sm; it is stated here instead. */}
-          <p className="mb-4 inline-flex items-center gap-2 edge-code text-xs text-accent sm:hidden">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-            {availability}
-          </p>
-          <h1 id="hero-title" className="text-fluid-h1 text-ink">
-            {heroContent.title}
-            <span className="text-accent">.</span>
-          </h1>
-          <p className="mt-5 max-w-[34rem] text-lg leading-relaxed text-muted-strong">{heroContent.lede}</p>
-          <p className="mt-4 edge-code text-sm text-accent">{heroContent.specialism}</p>
-          {/*
-            The specialism chip is marked by fill and ink, not amber: an amber
-            outline is the board filter's "selected" state.
-          */}
-          <ul aria-label="Core stack" className="mt-5 flex flex-wrap gap-2">
+          </ImageLightbox>
+        </div>
+
+        <span aria-hidden="true" className="hero-crease-2 crease-fold" />
+
+        {/* Back panel: the proof, on paper. */}
+        <div className="hero-unfold-right flex flex-col justify-between gap-8 rounded-b bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none">
+          <ProofBand />
+          <ul aria-label="Core stack" className="flex flex-wrap gap-2">
             {chips.map((skill) => (
               <li
                 key={skill.id}
                 className={cn(
-                  'rounded border border-line-strong px-2.5 py-1 edge-code text-xs',
-                  skill.id === 'wordpress' ? 'bg-panel text-ink' : 'text-muted-strong',
+                  'edge-code rounded-full border px-3 py-1 text-xs',
+                  skill.id === 'wordpress' ? 'border-line-strong bg-canvas text-ink' : 'border-line text-muted-strong',
                 )}
               >
                 {skill.name}
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#contact"
-              className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 font-medium text-on-accent transition-colors hover:bg-accent/90"
-            >
-              Start a project
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </a>
-            <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className={SECONDARY_CTA}>
-              Résumé
-              <span className="sr-only">(PDF, opens in a new tab)</span>
-            </a>
-            <a href="#work" className={SECONDARY_CTA}>
-              View work
-            </a>
-          </div>
         </div>
-
-        <ImageLightbox src={PORTRAIT} alt={heroContent.name} className="hidden justify-self-end md:block">
-          <span className="block rounded-lg border border-line-strong bg-panel p-1.5">
-            {/* alt="" because the button around it is labelled with the same name. */}
-            <Image
-              src={PORTRAIT}
-              alt=""
-              width={220}
-              height={260}
-              priority
-              className="h-[260px] w-[220px] rounded object-cover"
-            />
-          </span>
-        </ImageLightbox>
-      </div>
-      <div className="mx-auto max-w-6xl px-5 pb-14 sm:px-8">
-        <ProofBand />
       </div>
     </section>
   )

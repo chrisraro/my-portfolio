@@ -411,6 +411,10 @@ export const sectionContent = {
     title: 'Custom systems and client work',
     cta: 'Browse every project',
   },
+  caseStudies: {
+    eyebrow: 'Case studies',
+    title: 'From the brief to launch',
+  },
   changelog: { eyebrow: 'Changelog', title: "Where I've worked" },
   stack: { eyebrow: 'Stack', title: 'What I ship with' },
   contact: { eyebrow: 'Contact', title: 'Start a project' },

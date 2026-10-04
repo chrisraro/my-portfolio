@@ -25,6 +25,14 @@ describe('ScrollPreview', () => {
     expect(html).not.toMatch(/tabindex="0"/i)
   })
 
+  it('stays silent inside a card link: no link, no focus stop, no name', () => {
+    const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} decorative />)
+    expect(html).toMatch(/^<span aria-hidden="true"/)
+    expect(html).not.toContain('<a ')
+    expect(html).not.toMatch(/tabindex/i)
+    expect(html).not.toContain('aria-label')
+  })
+
   it('sets the scroll duration from the shot height when given', () => {
     const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} shotHeight={6000} />)
     expect(html).toContain('--shot-h:6000')

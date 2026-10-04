@@ -3,14 +3,14 @@ import { heroContent, paymentGateways, projects } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
 
 describe('splitProofPoint', () => {
-  it('turns the leading number word into a two-digit numeral', () => {
+  it('turns the leading number word into a plain numeral, not zero-padded', () => {
     expect(splitProofPoint('Fifteen projects shipped')).toEqual({ value: '15', label: 'projects shipped' })
-    expect(splitProofPoint('One NFC card system')).toEqual({ value: '01', label: 'NFC card system' })
+    expect(splitProofPoint('One NFC card system')).toEqual({ value: '1', label: 'NFC card system' })
   })
 
   it('parses every proof point on the page', () => {
     for (const point of heroContent.proofPoints) {
-      expect(splitProofPoint(point).value).toMatch(/^\d{2}$/)
+      expect(splitProofPoint(point).value).toMatch(/^[1-9]\d*$/)
     }
   })
 

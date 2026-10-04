@@ -17,6 +17,12 @@ interface ScrollPreviewProps {
   shotHeight?: number
   /** next/image sizes hint. */
   sizes?: string
+  /**
+   * Inside a card that is already the link (the rack): render a silent frame,
+   * with no link, focus stop or name of its own. The card around it carries
+   * `.scroll-preview-host`, so hovering or focusing the card scrolls the shot.
+   */
+  decorative?: boolean
 }
 
 /**
@@ -34,6 +40,7 @@ export function ScrollPreview({
   ratio = 'portrait',
   shotHeight,
   sizes = '(min-width: 1024px) 480px, 100vw',
+  decorative = false,
 }: ScrollPreviewProps) {
   const style = shotHeight ? ({ '--shot-h': shotHeight } as CSSProperties) : undefined
   const classes = cn(
@@ -48,6 +55,14 @@ export function ScrollPreview({
       <span className="scroll-preview__progress" aria-hidden="true" />
     </>
   )
+
+  if (decorative) {
+    return (
+      <span aria-hidden="true" className={classes} style={style}>
+        {inner}
+      </span>
+    )
+  }
 
   if (href) {
     return (

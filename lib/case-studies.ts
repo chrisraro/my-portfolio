@@ -278,3 +278,10 @@ export function caseStudyText(s: CaseStudy): string[] {
     ...(s.metrics ?? []).map((m) => `${m.value} ${m.label}`),
   ]
 }
+
+/** The brief's opening sentence: what the client needed, in one line. */
+export function briefLead(s: CaseStudy): string {
+  const text = s.brief[0] ?? ''
+  const match = text.match(/^.+?[.!?](?=\s|$)/)
+  return match ? match[0] : text
+}

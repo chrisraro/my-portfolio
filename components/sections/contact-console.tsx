@@ -8,7 +8,8 @@ import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data
 const FIELD =
   'w-full rounded border border-line-strong bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
 
-const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-ink hover:text-accent sm:min-h-[32px]'
+// On the magenta plane: on-accent text only; the drawn underline marks hover.
+const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-on-accent sm:min-h-[32px]'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -98,31 +99,28 @@ export function ContactConsole() {
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="border-t border-line">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 md:grid-cols-[1fr_1.2fr] md:py-20">
-        <div>
-          <p className="eyebrow mb-3">{sectionContent.contact.eyebrow}</p>
-          <h2 id="contact-title" className="text-fluid-h2 mb-5 text-ink">
+    <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+      {/*
+        A business reply card: the magenta address side, perforated to the
+        paper leaf you fill in. It slides up as it arrives and the perforation
+        draws; at rest (reduced motion, no support) it is simply there.
+      */}
+      <div className="reveal-reply grid md:grid-cols-[5fr_auto_7fr]">
+        <div className="flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
+          <p className="eyebrow mb-3 text-on-accent">{sectionContent.contact.eyebrow}</p>
+          <h2 id="contact-title" className="text-fluid-h2">
             {sectionContent.contact.title}
           </h2>
-          <p className="mb-6 inline-flex items-center gap-2 edge-code text-sm text-accent">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-            {availability}
-          </p>
-          <ul className="space-y-2 edge-code text-sm">
+          <p className="edge-code mt-5 text-sm">{availability}</p>
+          <ul className="mt-8 space-y-1 md:mt-auto md:pt-10">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
-                {contactInfo.email}
+                <span className="link-draw">{contactInfo.email}</span>
               </a>
             </li>
             <li>
-              <a
-                href={resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={CONTACT_LINK}
-              >
-                Download résumé
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
+                <span className="link-draw">Download résumé</span>
                 <span className="sr-only">(PDF, opens in a new tab)</span>
               </a>
             </li>
@@ -134,14 +132,20 @@ export function ContactConsole() {
                 </a>
               </li>
             )}
-            <li className="text-muted">{contactInfo.location}</li>
+            <li className="edge-code pt-2 text-sm">{contactInfo.location}</li>
           </ul>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-panel p-5 sm:p-6">
+        {/* The perforation: dotted, with a half-circle notch at each end. */}
+        <span aria-hidden="true" className="perforation reveal-perf" />
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5 rounded-b border border-line bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none lg:p-10"
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="contact-name" className="mb-1.5 block edge-code text-xs text-muted-strong">
+              <label htmlFor="contact-name" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
                 Name
               </label>
               <input
@@ -158,7 +162,7 @@ export function ContactConsole() {
               />
             </div>
             <div>
-              <label htmlFor="contact-email" className="mb-1.5 block edge-code text-xs text-muted-strong">
+              <label htmlFor="contact-email" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
                 Email
               </label>
               <input
@@ -176,7 +180,7 @@ export function ContactConsole() {
             </div>
           </div>
           <div>
-            <label htmlFor="contact-message" className="mb-1.5 block edge-code text-xs text-muted-strong">
+            <label htmlFor="contact-message" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
               What are you building?
             </label>
             <textarea
@@ -201,7 +205,7 @@ export function ContactConsole() {
             type="submit"
             disabled={isSubmitting}
             aria-describedby={error && !error.field ? ERROR_ID : undefined}
-            className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 font-medium text-on-accent transition-colors hover:bg-accent/90 disabled:opacity-60"
+            className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-6 text-on-accent disabled:opacity-60"
           >
             {isSubmitting ? (
               <>
@@ -211,7 +215,7 @@ export function ContactConsole() {
             ) : (
               <>
                 Send message
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
               </>
             )}
           </button>

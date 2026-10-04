@@ -50,7 +50,13 @@ export function TopBar() {
         </Link>
 
         <nav aria-label="Primary" className="min-w-0">
-          <ul className="-ml-1.5 flex overflow-x-auto md:ml-0 md:gap-2">
+          {/*
+            Below md the row scrolls sideways. A scroll container clips on both
+            axes, so it is padded by 6px all round (the 2px ring at a 3px
+            offset needs 5px), and pulled back by the same so the text still
+            lines up. From md there is room: no scroll container, no clipping.
+          */}
+          <ul className="flex max-md:-mx-3 max-md:-my-1.5 max-md:overflow-x-auto max-md:p-1.5 md:gap-2">
             {navigationItems.map((item) => {
               const href = item.href.startsWith('#') ? `/${item.href}` : item.href
               const current = !item.href.startsWith('#') && pathname.startsWith(item.href)

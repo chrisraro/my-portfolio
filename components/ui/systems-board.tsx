@@ -36,7 +36,7 @@ export function SystemsBoard({ groups, groupHeading: Heading, outOf }: SystemsBo
           <section key={group.heading} aria-labelledby={id}>
             <Heading
               id={id}
-              className="px-4 pb-2 pt-5 edge-code text-xs font-medium uppercase tracking-[0.1em] text-accent"
+              className="px-4 pb-2 pt-5 edge-code text-sm text-ink"
             >
               {group.heading}
             </Heading>

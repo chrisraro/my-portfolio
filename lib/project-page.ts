@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { recommendations } from '@/lib/data'
 import embeddable from '@/lib/embeddable.json'
@@ -37,6 +37,21 @@ export function screenshotsFor(project: Project): { desktop?: string; mobile?: s
 export function fullShotFor(project: Project): string | undefined {
   const path = `/assets/images/projects/${project.id}-full.webp`
   return existsSync(join(process.cwd(), 'public', path)) ? path : undefined
+}
+
+// The full shot's pixel height, read from its WebP header, so ScrollPreview can
+// scale its scroll duration to the page's length. Handles the extended (VP8X)
+// header the capture script writes; anything else returns undefined and the
+// preview falls back to its default duration.
+export function fullShotHeight(src: string | undefined): number | undefined {
+  if (!src) return undefined
+  try {
+    const head = readFileSync(join(process.cwd(), 'public', src)).subarray(0, 30)
+    if (head.toString('ascii', 0, 4) !== 'RIFF' || head.toString('ascii', 12, 16) !== 'VP8X') return undefined
+    return head.readUIntLE(27, 3) + 1
+  } catch {
+    return undefined
+  }
 }
 
 // lib/embeddable.json is written by `npm run check:embeds`. Only a site that

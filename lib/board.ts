@@ -53,3 +53,22 @@ export function parseBandParam(value: string | string[] | undefined): ProjectBan
   const slug = (Array.isArray(value) ? value[0] : value)?.trim().toLowerCase()
   return BAND_ORDER.find((band) => bandSlug(band) === slug) ?? null
 }
+
+/**
+ * Every project in the order the homepage shows it: Products first, then the
+ * rack's tiers. The running index on each card's edge code counts in this order.
+ */
+export function homepageOrder(projects: Project[]): Project[] {
+  const products = projects.filter((p) => p.band === 'Products')
+  const rest = groupForHomepage(projects.filter((p) => p.band !== 'Products'))
+  return [...products, ...rest.flatMap((group) => group.projects)]
+}
+
+/**
+ * A card's edge code: a running index over the whole rack plus a label, so
+ * the page reads as one numbered strip ("04 / 18 · Products").
+ */
+export function edgeCode(position: number, total: number, label: string): string {
+  const pad = (n: number) => String(n).padStart(String(total).length, '0')
+  return `${pad(position)} / ${pad(total)} · ${label}`
+}
