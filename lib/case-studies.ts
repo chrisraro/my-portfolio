@@ -222,7 +222,7 @@ export const caseStudies: CaseStudy[] = [
     built: [
       'Connecta PH is a web app. Tapping a card or scanning its QR code opens the owner\'s profile, which can show photos, listings and services. The person who taps saves the contact in one tap.',
       'Each profile has a lead form. Every lead lands in the owner\'s dashboard, and the owner gets an email notification.',
-      'I also built the profile builder, an admin console, a card factory that sets up each physical NFC card, and a shop. Card orders in the shop arrive as inquiries, and I arrange each one personally.',
+      'I also built the profile builder, an admin console, a card factory that sets up each physical NFC card, and a shop. Card orders in the shop arrive as inquiries.',
     ],
     decisions: [
       {
