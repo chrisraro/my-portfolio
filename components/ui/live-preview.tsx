@@ -21,6 +21,17 @@ type Device = 'desktop' | 'mobile'
 /** CSS pixel width of the mobile frame (a common phone viewport). */
 const MOBILE_WIDTH = 390
 
+/** How long the frame gets to fire `load` before the preview is called failed (6 x the crawl duration, 7.2 s). */
+const LOAD_TIMEOUT_MS = Math.round(motionTokens.duration.crawl * 6 * 1000)
+
+type LoadState = 'loading' | 'loaded' | 'failed'
+
+const STATUS_TEXT: Record<LoadState, string> = {
+  loading: 'Loading preview…',
+  loaded: 'Preview loaded',
+  failed: "This site can't be previewed here. Open it in a new tab.",
+}
+
 const FOCUSABLE = 'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
 
 /**
@@ -39,7 +50,8 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [device, setDevice] = useState<Device>('desktop')
-  const [loaded, setLoaded] = useState(false)
+  const [pressed, setPressed] = useState<Device>('desktop')
+  const [load, setLoad] = useState<LoadState>('loading')
   const triggerRef = useRef<HTMLButtonElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -55,9 +67,17 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
   useEffect(() => {
     if (open) {
       setDevice('desktop')
-      setLoaded(false)
+      setPressed('desktop')
+      setLoad('loading')
     }
   }, [open, url])
+
+  // A frame that never fires load (blocked, offline) is reported as failed.
+  useEffect(() => {
+    if (!open || load !== 'loading') return
+    const timer = window.setTimeout(() => setLoad('failed'), LOAD_TIMEOUT_MS)
+    return () => window.clearTimeout(timer)
+  }, [open, load, url])
 
   useEffect(() => {
     if (!open) return
@@ -80,6 +100,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
 
   useEffect(() => {
     if (!open) return
+    const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -104,7 +125,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
     }
     window.addEventListener('keydown', onKey)
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', onKey)
     }
   }, [open])
@@ -114,8 +135,12 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
       const el = frameRef.current
       if (next === device || switching.current || !el) return
       switching.current = true
+      setPressed(next)
       try {
-        const available = el.parentElement?.clientWidth ?? el.offsetWidth
+        const host = el.parentElement
+        const hostStyle = host ? window.getComputedStyle(host) : null
+        const padding = hostStyle ? parseFloat(hostStyle.paddingLeft) + parseFloat(hostStyle.paddingRight) : 0
+        const available = host ? host.clientWidth - padding : el.offsetWidth
         const target = next === 'mobile' ? Math.min(MOBILE_WIDTH, available) : available
         if (!reduce && el.offsetWidth > 0) {
           await animate(
@@ -167,6 +192,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
             onClick={(e) => e.stopPropagation()}
             className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-line-strong bg-panel shadow-overlay"
           >
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
             <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
               <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
                 Live preview: {title}
@@ -180,18 +206,18 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
               <div role="group" aria-label="Preview width" className="flex gap-2">
                 <button
                   type="button"
-                  aria-pressed={device === 'desktop'}
+                  aria-pressed={pressed === 'desktop'}
                   onClick={() => handleDevice('desktop')}
-                  className={toggleClass(device === 'desktop')}
+                  className={toggleClass(pressed === 'desktop')}
                 >
                   <Monitor className="h-4 w-4" aria-hidden="true" />
                   Desktop
                 </button>
                 <button
                   type="button"
-                  aria-pressed={device === 'mobile'}
+                  aria-pressed={pressed === 'mobile'}
                   onClick={() => handleDevice('mobile')}
-                  className={toggleClass(device === 'mobile')}
+                  className={toggleClass(pressed === 'mobile')}
                 >
                   <Smartphone className="h-4 w-4" aria-hidden="true" />
                   Mobile
@@ -202,7 +228,10 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-3 text-sm text-ink transition-colors hover:border-accent hover:text-accent"
+                className={cn(
+                  'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors hover:border-accent hover:text-accent',
+                  load === 'failed' ? 'border-accent bg-accent font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
+                )}
               >
                 Open site in a new tab
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -220,7 +249,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
               </button>
             </div>
 
-            <div className="relative flex min-h-0 flex-1 justify-center bg-canvas p-3">
+            <div className="relative flex min-h-[60vh] flex-1 justify-center bg-canvas p-3">
               <div
                 ref={frameRef}
                 className={cn(
@@ -228,21 +257,33 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                   device === 'mobile' ? 'w-full max-w-[390px]' : 'w-full',
                 )}
               >
-                {!loaded && (
-                  <p role="status" className="absolute inset-0 flex items-center justify-center edge-code text-sm text-muted">
-                    Loading preview…
+                {load !== 'loaded' && (
+                  <p
+                    aria-hidden="true"
+                    className={cn(
+                      'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
+                      load === 'failed' ? 'text-ink' : 'text-muted',
+                    )}
+                  >
+                    {STATUS_TEXT[load]}
                   </p>
                 )}
                 <iframe
                   src={url}
                   title={`Live preview of ${title}`}
-                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                  sandbox="allow-scripts allow-same-origin allow-popups"
                   loading="lazy"
                   referrerPolicy="no-referrer"
-                  onLoad={() => setLoaded(true)}
-                  className={cn('relative h-full w-full bg-panel', !loaded && 'opacity-0')}
+                  tabIndex={load === 'loaded' ? undefined : -1}
+                  aria-hidden={load === 'loaded' ? undefined : 'true'}
+                  onLoad={() => setLoad('loaded')}
+                  className={cn('relative h-full w-full bg-panel', load !== 'loaded' && 'opacity-0')}
                 />
               </div>
+            </div>
+            <p role="status" className="sr-only">
+              {STATUS_TEXT[load]}
+            </p>
             </div>
           </motion.div>
         </motion.div>

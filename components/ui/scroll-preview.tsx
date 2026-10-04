@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 interface ScrollPreviewProps {
   /** The full-page shot, e.g. from fullShotFor(project). */
   src: string
-  /** Accessible name, "Scroll preview of <domain>". */
+  /** Accessible name, e.g. "<Title>: scroll preview". With href, ", opens project page" is appended. */
   label: string
   className?: string
   /** When given, the frame is the link; otherwise it is a focusable frame. */
@@ -51,7 +51,7 @@ export function ScrollPreview({
 
   if (href) {
     return (
-      <Link href={href} aria-label={label} className={classes} style={style}>
+      <Link href={href} aria-label={`${label}, opens project page`} className={classes} style={style}>
         {inner}
       </Link>
     )

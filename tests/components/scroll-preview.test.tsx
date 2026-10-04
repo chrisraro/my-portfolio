@@ -21,7 +21,7 @@ describe('ScrollPreview', () => {
   it('becomes the link when an href is given, named by the label', () => {
     const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} href="/projects/latag" />)
     expect(html).toMatch(/<a [^>]*href="\/projects\/latag"/)
-    expect(html).toMatch(/<a [^>]*aria-label="Scroll preview of latag\.ph"/)
+    expect(html).toMatch(/<a [^>]*aria-label="Scroll preview of latag\.ph, opens project page"/)
     expect(html).not.toMatch(/tabindex="0"/i)
   })
 
