@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { RackCard } from '@/components/ui/rack-card'
+import { RackTier } from '@/components/ui/rack-tier'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { edgeCode, groupForHomepage, homepageOrder } from '@/lib/board'
+import { groupForHomepage, homepageOrder } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
 
 /**
@@ -19,27 +19,9 @@ export function Rack() {
     <section id="systems" aria-labelledby="systems-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="systems-title" eyebrow={sectionContent.systems.eyebrow} title={sectionContent.systems.title} />
       <div className="grid gap-14 sm:gap-20">
-        {groups.map((group) => {
-          const id = `rack-${group.heading.toLowerCase().replace(/\s+/g, '-')}`
-          return (
-            <section key={group.heading} aria-labelledby={id} className="min-w-0">
-              <h3 id={id} className="edge-code mb-5 text-sm text-ink sm:mb-8">
-                {group.heading}
-                <span className="text-muted"> · {group.projects.length}</span>
-              </h3>
-              <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 pt-2 [scroll-padding-inline:1.25rem] sm:mx-0 sm:grid sm:snap-none sm:grid-cols-3 sm:gap-x-6 sm:gap-y-14 sm:overflow-visible sm:p-0 lg:grid-cols-4">
-                {group.projects.map((project, i) => (
-                  <RackCard
-                    key={project.id}
-                    project={project}
-                    code={edgeCode(order.indexOf(project) + 1, order.length, project.band)}
-                    column={i % 4}
-                  />
-                ))}
-              </ul>
-            </section>
-          )
-        })}
+        {groups.map((group) => (
+          <RackTier key={group.heading} heading={group.heading} projects={group.projects} order={order} headingLevel="h3" />
+        ))}
       </div>
       <p className="mt-10">
         <Link

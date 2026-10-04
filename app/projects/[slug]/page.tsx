@@ -6,6 +6,7 @@ import { CaseStudyBody } from '@/components/case-study/case-study-body'
 import { ProjectHeader } from '@/components/case-study/project-header'
 import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { ProjectSummary } from '@/components/case-study/project-summary'
+import { ReadSpread } from '@/components/case-study/read-spread'
 import { JsonLd } from '@/components/json-ld'
 import { getCaseStudy } from '@/lib/case-studies'
 import { projects } from '@/lib/data'
@@ -42,26 +43,25 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     <article>
       <JsonLd data={study ? graph(breadcrumbSchema(project), caseStudySchema(project, study)) : graph(breadcrumbSchema(project))} />
       <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
-      {/* A flagship leads with the brief; its screenshots follow it. */}
+      {/* A flagship leads with the brief; below 1024px its preview rail follows it. */}
       {study ? (
         <CaseStudyBody study={study} project={project} screenshots={<ProjectScreenshots project={project} />} />
       ) : (
-        <>
-          <ProjectScreenshots project={project} />
+        <ReadSpread rail={<ProjectScreenshots project={project} />}>
           <ProjectSummary project={project} />
-        </>
+        </ReadSpread>
       )}
-      <div className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-8">
+      <div className="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-8 md:pb-24">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
           <Link
             href="/#contact"
-            className="inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 font-medium text-on-accent transition-colors hover:bg-accent/90"
+            className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
           >
             Start a project
-            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
           </Link>
-          <Link href="/projects" className="inline-flex min-h-[44px] items-center edge-code text-sm text-muted-strong hover:text-accent">
-            All projects
+          <Link href="/projects" className="button-label inline-flex min-h-[44px] items-center text-ink hover:text-accent">
+            <span className="link-draw">All projects</span>
           </Link>
         </div>
       </div>

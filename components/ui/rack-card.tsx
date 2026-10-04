@@ -13,6 +13,8 @@ interface RackCardProps {
   code: string
   /** Position in its row, for the drop-in stagger. */
   column: number
+  /** Read before the card's name, e.g. "Next case study", when the card stands for more than itself. */
+  labelPrefix?: string
 }
 
 /**
@@ -23,7 +25,7 @@ interface RackCardProps {
  * separately focusable. A project with no public screen keeps its slot with a
  * printed tag. Below 640px the cards are not sunk: they sit whole in a strip.
  */
-export function RackCard({ project, code, column }: RackCardProps) {
+export function RackCard({ project, code, column, labelPrefix }: RackCardProps) {
   const shot = fullShotFor(project)
   const domain = canLinkLive(project) && project.links.live ? extractDomain(project.links.live) : undefined
 
@@ -35,6 +37,7 @@ export function RackCard({ project, code, column }: RackCardProps) {
             href={projectHref(project)}
             className="rack-card scroll-preview-host relative flex aspect-[9/16] flex-col overflow-hidden rounded border border-line bg-panel"
           >
+            {labelPrefix && <span className="sr-only">{`${labelPrefix}: `}</span>}
             <span className="flex h-[44%] flex-col gap-2 p-4">
               <span aria-hidden="true" className="edge-code text-xs text-muted">
                 {code}

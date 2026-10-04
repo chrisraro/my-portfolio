@@ -113,6 +113,15 @@
 		letter-spacing: -0.015em;
 		font-weight: 750;
 	}
+	/* Read pages (/projects, a project, the 404): the H1 at the smaller end. */
+	.text-page-h1 {
+		font-family: var(--font-display), system-ui, sans-serif;
+		font-variation-settings: 'wdth' 75;
+		font-size: clamp(2.75rem, 2rem + 3.5vw, 5rem);
+		line-height: 0.92;
+		letter-spacing: -0.02em;
+		font-weight: 800;
+	}
 	/* Card names and h3s. */
 	.text-title {
 		font-family: var(--font-display), system-ui, sans-serif;
@@ -266,6 +275,14 @@
 	background: linear-gradient(to bottom, currentColor 6px, transparent 6px) 0 0 / 1px 11px repeat-y;
 }
 
+/* A crease across one sheet, at every width (a decision panel's fold). */
+.crease-h {
+	pointer-events: none;
+	color: oklch(var(--line-strong));
+	height: 1px;
+	background: linear-gradient(to right, currentColor 6px, transparent 6px) 0 0 / 11px 1px repeat-x;
+}
+
 /* A fold between two panels: across when they stack, upright from 768px. */
 .crease-fold {
 	pointer-events: none;
@@ -353,6 +370,10 @@
 		clip-path: inset(-100vh -24px 0 -24px);
 	}
 	.rack-slot:is(:hover, :focus-within) { z-index: 10; }
+	/* Lifted 38%, a card's lower edge still sits under the pocket's clip, which
+	 * cut the bottom of its focus ring. Keyboard focus takes the whole card out
+	 * of the pocket, so the ring is drawn on all four sides. */
+	.rack-pocket:focus-within { clip-path: none; }
 	/* Focus lifts it even under reduced motion: a state change without travel. */
 	.rack-card:focus-visible {
 		transform: translateY(-38%);
@@ -501,6 +522,10 @@
 			from { transform: translateY(24px); }
 			to { transform: none; }
 		}
+		@keyframes reveal-fold {
+			from { transform: rotateX(-14deg); }
+			to { transform: none; }
+		}
 		@keyframes reveal-pop {
 			from { transform: scale(0.6); }
 			to { transform: none; }
@@ -533,6 +558,13 @@
 			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
 			animation-range: entry calc(var(--i, 0) * 10%) entry 100%;
+		}
+		/* A case study's decisions: each fold panel opens down from its crease. */
+		.reveal-fold {
+			transform-origin: center top;
+			animation: reveal-fold var(--dur-normal) var(--ease-smooth) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
 		}
 		.reveal-reply {
 			animation: reveal-lift var(--dur-normal) var(--ease-smooth) both;
@@ -622,7 +654,7 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.reveal { animation: none !important; opacity: 1; transform: none; }
-	:is(.reveal-flap, .reveal-leaf, .reveal-postcard, .reveal-drop, .reveal-lip, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop) {
+	:is(.reveal-flap, .reveal-leaf, .reveal-postcard, .reveal-drop, .reveal-lip, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;

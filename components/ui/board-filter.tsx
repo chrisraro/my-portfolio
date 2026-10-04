@@ -17,17 +17,18 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
 
   return (
     <nav aria-label="Filter projects by band">
-      <ul className="flex flex-wrap gap-2">
+      {/* Index tabs on the rack's lip: the current tier is a magenta plane, the rest paper. */}
+      <ul className="flex flex-wrap gap-x-1.5 gap-y-2 border-b-2 border-line-strong">
         {items.map((item) => (
           <li key={item.label}>
             <Link
               href={item.href}
               aria-current={item.current ? 'page' : undefined}
               className={cn(
-                'inline-flex min-h-[44px] items-center rounded border px-3 edge-code text-xs transition-colors sm:min-h-[32px]',
+                'button-label inline-flex min-h-[44px] items-center rounded-b-none rounded-t px-4 text-sm transition-colors',
                 item.current
-                  ? 'border-accent text-accent'
-                  : 'border-line-strong text-muted-strong hover:border-accent hover:text-accent',
+                  ? 'bg-accent text-on-accent'
+                  : 'border border-b-0 border-line bg-panel text-muted-strong hover:text-ink',
               )}
             >
               {item.label}

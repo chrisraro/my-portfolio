@@ -150,9 +150,9 @@ describe('/projects', () => {
     expect(html).toContain('href="/#contact"')
   })
 
-  it('reflects the filter in the board header', () => {
+  it('states a filtered count against the whole inventory', () => {
     const sites = projects.filter((p) => p.band === 'Sites').length
     const html = renderToStaticMarkup(ProjectsPage({ searchParams: { band: 'Sites' } }))
-    expect(html).toContain(`projects · ${sites} of ${projects.length}`)
+    expect(html).toContain(`${sites} of ${projects.length} projects`)
   })
 })

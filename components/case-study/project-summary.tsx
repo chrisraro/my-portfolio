@@ -12,31 +12,29 @@ export function ProjectSummary({ project }: { project: Project }) {
   const parentStudy = caseStudyFor(project.slug)
   const parent = parentStudy ? projects.find((p) => p.slug === parentStudy.slug) : undefined
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16">
-      {/* About 70 characters a line; see the measure note in case-study-body.tsx. */}
-      <div className="max-w-[36rem]">
-        <h2 className="text-xl font-semibold text-ink">{h.about}</h2>
-        <p className="mt-3 text-base leading-relaxed text-muted-strong">{project.description}</p>
-        {project.contribution && (
-          <p className="mt-3 text-base leading-relaxed text-muted-strong">{project.contribution}</p>
-        )}
-        {parent && (
-          <Link
-            href={projectHref(parent)}
-            className="mt-3 inline-block min-h-[44px] py-2.5 text-base font-medium text-ink transition-colors hover:text-accent"
-          >
-            <ArrowLinkText text={caseStudyContent.partOf.replace('{title}', parent.title)} />
-          </Link>
-        )}
-        <h2 className="mt-10 text-xl font-semibold text-ink">{h.stack}</h2>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {project.technologies.map((t) => (
-            <li key={t} className="rounded border border-line-strong px-2.5 py-1 edge-code text-xs text-muted-strong">
-              {t}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    // The prose leaf of a short page; ReadSpread holds it to the measure.
+    <>
+      <h2 className="text-title text-ink">{h.about}</h2>
+      <p className="mt-3 text-base leading-relaxed text-muted-strong">{project.description}</p>
+      {project.contribution && (
+        <p className="mt-3 text-base leading-relaxed text-muted-strong">{project.contribution}</p>
+      )}
+      {parent && (
+        <Link
+          href={projectHref(parent)}
+          className="mt-3 inline-block min-h-[44px] py-2.5 text-base font-medium text-ink transition-colors hover:text-accent"
+        >
+          <ArrowLinkText text={caseStudyContent.partOf.replace('{title}', parent.title)} />
+        </Link>
+      )}
+      <h2 className="text-title mt-14 text-ink">{h.stack}</h2>
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {project.technologies.map((t) => (
+          <li key={t} className="edge-code rounded-full border border-line-strong px-3 py-1 text-xs text-muted-strong">
+            {t}
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }

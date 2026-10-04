@@ -4,6 +4,7 @@ import { alt, size } from '@/app/opengraph-image'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
+import { fullShotFor, isEmbeddable } from '@/lib/project-page'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
 
@@ -62,7 +63,26 @@ describe('/projects/[slug]', () => {
   })
 
   it('labels screenshots for what they show', () => {
-    expect(render('latag')).toContain('aria-label="View larger image: Desktop screenshot of latag.vercel.app"')
+    expect(render('latag')).toContain('aria-label="Scroll preview of latag.vercel.app"')
+    expect(render('latag')).toContain('aria-label="View larger image: Mobile screenshot of latag.vercel.app"')
+  })
+
+  it('scrolls the whole site where there is a full-page shot, else shows the desktop shot', () => {
+    for (const p of projects) {
+      const html = render(p.slug)
+      const rail = html.slice(0, html.indexOf('</article>'))
+      if (fullShotFor(p)) expect(rail, p.slug).toContain('aria-label="Scroll preview of ')
+      else if (p.image) expect(rail, p.slug).toContain('Desktop screenshot of ')
+    }
+    // Connecta has no full-page shot: its desktop screenshot stands in.
+    expect(fullShotFor(projects.find((p) => p.slug === 'connecta-ph')!)).toBeUndefined()
+    expect(render('connecta-ph')).toContain('View larger image: Desktop screenshot of ')
+  })
+
+  it('offers a live preview exactly where the site can be framed', () => {
+    for (const p of projects) {
+      expect(render(p.slug).includes('aria-haspopup="dialog"'), p.slug).toBe(isEmbeddable(p))
+    }
   })
 
   it('shows a short page its description and stack, with no invented sections', () => {
@@ -152,7 +172,8 @@ describe('/projects/[slug]', () => {
 
   it('keeps screenshots above the body on a short page', () => {
     const html = render('latag')
-    expect(html.indexOf('Desktop screenshot of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
+    expect(html.indexOf('Scroll preview of')).toBeGreaterThan(-1)
+    expect(html.indexOf('Scroll preview of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
   })
 })
 
@@ -178,7 +199,7 @@ describe('flagship case studies', () => {
     for (const s of caseStudies) {
       const html = render(s.slug)
       const brief = html.indexOf(`>${h.brief}</h2>`)
-      const shot = html.indexOf('Desktop screenshot of')
+      const shot = html.search(/Scroll preview of|Desktop screenshot of/)
       const built = html.indexOf(`>${h.built}</h2>`)
       expect(shot).toBeGreaterThan(brief)
       expect(shot).toBeLessThan(built)
