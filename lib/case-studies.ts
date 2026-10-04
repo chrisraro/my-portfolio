@@ -1,6 +1,6 @@
 import type { CaseStudy } from '@/types'
 
-// The five projects with a full case study, in reading order: the "next case
+// The six projects with a full case study, in reading order: the "next case
 // study" link follows it. Every other project gets a short page built from
 // lib/data.ts alone. Spec: docs/superpowers/specs/2026-09-23-case-studies-design.md
 export const FLAGSHIP_SLUGS: readonly string[] = [
@@ -9,6 +9,7 @@ export const FLAGSHIP_SLUGS: readonly string[] = [
   'acad1-review-center',
   'aman-group-web-app',
   'giya',
+  'connecta-ph',
 ]
 
 // Entries are added as Christian answers each research dossier's questions.
@@ -210,6 +211,49 @@ export const caseStudies: CaseStudy[] = [
     outcome: [
       'Giya 2.0 is live at giya.ph in a free pilot for customers and businesses. Paid tiers for businesses are planned.',
     ],
+  },
+  {
+    slug: 'connecta-ph',
+    role: 'Sole developer and owner: built with AI coding help',
+    brief: [
+      'I wanted a business card that opens a profile on any phone with no app to install. I am launching it in Naga first and expanding later.',
+      'It is for real estate agents, shop owners, professionals and students. Each card carries an NFC chip, and a QR code on the card covers phones without NFC.',
+    ],
+    built: [
+      'Connecta PH is a web app. Tapping a card or scanning its QR code opens the owner\'s profile, which can show photos, listings and services. The person who taps saves the contact in one tap.',
+      'Each profile has a lead form. Every lead lands in the owner\'s dashboard, and the owner gets an email notification.',
+      'I also built the profile builder, an admin console, a card factory that sets up each physical NFC card, and a shop. Card orders in the shop arrive as inquiries, and I arrange each one personally.',
+    ],
+    decisions: [
+      {
+        chose: 'An NFC and QR web profile',
+        over: 'a mobile app',
+        because: 'There is nothing to install: any phone opens the profile with a tap or a scan. The QR code covers phones without NFC.',
+      },
+      {
+        chose: 'Supabase',
+        over: 'a custom backend',
+        because: 'It gives me Postgres, sign-in and file storage in one service, so I can ship fast as the only developer.',
+      },
+      {
+        chose: 'Order inquiries',
+        over: 'online checkout',
+        because: 'Connecta PH is in prelaunch, and I am not ready to take payments yet. Card orders arrive as inquiries, and online payment comes after launch.',
+      },
+    ],
+    stack: [
+      { name: 'Next.js and React', why: 'Build the profiles, the dashboard, the admin console and the shop.' },
+      { name: 'Supabase', why: 'Holds the Postgres database, sign-in and file storage.' },
+      { name: 'Resend', why: 'Emails the owner when a new lead comes in.' },
+      { name: 'Tailwind CSS', why: 'Styles the app.' },
+      { name: 'Vercel', why: 'Hosts the app.' },
+      { name: 'NFC and QR codes', why: 'Open the profile with a tap, or with a scan on phones without NFC.' },
+    ],
+    outcome: [
+      'Connecta PH is live at connectaph.vercel.app in prelaunch, launching in Naga first. The physical card and the lead tools are offered at prelaunch prices.',
+      'I built it alone, with AI coding help. The code is public at github.com/chrisraro/connecta.',
+    ],
+    metrics: [{ value: 'PHP 799', label: 'prelaunch price of the physical card, paid once', clientApproved: true }],
   },
 ]
 

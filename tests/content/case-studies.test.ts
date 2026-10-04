@@ -13,8 +13,8 @@ const unapproved: CaseStudyMetric = { value: '1', label: 'x', clientApproved: fa
 void unapproved
 
 describe('case studies', () => {
-  it('names five flagships, each a real project', () => {
-    expect(FLAGSHIP_SLUGS).toHaveLength(5)
+  it('names six flagships, each a real project', () => {
+    expect(FLAGSHIP_SLUGS).toHaveLength(6)
     for (const slug of FLAGSHIP_SLUGS) expect(slugs).toContain(slug)
   })
 
