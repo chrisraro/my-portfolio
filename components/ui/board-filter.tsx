@@ -17,7 +17,7 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
 
   return (
     <nav aria-label="Filter projects by band">
-      {/* Index tabs on the rack's lip: the current tier is a magenta plane, the rest paper. */}
+      {/* Index tabs on the rack's lip: the current tier is an amber plane, the rest paper. */}
       <ul className="flex flex-wrap gap-x-1.5 gap-y-2 border-b-2 border-line-strong">
         {items.map((item) => (
           <li key={item.label}>

@@ -9,12 +9,12 @@ import type { Skill } from '@/types'
 
 const PORTRAIT = '/assets/images/about/profile-hiking.jpg'
 
-// An outline button on the magenta plane: on-accent ink, never a tint.
+// An outline button on the amber plane: on-accent ink, never a tint.
 const PLANE_SECONDARY =
   'press button-label inline-flex min-h-[44px] items-center rounded border border-on-accent/70 px-5 text-on-accent hover:border-on-accent'
 
 /**
- * The opening brochure: a tri-fold. Front panel (magenta plane) says who and
+ * The opening brochure: a tri-fold. Front panel (amber plane) says who and
  * what, middle panel is the portrait, back panel holds the proof. On load the
  * H1 words rise, then the two inner panels unfold from their hinges and the
  * creases draw (CSS only, `.hero-*` in globals.css, 1.9s, once). Under reduced

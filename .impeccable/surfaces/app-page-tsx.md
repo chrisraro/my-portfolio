@@ -42,12 +42,12 @@ blobs, a grid of screenshot cards) and its predictable opposite (the mono
 terminal board B3 already was).
 
 OWN-WORLD: "Lobby Rack". Printed matter in a resort lobby at night: a deep
-lagoon ground, paper-white ink, and bougainvillea magenta laid down as flat,
-confident printed planes (never glows, gradients or outlines). Calamansi yellow
+lagoon ground, paper-white ink, and signal amber laid down as flat,
+confident printed planes (never glows, gradients or outlines). Ube violet
 exists only as the early-access ring. Surfaces are paper: panels, cards, folds
 and creases, a rack lip with pockets, perforated reply cards, postcards. A
 condensed, variable display face (Anybody) does the shouting; Figtree reads.
-Recognisable with the content removed: magenta planes, dashed fold creases,
+Recognisable with the content removed: amber planes, dashed fold creases,
 tall portrait cards half-sunk in pocketed tiers.
 
 STORY: The visitor opens a brochure (the hero unfolds) and understands: a
@@ -58,10 +58,10 @@ open live. They read one case study, see the people and places, and fill in the
 reply card: Start a project.
 
 FIRST VIEWPORT (1440×900): a 64px top bar, then a tri-fold brochure spanning
-the grid, about 640px tall. Front panel (1.3fr): a full magenta plane; eyebrow
+the grid, about 640px tall. Front panel (1.3fr): a full amber plane; eyebrow
 "Christian Raro · Naga City" in on-accent; H1 "Full-stack developer" in Anybody
 800 at wdth 75, 56–112px, two lines, on-accent; lede (Figtree 19px, on-accent);
-specialism line; CTA row: primary "Start a project" (lagoon fill, magenta text,
+specialism line; CTA row: primary "Start a project" (lagoon fill, amber text,
 arrow) plus "Résumé" as an on-accent outline button. Middle panel (0.85fr): the
 portrait, full bleed, hairline crease on each side. Right panel (0.85fr): `panel`
 paper, four proof points as large numerals over labels, then the stack chips,
@@ -72,7 +72,7 @@ fold at 1440×900, inviting the scroll. Primary action
 sits in the front panel at roughly y 520.
 
 FORM: Lobby Rack, candidate 4 of 7, seed `f1d5d2c7`, assigned and acknowledged.
-Colour strategy: Committed (magenta owns the hero front panel, the contact reply
+Colour strategy: Committed (amber owns the hero front panel, the contact reply
 card and each product's flap: 30–40% of the first viewport).
 
 Challenger verdicts (fused, judged on audience identification and product clarity):
@@ -110,10 +110,10 @@ Tailwind key `canvas` is the CSS variable `--bg` (the contrast test reads `--bg`
 | muted-strong | `0.8500 0.0220 220` | `0.3700 0.0400 238` | ledes, summaries |
 | line | `0.3450 0.0420 232` | `0.9000 0.0120 225` | hairlines, creases |
 | line-strong | `0.4300 0.0420 232` | `0.8200 0.0180 228` | control borders, rack lip |
-| accent | `0.7600 0.1600 352` | `0.5100 0.2000 352` | bougainvillea planes, primary, focus |
-| on-accent | `0.2350 0.0420 232` | `1.0000 0.0000 0` | text on a magenta plane |
+| accent | `0.8200 0.1500 85` | `0.5300 0.1150 68` | signal amber planes (amber-brown in light), primary, focus |
+| on-accent | `0.2350 0.0420 232` | `1.0000 0.0000 0` | text on an amber plane |
 | live | `0.8200 0.1500 152` | `0.5500 0.1400 152` | live status only |
-| status-early | `0.8600 0.1300 95` | `0.6000 0.1300 75` | early-access ring (calamansi) |
+| status-early | `0.7600 0.1200 285` | `0.5200 0.1600 285` | early-access ring (ube violet, 200° from amber) |
 | status-private | `0.6400 0.0300 226` | `0.5600 0.0300 235` | lock glyph |
 | status-internal | `0.6400 0.0300 226` | `0.5600 0.0300 235` | square glyphs |
 
@@ -124,14 +124,14 @@ Contrast, computed with the contrast test's own OKLCH→sRGB formula (dark / lig
 | ink on canvas / panel | 14.95 / 13.27 | 14.97 / 15.93 | 4.5 |
 | muted on canvas / panel | 6.03 / 5.35 | 5.84 / 6.21 | 4.5 |
 | muted-strong on canvas / panel | 10.55 / 9.36 | 9.73 / 10.35 | 4.5 |
-| accent on canvas / panel | 7.16 / 6.36 | 6.06 / 6.44 | 4.5 |
-| on-accent on accent | 7.16 | 6.44 | 4.5 |
+| accent on canvas / panel | 9.41 / 8.35 | 5.10 / 5.43 | 4.5 |
+| on-accent on accent | 9.41 | 5.43 | 4.5 |
 | live on canvas / panel | 10.04 / 8.91 | 4.28 / 4.55 | 3 |
-| status-early on canvas / panel | 10.86 / 9.64 | 3.79 / 4.03 | 3 |
+| status-early on canvas / panel | 7.51 / 6.67 | 5.49 / 5.84 | 3 |
 | status-private, -internal on canvas / panel | 4.97 / 4.41 | 4.34 / 4.62 | 3 |
 
-Rules: on a magenta plane, text is `on-accent` only (ink on accent is 2.1–2.5,
-forbidden). Magenta is never a text colour on a magenta-adjacent plane. Green
+Rules: on an amber plane, text is `on-accent` only (ink on accent is 1.6–2.9,
+forbidden). Amber is never a text colour on an amber-adjacent plane. Green
 stays inside `StatusBadge`. No raw hex, no `dark:` colour pairs, no gradients.
 Shadows: none in flow. A lifted card gets `0 18px 30px -18px oklch(0.12 0.03 232 / 0.55)`
 in both themes (the one in-flow shadow, applied only while lifted); floating
@@ -178,17 +178,17 @@ New section copy (case-study strip heading, rack tier labels) goes to
   (6 on, 5 off, a repeating gradient on a 1px span). The rack lip is a 2px `line-strong` rule with a
   12px `panel` ledge under it. Perforation: 2px dotted `line-strong` with 10px
   half-circle notches at each end (radial mask).
-- Surfaces: canvas ground; `panel` paper; magenta planes; nothing else.
+- Surfaces: canvas ground; `panel` paper; amber planes; nothing else.
 
 ### Pages
 
 **Homepage, in order** (anchors kept: `#work`, `#changelog`, `#contact`):
 1. **Hero tri-fold** (`heroContent`, `availability`, `resumeUrl`, portrait
    `profile-hiking.jpg`). As the first viewport above. Below 768px the panels
-   stack: magenta front panel, then the portrait as a 4:3 band, then the proof
+   stack: amber front panel, then the portrait as a 4:3 band, then the proof
    panel; the creases turn horizontal.
 2. **Products** `#work` (`sectionContent.work`; `projects` band `Products`, 4).
-   Each product is an open fold-out spread at full grid width: a magenta flap
+   Each product is an open fold-out spread at full grid width: an amber flap
    (4 cols: edge code, name, `StatusBadge`, summary) joined at a crease to a
    `panel` leaf (8 cols: description, domain link, "Live preview" when
    embeddable, "Read more" to `/projects/<slug>`) holding a **ScrollPreview**
@@ -220,13 +220,13 @@ New section copy (case-study strip heading, rack tier labels) goes to
    Education as two lanes.
 7. **What I ship with** (`sectionContent.stack`, `skills`). The brochure's back
    panel "amenities": category headings with skill names in columns, dotted
-   leaders, WordPress marked by a `panel` chip (never magenta outline).
+   leaders, WordPress marked by a `panel` chip (never amber outline).
 8. **Contact** `#contact` (`sectionContent.contact`, `contactInfo`,
-   `socialLinks`). A business reply card: a magenta plane (left, 5 cols:
+   `socialLinks`). A business reply card: an amber plane (left, 5 cols:
    heading, availability, email, socials, all on-accent) perforated to a
    `panel` form leaf (7 cols). "Send message" is the one primary button
-   (`.button-primary`): a magenta fill on paper; only on a magenta plane does
-   it invert to a lagoon fill with magenta text (the hero's "Start a project").
+   (`.button-primary`): an amber fill on paper; only on an amber plane does
+   it invert to a lagoon fill with amber text (the hero's "Start a project").
 Footer: hairline, name, year, socials, small edge code "Printed in Naga City".
 
 **`/projects`**: `projectsPageContent` heading, filter chips as rack-tier tabs
@@ -269,7 +269,7 @@ smooth easing (its overshoot-free tail is the "mass"); no spring on CSS motion.
 **Hero sequence** (CSS keyframes on load, no JS, total 1.9s, runs once):
 - 0ms: H1 words rise `translateY(0.35em) → 0`, slow/smooth, 90ms stagger.
   Words are painted from frame one (no opacity, no clip), so LCP is unaffected.
-- 0ms: the magenta front plane is static (it is the LCP surface).
+- 0ms: the amber front plane is static (it is the LCP surface).
 - 250ms: lede, specialism and CTA row rise md → 0 with opacity 0.01 → 1, normal/smooth.
 - 400ms: middle panel unfolds `rotateY(-88deg) → 0`, hinge at its left edge,
   `perspective: 1600px` on the tri-fold, slow/smooth (ends 1000ms).

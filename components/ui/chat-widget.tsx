@@ -37,7 +37,7 @@ const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contac
 const CHIP =
   'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
 
-// The status dots are the accent (magenta), never green: green means a live system and
+// The status dots are the accent (amber), never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
 // reply arrives. Once the API answers `offline: true`, the header says so in
 // words (status is never colour alone) and the launcher drops its dot.

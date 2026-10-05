@@ -86,7 +86,7 @@ describe('Hero', () => {
     expect(html).not.toMatch(/<img[^>]*alt="Christian Raro"/)
   })
 
-  it('keeps magenta off the stack chips: colour arrives only as whole planes', () => {
+  it('keeps amber off the stack chips: colour arrives only as whole planes', () => {
     const chips = html.match(/<ul aria-label="Core stack"[\s\S]*?<\/ul>/)?.[0] ?? ''
     expect(chips).not.toContain('accent')
   })

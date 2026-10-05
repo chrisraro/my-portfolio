@@ -15,9 +15,9 @@ interface ProjectHeaderProps {
 }
 
 /**
- * The project's front cover: a magenta flap (what it is, its name, what it
+ * The project's front cover: an amber flap (what it is, its name, what it
  * does, its status) joined at a fold crease to a paper leaf (the role, the
- * facts, and the ways in). "Start a project" is the page's one magenta fill.
+ * facts, and the ways in). "Start a project" is the page's one amber fill.
  */
 export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHeaderProps) {
   const gateways = project.technologies.filter((t) => paymentGateways.indexOf(t) !== -1)
@@ -50,7 +50,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
           </p>
           <h1 className="text-page-h1 mt-8 md:mt-auto md:pt-10">{project.title}</h1>
           <p className="text-lede mt-5 max-w-[34rem]">{project.summary}</p>
-          {/* Status sits on a paper chip: its glyph colours are tuned for paper, not magenta. */}
+          {/* Status sits on a paper chip: its glyph colours are tuned for paper, not amber. */}
           <span className="mt-6 self-start rounded-full bg-panel px-3 py-1.5">
             <StatusBadge status={project.status} />
           </span>

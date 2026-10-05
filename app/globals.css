@@ -10,9 +10,11 @@
  * tests/design/contrast.test.ts parses these lines; keep the format exact.
  *
  * :root is the light theme. .dark is the default: next-themes adds the class.
- * Lagoon ground, paper panels, bougainvillea magenta as flat planes. Green
- * (--live) means a live system and nothing else; calamansi (--status-early)
- * is only the early-access ring. Text on a magenta plane is --on-accent only.
+ * Lagoon ground, paper panels, signal amber as flat planes (a deeper
+ * amber-brown in the light theme, so it holds AA as link text on paper).
+ * Green (--live) means a live system and nothing else; violet
+ * (--status-early) is only the early-access ring, kept well away from amber.
+ * Text on an amber plane is --on-accent only.
  */
 :root {
 	--dur-fast: 0.18s;
@@ -28,10 +30,10 @@
 	--muted-strong: 0.3700 0.0400 238;
 	--line: 0.9000 0.0120 225;
 	--line-strong: 0.8200 0.0180 228;
-	--accent: 0.5100 0.2000 352;
+	--accent: 0.5300 0.1150 68;
 	--on-accent: 1.0000 0.0000 0;
 	--live: 0.5500 0.1400 152;
-	--status-early: 0.6000 0.1300 75;
+	--status-early: 0.5200 0.1600 285;
 	--status-private: 0.5600 0.0300 235;
 	--status-internal: 0.5600 0.0300 235;
 	/* Text-field borders: 3:1 against canvas and panel (WCAG 1.4.11). */
@@ -52,10 +54,10 @@
 	--muted-strong: 0.8500 0.0220 220;
 	--line: 0.3450 0.0420 232;
 	--line-strong: 0.4300 0.0420 232;
-	--accent: 0.7600 0.1600 352;
+	--accent: 0.8200 0.1500 85;
 	--on-accent: 0.2350 0.0420 232;
 	--live: 0.8200 0.1500 152;
-	--status-early: 0.8600 0.1300 95;
+	--status-early: 0.7600 0.1200 285;
 	--status-private: 0.6400 0.0300 226;
 	--status-internal: 0.6400 0.0300 226;
 	--field-border: 0.6000 0.0350 228;
@@ -115,7 +117,7 @@
 		outline: 2px solid oklch(var(--accent));
 		outline-offset: 3px;
 	}
-	/* The accent ring vanishes on a magenta plane: inside one, focus is drawn in
+	/* The accent ring vanishes on an amber plane: inside one, focus is drawn in
 	 * the plane's own ink. */
 	.on-plane :focus-visible {
 		outline-color: oklch(var(--on-accent));
@@ -199,9 +201,9 @@
 		line-height: 1;
 	}
 	/*
-	 * The one primary button, on every page. On paper it is a magenta fill; on
-	 * a magenta plane (.on-plane: the hero's front panel) it inverts to a lagoon
-	 * fill with magenta text, since a magenta button would vanish there. Pair
+	 * The one primary button, on every page. On paper it is an amber fill; on
+	 * an amber plane (.on-plane: the hero's front panel) it inverts to a lagoon
+	 * fill with amber text, since an amber button would vanish there. Pair
 	 * it with .press for the hover lift.
 	 */
 	.button-primary {

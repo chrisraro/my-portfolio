@@ -7,7 +7,7 @@ export const ogPalette = {
   ink: '#F5F3EB',
   muted: '#87A0AB',
   line: '#213D4B',
-  accent: '#FC82BC',
+  accent: '#F0BB3B',
 } as const
 
 export type OgToken = keyof typeof ogPalette

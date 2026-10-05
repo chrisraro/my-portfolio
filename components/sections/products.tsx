@@ -13,7 +13,7 @@ import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
 /**
- * One product as an open fold-out spread: a magenta flap (who it is, its
+ * One product as an open fold-out spread: an amber flap (who it is, its
  * status, what it does) joined at a crease to a paper leaf (the detail, the
  * ways in, and the real site scrolling in a ScrollPreview). Flaps alternate
  * sides. As it scrolls in, the flap unfolds against its leaf and the leaf

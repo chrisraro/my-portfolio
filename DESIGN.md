@@ -1,6 +1,6 @@
 ---
 name: Christian Raro, Portfolio 4.0
-description: Lobby Rack. Every project is a brochure in a resort lobby rack, printed on paper over a lagoon-night ground, with bougainvillea magenta laid down as flat planes.
+description: Lobby Rack. Every project is a brochure in a resort lobby rack, printed on paper over a lagoon-night ground, with signal amber laid down as flat planes.
 colors:
   canvas: "oklch(0.2350 0.0420 232)"
   panel: "oklch(0.2750 0.0460 232)"
@@ -10,10 +10,10 @@ colors:
   line: "oklch(0.3450 0.0420 232)"
   line-strong: "oklch(0.4300 0.0420 232)"
   field-border: "oklch(0.6000 0.0350 228)"
-  accent: "oklch(0.7600 0.1600 352)"
+  accent: "oklch(0.8200 0.1500 85)"
   on-accent: "oklch(0.2350 0.0420 232)"
   live: "oklch(0.8200 0.1500 152)"
-  status-early: "oklch(0.8600 0.1300 95)"
+  status-early: "oklch(0.7600 0.1200 285)"
   status-private: "oklch(0.6400 0.0300 226)"
   status-internal: "oklch(0.6400 0.0300 226)"
   canvas-light: "oklch(0.9780 0.0060 220)"
@@ -24,10 +24,10 @@ colors:
   line-light: "oklch(0.9000 0.0120 225)"
   line-strong-light: "oklch(0.8200 0.0180 228)"
   field-border-light: "oklch(0.6000 0.0350 232)"
-  accent-light: "oklch(0.5100 0.2000 352)"
+  accent-light: "oklch(0.5300 0.1150 68)"
   on-accent-light: "oklch(1.0000 0.0000 0)"
   live-light: "oklch(0.5500 0.1400 152)"
-  status-early-light: "oklch(0.6000 0.1300 75)"
+  status-early-light: "oklch(0.5200 0.1600 285)"
   status-private-light: "oklch(0.5600 0.0300 235)"
   status-internal-light: "oklch(0.5600 0.0300 235)"
 typography:
@@ -132,7 +132,7 @@ components:
     rounded: "{rounded.DEFAULT}"
     padding: "10px 20px"
     height: "44px"
-  magenta-plane:
+  amber-plane:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.on-accent}"
     rounded: "{rounded.DEFAULT}"
@@ -199,7 +199,7 @@ its top over the pocket lip; give it attention and it lifts out and shows the
 real site scrolling. The page does the job his clients' brochures did before
 he built their websites. The ground is a deep lagoon, the surfaces are paper
 (panels, cards, folds, a rack lip with pockets, a perforated reply card,
-postcards), and colour arrives only as whole flat magenta planes locked to the
+postcards), and colour arrives only as whole flat amber planes locked to the
 grid. A condensed variable display face (Anybody) shouts; Figtree reads.
 
 Motion has one meaning: **paper that unfolds when you pay attention.** Three
@@ -215,7 +215,7 @@ refuses both the dev-portfolio default (dark hero, gradient blobs, a grid of
 screenshot cards) and the mono terminal board B3 already was.
 
 **Key Characteristics:**
-- Lagoon-night ground, paper panels, bougainvillea magenta as flat printed planes; no gradients, glows or tints.
+- Lagoon-night ground, paper panels, signal amber as flat printed planes; no gradients, glows or tints.
 - Two variable families: Anybody (display, condensed on its width axis) and Figtree (reading).
 - Edge codes: every card, cover and product carries a printed running index ("07 / 18 · Sites").
 - Fold creases (dashed 6 on 5 off), a rack lip with a paper ledge, a perforation with notched ends.
@@ -225,17 +225,17 @@ screenshot cards) and the mono terminal board B3 already was.
 
 ## Colors
 
-A committed two-tone print: lagoon and paper, with magenta as the one ink that
+A committed two-tone print: lagoon and paper, with amber as the one ink that
 covers whole planes. Dark is the default theme; the light theme is cool paper
 with lagoon ink.
 
 ### Primary
-- **Bougainvillea Magenta** (`accent`): the hero's front panel, each product's flap, the contact reply card, the current filter tab, the primary button on paper, the focus ring, text selection, the brand tile in the top bar, the availability dot, the preview progress rule. It is 30 to 40% of the first viewport. On paper it is also the colour of a few accent links ("View all projects", a product's domain, "Read the case study").
-- **Plane Ink** (`on-accent`): the only text colour on a magenta plane. Dark theme: lagoon; light theme: white.
+- **Signal Amber** (`accent`): the hero's front panel, each product's flap, the contact reply card, the current filter tab, the primary button on paper, the focus ring, text selection, the brand tile in the top bar, the availability dot, the preview progress rule. It is 30 to 40% of the first viewport. On paper it is also the colour of a few accent links ("View all projects", a product's domain, "Read the case study").
+- **Plane Ink** (`on-accent`): the only text colour on an amber plane. Dark theme: lagoon; light theme: white.
 
 ### Tertiary
 - **Live Green** (`live`): the live status glyph and its pulse, nothing else.
-- **Calamansi** (`status-early`): the early-access ring glyph, nothing else.
+- **Ube Violet** (`status-early`): the early-access ring glyph, nothing else.
 - **Slate Glyph** (`status-private`, `status-internal`): the lock, the filled square (internal) and the outlined square (staging).
 
 ### Neutral
@@ -251,7 +251,7 @@ with lagoon ink.
 ### Named Rules
 **The Flat Plane Rule.** Colour arrives as whole planes locked to the grid: no outlines on planes, no tints, no gradients. Removing a plane must break the composition.
 
-**The Plane Ink Rule.** On a magenta plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 2.1 to 2.5:1 and forbidden; an accent ring on a magenta plane disappears.
+**The Plane Ink Rule.** On an amber plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 1.6 to 2.9:1 and forbidden; an accent ring on an amber plane disappears.
 
 **The Green Means Live Rule.** `live` and `.live-pulse` appear only inside `StatusBadge` (`tests/design/green-means-live.test.ts`). Brand and availability use `accent`.
 
@@ -299,13 +299,13 @@ Homepage order (`app/page.tsx`): Hero tri-fold, Products (`#work`), the Rack
 (`#systems`), Case studies, Field log, Route line (`#changelog`), Stack, Contact
 (`#contact`).
 
-- **Hero:** `1.3fr | crease | 0.85fr | crease | 0.85fr` from 768px, at least 640px tall. Below 768px the panels stack (magenta front, portrait as a 4:3 band, proof panel) and the creases turn horizontal.
+- **Hero:** `1.3fr | crease | 0.85fr | crease | 0.85fr` from 768px, at least 640px tall. Below 768px the panels stack (amber front, portrait as a 4:3 band, proof panel) and the creases turn horizontal.
 - **Product spreads:** `4fr | crease | 8fr`, flap side alternating per product; the leaf holds the text and a 3:4 preview (15 to 17rem).
 - **Rack tiers:** 4 cards per row from 1024px, 3 from 640px; below 640px a horizontal scroll-snap strip with cards at 78% width, unsunk.
 - **Case-study covers:** 3 columns at 1024px, 2 at 640px, 1 below.
 - **Route line:** horizontal lanes (Work, Education) from 768px, vertical below.
 - **Contact reply card:** `5fr | perforation | 7fr`.
-- **Project page:** a magenta front-cover header (`7fr | crease | 5fr`), then a read spread: prose leaf on the left, a fold crease, and a sticky preview rail on the right (96px from the top) from 1024px. Below 1024px the rail drops in after "The brief" on flagships, straight after the header on short pages.
+- **Project page:** an amber front-cover header (`7fr | crease | 5fr`), then a read spread: prose leaf on the left, a fold crease, and a sticky preview rail on the right (96px from the top) from 1024px. Below 1024px the rail drops in after "The brief" on flagships, straight after the header on short pages.
 
 The sticky top bar is about 101px below md (two rows) and 64px from md, so
 `html` carries `scroll-padding-top` of 7rem / 4.75rem and anchor sections a
@@ -320,7 +320,7 @@ jump is measured against real heights.
 
 ## Elevation & Depth
 
-Flat paper by default. Depth is conveyed by surface (canvas under panel, magenta
+Flat paper by default. Depth is conveyed by surface (canvas under panel, amber
 planes over both), by creases and the rack lip, and by 3D folds in perspective
 (`perspective: 1600px` on the hero and each spread). Shadows exist only as a
 response to state or for floating layers.
@@ -350,18 +350,18 @@ Recurring geometry:
 
 ### Buttons
 - **Shape:** gently squared (6px), at least 44px tall, Anybody 650 at normal width.
-- **Primary** (`.button-primary`, defined once in `globals.css`): magenta fill, `on-accent` text, 10px 20px. On a magenta plane (`.on-plane`) it inverts to a lagoon fill with magenta text. "Start a project" and "Send message" are the primaries; `tests/design/primary-button.test.ts` requires every primary CTA to use the class and forbids composing one from a fill and padding.
+- **Primary** (`.button-primary`, defined once in `globals.css`): amber fill, `on-accent` text, 10px 20px. On an amber plane (`.on-plane`) it inverts to a lagoon fill with amber text. "Start a project" and "Send message" are the primaries; `tests/design/primary-button.test.ts` requires every primary CTA to use the class and forbids composing one from a fill and padding.
 - **Hover / Press** (`.press`): lifts 2px, sinks 1px and scales to 0.98 on press, fast/sharp; colour changes fast/sharp. The trailing arrow (`.arrow-nudge`) slides 8px right on hover of its link or button.
 - **Secondary:** a `line-strong` outline with ink text that turns accent on hover ("Live preview", "Open live site"). On a plane the outline and text are `on-accent` ("Résumé").
 - **Text links:** `.link-draw`, an underline drawn from the left on hover or focus and leaving to the right; `[aria-current='page']` keeps it drawn.
 
 ### Chips
-- **Stack chips:** edge-code, full round, `line` border with `muted-strong` text; WordPress, the specialism, sits on a canvas chip with a `line-strong` border (never a magenta outline).
-- **Status pill:** on a magenta flap or header the `StatusBadge` sits in a full-round `panel` pill.
+- **Stack chips:** edge-code, full round, `line` border with `muted-strong` text; WordPress, the specialism, sits on a canvas chip with a `line-strong` border (never an amber outline).
+- **Status pill:** on an amber flap or header the `StatusBadge` sits in a full-round `panel` pill.
 
 ### Cards / Containers
 - **Corner Style:** 6px; postcards 2px.
-- **Background:** `panel` on `canvas`; magenta planes for flaps and the reply card.
+- **Background:** `panel` on `canvas`; amber planes for flaps and the reply card.
 - **Shadow Strategy:** none at rest; Lift while lifted.
 - **Border:** 1px `line`.
 - **Internal Padding:** 16px (rack card top), 24px (covers), 24 to 40px (planes and leaves).
@@ -372,14 +372,14 @@ Recurring geometry:
 - **Error:** `aria-invalid` turns the border ink; the message sits below with an octagon glyph in ink.
 
 ### Navigation
-- **Top bar:** sticky, canvas, a `line` rule below. A magenta initials tile and the name in Anybody bold at wdth 75. Nav links in Anybody 600 (wdth 85 below md, 100 from md), `muted-strong` turning ink, with `.link-draw`; the current route keeps its underline. Availability (accent dot plus edge code) from lg; a 44px theme toggle with `.press`. Below md the bar is two rows and the nav scrolls sideways inside a padded strip so focus rings are not clipped.
-- **Filter tabs** (`/projects`, `?band=` links): index tabs on a 2px `line-strong` lip; the current tier is a magenta plane with `on-accent` text (`aria-current="true"`), the rest paper with `muted-strong` text.
+- **Top bar:** sticky, canvas, a `line` rule below. An amber initials tile and the name in Anybody bold at wdth 75. Nav links in Anybody 600 (wdth 85 below md, 100 from md), `muted-strong` turning ink, with `.link-draw`; the current route keeps its underline. Availability (accent dot plus edge code) from lg; a 44px theme toggle with `.press`. Below md the bar is two rows and the nav scrolls sideways inside a padded strip so focus rings are not clipped.
+- **Filter tabs** (`/projects`, `?band=` links): index tabs on a 2px `line-strong` lip; the current tier is an amber plane with `on-accent` text (`aria-current="true"`), the rest paper with `muted-strong` text.
 - **Footer:** a hairline, the name in Anybody, an edge-code colophon ("Printed in Naga City"), social links with `.link-draw`.
 
 ### Status Badge (signature)
 `StatusBadge` is the only way status reaches the page: a glyph shape plus a text
 label, edge-code `text-xs`, `muted`. Live: a filled green dot with the
-twice-then-stop pulse. Early access: a calamansi ring. Private: a lock. Internal:
+twice-then-stop pulse. Early access: an ube-violet ring. Private: a lock. Internal:
 a filled square. Staging: an outlined square. `compact` hides the label visually
 but keeps it in the accessibility tree.
 
@@ -411,7 +411,7 @@ stands the cards whole on the shelf with no lift reserved (`.rack-row--open`):
 scroll-snap strip.
 
 ### Product Spread (signature)
-Each product is an open fold-out spread: a magenta flap (edge code, name in
+Each product is an open fold-out spread: an amber flap (edge code, name in
 headline type, summary, status pill) joined at a crease to a paper leaf
 (description, "Live preview" when embeddable, "Read more", the domain, and a 3:4
 `ScrollPreview` that scrolls as it crosses the viewport). Flaps alternate sides;
@@ -436,7 +436,7 @@ Close. Every other child of `<body>` is made inert; focus moves to Close, Tab
 cycles inside, Escape and the scrim dismiss, focus returns to the trigger. The
 iframe is sandboxed (`allow-scripts allow-same-origin allow-popups`, no forms),
 hidden and out of the tab order until it loads; after 7.2s (crawl × 6) it is
-called failed and the new-tab link becomes the magenta fill. A polite status
+called failed and the new-tab link becomes the amber fill. A polite status
 region announces loading, loaded and failed. Motion: `AnimatePresence
 mode="wait"`; the scrim fades and the dialog rises 16px at normal/smooth, and
 exits at fast. The width toggle squeezes the frame with a WAAPI `scaleX` (token
@@ -444,7 +444,7 @@ duration and easing) and swaps the width once at the end. Under reduced motion
 the dialog only fades (fast) and the width swaps at once.
 
 ### Hero Tri-fold (signature)
-Front panel: the magenta plane (`.on-plane`, the LCP surface, static from the
+Front panel: the amber plane (`.on-plane`, the LCP surface, static from the
 first frame) with the eyebrow, H1, lede, specialism and the CTA row. Middle: the
 portrait, full bleed, opening `ImageLightbox`. Back: the proof band (numerals
 over labels; screen readers hear the original sentence) and the core-stack chips
@@ -455,7 +455,7 @@ on paper.
 - **Field log:** postcards (2px radius, 12px paper border, captions always visible) resting at -1.5deg and +1deg alternately, interleaved with testimonial cards; photos open `ImageLightbox`.
 - **Route line:** a 2px `line-strong` line with ink-ringed stops, dates in edge code.
 - **Stack:** the brochure's "amenities" back panel, categories in columns on dotted leaders. No scroll motion.
-- **Contact reply card:** a magenta plane (heading, availability, email, résumé, Facebook, location) perforated to a paper form leaf; "Send message" is the primary.
+- **Contact reply card:** an amber plane (heading, availability, email, résumé, Facebook, location) perforated to a paper form leaf; "Send message" is the primary.
 - **404:** an empty rack pocket, the lip and ledge with a dashed slot and a printed tag.
 - **Chat (Chunks) and toasts:** paper panels with the Overlay shadow; typing dots in `muted`; enter and exit with short fades gated by `useReducedMotion`.
 
@@ -505,7 +505,7 @@ Tokens (`lib/motion-tokens.ts`, mirrored in `:root`; `tests/design/motion-tokens
 
 ### Do:
 - **Do** take every colour from the Tailwind keys (`canvas`, `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`, `live`, `status-*`) and keep `globals.css` triplets one per line.
-- **Do** put text and focus on a magenta plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.
+- **Do** put text and focus on an amber plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.
 - **Do** use `.button-primary` with `.press` for every primary call to action.
 - **Do** render status only through `StatusBadge`.
 - **Do** give every project a slot: a `ScrollPreview` when a full shot exists, a printed `NoPreviewTag` when it does not.
@@ -515,7 +515,7 @@ Tokens (`lib/motion-tokens.ts`, mirrored in `:root`; `tests/design/motion-tokens
 
 ### Don't:
 - **Don't** use gradients, glows, tints or outlines on planes; colour is a whole flat plane or nothing.
-- **Don't** set ink text on magenta, or use magenta as a text colour on a magenta-adjacent plane.
+- **Don't** set ink text on amber, or use amber as a text colour on an amber-adjacent plane.
 - **Don't** use green anywhere outside `StatusBadge`'s live glyph.
 - **Don't** add a third typeface or a mono family.
 - **Don't** cast a shadow from anything at rest in the page flow.

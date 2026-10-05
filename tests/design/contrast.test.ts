@@ -89,7 +89,7 @@ describe('form field borders', () => {
   })
 })
 
-describe('focus on magenta planes', () => {
+describe('focus on amber planes', () => {
   it('draws the ring in --on-accent inside an .on-plane container', () => {
     expect(CSS).toMatch(/\.on-plane :focus-visible \{\s*outline-color: oklch\(var\(--on-accent\)\);\s*\}/)
   })
@@ -100,6 +100,20 @@ describe('focus on magenta planes', () => {
   ])('%s: --on-accent against --accent reaches 3:1', (_name, selector) => {
     const theme = readTheme(selector)
     expect(contrast(theme['on-accent'], theme.accent)).toBeGreaterThanOrEqual(3)
+  })
+})
+
+// The early-access ring must never read as the accent: the availability dot is
+// a filled accent circle, the early-access glyph a hollow ring beside it. Their
+// hues stay at least 90 degrees apart in both themes.
+describe('early access stays distinct from the accent', () => {
+  it.each([
+    ['light', ':root'],
+    ['dark', '.dark'],
+  ])('%s: --status-early and --accent hues are 90 degrees or more apart', (_name, selector) => {
+    const theme = readTheme(selector)
+    const gap = Math.abs(theme['status-early'][2] - theme.accent[2]) % 360
+    expect(Math.min(gap, 360 - gap)).toBeGreaterThanOrEqual(90)
   })
 })
 

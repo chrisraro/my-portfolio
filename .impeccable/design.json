@@ -262,34 +262,34 @@
       },
       "accent": {
         "role": "primary",
-        "displayName": "Bougainvillea Magenta (dark, default)",
-        "canonical": "oklch(0.7600 0.1600 352)",
+        "displayName": "Signal Amber (dark, default)",
+        "canonical": "oklch(0.8200 0.1500 85)",
         "cssVar": "--accent",
         "tonalRamp": [
-          "oklch(0.150 0.1600 352)",
-          "oklch(0.264 0.1600 352)",
-          "oklch(0.379 0.1600 352)",
-          "oklch(0.493 0.1600 352)",
-          "oklch(0.607 0.1600 352)",
-          "oklch(0.721 0.1600 352)",
-          "oklch(0.836 0.1600 352)",
-          "oklch(0.950 0.1600 352)"
+          "oklch(0.150 0.1500 85)",
+          "oklch(0.264 0.1500 85)",
+          "oklch(0.379 0.1500 85)",
+          "oklch(0.493 0.1500 85)",
+          "oklch(0.607 0.1500 85)",
+          "oklch(0.721 0.1500 85)",
+          "oklch(0.836 0.1500 85)",
+          "oklch(0.950 0.1500 85)"
         ]
       },
       "accent-light": {
         "role": "primary",
-        "displayName": "Bougainvillea Magenta (light)",
-        "canonical": "oklch(0.5100 0.2000 352)",
+        "displayName": "Signal Amber (light)",
+        "canonical": "oklch(0.5300 0.1150 68)",
         "cssVar": "--accent",
         "tonalRamp": [
-          "oklch(0.150 0.2000 352)",
-          "oklch(0.264 0.2000 352)",
-          "oklch(0.379 0.2000 352)",
-          "oklch(0.493 0.2000 352)",
-          "oklch(0.607 0.2000 352)",
-          "oklch(0.721 0.2000 352)",
-          "oklch(0.836 0.2000 352)",
-          "oklch(0.950 0.2000 352)"
+          "oklch(0.150 0.1150 68)",
+          "oklch(0.264 0.1150 68)",
+          "oklch(0.379 0.1150 68)",
+          "oklch(0.493 0.1150 68)",
+          "oklch(0.607 0.1150 68)",
+          "oklch(0.721 0.1150 68)",
+          "oklch(0.836 0.1150 68)",
+          "oklch(0.950 0.1150 68)"
         ]
       },
       "on-accent": {
@@ -358,34 +358,34 @@
       },
       "status-early": {
         "role": "tertiary",
-        "displayName": "Calamansi (dark, default)",
-        "canonical": "oklch(0.8600 0.1300 95)",
+        "displayName": "Ube Violet (dark, default)",
+        "canonical": "oklch(0.7600 0.1200 285)",
         "cssVar": "--status-early",
         "tonalRamp": [
-          "oklch(0.150 0.1300 95)",
-          "oklch(0.264 0.1300 95)",
-          "oklch(0.379 0.1300 95)",
-          "oklch(0.493 0.1300 95)",
-          "oklch(0.607 0.1300 95)",
-          "oklch(0.721 0.1300 95)",
-          "oklch(0.836 0.1300 95)",
-          "oklch(0.950 0.1300 95)"
+          "oklch(0.150 0.1200 285)",
+          "oklch(0.264 0.1200 285)",
+          "oklch(0.379 0.1200 285)",
+          "oklch(0.493 0.1200 285)",
+          "oklch(0.607 0.1200 285)",
+          "oklch(0.721 0.1200 285)",
+          "oklch(0.836 0.1200 285)",
+          "oklch(0.950 0.1200 285)"
         ]
       },
       "status-early-light": {
         "role": "tertiary",
-        "displayName": "Calamansi (light)",
-        "canonical": "oklch(0.6000 0.1300 75)",
+        "displayName": "Ube Violet (light)",
+        "canonical": "oklch(0.5200 0.1600 285)",
         "cssVar": "--status-early",
         "tonalRamp": [
-          "oklch(0.150 0.1300 75)",
-          "oklch(0.264 0.1300 75)",
-          "oklch(0.379 0.1300 75)",
-          "oklch(0.493 0.1300 75)",
-          "oklch(0.607 0.1300 75)",
-          "oklch(0.721 0.1300 75)",
-          "oklch(0.836 0.1300 75)",
-          "oklch(0.950 0.1300 75)"
+          "oklch(0.150 0.1600 285)",
+          "oklch(0.264 0.1600 285)",
+          "oklch(0.379 0.1600 285)",
+          "oklch(0.493 0.1600 285)",
+          "oklch(0.607 0.1600 285)",
+          "oklch(0.721 0.1600 285)",
+          "oklch(0.836 0.1600 285)",
+          "oklch(0.950 0.1600 285)"
         ]
       },
       "status-private": {
@@ -569,7 +569,7 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one primary call to action on paper (\"Start a project\", \"Send message\"): magenta fill, lifts 2px on hover.",
+      "description": "The one primary call to action on paper (\"Start a project\", \"Send message\"): amber fill, lifts 2px on hover.",
       "html": "<button class=\"ds-btn-primary\">Start a project <span class=\"ds-arrow\">&rarr;</span></button>",
       "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 100; font-weight:650; font-size:1rem; line-height:1; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary .ds-arrow { display:inline-block; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary:hover { transform: translateY(-2px); } .ds-btn-primary:hover .ds-arrow { transform: translateX(8px); } .ds-btn-primary:active { transform: translateY(1px) scale(0.98); } .ds-btn-primary:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
@@ -577,7 +577,7 @@
       "name": "Primary Button on a Plane",
       "kind": "button",
       "refersTo": "button-primary-on-plane",
-      "description": "Inside a magenta plane (.on-plane) the primary inverts to a lagoon fill with magenta text; focus is drawn in on-accent.",
+      "description": "Inside an amber plane (.on-plane) the primary inverts to a lagoon fill with amber text; focus is drawn in on-accent.",
       "html": "<div class=\"ds-plane\"><button class=\"ds-btn-plane\">Start a project</button></div>",
       "css": ".ds-plane { background:oklch(var(--accent)); color:oklch(var(--on-accent)); padding:32px; border-radius:6px; } .ds-btn-plane { min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--bg)); color:oklch(var(--accent)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:1rem; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-plane:hover { transform: translateY(-2px); } .ds-btn-plane:focus-visible { outline:2px solid oklch(var(--on-accent)); outline-offset:3px; }"
     },
@@ -601,7 +601,7 @@
       "name": "Filter Tabs",
       "kind": "nav",
       "refersTo": "filter-tab-current",
-      "description": "/projects band filter: index tabs on the rack lip; the current tier is a magenta plane.",
+      "description": "/projects band filter: index tabs on the rack lip; the current tier is an amber plane.",
       "html": "<ul class=\"ds-tabs\"><li><a class=\"ds-tab ds-tab--on\" aria-current=\"true\" href=\"#\">All</a></li><li><a class=\"ds-tab\" href=\"#\">Products</a></li><li><a class=\"ds-tab\" href=\"#\">Sites</a></li></ul>",
       "css": ".ds-tabs { display:flex; gap:6px; list-style:none; margin:0; padding:0; border-bottom:2px solid oklch(var(--line-strong)); } .ds-tab { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border:1px solid oklch(var(--line)); border-bottom:0; border-radius:6px 6px 0 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:0.875rem; text-decoration:none; transition: color var(--dur-fast) var(--ease-sharp); } .ds-tab:hover { color:oklch(var(--ink)); } .ds-tab--on { background:oklch(var(--accent)); color:oklch(var(--on-accent)); border-color:transparent; } .ds-tab:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
@@ -624,17 +624,17 @@
     {
       "name": "Product Spread",
       "kind": "custom",
-      "refersTo": "magenta-plane",
-      "description": "A magenta flap joined at a dashed crease to a paper leaf; the flap tilts on hover, inviting the open.",
+      "refersTo": "amber-plane",
+      "description": "An amber flap joined at a dashed crease to a paper leaf; the flap tilts on hover, inviting the open.",
       "html": "<div class=\"ds-spread\"><div class=\"ds-flap\"><span class=\"ds-code-plane\">01 / 18 · Products</span><strong>Iskotify</strong></div><span class=\"ds-crease\"></span><div class=\"ds-leaf\">Description, Live preview, Read more, and a scrolling preview.</div></div>",
       "css": ".ds-spread { display:grid; grid-template-columns:4fr auto 8fr; perspective:1600px; } .ds-flap { display:flex; flex-direction:column; gap:12px; padding:32px; border-radius:6px 0 0 6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 75; font-size:2rem; transform-origin:right center; transition: transform var(--dur-normal) var(--ease-smooth); } .ds-spread:hover .ds-flap { transform: rotateY(-4deg); } .ds-code-plane { font-size:0.8125rem; font-variation-settings:'wdth' 100; letter-spacing:0.04em; } .ds-crease { width:1px; background: linear-gradient(to bottom, oklch(var(--line-strong)) 6px, transparent 6px) 0 0 / 1px 11px repeat-y; } .ds-leaf { padding:32px; border:1px solid oklch(var(--line)); border-radius:0 6px 6px 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); }"
     }
   ],
   "narrative": {
     "northStar": "Lobby Rack",
-    "overview": "Every project is a brochure standing in a resort lobby rack at night. You see\nits top over the pocket lip; give it attention and it lifts out and shows the\nreal site scrolling. The page does the job his clients' brochures did before\nhe built their websites. The ground is a deep lagoon, the surfaces are paper\n(panels, cards, folds, a rack lip with pockets, a perforated reply card,\npostcards), and colour arrives only as whole flat magenta planes locked to the\ngrid. A condensed variable display face (Anybody) shouts; Figtree reads.\n\nMotion has one meaning: **paper that unfolds when you pay attention.** Three\nverbs only. *Unfold* reveals detail (the hero tri-fold, product spreads,\ncase-study decisions). *Lift* answers attention (a card rising out of its\npocket, a postcard straightening). *Slide* keeps continuity (things move aside,\nnever vanish). Motion is CSS-first, transform-led, progressive enhancement:\noutside its gates every piece sits at rest and fully visible, and the server\nHTML is the finished page.\n\nIt replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and\nrefuses both the dev-portfolio default (dark hero, gradient blobs, a grid of\nscreenshot cards) and the mono terminal board B3 already was.",
+    "overview": "Every project is a brochure standing in a resort lobby rack at night. You see\nits top over the pocket lip; give it attention and it lifts out and shows the\nreal site scrolling. The page does the job his clients' brochures did before\nhe built their websites. The ground is a deep lagoon, the surfaces are paper\n(panels, cards, folds, a rack lip with pockets, a perforated reply card,\npostcards), and colour arrives only as whole flat amber planes locked to the\ngrid. A condensed variable display face (Anybody) shouts; Figtree reads.\n\nMotion has one meaning: **paper that unfolds when you pay attention.** Three\nverbs only. *Unfold* reveals detail (the hero tri-fold, product spreads,\ncase-study decisions). *Lift* answers attention (a card rising out of its\npocket, a postcard straightening). *Slide* keeps continuity (things move aside,\nnever vanish). Motion is CSS-first, transform-led, progressive enhancement:\noutside its gates every piece sits at rest and fully visible, and the server\nHTML is the finished page.\n\nIt replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and\nrefuses both the dev-portfolio default (dark hero, gradient blobs, a grid of\nscreenshot cards) and the mono terminal board B3 already was.",
     "keyCharacteristics": [
-      "Lagoon-night ground, paper panels, bougainvillea magenta as flat printed planes; no gradients, glows or tints.",
+      "Lagoon-night ground, paper panels, signal amber as flat printed planes; no gradients, glows or tints.",
       "Two variable families: Anybody (display, condensed on its width axis) and Figtree (reading).",
       "Edge codes: every card, cover and product carries a printed running index (\"07 / 18 · Sites\").",
       "Fold creases (dashed 6 on 5 off), a rack lip with a paper ledge, a perforation with notched ends.",
@@ -650,7 +650,7 @@
       },
       {
         "name": "The Plane Ink Rule",
-        "body": "On a magenta plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 2.1 to 2.5:1 and forbidden; an accent ring on a magenta plane disappears.",
+        "body": "On an amber plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 1.6 to 2.9:1 and forbidden; an accent ring on an amber plane disappears.",
         "section": "colors"
       },
       {
@@ -681,7 +681,7 @@
     ],
     "dos": [
       "**Do** take every colour from the Tailwind keys (`canvas`, `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`, `live`, `status-*`) and keep `globals.css` triplets one per line.",
-      "**Do** put text and focus on a magenta plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.",
+      "**Do** put text and focus on an amber plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.",
       "**Do** use `.button-primary` with `.press` for every primary call to action.",
       "**Do** render status only through `StatusBadge`.",
       "**Do** give every project a slot: a `ScrollPreview` when a full shot exists, a printed `NoPreviewTag` when it does not.",
@@ -691,7 +691,7 @@
     ],
     "donts": [
       "**Don't** use gradients, glows, tints or outlines on planes; colour is a whole flat plane or nothing.",
-      "**Don't** set ink text on magenta, or use magenta as a text colour on a magenta-adjacent plane.",
+      "**Don't** set ink text on amber, or use amber as a text colour on an amber-adjacent plane.",
       "**Don't** use green anywhere outside `StatusBadge`'s live glyph.",
       "**Don't** add a third typeface or a mono family.",
       "**Don't** cast a shadow from anything at rest in the page flow.",

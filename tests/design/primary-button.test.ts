@@ -3,8 +3,8 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 // One primary button across every page: .button-primary in globals.css. On
-// paper it is a magenta fill; on a magenta plane (.on-plane) it inverts to a
-// lagoon fill with magenta text. Nothing composes its own primary.
+// paper it is an amber fill; on an amber plane (.on-plane) it inverts to a
+// lagoon fill with amber text. Nothing composes its own primary.
 function tsxFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry)

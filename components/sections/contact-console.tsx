@@ -8,7 +8,7 @@ import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data
 const FIELD =
   'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
 
-// On the magenta plane: on-accent text only; the drawn underline marks hover.
+// On the amber plane: on-accent text only; the drawn underline marks hover.
 const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-on-accent sm:min-h-[32px]'
 
 type Field = 'name' | 'email' | 'message'
@@ -101,7 +101,7 @@ export function ContactConsole() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       {/*
-        A business reply card: the magenta address side, perforated to the
+        A business reply card: the amber address side, perforated to the
         paper leaf you fill in. It slides up as it arrives and the perforation
         draws; at rest (reduced motion, no support) it is simply there.
       */}

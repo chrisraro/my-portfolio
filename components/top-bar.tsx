@@ -95,7 +95,7 @@ export function TopBar() {
           href="/"
           className="col-span-2 inline-flex min-h-[44px] items-center gap-3 justify-self-start text-ink"
         >
-          {/* A small magenta plane: the brochure's colour, as a printed tab. */}
+          {/* A small amber plane: the brochure's colour, as a printed tab. */}
           <span
             aria-hidden="true"
             className="inline-flex h-8 w-8 items-center justify-center rounded-sm bg-accent font-display text-sm font-bold text-on-accent [font-variation-settings:'wdth'_75]"
