@@ -327,8 +327,8 @@ Things that have already bitten:
 
 Commits use `type(scope): summary` with lowercase types — `feat`, `fix`, `refactor`,
 `style`, `chore`, `perf`, `docs`, plus project-specific `content:`, `data:`,
-`assets:`, `resume:`. Work normally happens directly on `main`. **Exception,
-until the Portfolio 4.0 redesign merges:** the redesign is built on a `v4`
-branch, where each push gets a Vercel preview URL. Content fixes still land on
-`main` and are merged into `v4`. Never merge `v4` into `main` without
-Christian's sign-off on the preview.
+`assets:`, `resume:`. Work happens directly on `main`; every push to `main`
+deploys to production on Vercel. For a large redesign, build on a branch (as
+the Portfolio 4.0 redesign was built on `v4`, merged on 2026-10-05) so each
+push gets a Vercel preview URL, and merge it only with Christian's sign-off on
+the preview.
