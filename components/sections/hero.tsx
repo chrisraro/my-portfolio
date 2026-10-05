@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
@@ -30,7 +31,7 @@ export function Hero() {
     <section id="top" aria-labelledby="hero-title" className="overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] pt-6 sm:px-8 md:pb-[72px] md:pt-8">
       <div className="hero-fold grid md:min-h-[640px] md:grid-cols-[1.3fr_auto_0.85fr_auto_0.85fr]">
         {/* Front panel: the LCP surface, static from the first frame. */}
-        <div className="on-plane hero-front relative z-10 flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
+        <div className="on-plane hero-front relative z-10 flex flex-col rounded-t bg-accent-plane p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
           <p className="eyebrow text-on-accent">
             {heroContent.name} · {heroContent.location}
           </p>
@@ -45,6 +46,27 @@ export function Hero() {
             ))}
           </h1>
           <p className="edge-code mt-4 text-sm">{heroContent.aiLine}</p>
+          {/* The AI line's proof: things in use, one per line (so a font swap
+           * cannot re-wrap them), each linked where it has a page. No prefetch:
+           * it sits in the first viewport, and prefetching a case study there
+           * costs main-thread time during load. */}
+          <div className="edge-code mt-2 flex gap-2 text-sm">
+            <p className="shrink-0">{heroContent.aiProof.lead}</p>
+            <ul className="min-w-0">
+              {heroContent.aiProof.items.map((item) => (
+                <li key={item.label}>
+                  {item.href ? (
+                    <Link href={item.href} prefetch={false} className="underline decoration-1 underline-offset-[0.2em] hover:decoration-2">
+                      {item.label}
+                      <ArrowRight aria-hidden="true" className="ml-1 inline h-3.5 w-3.5 align-[-0.15em]" />
+                    </Link>
+                  ) : (
+                    item.label
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="hero-rise">
             <p className="text-lede mt-5 max-w-[34rem]">{heroContent.lede}</p>
             <p className="edge-code mt-4 text-sm">{heroContent.specialism}</p>
@@ -69,10 +91,11 @@ export function Hero() {
         {/* Middle panel: the portrait, full bleed. 4:3 band when stacked. */}
         <div className="hero-unfold-mid relative aspect-[4/3] md:aspect-auto">
           {/* The ring is drawn inside the photo: outside, the front plane (z-10) and the hero's edges would cover it. */}
+          {/* Focus: an amber ring inside a canvas ring, so it holds against any part of the photo. */}
           <ImageLightbox
             src={PORTRAIT}
-            alt={heroContent.name}
-            className="absolute inset-0 h-full w-full focus-visible:outline-offset-[-6px]"
+            alt={heroContent.portraitAlt}
+            className="absolute inset-0 h-full w-full focus-visible:outline-offset-[-8px] focus-visible:after:absolute focus-visible:after:inset-[3px] focus-visible:after:rounded focus-visible:after:border-[3px] focus-visible:after:border-canvas focus-visible:after:content-['']"
           >
             {/* The square photo is cover-scaled to the panel's HEIGHT (~640px at 768 to 1440), not its ~300px width, so `sizes` names that cover width. */}
             {/* alt="" because the button around it is labelled with the same name. */}
@@ -92,7 +115,8 @@ export function Hero() {
 
         {/* Back panel: the proof, on paper. */}
         <div className="hero-unfold-right flex flex-col justify-start gap-8 rounded-b bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none">
-          <ProofBand />
+          {/* Its rows share the panel's height, so the proof fills it rather than leaving the bottom third empty. */}
+          <ProofBand className="md:flex-1 md:auto-rows-fr" />
           <ul aria-label="Core stack" className="flex flex-wrap gap-2">
             {chips.map((skill) => (
               <li

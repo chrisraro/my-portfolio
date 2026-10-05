@@ -34,6 +34,18 @@ export const heroContent = {
   location: 'Naga City',
   // Plain text under the title; the tools match the AI & automation skills.
   aiLine: 'AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n',
+  // Proof for the AI line, from facts the site already holds: the chat
+  // assistant (components/ui/chat-widget.tsx) runs on Groq (app/api/chat), and
+  // the Connecta PH case study says it was built with AI coding help.
+  aiProof: {
+    lead: 'In use:',
+    items: [
+      { label: "Chunks, this site's assistant (Groq)" },
+      { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
+    ] as { label: string; href?: string }[],
+  },
+  // The hero photo, described for the portrait's labelled button.
+  portraitAlt: 'Portrait of Christian Raro hiking',
   lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
   // reading it eagerly here would hit the temporal dead zone at module load.
@@ -367,7 +379,10 @@ export const education: EducationItem[] = [
   },
 ]
 
+// WordPress is the specialism, so it leads the stack as its own group.
 export const skills: Skill[] = [
+  { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'WordPress & e-commerce' },
+  { id: 'woocommerce', name: 'WooCommerce', icon: 'woocommerce', category: 'WordPress & e-commerce' },
   { id: 'typescript', name: 'TypeScript', icon: 'typescript', category: 'Frontend' },
   { id: 'react', name: 'React', icon: 'react', category: 'Frontend' },
   { id: 'nextjs', name: 'Next.js', icon: 'nextjs', category: 'Frontend' },
@@ -381,8 +396,6 @@ export const skills: Skill[] = [
   { id: 'qwen-code', name: 'Qwen Code', icon: 'qwen-code', category: 'AI & automation' },
   { id: 'n8n', name: 'n8n', icon: 'n8n', category: 'AI & automation' },
   { id: 'groq-llm-apis', name: 'Groq / LLM APIs', icon: 'groq-llm-apis', category: 'AI & automation' },
-  { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'Tools & DevOps' },
-  { id: 'woocommerce', name: 'WooCommerce', icon: 'woocommerce', category: 'Tools & DevOps' },
   { id: 'docker', name: 'Docker', icon: 'docker', category: 'Tools & DevOps' },
   { id: 'vercel', name: 'Vercel', icon: 'vercel', category: 'Tools & DevOps' },
   { id: 'render', name: 'Render', icon: 'render', category: 'Tools & DevOps' },
@@ -435,6 +448,8 @@ export const footerContent = {
 
 export const projectsPageContent = {
   eyebrow: 'All projects',
+  // A filtered view (?band=) names its band instead.
+  bandEyebrow: 'Projects · {band}',
   title: 'Everything I have shipped',
   description: 'Products of my own, custom systems, and client work, each with its live status.',
 }

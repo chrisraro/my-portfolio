@@ -77,12 +77,42 @@ export function parseBandParam(value: string | string[] | undefined): ProjectBan
 
 /**
  * Every project in the order the homepage shows it: Products first, then the
- * rack's tiers. The running index on each card's edge code counts in this order.
+ * rack's tiers. (Edge codes count in catalogOrder, not this.)
  */
 export function homepageOrder(projects: Project[], hasPreview?: HasPreview): Project[] {
   const products = projects.filter((p) => p.band === 'Products')
   const rest = groupForHomepage(projects.filter((p) => p.band !== 'Products'), hasPreview)
   return [...products, ...rest.flatMap((group) => group.projects)]
+}
+
+/**
+ * The one order every edge code counts in: the /projects index, band by band
+ * in BAND_ORDER. A project keeps its number on the homepage, on /projects
+ * (filtered or not) and on a case study's next card. (The gate's critique
+ * found the homepage and /projects numbering the same project differently.)
+ */
+export function catalogOrder(projects: Project[], hasPreview?: HasPreview): Project[] {
+  return groupByBand(projects, hasPreview).flatMap((group) => group.projects)
+}
+
+/** A project's edge code, e.g. "07 / 18 · Sites", from its place in catalogOrder. */
+export function projectCode(project: Project, order: Project[]): string {
+  return edgeCode(order.indexOf(project) + 1, order.length, project.band)
+}
+
+/**
+ * The /projects count line. Unfiltered it states what the hero claims
+ * (shipped = everything but staging) beside the whole inventory; filtered, it
+ * counts the band against the whole.
+ */
+export function projectCount(visible: Project[], all: Project[], filtered: boolean): string {
+  const staging = (list: Project[]) => list.filter((p) => p.status === 'staging').length
+  if (!filtered) {
+    const s = staging(all)
+    return `${all.length} projects · ${all.length - s} shipped${s ? `, ${s} in staging` : ''}`
+  }
+  const s = staging(visible)
+  return `${visible.length} of ${all.length} projects${s ? ` · ${s} in staging` : ''}`
 }
 
 /**

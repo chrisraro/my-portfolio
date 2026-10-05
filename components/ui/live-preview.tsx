@@ -271,7 +271,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                   rel="noopener noreferrer"
                   className={cn(
                     'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors hover:border-accent hover:text-accent',
-                    load === 'failed' ? 'border-accent bg-accent font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
+                    load === 'failed' ? 'border-accent-plane bg-accent-plane font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
                   )}
                 >
                   Open site in a new tab

@@ -87,7 +87,7 @@ export interface Skill {
   id: string;
   name: string;
   icon: string;
-  category: 'Frontend' | 'Backend' | 'AI & automation' | 'Tools & DevOps';
+  category: 'WordPress & e-commerce' | 'Frontend' | 'Backend' | 'AI & automation' | 'Tools & DevOps';
 }
 
 export interface SocialLink {

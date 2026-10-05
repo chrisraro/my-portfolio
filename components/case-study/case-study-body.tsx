@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowLinkText } from '@/components/case-study/arrow-link-text'
 import { ReadSpread } from '@/components/case-study/read-spread'
 import { RackCard } from '@/components/ui/rack-card'
-import { edgeCode, homepageOrder } from '@/lib/board'
+import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
 import { caseStudyContent, projects } from '@/lib/data'
 import { hasFullShot, nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
@@ -42,7 +42,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
   const related = (study.related ?? [])
     .map((slug) => projects.find((p) => p.slug === slug))
     .filter((p): p is Project => Boolean(p))
-  const strip = homepageOrder(projects, hasFullShot)
+  const strip = catalogOrder(projects, hasFullShot)
 
   return (
     <>
@@ -152,7 +152,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
           <ul className="rack-row flex sm:grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
             <RackCard
               project={next}
-              code={edgeCode(strip.indexOf(next) + 1, strip.length, next.band)}
+              code={projectCode(next, strip)}
               index={0}
               labelPrefix={h.next}
             />

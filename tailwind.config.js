@@ -19,6 +19,8 @@ module.exports = {
         line: token('line'),
         'line-strong': token('line-strong'),
         accent: token('accent'),
+        // Amber planes and the primary fill: bright in both themes (globals.css).
+        'accent-plane': token('accent-plane'),
         'on-accent': token('on-accent'),
         live: token('live'),
         'status-early': token('status-early'),

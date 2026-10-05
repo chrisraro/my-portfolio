@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { RackTier } from '@/components/ui/rack-tier'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { groupForHomepage, homepageOrder } from '@/lib/board'
+import { catalogOrder, groupForHomepage } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
 import { hasFullShot } from '@/lib/project-page'
 
@@ -14,7 +14,8 @@ import { hasFullShot } from '@/lib/project-page'
  * the last 16px into place, once, staggered (transform only).
  */
 export function Rack() {
-  const order = homepageOrder(projects, hasFullShot)
+  // Edge codes count in the catalog's order, so a card's number matches /projects.
+  const order = catalogOrder(projects, hasFullShot)
   const groups = groupForHomepage(projects.filter((p) => p.band !== 'Products'), hasFullShot)
 
   return (

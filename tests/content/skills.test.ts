@@ -29,7 +29,7 @@ describe('skills', () => {
   })
 
   it('keeps every category populated', () => {
-    for (const category of ['Frontend', 'Backend', 'AI & automation', 'Tools & DevOps']) {
+    for (const category of ['WordPress & e-commerce', 'Frontend', 'Backend', 'AI & automation', 'Tools & DevOps']) {
       expect(skills.some((s) => s.category === category)).toBe(true)
     }
   })
@@ -45,8 +45,12 @@ describe('skills', () => {
     expect(skills.find((s) => s.id === 'render')).toMatchObject({ name: 'Render', category: 'Tools & DevOps' })
   })
 
-  it('orders the AI group before Tools & DevOps so the stack reads Frontend, Backend, AI, Tools', () => {
+  // Critique R5 P1: WordPress is the specialism, so it is its own group and
+  // leads the stack, not a chip filed under Tools & DevOps.
+  it('gives WordPress and WooCommerce their own group, first', () => {
+    const wp = skills.filter((s) => s.category === 'WordPress & e-commerce').map((s) => s.name)
+    expect(wp).toEqual(['WordPress', 'WooCommerce'])
     const order = Array.from(new Set(skills.map((s) => s.category)))
-    expect(order).toEqual(['Frontend', 'Backend', 'AI & automation', 'Tools & DevOps'])
+    expect(order).toEqual(['WordPress & e-commerce', 'Frontend', 'Backend', 'AI & automation', 'Tools & DevOps'])
   })
 })

@@ -50,10 +50,15 @@ describe('Hero', () => {
 
   // Confirm critique: the proof panel spread its two groups apart (a ~234px
   // void), and at 1440x900 the fold cut the Products heading in half.
-  it('stacks the proof panel from the top, and leaves the next heading inside the first viewport', () => {
+  // R5 critique: at 1440 the panel's bottom third stood empty. The proof grid
+  // now grows to fill it (its rows share the height), still from the top.
+  it('stacks the proof panel from the top, fills it, and leaves the next heading inside the first viewport', () => {
     const panel = html.match(/<div class="hero-unfold-right[^"]*"/)?.[0] ?? ''
     expect(panel).toContain('justify-start')
     expect(panel).not.toContain('justify-between')
+    const grid = html.match(/<ul class="([^"]*grid-cols-2[^"]*)"/)?.[1] ?? ''
+    expect(grid).toContain('md:flex-1')
+    expect(grid).toContain('md:auto-rows-fr')
     const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
     expect(section).toContain('md:pb-[72px]')
   })
@@ -82,8 +87,8 @@ describe('Hero', () => {
   })
 
   it('does not repeat the portrait’s name inside its labelled button', () => {
-    expect(html).toContain('aria-label="View larger image: Christian Raro"')
-    expect(html).not.toMatch(/<img[^>]*alt="Christian Raro"/)
+    expect(html).toContain(`aria-label="View larger image: ${heroContent.portraitAlt}"`)
+    expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
   })
 
   it('keeps amber off the stack chips: colour arrives only as whole planes', () => {
@@ -318,11 +323,15 @@ describe('primary proof renders visible without JavaScript', () => {
 
   it('moves proof by transform only as it scrolls in, never by opacity', () => {
     const css = readFileSync('app/globals.css', 'utf8')
-    for (const name of ['reveal-flap', 'reveal-slide', 'reveal-stagger', 'reveal-draw-x']) {
+    for (const name of ['reveal-slide', 'reveal-stagger', 'reveal-draw-x']) {
       const frames = css.match(new RegExp(`@keyframes ${name} \\{[\\s\\S]*?\\n\\t\\t\\}`))?.[0]
       expect(frames, name).toBeDefined()
       expect(frames).not.toContain('opacity')
     }
+    // The lede block rises by transform only too (a11y gate R5, P2-7).
+    const rise = css.match(/@keyframes hero-rise \{[\s\S]*?\n\t\}/)?.[0]
+    expect(rise).toBeDefined()
+    expect(rise).not.toContain('opacity')
     // The hero proof numerals rise on their own transform-only keyframes.
     const lift = css.match(/@keyframes hero-lift \{[\s\S]*?\n\t+\}/)?.[0]
     expect(lift).toBeDefined()

@@ -80,6 +80,26 @@ describe('first layout', () => {
   })
 })
 
+describe('display font', () => {
+  // R6: Anybody, instanced to the axis ranges in use, is a third smaller than
+  // Google's full variable file, and it sits on every page's critical path.
+  it('is the self-hosted instance, preloaded, no larger than 40 KB', () => {
+    const layout = readFileSync('app/layout.tsx', 'utf8')
+    expect(layout).toMatch(/localFont\(\{\s*src: '\.\/fonts\/anybody-latin-wght400-800-wdth75-100\.woff2'/)
+    expect(layout).not.toMatch(/import \{[^}]*Anybody[^}]*\} from 'next\/font\/google'/)
+    expect(statSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2').size).toBeLessThanOrEqual(40 * 1024)
+  })
+})
+
+describe('font swap', () => {
+  // R6: with the lede no longer faded in, the hero's font swap showed as CLS
+  // 0.23 on mobile: in Arial, "Full-stack" broke at its hyphen into a third
+  // line that collapsed when Anybody arrived.
+  it('never breaks a hero word, so the H1 keeps its line count across the swap', () => {
+    expect(css).toMatch(/\.hero-word \{[^}]*white-space:\s*nowrap/)
+  })
+})
+
 describe('reveals', () => {
   it('move by transform only, so text is never painted or measured faded', () => {
     for (const name of ['reveal-rise', 'reveal-cover']) {

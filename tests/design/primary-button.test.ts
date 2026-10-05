@@ -17,7 +17,7 @@ const sources = ['app', 'components'].flatMap(tsxFiles).map((f) => ({ f, src: re
 
 describe('primary button', () => {
   it('is defined once, with the plane inversion', () => {
-    expect(css).toMatch(/\.button-primary \{[^}]*bg-accent[^}]*text-on-accent/)
+    expect(css).toMatch(/\.button-primary \{[^}]*bg-accent-plane[^}]*text-on-accent/)
     expect(css).toMatch(/\.on-plane \.button-primary \{[^}]*bg-canvas[^}]*text-accent/)
   })
 
@@ -41,7 +41,7 @@ describe('primary button', () => {
 
   it('is never composed by hand from a fill and padding', () => {
     for (const { f, src } of sources) {
-      expect(src, f).not.toMatch(/rounded bg-accent px-\d/)
+      expect(src, f).not.toMatch(/rounded bg-accent(?:-plane)? px-\d/)
       expect(src, f).not.toMatch(/rounded bg-canvas px-\d/)
     }
   })

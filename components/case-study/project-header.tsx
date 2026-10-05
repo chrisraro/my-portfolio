@@ -40,7 +40,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
       <div className="mt-4 grid md:grid-cols-[7fr_auto_5fr]">
         <div
           className={cn(
-            'on-plane flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10',
+            'on-plane flex flex-col rounded-t bg-accent-plane p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10',
             // A flagship's leaf carries the role and meta; a short page's cover stays compact.
             role && 'md:min-h-[26rem]',
           )}
@@ -48,7 +48,10 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
           <p className="eyebrow text-on-accent">
             {isCaseStudy ? caseStudyContent.eyebrow.caseStudy : caseStudyContent.eyebrow.project}
           </p>
-          <h1 className="text-page-h1 mt-8 md:mt-auto md:pt-10">{project.title}</h1>
+          {/* Focusable by script only: a card navigation moves focus here (components/ui/view-transitions.tsx). */}
+          <h1 tabIndex={-1} className="text-page-h1 mt-8 md:mt-auto md:pt-10">
+            {project.title}
+          </h1>
           <p className="text-lede mt-5 max-w-[34rem]">{project.summary}</p>
           {/* Status sits on a paper chip: its glyph colours are tuned for paper, not amber. */}
           <span className="mt-6 self-start rounded-full bg-panel px-3 py-1.5">

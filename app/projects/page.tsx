@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { BoardFilter } from '@/components/ui/board-filter'
 import { RackTier } from '@/components/ui/rack-tier'
-import { groupByBand, parseBandParam } from '@/lib/board'
+import { catalogOrder, groupByBand, parseBandParam, projectCount } from '@/lib/board'
 import { projects, projectsPageContent } from '@/lib/data'
 import { hasFullShot } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
@@ -23,17 +23,19 @@ export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata 
 // time; for eighteen cards of static data that costs nothing a visitor notices.
 //
 // The whole inventory as the lobby rack: one tier per band, in BAND_ORDER, of
-// the same pocket cards the homepage uses. Edge codes count over the unfiltered
-// strip, so a card keeps its number when a filter narrows the rack.
+// the same pocket cards the homepage uses. Edge codes count in catalogOrder,
+// so a card keeps its number when a filter narrows the rack, and matches the
+// homepage. A filtered view names its band in the eyebrow.
 export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const band = parseBandParam(searchParams.band)
-  const strip = groupByBand(projects, hasFullShot).flatMap((g) => g.projects)
+  const strip = catalogOrder(projects, hasFullShot)
   const visible = band ? projects.filter((p) => p.band === band) : projects
-  const count = band ? `${visible.length} of ${projects.length} projects` : `${projects.length} projects`
+  const count = projectCount(visible, projects, band !== null)
+  const eyebrow = band ? projectsPageContent.bandEyebrow.replace('{band}', band) : projectsPageContent.eyebrow
 
   return (
     <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 md:pb-24 md:pt-16">
-      <p className="eyebrow mb-3">{projectsPageContent.eyebrow}</p>
+      <p className="eyebrow mb-3">{eyebrow}</p>
       <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
       <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>
 

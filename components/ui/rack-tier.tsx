@@ -1,13 +1,13 @@
 import { RackCard } from '@/components/ui/rack-card'
 import type { CSSProperties } from 'react'
-import { edgeCode } from '@/lib/board'
+import { projectCode } from '@/lib/board'
 import { tierTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
 interface RackTierProps {
   heading: string
   projects: Project[]
-  /** The strip the edge codes count over: a card's number is its place in it. */
+  /** catalogOrder: a card's number is its place in it, the same on every page. */
   order: Project[]
   /** h3 on the homepage, where the section title is the h2; h2 on /projects. */
   headingLevel: 'h2' | 'h3'
@@ -37,7 +37,7 @@ export function RackTier({ heading, projects, order, headingLevel: Heading }: Ra
           <RackCard
             key={project.id}
             project={project}
-            code={edgeCode(order.indexOf(project) + 1, order.length, project.band)}
+            code={projectCode(project, order)}
             index={i}
           />
         ))}

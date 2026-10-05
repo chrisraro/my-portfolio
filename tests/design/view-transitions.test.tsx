@@ -127,6 +127,43 @@ describe('the view-transition island', () => {
   })
 })
 
+// Refinement gate R5: a11y P2 1-3, critique bugs 4-5.
+describe('the island, hardened', () => {
+  it('falls back to a full navigation if the client push fails, and never leaves a rejection unhandled', () => {
+    expect(island).toMatch(/window\.location\.assign\(/)
+    expect(island).toMatch(/updateCallbackDone\.catch\(/)
+  })
+
+  it('lets only the latest transition clean up its names (rapid clicks)', () => {
+    expect(island).toMatch(/const token = \+\+active/)
+    expect(island).toMatch(/if \(token !== active\) return/)
+  })
+
+  it('morphs only to a header shot that is in the viewport, and lands at the top', () => {
+    expect(island).toMatch(/function wellInViewport\(/)
+    expect(island).toMatch(/if \(target && wellInViewport\(target\)\)/)
+    expect(island).toMatch(/scrollTo\(\{ top: 0, left: 0, behavior: 'instant' \}\)/)
+  })
+
+  it('moves focus to the case study’s h1 after a card navigation', () => {
+    expect(island).toMatch(/focus\(\{ preventScroll: true \}\)/)
+    expect(readFileSync('components/case-study/project-header.tsx', 'utf8')).toMatch(/<h1 tabIndex=\{-1\}/)
+  })
+})
+
+describe('root cross-fade', () => {
+  const live = rules.filter((r) => /::view-transition-(old|new)\(root\)/.test(r.selector) && !r.ancestors.join(' ').includes('reduce'))
+  const old = live.find((r) => /old\(root\)/.test(r.selector) && !/new\(root\)/.test(r.selector))
+  const fresh = live.find((r) => /new\(root\)/.test(r.selector) && !/old\(root\)/.test(r.selector))
+
+  it('fades the old page out before the new one fades in, so the two never double-expose', () => {
+    expect(old?.body).toMatch(/animation-name:\s*vt-fade-out/)
+    expect(fresh?.body).toMatch(/animation-name:\s*vt-fade-in/)
+    expect(fresh?.body).toMatch(/animation-delay:\s*calc\(var\(--dur-fast\)/)
+    expect(fresh?.body).toMatch(/animation-fill-mode:\s*both/)
+  })
+})
+
 describe('view-transition CSS', () => {
   const vt = rules.filter((r) => /::view-transition/.test(r.selector))
 
@@ -136,7 +173,7 @@ describe('view-transition CSS', () => {
     expect(group!.body).toMatch(/animation-duration:\s*var\(--dur-normal\)/)
     expect(group!.body).toMatch(/animation-timing-function:\s*var\(--ease-smooth\)/)
     const root = vt.find((r) => /::view-transition-old\(root\)/.test(r.selector) && !r.ancestors.join(' ').includes('reduce'))
-    expect(root?.body).toMatch(/animation-duration:\s*var\(--dur-fast\)/)
+    expect(root?.body).toMatch(/animation-duration:\s*calc\(var\(--dur-fast\)/)
     for (const r of vt.filter((x) => !x.ancestors.join(' ').includes('reduce'))) {
       expect(r.body, r.selector).not.toMatch(/\d+(\.\d+)?m?s\b/)
     }

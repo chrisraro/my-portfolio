@@ -17,18 +17,22 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
 
   return (
     <nav aria-label="Filter projects by band">
-      {/* Index tabs on the rack's lip: the current tier is an amber plane, the rest paper. */}
-      <ul className="flex flex-wrap gap-x-1.5 gap-y-2 border-b-2 border-line-strong">
+      {/* Index tabs on the rack's lip: the current tier is an amber plane, the
+       * rest paper. One row that scrolls sideways on a narrow screen, so every
+       * tab stands on the lip (a wrapped second row floated above it). */}
+      <ul className="flex gap-x-1.5 overflow-x-auto border-b-2 border-line-strong [scrollbar-width:none]">
         {items.map((item) => (
-          <li key={item.label}>
+          // The current tab scrolls itself into the row on load (where supported).
+          <li key={item.label} className={cn('shrink-0', item.current && '[scroll-initial-target:nearest]')}>
             <Link
               href={item.href}
               // "true", not "page": every tab is the same page, filtered.
               aria-current={item.current ? 'true' : undefined}
               className={cn(
-                'button-label inline-flex min-h-[44px] items-center rounded-b-none rounded-t px-4 text-sm transition-colors',
+                // The ring is drawn inward: the scrolling row would clip one drawn outside.
+                'button-label inline-flex min-h-[44px] items-center whitespace-nowrap rounded-b-none rounded-t px-4 text-sm transition-colors focus-visible:outline-offset-[-3px]',
                 item.current
-                  ? 'border border-b-0 border-transparent bg-accent text-on-accent'
+                  ? 'border border-b-0 border-transparent bg-accent-plane text-on-accent focus-visible:outline-on-accent'
                   : 'border border-b-0 border-line bg-panel text-muted-strong hover:text-ink',
               )}
             >

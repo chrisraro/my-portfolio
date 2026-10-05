@@ -6,7 +6,7 @@ import { NoPreviewTag } from '@/components/ui/no-preview-tag'
 import { ProjectShot } from '@/components/ui/project-shot'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
-import { edgeCode, homepageOrder } from '@/lib/board'
+import { catalogOrder, projectCode } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
 import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable, projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
@@ -16,10 +16,11 @@ import type { Project } from '@/types'
  * One product as an open fold-out spread: an amber flap (who it is, its
  * status, what it does) joined at a crease to a paper leaf (the detail, the
  * ways in, and a still screenshot of the real site). Flaps alternate
- * sides. As it scrolls in, the flap unfolds against its leaf and the leaf
- * slides toward the crease: transform only, so the server HTML is the page.
+ * sides. The spread sits settled: nothing about it moves with scroll (a
+ * scrubbed flap and leaf left the crease seam out of line while in view).
+ * On a fine pointer the flap tilts a little on hover.
  */
-function Spread({ project, index, position, total }: { project: Project; index: number; position: number; total: number }) {
+function Spread({ project, index, code }: { project: Project; index: number; code: string }) {
   const flapRight = index % 2 === 1
   const shot = fullShotFor(project)
   const live = canLinkLive(project) ? project.links.live : undefined
@@ -28,10 +29,8 @@ function Spread({ project, index, position, total }: { project: Project; index: 
 
   const flapStyle = {
     '--hinge': flapRight ? 'left' : 'right',
-    '--flap-from': flapRight ? '-22deg' : '22deg',
     '--tilt-to': flapRight ? '4deg' : '-4deg',
   } as CSSProperties
-  const leafStyle = { '--slide-from': flapRight ? '-40px' : '40px' } as CSSProperties
 
   return (
     <article
@@ -41,15 +40,15 @@ function Spread({ project, index, position, total }: { project: Project; index: 
         flapRight ? 'md:grid-cols-[8fr_auto_4fr]' : 'md:grid-cols-[4fr_auto_8fr]',
       )}
     >
-      <div className={cn('reveal-flap', flapRight ? 'md:order-3' : 'md:order-1')} style={flapStyle}>
+      <div className={flapRight ? 'md:order-3' : 'md:order-1'} style={flapStyle}>
         <div
           className={cn(
-            'flap-tilt flex h-full flex-col gap-4 rounded-t bg-accent p-6 text-on-accent sm:p-8',
+            'flap-tilt flex h-full flex-col gap-4 rounded-t bg-accent-plane p-6 text-on-accent sm:p-8',
             flapRight ? 'md:rounded-r md:rounded-tl-none' : 'md:rounded-l md:rounded-tr-none',
           )}
         >
           <p aria-hidden="true" className="edge-code text-[0.8125rem]">
-            {edgeCode(position, total, project.band)}
+            {code}
           </p>
           <h3 id={titleId} className="text-fluid-h2">
             {project.title}
@@ -65,10 +64,9 @@ function Spread({ project, index, position, total }: { project: Project; index: 
 
       <div
         className={cn(
-          'reveal-leaf grid gap-6 rounded-b border border-line bg-panel p-6 sm:grid-cols-[1fr_minmax(0,15rem)] sm:p-8 lg:grid-cols-[1fr_17rem]',
+          'grid gap-6 rounded-b border border-line bg-panel p-6 sm:grid-cols-[1fr_minmax(0,15rem)] sm:p-8 lg:grid-cols-[1fr_17rem]',
           flapRight ? 'md:order-1 md:rounded-l md:rounded-br-none' : 'md:order-3 md:rounded-r md:rounded-bl-none',
         )}
-        style={leafStyle}
       >
         <div className="flex min-w-0 flex-col">
           <p className="max-w-[60ch] leading-relaxed text-muted-strong">{project.description}</p>
@@ -117,7 +115,7 @@ function Spread({ project, index, position, total }: { project: Project; index: 
 }
 
 export function Products() {
-  const order = homepageOrder(projects, hasFullShot)
+  const order = catalogOrder(projects, hasFullShot)
   const products = order.filter((p) => p.band === 'Products')
 
   return (
@@ -129,7 +127,7 @@ export function Products() {
       />
       <div className="grid gap-8 md:gap-12">
         {products.map((project, i) => (
-          <Spread key={project.id} project={project} index={i} position={i + 1} total={order.length} />
+          <Spread key={project.id} project={project} index={i} code={projectCode(project, order)} />
         ))}
       </div>
     </section>

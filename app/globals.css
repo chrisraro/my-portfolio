@@ -10,8 +10,10 @@
  * tests/design/contrast.test.ts parses these lines; keep the format exact.
  *
  * :root is the light theme. .dark is the default: next-themes adds the class.
- * Lagoon ground, paper panels, signal amber as flat planes (a deeper
- * amber-brown in the light theme, so it holds AA as link text on paper).
+ * Lagoon ground, paper panels, signal amber as flat planes (--accent-plane,
+ * bright in both themes, with dark lagoon text on it). --accent is the amber
+ * for links, rings and small glyphs: in the light theme a deeper amber, so it
+ * holds AA as text on paper.
  * Green (--live) means a live system and nothing else; violet
  * (--status-early) is only the early-access ring, kept well away from amber.
  * Text on an amber plane is --on-accent only.
@@ -33,7 +35,8 @@
 	--line: 0.9000 0.0120 225;
 	--line-strong: 0.8200 0.0180 228;
 	--accent: 0.5300 0.1150 68;
-	--on-accent: 1.0000 0.0000 0;
+	--accent-plane: 0.8000 0.1500 80;
+	--on-accent: 0.2500 0.0450 240;
 	--live: 0.5500 0.1400 152;
 	--status-early: 0.5200 0.1600 285;
 	--status-private: 0.5600 0.0300 235;
@@ -57,6 +60,7 @@
 	--line: 0.3450 0.0420 232;
 	--line-strong: 0.4300 0.0420 232;
 	--accent: 0.8200 0.1500 85;
+	--accent-plane: 0.8200 0.1500 85;
 	--on-accent: 0.2350 0.0420 232;
 	--live: 0.8200 0.1500 152;
 	--status-early: 0.7600 0.1200 285;
@@ -93,7 +97,7 @@
 		-webkit-font-smoothing: antialiased;
 	}
 	::selection {
-		background: oklch(var(--accent));
+		background: oklch(var(--accent-plane));
 		color: oklch(var(--on-accent));
 	}
 	/* Anybody does the shouting: headings condensed at wdth 75, titles at 85. */
@@ -209,7 +213,7 @@
 	 * it with .press for the hover lift.
 	 */
 	.button-primary {
-		@apply button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent;
+		@apply button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent-plane px-5 py-2.5 text-on-accent;
 	}
 	.on-plane .button-primary {
 		@apply bg-canvas text-accent;
@@ -423,7 +427,10 @@
 	--stagger-proof: 60ms;
 	perspective: 1600px;
 }
-.hero-word { display: inline-block; }
+/* A word never breaks inside itself (Arial, the fallback, is wider than
+ * Anybody and would break "Full-stack" at its hyphen into a third line, which
+ * then collapses when the font arrives: a layout shift under the whole hero). */
+.hero-word { display: inline-block; white-space: nowrap; }
 /* The H1 is sized to its panel, so "Full-stack" never breaks out of the plane. */
 .hero-front { container-type: inline-size; }
 .hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
@@ -481,8 +488,10 @@
 /* The primary's arrow slides right on hover. */
 .arrow-nudge { transition: transform var(--dur-fast) var(--ease-sharp); }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
 	.spread:hover .flap-tilt { transform: rotateY(var(--tilt-to, -4deg)); }
+}
+@media (prefers-reduced-motion: no-preference) {
 	.postcard:is(:hover, :focus-within) {
 		transform: translateY(-8px);
 		box-shadow: var(--shadow-lift);
@@ -493,9 +502,10 @@
 		from { transform: translateY(0.35em); }
 		to { transform: none; }
 	}
+	/* Transform only: the lede and buttons are painted from frame one. */
 	@keyframes hero-rise {
-		from { opacity: 0.01; transform: translateY(var(--rise, 16px)); }
-		to { opacity: 1; transform: none; }
+		from { transform: translateY(var(--rise, 16px)); }
+		to { transform: none; }
 	}
 	@keyframes hero-lift {
 		from { transform: translateY(var(--rise, 16px)); }
@@ -572,10 +582,6 @@
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		@keyframes reveal-flap {
-			from { transform: rotateY(var(--flap-from, 22deg)); }
-			to { transform: none; }
-		}
 		@keyframes reveal-slide {
 			from { transform: translateX(var(--slide-from, 40px)); }
 			to { transform: none; }
@@ -605,13 +611,6 @@
 			from { transform: scale(0.6); }
 			to { transform: none; }
 		}
-		.reveal-flap {
-			transform-origin: var(--hinge, right) center;
-			animation: reveal-flap var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
-		}
-		.reveal-leaf,
 		.reveal-postcard {
 			animation: reveal-slide var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
@@ -639,6 +638,8 @@
 				.reveal-stagger {
 					timeline-trigger: --card view() entry 0% entry 100%;
 					animation: reveal-stagger var(--dur-normal) var(--ease-smooth);
+					/* A delayed column holds its start rather than jumping to it. */
+					animation-fill-mode: backwards;
 					animation-delay: calc(var(--c3, 0) * var(--stagger-card));
 					animation-trigger: --card play-forwards;
 				}
@@ -723,9 +724,27 @@
 	animation-duration: var(--dur-normal);
 	animation-timing-function: var(--ease-smooth);
 }
-::view-transition-old(root),
+/* The old page is gone before the new one arrives, so the two never show at
+ * once (the gate saw the case-study H1 printed over the old grid); only a
+ * named shot travels across the clean frame. */
+::view-transition-old(root) {
+	animation-name: vt-fade-out;
+	animation-duration: calc(var(--dur-fast) * 0.6);
+	animation-timing-function: var(--ease-sharp);
+	animation-fill-mode: both;
+}
 ::view-transition-new(root) {
+	animation-name: vt-fade-in;
 	animation-duration: var(--dur-fast);
+	animation-delay: calc(var(--dur-fast) * 0.5);
+	animation-timing-function: var(--ease-sharp);
+	animation-fill-mode: both;
+}
+/* A clicked shot with no header shot to land on (the island leaves an
+ * off-screen target unnamed) leaves with the old page, not after it. */
+::view-transition-old(*.shot):only-child {
+	animation-name: vt-fade-out;
+	animation-duration: calc(var(--dur-fast) * 0.6);
 }
 /* A 9:16 card shot and a 3:4 header shot both show the top of the page: keep
  * the top fixed and crop, never stretch, while the frame changes shape. */
@@ -734,6 +753,13 @@
 	height: 100%;
 	object-fit: cover;
 	object-position: top;
+}
+/* (Keyframes last in the block: the shot rules above are not keyframes.) */
+@keyframes vt-fade-out {
+	to { opacity: 0; }
+}
+@keyframes vt-fade-in {
+	from { opacity: 0; }
 }
 /* /Catalog view transitions */
 
@@ -745,7 +771,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-flap, .reveal-leaf, .reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop, .reveal-fold) {
+	:is(.reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;

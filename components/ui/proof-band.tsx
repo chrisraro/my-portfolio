@@ -1,13 +1,14 @@
 import type { CSSProperties } from 'react'
 import { heroContent } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
+import { cn } from '@/lib/utils'
 
 // The hero's back panel: each proof point owns one cell, a large plain numeral
 // over its label. Screen readers hear the original sentence ("Four payment
 // gateways"), not a bare "4"; the numeral and label are visual only.
-export function ProofBand() {
+export function ProofBand({ className }: { className?: string }) {
   return (
-    <ul className="grid grid-cols-2 gap-x-6 gap-y-6">
+    <ul className={cn('grid grid-cols-2 gap-x-6 gap-y-6', className)}>
       {heroContent.proofPoints.map((point, i) => {
         const { value, label } = splitProofPoint(point)
         return (

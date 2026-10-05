@@ -153,16 +153,20 @@ describe('rack stagger', () => {
     expect(css).not.toMatch(/var\(--i, 0\) \* var\(--stagger-card\)/)
   })
 
-  // Task 3 also let cards already on screen at load rise. The trigger now fires
-  // only while a card is entering the viewport, and nothing is filled before
-  // it fires, so a card in view at load (or after a filter) simply sits at rest.
-  it('never plays on a card already in view: entry-only trigger, no backwards fill', () => {
+  // Task 3 also let cards already on screen at load rise. The trigger fires
+  // only while a card is entering the viewport, so a card in view at load (or
+  // after a filter) sits at rest. Once triggered, a delayed column holds its
+  // start (backwards fill) instead of showing at rest, then jumping down 16px
+  // when its delay ends (a11y gate R5, P2-5). An untriggered animation is idle,
+  // so the fill never applies to a card that was not triggered (checked in
+  // Chrome: cards in view at load have no transform).
+  it('never plays on a card already in view: entry-only trigger; a delayed column holds its start', () => {
     const body = stagger.map((r) => r.body).join(';')
     expect(body).toMatch(/timeline-trigger:\s*--card view\(\) entry 0% entry 100%/)
     const shorthand = body.match(/animation:\s*reveal-stagger[^;]*/)?.[0] ?? ''
     expect(shorthand).toContain('reveal-stagger')
-    expect(shorthand).not.toMatch(/(both|backwards)/)
-    expect(body).not.toMatch(/animation-fill-mode:\s*(both|backwards)/)
+    expect(shorthand).not.toMatch(/\bboth\b/)
+    expect(body).toMatch(/animation-fill-mode:\s*backwards/)
   })
 
   it('is on every rack card, with both column indexes', () => {

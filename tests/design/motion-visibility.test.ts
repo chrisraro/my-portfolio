@@ -34,18 +34,28 @@ describe('hero unfold', () => {
 })
 
 describe('scroll reveals', () => {
-  const block = gatedBlock('reveal-flap')
+  const block = gatedBlock('reveal-cover')
 
   it('play while the element is in view (the contract’s range), not as it crosses the edge', () => {
-    for (const cls of ['reveal-flap', 'reveal-leaf', 'reveal-cover', 'reveal-reply', 'reveal-fold']) {
+    for (const cls of ['reveal-cover', 'reveal-reply', 'reveal-fold']) {
       const rule = block.match(new RegExp(String.raw`\.${cls}[^{]*\{[^}]*\}`))?.[0] ?? ''
       expect(rule, cls).toMatch(/animation-range:\s*entry (?:calc\()?10%[^;]*cover 30%/)
     }
   })
 
-  it('travel far enough to be seen: flaps 22deg, leaves 40px (the xl distance)', () => {
-    expect(block).toMatch(/rotateY\(var\(--flap-from, 22deg\)\)/)
+  it('travel far enough to be seen: postcards 40px (the xl distance)', () => {
     expect(block).toMatch(/translateX\(var\(--slide-from, 40px\)\)/)
-    expect(readFileSync('components/sections/products.tsx', 'utf8')).toMatch(/'--flap-from': flapRight \? '-22deg' : '22deg'/)
+  })
+})
+
+// Refinement gate R5 (critique bug 7): the product spreads' scroll-scrubbed
+// flap and leaf left the crease seam out of line while in view. Spreads now
+// sit settled; nothing about them is driven by scroll.
+describe('product spreads', () => {
+  const src = readFileSync('components/sections/products.tsx', 'utf8')
+
+  it('carry no scroll reveal', () => {
+    expect(src).not.toMatch(/reveal-(flap|leaf)|--flap-from|--slide-from/)
+    expect(css).not.toMatch(/\.reveal-(flap|leaf)\b|@keyframes reveal-flap/)
   })
 })

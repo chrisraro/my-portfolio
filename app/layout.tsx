@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { Anybody, Figtree } from 'next/font/google'
+import { Figtree } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -24,11 +25,19 @@ import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structu
 // width and size on the page: on the first layout that cost ~200ms of main
 // thread (traced). The adjustment matched ascent and size only, never
 // Anybody's condensed width, so it saved little shift for what it cost.
-const anybody = Anybody({
-  subsets: ['latin'],
+//
+// Anybody is self-hosted, instanced to the axis ranges the site uses (wght
+// 400-800, wdth 75-100) from Google's latin subset: 38 KB instead of 57 KB for
+// the full 100-900 / 50-150 font, on the critical path of every page (R6 perf).
+// Regenerate with fontTools:
+//   python -m fontTools.varLib.instancer <anybody-latin>.woff2 wght=400:800 wdth=75:100 -o out.ttf
+// then save as woff2. Content outside Latin-1 and General Punctuation falls back to Arial.
+const anybody = localFont({
+  src: './fonts/anybody-latin-wght400-800-wdth75-100.woff2',
   variable: '--font-display',
   display: 'swap',
-  axes: ['wdth'],
+  weight: '400 800',
+  declarations: [{ prop: 'font-stretch', value: '75% 100%' }],
   adjustFontFallback: false,
   fallback: ['Arial', 'sans-serif'],
 })
@@ -56,7 +65,7 @@ export default function RootLayout({
           <ToastProvider>
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:font-display focus:px-4 focus:py-2 focus:text-on-accent"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent-plane focus:font-display focus:px-4 focus:py-2 focus:text-on-accent"
             >
               Skip to content
             </a>

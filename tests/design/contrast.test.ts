@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 // Every colour token is a raw oklch "L C H" triplet so Tailwind can wrap it as
@@ -8,9 +9,17 @@ import { describe, expect, it } from 'vitest'
 
 const CSS = readFileSync('app/globals.css', 'utf8')
 
+function tsx(dir: string): string[] {
+  return readdirSync(dir).flatMap((entry) => {
+    const full = join(dir, entry)
+    if (statSync(full).isDirectory()) return tsx(full)
+    return full.endsWith('.tsx') ? [full] : []
+  })
+}
+
 const TOKENS = [
   'bg', 'panel', 'ink', 'muted', 'muted-strong', 'line', 'line-strong',
-  'accent', 'on-accent', 'live', 'status-early', 'status-private', 'status-internal',
+  'accent', 'accent-plane', 'on-accent', 'live', 'status-early', 'status-private', 'status-internal',
   'field-border',
 ] as const
 type Token = (typeof TOKENS)[number]
@@ -61,7 +70,8 @@ const TEXT_PAIRS: [Token, Token][] = [
   ['muted', 'bg'], ['muted', 'panel'],
   ['muted-strong', 'bg'], ['muted-strong', 'panel'],
   ['accent', 'bg'], ['accent', 'panel'],
-  ['on-accent', 'accent'],
+  // Text on an amber plane (hero, covers, flaps, the primary button).
+  ['on-accent', 'accent-plane'],
 ]
 
 // WCAG 1.4.11: status glyphs and the focus ring need 3:1.
@@ -81,11 +91,11 @@ describe('form field borders', () => {
     const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
     const field = contact.match(/const FIELD =\s*'([^']*)'/)?.[1] ?? ''
     expect(field).toContain('border-field-border')
-    expect(field).not.toMatch(/border-line(-strong)?/)
+    expect(field).not.toMatch(/border-line(-strong)?\b/)
     const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
     const input = chat.match(/id="chat-input"[\s\S]*?className="([^"]*)"/)?.[1] ?? ''
     expect(input).toContain('border-field-border')
-    expect(input).not.toMatch(/border-line(-strong)?/)
+    expect(input).not.toMatch(/border-line(-strong)?\b/)
   })
 })
 
@@ -97,9 +107,45 @@ describe('focus on amber planes', () => {
   it.each([
     ['light', ':root'],
     ['dark', '.dark'],
-  ])('%s: --on-accent against --accent reaches 3:1', (_name, selector) => {
+  ])('%s: --on-accent against --accent-plane reaches 3:1', (_name, selector) => {
     const theme = readTheme(selector)
-    expect(contrast(theme['on-accent'], theme.accent)).toBeGreaterThanOrEqual(3)
+    expect(contrast(theme['on-accent'], theme['accent-plane'])).toBeGreaterThanOrEqual(3)
+  })
+})
+
+// Critique R5 P2: the light theme's AA-safe link amber (L 0.53) read as brown
+// when it filled whole planes. Planes take their own token: a bright signal
+// amber in both themes, with dark lagoon ink on it; links and small text keep
+// --accent.
+describe('amber planes', () => {
+  it.each([
+    ['light', ':root'],
+    ['dark', '.dark'],
+  ])('%s: the plane is a bright amber, not brown', (_name, selector) => {
+    const [L, C, H] = readTheme(selector)['accent-plane']
+    expect(L).toBeGreaterThanOrEqual(0.75)
+    expect(C).toBeGreaterThanOrEqual(0.12)
+    expect(H).toBeGreaterThanOrEqual(70)
+    expect(H).toBeLessThanOrEqual(95)
+  })
+
+  it('light: text on a plane is dark ink, and links keep the deeper amber', () => {
+    const light = readTheme(':root')
+    expect(light['on-accent'][0]).toBeLessThan(0.4)
+    expect(light.accent[0]).toBeLessThan(light['accent-plane'][0])
+  })
+
+  it('fills planes and the primary button with --accent-plane, never --accent', () => {
+    const fills = ['components', 'app'].flatMap((dir) => tsx(dir)).map((f) => ({ f, src: readFileSync(f, 'utf8') }))
+    // A fill that carries text is a plane. (Small glyphs, like the availability
+    // dot, stay --accent: they need 3:1 against the canvas.)
+    for (const { f, src } of fills) {
+      for (const line of src.split('\n').filter((l) => l.includes('text-on-accent'))) {
+        expect(line, f).not.toMatch(/(?<![\w-])bg-accent(?![\w-])/)
+      }
+    }
+    expect(CSS).toMatch(/\.button-primary \{[^}]*bg-accent-plane[^}]*text-on-accent/)
+    expect(CSS).toMatch(/::selection \{[^}]*--accent-plane/)
   })
 })
 

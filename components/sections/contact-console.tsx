@@ -106,7 +106,7 @@ export function ContactConsole() {
         draws; at rest (reduced motion, no support) it is simply there.
       */}
       <div className="reveal-reply grid md:grid-cols-[5fr_auto_7fr]">
-        <div className="on-plane flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
+        <div className="on-plane flex flex-col rounded-t bg-accent-plane p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
           <p className="eyebrow mb-3 text-on-accent">{sectionContent.contact.eyebrow}</p>
           <h2 id="contact-title" className="text-fluid-h2">
             {sectionContent.contact.title}
