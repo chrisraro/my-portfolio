@@ -153,7 +153,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             <RackCard
               project={next}
               code={edgeCode(strip.indexOf(next) + 1, strip.length, next.band)}
-              column={0}
+              index={0}
               labelPrefix={h.next}
             />
           </ul>

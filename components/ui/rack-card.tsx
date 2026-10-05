@@ -5,14 +5,15 @@ import { ProjectShot } from '@/components/ui/project-shot'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { canLinkLive, fullShotFor, projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
+import { cardTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
 interface RackCardProps {
   project: Project
   /** The card's edge code, e.g. "07 / 18 · Sites". */
   code: string
-  /** Position in its row, for the once-only entrance stagger. */
-  column: number
+  /** Position in its tier, for the once-only entrance stagger (its column at 3 and at 4 per row). */
+  index: number
   /** Read before the card's name, e.g. "Next case study", when the card stands for more than itself. */
   labelPrefix?: string
 }
@@ -27,14 +28,18 @@ interface RackCardProps {
  * screen is a flat card from 640px: square, with the reason printed in its
  * text block. Below 640px the cards sit in a scroll-snap strip.
  */
-export function RackCard({ project, code, column, labelPrefix }: RackCardProps) {
+export function RackCard({ project, code, index, labelPrefix }: RackCardProps) {
   const shot = fullShotFor(project)
   const domain = canLinkLive(project) && project.links.live ? extractDomain(project.links.live) : undefined
   const flat = !shot
 
   return (
-    <li className="rack-slot relative min-w-0 shrink-0 snap-start max-sm:w-[78%]">
-      <div className="reveal-stagger" style={{ '--i': column } as CSSProperties}>
+    // --vt-card names the card while a /projects filter re-lays the rack out (.vt-filter).
+    <li
+      className="rack-slot relative min-w-0 shrink-0 snap-start max-sm:w-[78%]"
+      style={{ '--vt-card': cardTransitionName(project.slug) } as CSSProperties}
+    >
+      <div className="reveal-stagger" style={{ '--c3': index % 3, '--c4': index % 4 } as CSSProperties}>
         <Link
           href={projectHref(project)}
           className={cn(
@@ -76,6 +81,7 @@ export function RackCard({ project, code, column, labelPrefix }: RackCardProps) 
                 src={shot}
                 label={project.title}
                 decorative
+                slug={project.slug}
                 sizes="(min-width: 1024px) 260px, (min-width: 640px) 33vw, 78vw"
                 className="aspect-auto h-full"
               />

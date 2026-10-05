@@ -114,7 +114,6 @@ describe('rack stagger', () => {
     const body = stagger.map((r) => r.body).join(';')
     expect(body).toMatch(/timeline-trigger:\s*--card view\(\)/)
     expect(body).toMatch(/animation-trigger:\s*--card play-forwards/)
-    expect(body).toMatch(/animation-delay:\s*calc\(var\(--i, 0\) \* var\(--stagger-card\)\)/)
     const ms = Number(css.match(/--stagger-card:\s*(\d+)ms/)?.[1])
     expect(ms).toBeGreaterThanOrEqual(30)
     expect(ms).toBeLessThanOrEqual(80)
@@ -144,7 +143,32 @@ describe('rack stagger', () => {
     expect(off.map((r) => r.selector).join(' ')).toMatch(/\.reveal-stagger(?![\w-])/)
   })
 
-  it('is on every rack card, numbered by column', () => {
-    expect(readFileSync('components/ui/rack-card.tsx', 'utf8')).toMatch(/className="reveal-stagger" style=\{\{ '--i': column \} as CSSProperties\}/)
+  // Task 3 left the delay on i % 4, which is wrong at three columns.
+  it('staggers by the visible column: three columns from 640px, four from 1024px', () => {
+    const at = (query: string) => stagger.filter((r) => r.ancestors.join(' ').includes(query) && /animation-delay/.test(r.body))
+    const three = at('(min-width: 640px)').filter((r) => !r.ancestors.join(' ').includes('(min-width: 1024px)'))
+    const four = at('(min-width: 1024px)')
+    expect(three.map((r) => r.body).join(';')).toMatch(/animation-delay:\s*calc\(var\(--c3, 0\) \* var\(--stagger-card\)\)/)
+    expect(four.map((r) => r.body).join(';')).toMatch(/animation-delay:\s*calc\(var\(--c4, 0\) \* var\(--stagger-card\)\)/)
+    expect(css).not.toMatch(/var\(--i, 0\) \* var\(--stagger-card\)/)
+  })
+
+  // Task 3 also let cards already on screen at load rise. The trigger now fires
+  // only while a card is entering the viewport, and nothing is filled before
+  // it fires, so a card in view at load (or after a filter) simply sits at rest.
+  it('never plays on a card already in view: entry-only trigger, no backwards fill', () => {
+    const body = stagger.map((r) => r.body).join(';')
+    expect(body).toMatch(/timeline-trigger:\s*--card view\(\) entry 0% entry 100%/)
+    const shorthand = body.match(/animation:\s*reveal-stagger[^;]*/)?.[0] ?? ''
+    expect(shorthand).toContain('reveal-stagger')
+    expect(shorthand).not.toMatch(/(both|backwards)/)
+    expect(body).not.toMatch(/animation-fill-mode:\s*(both|backwards)/)
+  })
+
+  it('is on every rack card, with both column indexes', () => {
+    expect(readFileSync('components/ui/rack-card.tsx', 'utf8')).toMatch(
+      /className="reveal-stagger" style=\{\{ '--c3': index % 3, '--c4': index % 4 \} as CSSProperties\}/,
+    )
+    expect(readFileSync('components/ui/rack-tier.tsx', 'utf8')).toMatch(/index=\{i\}/)
   })
 })

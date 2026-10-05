@@ -1,9 +1,11 @@
 import Image from 'next/image'
+import type { CSSProperties } from 'react'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
 import { ProjectShot } from '@/components/ui/project-shot'
 import { fullShotFor, screenshotsFor } from '@/lib/project-page'
 import { extractDomain } from '@/lib/utils'
+import { shotTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
 // The 3:4 frame is capped so the sticky rail (frame, gap, phone shot) fits a
@@ -33,13 +35,20 @@ export function ProjectScreenshots({ project }: { project: Project }) {
         <ProjectShot
           src={full}
           label={`Screenshot of ${name}`}
+          slug={project.slug}
+          morphTarget
           sizes="(min-width: 1024px) 420px, (min-width: 640px) 352px, calc(100vw - 40px)"
           className={FRAME}
         />
       ) : (
         shots.desktop && (
           <ImageLightbox src={shots.desktop} alt={`Desktop screenshot of ${name}`} className={FRAME}>
-            <span className="block overflow-hidden rounded border border-line bg-panel">
+            {/* The end of the card-to-case-study morph, like ProjectShot's morphTarget. */}
+            <span
+              data-vt-shot={project.slug}
+              style={{ viewTransitionName: shotTransitionName(project.slug) } as CSSProperties}
+              className="block overflow-hidden rounded border border-line bg-panel"
+            >
               {/* alt="" because the button around it carries the description. */}
               <Image
                 src={shots.desktop}

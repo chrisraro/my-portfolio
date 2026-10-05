@@ -104,6 +104,7 @@ function Spread({ project, index, position, total }: { project: Project; index: 
             label={`Screenshot of ${domain ?? project.title}`}
             href={projectHref(project)}
             duplicateLink
+            slug={project.slug}
             sizes="(min-width: 1024px) 272px, (min-width: 640px) 240px, calc(100vw - 40px)"
             className="w-full max-w-[17rem] sm:max-w-none"
           />

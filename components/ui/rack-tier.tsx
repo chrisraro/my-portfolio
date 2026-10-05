@@ -1,5 +1,7 @@
 import { RackCard } from '@/components/ui/rack-card'
+import type { CSSProperties } from 'react'
 import { edgeCode } from '@/lib/board'
+import { tierTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
 interface RackTierProps {
@@ -20,7 +22,12 @@ interface RackTierProps {
 export function RackTier({ heading, projects, order, headingLevel: Heading }: RackTierProps) {
   const id = `rack-${heading.toLowerCase().replace(/\s+/g, '-')}`
   return (
-    <section aria-labelledby={id} className="rack-shelf defer-render-lift min-w-0">
+    <section
+      aria-labelledby={id}
+      className="rack-shelf defer-render-lift min-w-0"
+      // Names the tier heading while a /projects filter re-lays the rack out (.vt-filter).
+      style={{ '--vt-tier': tierTransitionName(heading) } as CSSProperties}
+    >
       <Heading id={id} className="edge-code mb-5 text-sm text-ink sm:mb-8">
         {heading}
         <span className="text-muted"> · {projects.length}</span>
@@ -31,7 +38,7 @@ export function RackTier({ heading, projects, order, headingLevel: Heading }: Ra
             key={project.id}
             project={project}
             code={edgeCode(order.indexOf(project) + 1, order.length, project.band)}
-            column={i % 4}
+            index={i}
           />
         ))}
       </ul>

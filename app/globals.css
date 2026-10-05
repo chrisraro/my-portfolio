@@ -619,12 +619,16 @@
 		}
 		.reveal-postcard { --slide-from: 40px; }
 		/*
-		 * The rack's grid: each card rises its last 16px once, when it first
-		 * enters the viewport, columns --stagger-card apart. A scroll trigger
+		 * The rack's grid: each card rises its last 16px once, as it enters the
+		 * viewport, its visible column --stagger-card after the one before
+		 * (three columns from 640px, four from 1024px). A scroll trigger
 		 * starts a time-based animation (it is not scrubbed, and play-forwards
-		 * never reverses). From 640px only: below it the cards sit in a
-		 * sideways strip, a scroller of their own, whose view() would never
-		 * fire. Without trigger support the cards simply sit at rest.
+		 * never reverses). The trigger fires only while a card is entering,
+		 * and nothing is filled before it fires, so a card already in view at
+		 * load, or after a filter change, never moves. From 640px only: below
+		 * it the cards sit in a sideways strip, a scroller of their own, whose
+		 * view() would never fire. Without trigger support the cards simply
+		 * sit at rest.
 		 */
 		@keyframes reveal-stagger {
 			from { transform: translateY(16px); }
@@ -633,10 +637,13 @@
 		@supports (timeline-trigger: --card view()) {
 			@media (min-width: 640px) {
 				.reveal-stagger {
-					timeline-trigger: --card view();
-					animation: reveal-stagger var(--dur-normal) var(--ease-smooth) both;
-					animation-delay: calc(var(--i, 0) * var(--stagger-card));
+					timeline-trigger: --card view() entry 0% entry 100%;
+					animation: reveal-stagger var(--dur-normal) var(--ease-smooth);
+					animation-delay: calc(var(--c3, 0) * var(--stagger-card));
 					animation-trigger: --card play-forwards;
+				}
+				@media (min-width: 1024px) {
+					.reveal-stagger { animation-delay: calc(var(--c4, 0) * var(--stagger-card)); }
 				}
 			}
 		}
@@ -700,8 +707,44 @@
 .project-shot__frame { content-visibility: auto; }
 /* /ProjectShot */
 
+/*
+ * Catalog view transitions (components/ui/view-transitions.tsx). A /projects
+ * filter change names every card and tier heading (.vt-filter on <html>, for
+ * the length of the change) so they glide from old place to new; a project
+ * link morphs the clicked screenshot into the case study's header shot. The
+ * rest of the page is the root, and cross-fades quickly. Timing is the motion
+ * tokens; the overlay never takes a click.
+ */
+.vt-filter .rack-slot { view-transition-name: var(--vt-card); }
+.vt-filter .rack-shelf > :is(h2, h3) { view-transition-name: var(--vt-tier); }
+[data-vt-shot] { view-transition-class: shot; }
+::view-transition { pointer-events: none; }
+::view-transition-group(*) {
+	animation-duration: var(--dur-normal);
+	animation-timing-function: var(--ease-smooth);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: var(--dur-fast);
+}
+/* A 9:16 card shot and a 3:4 header shot both show the top of the page: keep
+ * the top fixed and crop, never stretch, while the frame changes shape. */
+::view-transition-old(*.shot),
+::view-transition-new(*.shot) {
+	height: 100%;
+	object-fit: cover;
+	object-position: top;
+}
+/* /Catalog view transitions */
+
 @media (prefers-reduced-motion: reduce) {
 	.reveal { animation: none !important; opacity: 1; transform: none; }
+	/* The island already navigates without a transition; this covers any other. */
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation-duration: 0s !important;
+	}
 	:is(.reveal-flap, .reveal-leaf, .reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;

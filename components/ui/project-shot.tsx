@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { CSSProperties } from 'react'
 import { cn } from '@/lib/utils'
+import { shotTransitionName } from '@/lib/view-transition'
 
 interface ProjectShotProps {
   /** The full-page shot, e.g. from fullShotFor(project); the frame shows its top. */
@@ -26,6 +28,17 @@ interface ProjectShotProps {
    * (.lift-card) scales the shot inside it.
    */
   decorative?: boolean
+  /**
+   * The project this shot shows. Marks it (data-vt-shot) as the start of the
+   * card-to-case-study morph: components/ui/view-transitions.tsx names the
+   * clicked one for the length of the transition.
+   */
+  slug?: string
+  /**
+   * The case-study header shot, the end of the morph: it carries the shared
+   * view-transition-name statically. Only one per page.
+   */
+  morphTarget?: boolean
 }
 
 /**
@@ -43,6 +56,8 @@ export function ProjectShot({
   sizes = '(min-width: 1024px) 480px, 100vw',
   decorative = false,
   duplicateLink = false,
+  slug,
+  morphTarget = false,
 }: ProjectShotProps) {
   const linked = Boolean(href) && !decorative
   const classes = cn(
@@ -58,6 +73,12 @@ export function ProjectShot({
   // shot is the first viewport's largest paint. The frame clips the shot (and
   // its hover scale) inside the border; the link around it stays unclipped so
   // the hover shadow can paint outside it.
+  const morph = slug
+    ? {
+        'data-vt-shot': slug,
+        style: morphTarget ? ({ viewTransitionName: shotTransitionName(slug) } as CSSProperties) : undefined,
+      }
+    : {}
   const inner = (
     <span className="project-shot__frame absolute inset-0 overflow-hidden rounded-md">
       <Image src={src} alt="" fill sizes={sizes} quality={50} className="lift-card__shot object-cover object-top" />
@@ -66,7 +87,7 @@ export function ProjectShot({
 
   if (decorative) {
     return (
-      <span aria-hidden="true" className={classes}>
+      <span aria-hidden="true" className={classes} {...morph}>
         {inner}
       </span>
     )
@@ -74,7 +95,7 @@ export function ProjectShot({
 
   if (href && duplicateLink) {
     return (
-      <Link href={href} tabIndex={-1} aria-hidden="true" className={classes}>
+      <Link href={href} tabIndex={-1} aria-hidden="true" className={classes} {...morph}>
         {inner}
       </Link>
     )
@@ -82,14 +103,14 @@ export function ProjectShot({
 
   if (href) {
     return (
-      <Link href={href} aria-label={`${label}, opens project page`} className={classes}>
+      <Link href={href} aria-label={`${label}, opens project page`} className={classes} {...morph}>
         {inner}
       </Link>
     )
   }
 
   return (
-    <div role="img" aria-label={label} className={classes}>
+    <div role="img" aria-label={label} className={classes} {...morph}>
       {inner}
     </div>
   )

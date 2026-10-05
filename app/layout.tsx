@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Anybody, Figtree } from 'next/font/google'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
@@ -7,6 +8,7 @@ import { TopBar } from '@/components/top-bar'
 import { Footer } from '@/components/footer'
 import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
+import { ViewTransitions } from '@/components/ui/view-transitions'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
 import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structured-data'
 
@@ -64,6 +66,11 @@ export default function RootLayout({
               <Footer />
               <ChatWidget />
             </div>
+            {/* Catalog view transitions. It reads the query string, so it sits in its
+             * own Suspense boundary and the static pages around it stay static. */}
+            <Suspense fallback={null}>
+              <ViewTransitions />
+            </Suspense>
           </ToastProvider>
         </ThemeProvider>
       </body>
