@@ -6,12 +6,7 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { Moon, Sun } from 'lucide-react'
 import { availability, heroContent, navigationItems } from '@/lib/data'
-
-// The mark's tile carries the initials, derived rather than retyped.
-const initials = heroContent.name
-  .split(/\s+/)
-  .map((part) => part[0])
-  .join('')
+import { BrandMark } from '@/components/brand-mark'
 
 export function TopBar() {
   const pathname = usePathname()
@@ -95,13 +90,8 @@ export function TopBar() {
           href="/"
           className="col-span-2 inline-flex min-h-[44px] items-center gap-3 justify-self-start text-ink"
         >
-          {/* A small amber plane: the brochure's colour, as a printed tab. */}
-          <span
-            aria-hidden="true"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-sm bg-accent-plane font-display text-sm font-bold text-on-accent [font-variation-settings:'wdth'_75]"
-          >
-            {initials}
-          </span>
+          {/* The brand mark: a two-panel brochure, C and R, the flap unfolding. */}
+          <BrandMark />
           <span className="font-display text-xl font-bold leading-none tracking-[-0.01em] [font-variation-settings:'wdth'_75]">
             {heroContent.name}
           </span>
