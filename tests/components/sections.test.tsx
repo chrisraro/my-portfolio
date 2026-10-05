@@ -42,6 +42,12 @@ const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').r
 describe('Hero', () => {
   const html = renderToStaticMarkup(<Hero />)
 
+  it('renders the AI line from data, in plain text under the title', () => {
+    expect(heroContent.aiLine).toBe('AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n')
+    expect(html).toContain(`>${heroContent.aiLine}</p>`)
+    expect(html.indexOf('</h1>')).toBeLessThan(html.indexOf(heroContent.aiLine))
+  })
+
   // Confirm critique: the proof panel spread its two groups apart (a ~234px
   // void), and at 1440x900 the fold cut the Products heading in half.
   it('stacks the proof panel from the top, and leaves the next heading inside the first viewport', () => {
@@ -298,6 +304,11 @@ describe('Stack', () => {
 
   it('lists every skill under its category', () => {
     for (const s of skills) expect(html).toContain(`>${s.name}<`)
+  })
+
+  it('renders the AI & automation group', () => {
+    expect(html).toContain('>AI &amp; automation<')
+    for (const name of ['Claude Code', 'Codex', 'Qwen Code', 'n8n', 'Groq / LLM APIs']) expect(html).toContain(`>${name}<`)
   })
 })
 

@@ -10,6 +10,11 @@ import type { CaseStudy } from '@/types'
 const REMOVED_THIRD_PARTY_NAMES = ['Coolkicks', 'Rami', 'Frankie']
 
 describe('chat portfolio context', () => {
+  it('names the AI and automation tools', () => {
+    const block = buildPortfolioContext().split('TECHNICAL SKILLS:')[1].split('WORK EXPERIENCE:')[0]
+    expect(block).toContain('AI & automation: Claude Code, Codex, Qwen Code, n8n, Groq / LLM APIs')
+  })
+
   const context = buildPortfolioContext()
   const projectsBlock = context.split('PROJECTS')[1].split('TECHNICAL SKILLS')[0]
   const skillsBlock = context.split('TECHNICAL SKILLS:')[1].split('WORK EXPERIENCE:')[0]

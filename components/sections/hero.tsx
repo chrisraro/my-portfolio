@@ -44,6 +44,7 @@ export function Hero() {
               </span>
             ))}
           </h1>
+          <p className="edge-code mt-4 text-sm">{heroContent.aiLine}</p>
           <div className="hero-rise">
             <p className="text-lede mt-5 max-w-[34rem]">{heroContent.lede}</p>
             <p className="edge-code mt-4 text-sm">{heroContent.specialism}</p>
@@ -73,13 +74,15 @@ export function Hero() {
             alt={heroContent.name}
             className="absolute inset-0 h-full w-full focus-visible:outline-offset-[-6px]"
           >
+            {/* The square photo is cover-scaled to the panel's HEIGHT (~640px at 768 to 1440), not its ~300px width, so `sizes` names that cover width. */}
             {/* alt="" because the button around it is labelled with the same name. */}
             <Image
               src={PORTRAIT}
               alt=""
               fill
               priority
-              sizes="(min-width: 768px) 280px, calc(100vw - 40px)"
+              sizes="(min-width: 768px) 700px, calc(100vw - 40px)"
+              quality={85}
               className="object-cover"
             />
           </ImageLightbox>

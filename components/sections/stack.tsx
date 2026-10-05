@@ -13,7 +13,7 @@ export function Stack() {
   return (
     <section id="stack" aria-labelledby="stack-title" className="defer-render mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="stack-title" eyebrow={sectionContent.stack.eyebrow} title={sectionContent.stack.title} />
-      <dl className="grid gap-x-10 gap-y-10 border-t border-line pt-6 sm:grid-cols-3">
+      <dl className="grid gap-x-10 gap-y-10 border-t border-line pt-6 sm:grid-cols-2 lg:grid-cols-4">
         {categories.map((category) => (
           <div key={category}>
             <dt className="edge-code mb-4 text-sm text-ink">{category}</dt>

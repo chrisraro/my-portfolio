@@ -36,6 +36,11 @@ describe('structured data', () => {
     expect(person.address).toMatchObject({ '@type': 'PostalAddress', addressLocality: 'Naga City', addressCountry: 'PH' })
   })
 
+  it('lists the AI and automation tools in knowsAbout', () => {
+    const known = personSchema().knowsAbout as string[]
+    for (const tool of ['Claude Code', 'Codex', 'Qwen Code', 'n8n', 'Groq / LLM APIs', 'Render']) expect(known).toContain(tool)
+  })
+
   it('offers every service, founded by the Person', () => {
     const service = serviceSchema()
     expect(service['@type']).toBe('ProfessionalService')

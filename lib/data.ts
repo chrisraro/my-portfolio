@@ -32,6 +32,8 @@ export const heroContent = {
   name: 'Christian Raro',
   title: 'Full-stack developer',
   location: 'Naga City',
+  // Plain text under the title; the tools match the AI & automation skills.
+  aiLine: 'AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n',
   lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
   // reading it eagerly here would hit the temporal dead zone at module load.
@@ -374,10 +376,16 @@ export const skills: Skill[] = [
   { id: 'php', name: 'PHP', icon: 'php', category: 'Backend' },
   { id: 'postgresql', name: 'PostgreSQL', icon: 'postgresql', category: 'Backend' },
   { id: 'supabase', name: 'Supabase', icon: 'supabase', category: 'Backend' },
+  { id: 'claude-code', name: 'Claude Code', icon: 'claude-code', category: 'AI & automation' },
+  { id: 'codex', name: 'Codex', icon: 'codex', category: 'AI & automation' },
+  { id: 'qwen-code', name: 'Qwen Code', icon: 'qwen-code', category: 'AI & automation' },
+  { id: 'n8n', name: 'n8n', icon: 'n8n', category: 'AI & automation' },
+  { id: 'groq-llm-apis', name: 'Groq / LLM APIs', icon: 'groq-llm-apis', category: 'AI & automation' },
   { id: 'wordpress', name: 'WordPress', icon: 'wordpress', category: 'Tools & DevOps' },
   { id: 'woocommerce', name: 'WooCommerce', icon: 'woocommerce', category: 'Tools & DevOps' },
   { id: 'docker', name: 'Docker', icon: 'docker', category: 'Tools & DevOps' },
   { id: 'vercel', name: 'Vercel', icon: 'vercel', category: 'Tools & DevOps' },
+  { id: 'render', name: 'Render', icon: 'render', category: 'Tools & DevOps' },
   { id: 'git', name: 'Git', icon: 'git', category: 'Tools & DevOps' },
 ]
 
