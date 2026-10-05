@@ -173,6 +173,10 @@
 		font-weight: 800;
 		font-variant-numeric: tabular-nums;
 	}
+	/* The hero's two-point band: each figure owns half the back panel, so it is set larger. */
+	.text-numeral-lg {
+		font-size: clamp(3rem, 0.5rem + 7vw, 8.5rem);
+	}
 	.text-lede {
 		font-size: 1.1875rem;
 		line-height: 1.55;

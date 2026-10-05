@@ -4,7 +4,7 @@ import { alt, size } from '@/app/opengraph-image'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
-import { fullShotFor, isEmbeddable } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
 
@@ -80,9 +80,15 @@ describe('/projects/[slug]', () => {
     expect(render('connecta-ph')).toContain('aria-label="Screenshot of ')
   })
 
-  it('offers a live preview exactly where the site can be framed', () => {
+  it('offers a live preview on every project a visitor can open: live where it frames, a capture elsewhere', () => {
     for (const p of projects) {
-      expect(render(p.slug).includes('aria-haspopup="dialog"'), p.slug).toBe(isEmbeddable(p))
+      const html = render(p.slug)
+      expect(html.includes('aria-haspopup="dialog"'), p.slug).toBe(canLinkLive(p))
+      if (canLinkLive(p)) expect(html, p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
+    }
+    // The ones Christian named: Giya, Connecta PH, the WordPress sites, staging Eastwind.
+    for (const slug of ['giya', 'connecta-ph', 'el-nido-guide-ph', 'eastwind-beach-villas']) {
+      expect(render(slug), slug).toContain('data-preview="capture"')
     }
   })
 

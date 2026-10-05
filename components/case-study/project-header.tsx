@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { LivePreview } from '@/components/ui/live-preview'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { caseStudyContent, paymentGateways, sectorNames } from '@/lib/data'
-import { canLinkLive, isEmbeddable, liveLinkLabel } from '@/lib/project-page'
+import { canLinkLive, liveLinkLabel, previewFor } from '@/lib/project-page'
 import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -26,6 +26,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
     gateways.length ? `Payments: ${gateways.join(', ')}` : undefined,
   ].filter((m): m is string => Boolean(m))
   const live = canLinkLive(project) ? project.links.live : undefined
+  const preview = previewFor(project)
 
   return (
     <header className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 md:pt-8">
@@ -83,9 +84,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
               Start a project
               <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
             </Link>
-            {live && isEmbeddable(project) && (
-              <LivePreview url={live} title={project.title} staging={project.status === 'staging'} />
-            )}
+            {preview && <LivePreview {...preview} />}
             {live && (
               <a
                 href={live}

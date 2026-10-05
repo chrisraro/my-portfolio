@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { heroContent, paymentGateways, projects } from '@/lib/data'
+import { heroContent, projects } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
 
 describe('splitProofPoint', () => {
@@ -15,10 +15,9 @@ describe('splitProofPoint', () => {
   })
 
   it('shows numerals that agree with the data', () => {
-    const [products, shipped, gateways] = heroContent.proofPoints.map((p) => Number(splitProofPoint(p).value))
+    const [products, shipped] = heroContent.proofPoints.map((p) => Number(splitProofPoint(p).value))
     expect(products).toBe(projects.filter((p) => p.band === 'Products').length)
     expect(shipped).toBe(projects.filter((p) => p.status !== 'staging').length)
-    expect(gateways).toBe(paymentGateways.length)
   })
 
   it('refuses a point that does not start with a number word', () => {

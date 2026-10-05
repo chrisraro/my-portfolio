@@ -59,6 +59,10 @@ describe('Hero', () => {
     const grid = html.match(/<ul class="([^"]*grid-cols-2[^"]*)"/)?.[1] ?? ''
     expect(grid).toContain('md:flex-1')
     expect(grid).toContain('md:auto-rows-fr')
+    // Two proof points: side by side when stacked, one above the other in the
+    // narrow back panel from 768px, each owning half its height, numerals large.
+    expect(grid).toContain('md:grid-cols-1')
+    expect(html.match(/class="text-numeral text-numeral-lg/g)).toHaveLength(heroContent.proofPoints.length)
     const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
     expect(section).toContain('md:pb-[72px]')
   })
@@ -144,9 +148,11 @@ describe('Products', () => {
     })
   })
 
-  it('offers a live preview exactly where the site can be framed', () => {
+  it('offers a live preview on every product a visitor can open: live where it frames, a capture elsewhere', () => {
     products.forEach((project, i) => {
-      expect(spreads[i].includes('aria-haspopup="dialog"'), project.slug).toBe(isEmbeddable(project))
+      expect(spreads[i].includes('aria-haspopup="dialog"'), project.slug).toBe(canLinkLive(project))
+      if (!canLinkLive(project)) return
+      expect(spreads[i], project.slug).toContain(`data-preview="${isEmbeddable(project) ? 'live' : 'capture'}"`)
     })
   })
 })

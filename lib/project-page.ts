@@ -51,6 +51,29 @@ export function isEmbeddable(project: Project): boolean {
   return flags[project.slug] === true && canLinkLive(project)
 }
 
+/** What the "Live preview" dialog shows: plain props a server component hands LivePreview. */
+export interface PreviewSource {
+  url: string
+  title: string
+  staging: boolean
+  /** Set when the site refuses framing: the dialog shows these shots instead of an iframe. */
+  capture?: { desktop: string; mobile?: string }
+}
+
+// Every project a visitor can open gets a preview. A site that permits framing
+// is shown live; any other is shown as its capture (the full-page shot, else
+// the desktop one), so the dialog never opens on a refused frame.
+export function previewFor(project: Project): PreviewSource | undefined {
+  const url = project.links.live
+  if (!url || !canLinkLive(project)) return undefined
+  const base = { url, title: project.title, staging: project.status === 'staging' }
+  if (isEmbeddable(project)) return base
+  const shots = screenshotsFor(project)
+  const desktop = fullShotFor(project) ?? shots.desktop
+  if (!desktop) return undefined
+  return { ...base, capture: shots.mobile ? { desktop, mobile: shots.mobile } : { desktop } }
+}
+
 export function nextInOrder(order: readonly string[], current: string): string | undefined {
   const i = order.indexOf(current)
   if (i === -1 || order.length < 2) return undefined

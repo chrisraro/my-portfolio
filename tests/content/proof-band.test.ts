@@ -7,8 +7,13 @@ import {
 } from '@/lib/data'
 
 describe('hero proof band', () => {
-  it('states four proof points', () => {
-    expect(heroContent.proofPoints).toHaveLength(4)
+  it('states two proof points: products and shipped projects', () => {
+    expect(heroContent.proofPoints).toHaveLength(2)
+  })
+
+  // Christian asked for the gateway and NFC labels to come off the hero.
+  it('makes no payment-gateway or NFC claim in the hero', () => {
+    for (const point of heroContent.proofPoints) expect(point).not.toMatch(/gateway|NFC/i)
   })
 
   it('claims as many products as the inventory holds', () => {
@@ -23,29 +28,19 @@ describe('hero proof band', () => {
     expect(heroContent.proofPoints[1]).toBe('Seventeen projects shipped')
   })
 
-  it('claims as many payment gateways as are actually integrated', () => {
-    expect(paymentGateways).toHaveLength(4)
-    expect(heroContent.proofPoints[2]).toBe('Four payment gateways')
+  it('claims no years-of-experience figure', () => {
+    const blob = JSON.stringify(heroContent)
+    expect(blob).not.toMatch(/\d+\+?\s*years?/i)
   })
+})
 
-  // The count above compares two hand-typed values; this is what makes the claim
-  // real. Each gateway must appear on a project that actually integrated it.
-  it('attaches every claimed gateway to a project that used it', () => {
+// The gateway list is no longer a hero claim, but project pages still print it.
+describe('payment gateways', () => {
+  it('attaches every listed gateway to a project that used it', () => {
     const onProjects = projects.flatMap((p) => p.technologies)
     for (const gateway of paymentGateways) {
       expect(onProjects, `${gateway} is on no project`).toContain(gateway)
     }
-  })
-
-  it('claims two NFC card systems and has the project to back it', () => {
-    const nfc = projects.filter((p) => p.technologies.includes('NFC'))
-    expect(nfc).toHaveLength(2)
-    expect(heroContent.proofPoints[3]).toBe('Two NFC card systems')
-  })
-
-  it('claims no years-of-experience figure', () => {
-    const blob = JSON.stringify(heroContent)
-    expect(blob).not.toMatch(/\d+\+?\s*years?/i)
   })
 })
 

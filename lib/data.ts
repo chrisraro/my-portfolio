@@ -63,8 +63,6 @@ export const heroContent = {
   proofPoints: [
     'Four products of my own',
     'Seventeen projects shipped',
-    'Four payment gateways',
-    'Two NFC card systems',
   ],
 }
 

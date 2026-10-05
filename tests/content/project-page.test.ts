@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { caseStudyContent, projects, sectorNames } from '@/lib/data'
-import { canLinkLive, fullShotFor, isEmbeddable, liveLinkLabel, nextInOrder, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, isEmbeddable, liveLinkLabel, nextInOrder, previewFor, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
 import { buildProjectPageTitle } from '@/lib/site-metadata'
 import type { Project, ProjectStatus } from '@/types'
 
@@ -94,6 +94,29 @@ describe('preview assets and embeddability', () => {
     expect(isEmbeddable(withStatus('internal', 'https://x.test'))).toBe(false)
     expect(isEmbeddable({ ...withStatus('live', 'https://x.test'), slug: 'unknown-slug' })).toBe(false)
     expect(isEmbeddable(withStatus('live'))).toBe(false)
+  })
+
+  it('offers a preview for every project a visitor can open, and none for the rest', () => {
+    for (const p of projects) {
+      expect(previewFor(p) !== undefined, p.slug).toBe(canLinkLive(p))
+    }
+    expect(previewFor(withStatus('auth-gated', 'https://x.test'))).toBeUndefined()
+    expect(previewFor(withStatus('live'))).toBeUndefined()
+  })
+
+  it('frames an embeddable site live and shows a capture of every other one', () => {
+    for (const p of projects.filter((p) => canLinkLive(p))) {
+      const preview = previewFor(p)!
+      expect(preview.url, p.slug).toBe(p.links.live)
+      expect(preview.title, p.slug).toBe(p.title)
+      expect(preview.staging, p.slug).toBe(p.status === 'staging')
+      if (isEmbeddable(p)) {
+        expect(preview.capture, p.slug).toBeUndefined()
+      } else {
+        expect(preview.capture?.desktop, p.slug).toBe(fullShotFor(p) ?? screenshotsFor(p).desktop)
+        expect(preview.capture?.mobile, p.slug).toBe(screenshotsFor(p).mobile)
+      }
+    }
   })
 
   it('reads the recorded flag for a linkable project', () => {

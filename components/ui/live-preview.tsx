@@ -4,18 +4,23 @@ import { useState, useEffect, useRef, useId, useCallback } from 'react'
 import { createPortal, flushSync } from 'react-dom'
 import * as m from 'motion/react-m'
 import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
-import { ExternalLink, Monitor, Smartphone, X } from 'lucide-react'
+import { ArrowUpRight, ExternalLink, Monitor, Smartphone, X } from 'lucide-react'
 import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { cn } from '@/lib/utils'
 
 interface LivePreviewProps {
-  /** The live site to embed. Only pass one that isEmbeddable() approved. */
+  /** The live site. Framed only when there is no `capture`, i.e. isEmbeddable() approved it. */
   url: string
   /** Project name, used in the trigger, dialog title and iframe title. */
   title: string
   /** The embedded site is a staging build. */
   staging?: boolean
+  /**
+   * The site refuses framing (X-Frame-Options / frame-ancestors): show these
+   * shots in the same dialog instead of an iframe. From previewFor().
+   */
+  capture?: { desktop: string; mobile?: string }
 }
 
 type Device = 'desktop' | 'mobile'
@@ -32,6 +37,13 @@ const STATUS_TEXT: Record<LoadState, string> = {
   loading: 'Loading preview…',
   loaded: 'Preview loaded',
   failed: "This site can't be previewed here. Open it in a new tab.",
+}
+
+// Capture mode: the shot is a local file, so it is announced as what it is.
+const CAPTURE_TEXT: Record<LoadState, string> = {
+  loading: 'Loading capture…',
+  loaded: 'Showing a capture of the site',
+  failed: "The capture didn't load. Open the site in a new tab.",
 }
 
 // A frame that has not loaded is tabIndex -1 (and hidden): the Tab cycle skips it.
@@ -61,7 +73,9 @@ function inertAllBut(keep: Element[]): Element[] {
 }
 
 /**
- * A "Live preview" button that opens the real site in a sandboxed iframe.
+ * A "Live preview" button that opens the real site in a sandboxed iframe or,
+ * for a site that refuses framing, its capture: the full-page shot in a
+ * scrollable frame, with a note saying so and a link to the live site.
  *
  * The dialog is portalled to <body>, and the rest of the page is made inert
  * while it is open (aria-modal alone does not stop browse mode), except the
@@ -72,7 +86,7 @@ function inertAllBut(keep: Element[]): Element[] {
  * swaps its width once at the end, so layout runs once rather than per frame.
  * Under reduced motion the width swaps instantly and the dialog only fades.
  */
-export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
+export function LivePreview({ url, title, staging = false, capture }: LivePreviewProps) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [device, setDevice] = useState<Device>('desktop')
@@ -107,9 +121,9 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
       setAnnounced('')
       return
     }
-    const timer = window.setTimeout(() => setAnnounced(STATUS_TEXT[load]), 100)
+    const timer = window.setTimeout(() => setAnnounced((capture ? CAPTURE_TEXT : STATUS_TEXT)[load]), 100)
     return () => window.clearTimeout(timer)
-  }, [open, load])
+  }, [open, load, capture])
 
   // A frame that never fires load (blocked, offline) is reported as failed.
   useEffect(() => {
@@ -237,6 +251,11 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
               <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
                 <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
                   Live preview: {title}
+                  {capture && (
+                    <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
+                      Capture
+                    </span>
+                  )}
                   {staging && (
                     <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
                       Staging site
@@ -290,6 +309,22 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                 </button>
               </div>
 
+              {capture && (
+                <p className="border-b border-line px-4 py-2 text-sm text-muted-strong">
+                  {"This site doesn't allow embedding, so this is a capture of it. "}
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[44px] items-center gap-1 font-medium text-accent hover:underline sm:min-h-0"
+                  >
+                    Open the live site
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </a>
+                </p>
+              )}
+
               <div className="relative flex min-h-[60vh] flex-1 justify-center bg-canvas p-3">
                 <div
                   ref={frameRef}
@@ -298,28 +333,57 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                     device === 'mobile' ? 'w-full max-w-[390px]' : 'w-full',
                   )}
                 >
-                  {load !== 'loaded' && (
-                    <p
-                      aria-hidden="true"
-                      className={cn(
-                        'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
-                        load === 'failed' ? 'text-ink' : 'text-muted',
+                  {capture ? (
+                    <>
+                      {load === 'failed' && (
+                        <p
+                          aria-hidden="true"
+                          className="absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm text-ink"
+                        >
+                          {CAPTURE_TEXT.failed}
+                        </p>
                       )}
-                    >
-                      {STATUS_TEXT[load]}
-                    </p>
+                      <div
+                        role="region"
+                        aria-label={`Capture of ${title}`}
+                        tabIndex={0}
+                        className="relative h-full overflow-y-auto overscroll-contain bg-panel"
+                      >
+                        <img
+                          src={device === 'mobile' && capture.mobile ? capture.mobile : capture.desktop}
+                          alt={`${device === 'mobile' && capture.mobile ? 'Mobile' : 'Desktop'} capture of ${title}`}
+                          onLoad={() => setLoad('loaded')}
+                          onError={() => setLoad('failed')}
+                          className="block h-auto w-full"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {load !== 'loaded' && (
+                        <p
+                          aria-hidden="true"
+                          className={cn(
+                            'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
+                            load === 'failed' ? 'text-ink' : 'text-muted',
+                          )}
+                        >
+                          {STATUS_TEXT[load]}
+                        </p>
+                      )}
+                      <iframe
+                        src={url}
+                        title={`Live preview of ${title}`}
+                        sandbox="allow-scripts allow-same-origin allow-popups"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        tabIndex={load === 'loaded' ? undefined : -1}
+                        aria-hidden={load === 'loaded' ? undefined : 'true'}
+                        onLoad={() => setLoad('loaded')}
+                        className={cn('relative h-full w-full bg-panel', load !== 'loaded' && 'opacity-0')}
+                      />
+                    </>
                   )}
-                  <iframe
-                    src={url}
-                    title={`Live preview of ${title}`}
-                    sandbox="allow-scripts allow-same-origin allow-popups"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                    tabIndex={load === 'loaded' ? undefined : -1}
-                    aria-hidden={load === 'loaded' ? undefined : 'true'}
-                    onLoad={() => setLoad('loaded')}
-                    className={cn('relative h-full w-full bg-panel', load !== 'loaded' && 'opacity-0')}
-                  />
                 </div>
               </div>
               <p role="status" className="sr-only">
@@ -339,6 +403,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
         ref={triggerRef}
         type="button"
         aria-haspopup="dialog"
+        data-preview={capture ? 'capture' : 'live'}
         onClick={openPreview}
         className="inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink transition-colors hover:border-accent hover:text-accent"
       >

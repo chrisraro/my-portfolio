@@ -4,11 +4,13 @@ import { splitProofPoint } from '@/lib/proof'
 import { cn } from '@/lib/utils'
 
 // The hero's back panel: each proof point owns one cell, a large plain numeral
-// over its label. Screen readers hear the original sentence ("Four payment
-// gateways"), not a bare "4"; the numeral and label are visual only.
+// over its label. Two points sit side by side when the hero stacks, and one
+// above the other in the narrow back panel from 768px, each owning half its
+// height. Screen readers hear the original sentence ("Four products of my
+// own"), not a bare "4"; the numeral and label are visual only.
 export function ProofBand({ className }: { className?: string }) {
   return (
-    <ul className={cn('grid grid-cols-2 gap-x-6 gap-y-6', className)}>
+    <ul className={cn('grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-1', className)}>
       {heroContent.proofPoints.map((point, i) => {
         const { value, label } = splitProofPoint(point)
         return (
@@ -18,10 +20,10 @@ export function ProofBand({ className }: { className?: string }) {
             style={{ '--i': i } as CSSProperties}
           >
             <span className="sr-only">{point}</span>
-            <span aria-hidden="true" className="text-numeral text-ink">
+            <span aria-hidden="true" className="text-numeral text-numeral-lg text-ink">
               {value}
             </span>
-            <span aria-hidden="true" className="mt-1.5 text-sm leading-snug text-muted-strong">
+            <span aria-hidden="true" className="mt-2 text-base leading-snug text-muted-strong">
               {label}
             </span>
           </li>

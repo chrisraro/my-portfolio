@@ -280,7 +280,7 @@ first layout (`tests/design/performance.test.ts`).
 - **Display, read pages** (800, wdth 75, `clamp(2.75rem, 2rem + 3.5vw, 5rem)`, 0.92): `.text-page-h1` on `/projects`, project pages and the 404.
 - **Headline** (750, wdth 75, `clamp(2rem, 1.5rem + 2.2vw, 3.5rem)`, 0.95): `.text-fluid-h2`, section titles and product names on their flaps.
 - **Title** (700, wdth 85, 1.5rem, 1.05): `.text-title`, card names, h3s, case-study section headings.
-- **Numeral** (800, wdth 75, `clamp(2.5rem, 2rem + 2vw, 4rem)`, tabular): `.text-numeral`, the hero's proof band. Plain numerals ("4"), never zero-padded, never counted up.
+- **Numeral** (800, wdth 75, `clamp(2.5rem, 2rem + 2vw, 4rem)`, tabular): `.text-numeral`, the hero's proof band; `.text-numeral-lg` (`clamp(3rem, 0.5rem + 7vw, 8.5rem)`) sets its two figures, which sit side by side when stacked and one above the other from 768px, each owning half the back panel. Plain numerals ("4"), never zero-padded, never counted up.
 - **Lede** (Figtree 400, 1.1875rem, 1.55): `.text-lede`.
 - **Body** (Figtree 400, 1rem, 1.6): prose held to about 60 to 70ch.
 - **Label** (600, wdth 100, 0.8125rem, 0.04em, tabular, sentence case): `.eyebrow`, in `muted` (in `on-accent` on a plane).
@@ -422,7 +422,7 @@ moves by transform only, so the server HTML is the finished rack.
 ### Product Spread (signature)
 Each product is an open fold-out spread: an amber flap (edge code, name in
 headline type, summary, status pill) joined at a crease to a paper leaf
-(description, "Live preview" when embeddable, "Read more", the domain, and a 3:4
+(description, "Live preview" wherever the site is public, "Read more", the domain, and a 3:4
 `ProjectShot`). Flaps alternate sides. The spread sits settled: nothing about it
 moves with scroll (a scrubbed flap and leaf left the crease seam out of line).
 On a fine pointer, hovering the spread tilts the flap 4deg on its hinge,
@@ -441,8 +441,8 @@ the page's scroll (`tests/design/catalog-motion.test.ts` holds this).
 
 ### LivePreview (signature)
 `components/ui/live-preview.tsx` (client). A secondary "Live preview" button,
-shown only where `isEmbeddable(project)` is true (from `lib/embeddable.json`),
-opens a dialog portalled to `<body>`: canvas scrim at 90%, a 10px paper dialog
+shown on every project a visitor can open (`previewFor(project)` in
+`lib/project-page.ts`, which passes plain props from the server), opens a dialog portalled to `<body>`: canvas scrim at 90%, a 10px paper dialog
 with the Overlay shadow, a title (with a "Staging site" tag for staging), a
 Desktop / Mobile toggle (`aria-pressed`), an "Open site in a new tab" link, and
 Close. Every other child of `<body>` is made inert; focus moves to Close, Tab
@@ -450,7 +450,12 @@ cycles inside, Escape and the scrim dismiss, focus returns to the trigger. The
 iframe is sandboxed (`allow-scripts allow-same-origin allow-popups`, no forms),
 hidden and out of the tab order until it loads; after 7.2s (crawl × 6) it is
 called failed and the new-tab link becomes the amber fill. A polite status
-region announces loading, loaded and failed. Motion: `AnimatePresence
+region announces loading, loaded and failed. Capture mode: a site that
+refuses framing (`isEmbeddable` false, from `lib/embeddable.json`) shows its
+full-page shot instead, in a named, keyboard-scrollable region in the same
+dialog, with a "Capture" tag on the title and a note under the header ("This
+site doesn't allow embedding, so this is a capture of it. Open the live site");
+the Mobile toggle switches to the `-mobile` shot. Motion: `AnimatePresence
 mode="wait"`; the scrim fades and the dialog rises 16px at normal/smooth, and
 exits at fast. The width toggle squeezes the frame with a WAAPI `scaleX` (token
 duration and easing) and swaps the width once at the end. Under reduced motion

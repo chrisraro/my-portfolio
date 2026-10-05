@@ -14,7 +14,7 @@ operators, restaurants, review centres), deciding whether to hire; engineering
 hiring managers second.
 Action: Start a project (`#contact`); secondary: Résumé, View work, Live preview.
 Proof: four products of his own, 18 projects each with a still screenshot (or an honest printed tag),
-four payment gateways, six case studies, six on-site photos, four attributed
+six case studies, six on-site photos, four attributed
 testimonials. Every claim derives from `lib/data.ts` / `lib/case-studies.ts`.
 Constraints: WCAG 2.2 AA; status never by colour alone (`StatusBadge`); green
 only for live; nothing auto-moves longer than 5 s; CSS-first motion that is
@@ -64,7 +64,8 @@ n8n") with its proof under it ("In use:" and one linked item per line: this
 site's assistant on Groq; the Connecta PH case study); specialism line; CTA row: primary "Start a project" (lagoon fill, amber text,
 arrow) plus "Résumé" as an on-accent outline button. Middle panel (0.85fr): the
 portrait, full bleed, hairline crease on each side. Right panel (0.85fr): `panel`
-paper, four proof points as large numerals over labels, then the stack chips,
+paper, two proof points (products, projects shipped) as large numerals over
+labels, one above the other, each owning half the panel, then the stack chips,
 stacked from the top (no void between them).
 Dashed fold creases (1px gradient-dashed spans) separate the panels. The hero closes on 72px (not the
 section's 112px), so the Products eyebrow and heading sit whole above the

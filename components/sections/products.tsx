@@ -8,7 +8,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
-import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable, projectHref } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, hasFullShot, previewFor, projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -26,6 +26,7 @@ function Spread({ project, index, code }: { project: Project; index: number; cod
   const live = canLinkLive(project) ? project.links.live : undefined
   const domain = live ? extractDomain(live) : undefined
   const titleId = `product-${project.slug}`
+  const preview = previewFor(project)
 
   const flapStyle = {
     '--hinge': flapRight ? 'left' : 'right',
@@ -71,9 +72,7 @@ function Spread({ project, index, code }: { project: Project; index: number; cod
         <div className="flex min-w-0 flex-col">
           <p className="max-w-[60ch] leading-relaxed text-muted-strong">{project.description}</p>
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-auto sm:pt-6">
-            {isEmbeddable(project) && live && (
-              <LivePreview url={live} title={project.title} staging={project.status === 'staging'} />
-            )}
+            {preview && <LivePreview {...preview} />}
             <Link
               href={projectHref(project)}
               className="button-label inline-flex min-h-[44px] items-center gap-2 text-ink hover:text-accent"

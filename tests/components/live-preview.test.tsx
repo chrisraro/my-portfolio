@@ -16,6 +16,17 @@ describe('LivePreview markup', () => {
     expect(html).toContain('aria-haspopup="dialog"')
     expect(html).not.toContain('<iframe')
     expect(html).not.toContain('role="dialog"')
+    expect(html).toContain('data-preview="live"')
+  })
+
+  it('marks a capture-mode trigger, with the same name and popup', () => {
+    const capture = renderToStaticMarkup(
+      <LivePreview url="https://giya.ph" title="Giya" capture={{ desktop: '/a-full.webp', mobile: '/a-mobile.png' }} />,
+    )
+    expect(capture).toContain('data-preview="capture"')
+    expect(capture).toContain('aria-haspopup="dialog"')
+    expect(capture).toContain('<span class="sr-only"> of Giya</span>')
+    expect(capture).not.toContain('<img')
   })
 })
 
@@ -83,7 +94,7 @@ describe('LivePreview source', () => {
     expect(source).toContain('<p role="status" className="sr-only">')
     // Mounted empty, filled a tick later, so the first message is announced.
     expect(source).toContain('{announced}')
-    expect(source).toMatch(/setAnnounced\(STATUS_TEXT\[load\]\)/)
+    expect(source).toContain('setAnnounced((capture ? CAPTURE_TEXT : STATUS_TEXT)[load])')
     expect(source).toContain("loading: 'Loading preview…'")
     expect(source).toContain("loaded: 'Preview loaded'")
   })
@@ -100,6 +111,19 @@ describe('LivePreview source', () => {
     expect(source).toContain('Open site in a new tab')
     expect(source).toContain('(opens in a new tab)')
     expect(source).toContain('Staging site')
+  })
+
+  it('shows a capture, not an iframe, for a site that refuses framing, and says so', () => {
+    expect(source).toMatch(/\{capture \? \(/)
+    expect(source).toContain("This site doesn't allow embedding, so this is a capture of it.")
+    expect(source).toContain('Open the live site')
+    // The capture scrolls inside a named, keyboard-reachable region.
+    expect(source).toMatch(/role="region"\s+aria-label=\{`Capture of \$\{title\}`\}\s+tabIndex=\{0\}/)
+    // The mobile toggle switches to the mobile shot where there is one.
+    expect(source).toContain("device === 'mobile' && capture.mobile ? capture.mobile : capture.desktop")
+    expect(source).toContain("loading: 'Loading capture…'")
+    expect(source).toContain('(capture ? CAPTURE_TEXT : STATUS_TEXT)[load]')
+    expect(source).toContain('Capture')
   })
 
   it('uses tokens only: no green, no dark: pairs', () => {
