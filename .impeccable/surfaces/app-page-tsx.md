@@ -64,9 +64,11 @@ the grid, about 640px tall. Front panel (1.3fr): a full magenta plane; eyebrow
 specialism line; CTA row: primary "Start a project" (lagoon fill, magenta text,
 arrow) plus "Résumé" as an on-accent outline button. Middle panel (0.85fr): the
 portrait, full bleed, hairline crease on each side. Right panel (0.85fr): `panel`
-paper, four proof points as large numerals over labels, plus the stack chips.
-Dashed SVG fold creases separate the panels. Under the fold line the first rack
-tier's card tops peek into view (about 80px), inviting the scroll. Primary action
+paper, four proof points as large numerals over labels, then the stack chips,
+stacked from the top (no void between them).
+Dashed fold creases (1px gradient-dashed spans) separate the panels. The hero closes on 72px (not the
+section's 112px), so the Products eyebrow and heading sit whole above the
+fold at 1440×900, inviting the scroll. Primary action
 sits in the front panel at roughly y 520.
 
 FORM: Lobby Rack, candidate 4 of 7, seed `f1d5d2c7`, assigned and acknowledged.
@@ -173,7 +175,7 @@ New section copy (case-study strip heading, rack tier labels) goes to
 - Radius: paper is square-ish. Cards and panels 6px, buttons 6px, chips 999px
   (rack tags), dialog 10px. Postcards 2px.
 - Borders: 1px `line` hairlines; folds are 1px dashed `line-strong` creases
-  (`stroke-dasharray: 6 5`). The rack lip is a 2px `line-strong` rule with a
+  (6 on, 5 off, a repeating gradient on a 1px span). The rack lip is a 2px `line-strong` rule with a
   12px `panel` ledge under it. Perforation: 2px dotted `line-strong` with 10px
   half-circle notches at each end (radial mask).
 - Surfaces: canvas ground; `panel` paper; magenta planes; nothing else.
@@ -195,11 +197,13 @@ New section copy (case-study strip heading, rack tier labels) goes to
    then "Client work"). Each group is a tier: tier label as an edge code, a
    rack lip, and pocketed cards (4 per row at 1024px, 3 at 768px, a
    horizontal scroll-snap strip with 78% card width below 640px). Card: 9:16
-   portrait, top 44% above the lip shows edge code, name, `StatusBadge`,
-   domain; the rest is a **ScrollPreview** sunk in the pocket. Whole card links
-   to `/projects/<slug>`; no LivePreview in the rack (one interactive target per
-   card). Auth-gated / internal: the pocket holds a printed tag
-   (`caseStudyContent.noPreview` copy). Staging: a diagonal "Staging" tag on the
+   portrait; the pocket shows its top 9/16 (a square): the 44% text block
+   (edge code, name, `StatusBadge`, domain) and a sliver of the **ScrollPreview**
+   with its "scroll" cue, so a preview is seen at rest; the rest is sunk. Whole
+   card links to `/projects/<slug>`; no LivePreview in the rack (one interactive
+   target per card). Auth-gated / internal: a flat card that fits its pocket
+   whole, never lifts, and prints its `caseStudyContent.noPreview` tag in the
+   visible top. Staging: a diagonal "Staging" tag on the
    top. On touch widths cards are not sunk (full card visible).
 4. **Case studies** (new `sectionContent.caseStudies`; the six in
    `lib/case-studies.ts` joined to their projects). A row of six closed
@@ -227,7 +231,8 @@ Footer: hairline, name, year, socials, small edge code "Printed in Naga City".
 
 **`/projects`**: `projectsPageContent` heading, filter chips as rack-tier tabs
 (`?band=`, links, `aria-current`), then every band as a tier of the same pocket
-cards, in `BAND_ORDER`. Products appear as cards here too (with ScrollPreview).
+cards, in `BAND_ORDER`. Products appear as cards here too (with ScrollPreview),
+standing whole on the shelf rather than sunk: an open tier that reserves no lift.
 A "Start a project" primary under the heading.
 
 **`/projects/[slug]`** (Read): front cover header full grid: "← All projects",
@@ -269,7 +274,7 @@ smooth easing (its overshoot-free tail is the "mass"); no spring on CSS motion.
 - 400ms: middle panel unfolds `rotateY(-88deg) → 0`, hinge at its left edge,
   `perspective: 1600px` on the tri-fold, slow/smooth (ends 1000ms).
 - 650ms: right panel unfolds the same way (ends 1250ms).
-- 450ms and 700ms: each SVG crease draws top→bottom (`stroke-dashoffset`), crawl/smooth (ends 1.9s).
+- 450ms and 700ms: each crease span draws top→bottom (`scaleY(0 → 1)`; `scaleX` across when stacked), crawl/smooth (ends 1.9s).
 - 1100ms: proof items rise sm → 0, 60ms stagger, normal/smooth (ends ~1.63s).
 - Live dots on any visible badge: the existing twice-then-rest pulse.
 Below 768px: panels unfold `rotateX(88deg) → 0` from their top edge instead.
@@ -284,7 +289,7 @@ opacity, so server HTML stays visible:
   the crease), leaf slides xl → 0 toward the crease.
 - Rack: the lip draws `scaleX(0 → 1)` from the left; cards drop into pockets
   `translateY(-xl) → 0`, staggered by `--i` × 40ms via `animation-delay`.
-- Case studies: covers rise md → 0, opacity 0.2 → 1, staggered.
+- Case studies: covers rise md → 0, transform only (never faded: a case study is read at full contrast), staggered.
 - Field log: postcards slide in from xl at their resting rotation; quotes rise md.
 - Route line: the SVG path draws with `animation-timeline: view()` across the
   section (`entry 0% exit 40%`), stops pop `scale(0.6 → 1)` as the line passes.
@@ -296,7 +301,7 @@ opacity, so server HTML stays visible:
 - Buttons: hover lifts `translateY(-2px)`, press `translateY(1px) scale(0.98)`,
   fast/sharp; primary's arrow slides sm right on hover.
 - Rack card: hover / `:focus-visible` / `:focus-within` lifts it out of the
-  pocket `translateY(-26%)` (the sunk preview rises above the lip), normal/smooth,
+  pocket `translateY(-26%)` (more of the sunk preview rises above the lip), normal/smooth,
   lifted shadow; the ScrollPreview inside starts scrolling after the lift
   (delay = normal). Press: `translateY(-22%)`, fast. Leave: back down, normal.
   Each shelf reserves the lift (`.rack-shelf` / `.rack-row`): the first row is
@@ -321,8 +326,10 @@ loops. Where scroll timelines exist, the previews a visitor is meant to see
 also move without hover, scroll-bound (not auto-playing): a product frame
 scrolls the site as it crosses the viewport (`view()`, cover 15%–85%), a
 project page's sticky rail follows the page's scroll (`scroll(root)`), and the
-rack's unsunk cards below 640px follow their tier. The desktop rack keeps
-hover / focus.
+rack's unsunk cards below 640px follow their tier, and from 640px each rack
+card follows its own slot (`view()`, cover 15%–85%), so the sliver over the lip
+moves at rest; hover / focus lift the card to show more. Under reduced motion
+the rack's sliver and cue stay visible, the shot pinned at the top.
 LivePreview dialog: scrim fades normal; dialog rises md with opacity, normal/smooth;
 the desktop↔mobile toggle resizes the iframe frame via `transform: scaleX` of a
 wrapper plus width swap at the end (layout once, not animated per frame);

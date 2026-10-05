@@ -396,11 +396,18 @@ preview lead.
 project page. Its top 44% shows the edge code, name, `StatusBadge`, a two-line
 summary and the domain; the rest is a decorative `ScrollPreview` or a
 `NoPreviewTag`. From 640px it sinks into a pocket (`.rack-pocket`,
-`aspect-ratio: 100 / 78`, clipped at the lip) and on hover lifts 26% with the
-Lift shadow, normal/smooth; the preview starts scrolling once it has risen
-(delay = normal). Press settles to 22%. Keyboard focus lifts it even under
-reduced motion (a state change without travel) and removes the pocket clip so
-the ring draws on all four sides. Below 640px the cards are unsunk in a
+`aspect-ratio: 1 / 1`, clipped at the lip) that shows its top 9/16: the text
+block plus a sliver of the preview with the "scroll" cue printed at the top of
+the frame, so the shot is seen at rest (and moves with the page where scroll
+timelines exist). On hover it lifts 26% with the Lift shadow, normal/smooth.
+Press settles to 22%. Keyboard focus lifts it even under reduced motion (a
+state change without travel), removes the pocket clip so the ring draws on all
+four sides, and raises the pocket over its lip (`z-index`); lifted, the card
+ends inside the row gap, short of the next row's edge code. A card with no
+preview is flat (`.rack-card--flat`): square, so it fits its pocket whole, it
+never lifts, and its printed tag sits in the visible top. `RackTier sunk={false}`
+stands the cards whole on the shelf with no lift reserved (`.rack-row--open`):
+`/projects` does this for Products. Below 640px the cards are unsunk in a
 scroll-snap strip.
 
 ### Product Spread (signature)
@@ -415,7 +422,7 @@ hovering the spread tilts the flap 4deg on its hinge, inviting the open.
 full-page screenshot (`<id>-full.webp`, 1440 wide, at most 6000px tall),
 `object-fit: cover` from the top, `quality={50}`, never `priority`.
 - **Hover / focus** (frame, or a `.scroll-preview-host` card around it): the shot scrolls to the bottom over `--scroll-dur`, scaled from the shot height (`--shot-h`, set inline) and clamped to crawl..crawl × 3.75 (1.2 to 4.5s), sharp easing; a 3px accent rule grows down the right edge over a `line-strong` track that is visible at rest. A printed "scroll" cue (an edge code on a paper tab) sits in the corner where the frame can move. Leaving returns it to the top over slow/smooth. It stops at the bottom; it never loops.
-- **Scroll with the page** (where `animation-timeline` exists): `scroll="view"` (products) scrubs the shot as the frame crosses the viewport (cover 15% to 85%); `scroll="page"` (a project page's sticky rail) follows the page's own scroll; below 640px the rack's unsunk cards follow their tier's view timeline. Scroll-bound, not auto-playing.
+- **Scroll with the page** (where `animation-timeline` exists): `scroll="view"` (products) scrubs the shot as the frame crosses the viewport (cover 15% to 85%); `scroll="page"` (a project page's sticky rail) follows the page's own scroll; below 640px the rack's unsunk cards follow their tier's view timeline, and from 640px each rack card follows its own slot's (`--slot`, cover 15% to 85%). Scroll-bound, not auto-playing. Under reduced motion every shot stays at the top; the rack keeps its cue so the sliver still reads as a site.
 - **Accessibility:** a named `role="img"` with no link; a named link with an href; out of the tab order and the tree when it duplicates a visible link (`duplicateLink`); silent inside a rack card (`decorative`).
 - **Rendering:** the frame carries `content-visibility: auto`, so an off-screen shot is not requested until it nears the viewport.
 
