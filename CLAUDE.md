@@ -31,18 +31,20 @@ site claims (inventory, bands, proof band, positioning, testimonials, ordering,
 structured data, the AI files, embeddability parsing, visible copy, removed
 routes and tooling). `tests/design/` asserts design invariants:
 
-- `contrast` (token contrast in both themes, field borders on `--field-border`, the `.on-plane` focus ring)
-- `legacy-tokens` (no pre-4.0 tokens, no B3 mono voice), `og-palette` (the social card's hex copies match `.dark`)
+- `contrast` (token contrast in both themes, field borders on `--field-border`, the `.on-plane` focus ring, amber planes filled with `--accent-plane` and inked with `--on-accent`, early-access violet at least 90 degrees of hue from amber)
+- `legacy-tokens` (no pre-4.0 tokens, no B3 mono voice), `og-palette` (the social card's hex copies match `.dark`), `type-scale`
 - `green-means-live`, `client-boundary`, `nav-anchors`, `sticky-header` (scroll padding, in-page jumps)
-- `primary-button` (one `.button-primary`, used by every primary CTA), `rack-lift` (the lift and the room reserved for it)
-- `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the hero behind their gates and off under reduce; hero under 2 s)
-- `motion-visibility` (previews scroll with the page behind both gates; hero unfold direction; reveal ranges and distances)
+- `primary-button` (one `.button-primary`, used by every primary CTA)
+- `catalog-motion` (screenshots are stills: nothing follows scroll, the old preview component and pockets stay gone; `.lift-card` hover is 2px, 1.02, accent border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`; `.reveal-stagger` plays once on a scroll trigger, 30-80ms per column, off under reduced motion)
+- `view-transitions` (click planning, transition names, the island: feature detection, reduced motion, capture-phase interception, commit timeout, fallback, cleanup; the root cross-fade and the zeroed reduced-motion block)
+- `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the hero behind their gates and off under reduce; hero under 2 s), `motion-visibility` (reveal ranges and distances, hero unfold direction, products settled)
 - `no-framer-motion`, `no-inline-motion` (no numeric `duration`/`ease`/`delay` literals in `.tsx`)
-- `performance` (image priority only on first-viewport images, previews at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, plain Arial font fallbacks, `content-visibility` deferral, transform-only reveals)
+- `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, plain Arial font fallbacks, `content-visibility` deferral, transform-only reveals)
 
 `tests/components/` renders components with `react-dom/server` and checks their
-markup (sections, project page, `/projects`, 404, status badge, scroll preview,
-live preview, JSON-LD, client surfaces, OG image), plus source guards for
+markup (sections, project page, `/projects`, 404, status badge, project shot,
+live preview, JSON-LD, client surfaces, OG image, catalog consistency: edge codes,
+counts, filter tabs, the hero AI proof, the stack groups), plus source guards for
 behaviour static markup cannot reach. `tests/helpers/` holds helpers shared
 across those folders — `privacy.ts` is the phone-number guard the JSON-LD and
 AI-file tests reuse. There are no E2E tests.
@@ -54,8 +56,8 @@ environment variables set.
 ## Project Structure
 
 ```
-app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404: an empty rack pocket), robots.ts, sitemap.ts (lists the homepage, /projects and every project page)
-app/globals.css      Every colour, motion and layout token, the reveal/hero/rack/preview CSS and the reduced-motion block
+app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404: an empty rack slot), robots.ts, sitemap.ts (lists the homepage, /projects and every project page)
+app/globals.css      Every colour, motion and layout token, the reveal/hero/card-hover/view-transition CSS and the reduced-motion block
 app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og, edge runtime); fonts in app/fonts/
 app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 app/api/chat/        Groq-backed chat endpoint
@@ -64,13 +66,14 @@ app/projects/        Full project list page (the whole rack, filtered by ?band=)
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
 components/          top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
 components/sections/ Homepage sections, in page order: hero, products, rack, case-studies, field-log, route-line, stack, contact-console
-components/ui/       Primitives: status-badge, section-heading, proof-band, rack-tier, rack-card, scroll-preview, live-preview, no-preview-tag, board-filter, chat-widget, toaster, image-lightbox
+components/ui/       Primitives: status-badge, section-heading, proof-band, rack-tier, rack-card, project-shot, live-preview, no-preview-tag, board-filter, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body, arrow-link-text — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
-lib/project-page.ts  Server-only helpers for /projects/[slug] and previews: fullShotFor, fullShotHeight, hasFullShot, isEmbeddable, … (reads the filesystem — never import from a client component)
+lib/project-page.ts  Server-only helpers for /projects/[slug] and screenshots: fullShotFor, hasFullShot, isEmbeddable, … (reads the filesystem — never import from a client component)
 lib/embeddable.json  Which live sites allow framing, written by `npm run check:embeds`; read by isEmbeddable()
 lib/motion-tokens.ts Durations, easings, distances, springs (mirrored as --dur-* / --ease-* in globals.css)
+lib/view-transition.ts Pure click rules and transition names for components/ui/view-transitions.tsx
 lib/motion-features.ts, lib/motion-dom-animation.ts  Lazy-load motion's domAnimation features for <LazyMotion>
 lib/og-palette.ts    The dark theme as hex for the social card (held to globals.css by a test)
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts and lib/case-studies.ts
@@ -139,11 +142,12 @@ telephone field anywhere.
 
 Every project gets a slot in the rack. What fills it:
 
-- **ScrollPreview** (`components/ui/scroll-preview.tsx`, server) shows
+- **ProjectShot** (`components/ui/project-shot.tsx`, server) shows the top of
   `public/assets/images/projects/<id>-full.webp` when `fullShotFor(project)`
-  finds it. Make those with `npm run capture -- --full [id ...]` (1440 wide,
-  whole page clipped at 6000px, WebP quality 70). View every new shot; a broken
-  one is deleted and its id added to `FULL_SKIP` in
+  finds it, as a still. Nothing inside it scrolls and nothing about it follows
+  the page's scroll. Make the shots with `npm run capture -- --full [id ...]`
+  (1440 wide, whole page clipped at 6000px, WebP quality 70). View every new
+  shot; a broken one is deleted and its id added to `FULL_SKIP` in
   `scripts/capture-screenshots.mjs` with the reason, so a rerun does not bring
   it back.
 - **No shot:** `NoPreviewTag` prints why (`caseStudyContent.noPreview`). Never
@@ -172,32 +176,38 @@ Every project gets a slot in the rack. What fills it:
 - Visual authority is `DESIGN.md` (Lobby Rack, written from the built site), with
   the homepage's direction contract and motion choreography in
   `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
-- The world: a lagoon-night ground, paper panels, and bougainvillea magenta laid
-  down only as whole flat planes (hero front panel, product flaps, the contact
-  reply card, the current filter tab). No gradients, glows, tints or outlines on
+- The world: a lagoon-night ground, paper panels, and signal amber laid down
+  only as whole flat planes (hero front panel, product flaps, the contact reply
+  card, the current filter tab). No gradients, glows, tints or outlines on
   planes. Paper is square-ish (`--radius` 6px; postcards 2px, dialog 10px).
 - Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
   `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
   them and checks WCAG contrast in both themes; keep the format exact.
 - Tailwind colour keys: `canvas` (page, CSS `--bg`), `panel`, `ink`, `muted`,
-  `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`,
+  `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `accent-plane`, `on-accent`,
   `live`, `status-early`, `status-private`, `status-internal`. Never raw hex,
   never `dark:` colour pairs. Text fields draw their border in `field-border`
   (3:1, WCAG 1.4.11), never a hairline token.
-- **On a magenta plane, text is `on-accent`.** Ink on accent fails contrast. A
-  plane that holds focusable controls carries `.on-plane`, which draws the focus
-  ring in `on-accent` (the accent ring vanishes on magenta) and inverts the
-  primary button.
+- **Two ambers.** `accent-plane` fills planes and the primary button, bright in
+  both themes. `accent` is amber as ink and line (focus ring, hover border,
+  links, small glyphs); in the light theme it is a deeper amber so it holds AA
+  on paper. Never fill a plane with `accent` or set text on one in `ink`; the
+  contrast test greps for it.
+- **On an amber plane, text is `on-accent`** (dark ink in both themes). A plane
+  that holds focusable controls carries `.on-plane`, which draws the focus ring
+  in `on-accent` (the accent ring vanishes on amber) and inverts the primary
+  button.
 - **One primary button:** `.button-primary` (with `.press` for the hover lift),
-  defined once in `globals.css`: a magenta fill on paper, a lagoon fill with
-  magenta text inside `.on-plane`. Never compose a primary from a fill and
+  defined once in `globals.css`: an `accent-plane` fill on paper, a lagoon fill
+  with amber text inside `.on-plane`. Never compose a primary from a fill and
   padding; `tests/design/primary-button.test.ts` enforces it.
 - **Green (`live`) means a live system and nothing else.** Brand and availability
   use `accent`, and so does the chat assistant's status dot. `live` and
   `.live-pulse` appear only in `StatusBadge`; `tests/design/green-means-live.test.ts`
   enforces it.
 - **Status is never colour alone.** Render it only through `StatusBadge`, which
-  pairs a glyph shape with a text label: live dot, early-access ring, private
+  pairs a glyph shape with a text label: live dot, early-access ring (violet,
+  `status-early`, kept well away from amber), private
   lock, internal filled square, staging outlined square.
 - Type: two variable families via `next/font`, nothing else. **Anybody**
   (`font-display`, `--font-display`, loaded with its `wdth` axis) shouts:
@@ -213,39 +223,48 @@ Every project gets a slot in the rack. What fills it:
   `.eyebrow` then an `<h2 className="text-fluid-h2">`, with copy from
   `sectionContent` in `lib/data.ts`.
 - Shadows: none in flow at rest. `shadow-lift` only while a card or postcard is
-  lifted; `shadow-overlay` for the dialog, chat and toasts.
+  lifted (on a card, a pseudo-element faded in by opacity: never animate `box-shadow`); `shadow-overlay` for the dialog, chat and toasts.
 - Off-screen work: far sections carry `.defer-render` (`content-visibility:
-  auto`); rack tiers use `.defer-render-lift` so a lifted card is not clipped.
-  Never defer the hero, products, rack section or contact card.
+  auto`); rack tiers use `.defer-render-lift` so a lifted card and its shadow are not clipped.
+  Never defer the hero, products, rack section or contact card. `ProjectShot`
+  frames skip rendering until near the viewport (`.project-shot__frame`).
 
 ## Client/Server Boundary
 
-Components are server components by default. Only these seven are client
-components: `components/top-bar.tsx` (theme toggle, in-page jump fix),
-`components/sections/contact-console.tsx` (form), `components/ui/chat-widget.tsx`,
-`components/ui/live-preview.tsx` (dialog), `components/ui/image-lightbox.tsx`,
-`components/ui/toaster.tsx` and `components/theme-provider.tsx`. A server
-component may render a client one as a child — `Hero`, `FieldLog` and
-`ProjectScreenshots` render `ImageLightbox`, and `Products` and `ProjectHeader`
-render `LivePreview`. `ScrollPreview`, `RackCard` and `RackTier` are server
-components; all their motion is CSS. `tests/design/client-boundary.test.ts` keeps
-the count under 10 and the homepage and `/projects` on the server; do not raise it.
+Components are server components by default. Only these eight are client
+components (`grep -rl "^'use client'" app components`):
+`components/top-bar.tsx` (theme toggle, in-page jump fix),
+`components/theme-provider.tsx`,
+`components/sections/contact-console.tsx` (form),
+`components/ui/chat-widget.tsx`,
+`components/ui/image-lightbox.tsx`,
+`components/ui/live-preview.tsx` (dialog),
+`components/ui/toaster.tsx` and
+`components/ui/view-transitions.tsx` (renders nothing: the catalog's view-transition
+island, mounted once in `app/layout.tsx` inside `Suspense`). A server component
+may render a client one as a child — `Hero`, `FieldLog` and `ProjectScreenshots`
+render `ImageLightbox`, and `Products` and `ProjectHeader` render `LivePreview`.
+`ProjectShot`, `RackCard` and `RackTier` are server components; their motion is
+CSS. `tests/design/client-boundary.test.ts` keeps the count under 10 and the
+homepage and `/projects` on the server; do not raise it.
 
 ## Animation
 
-Paper that unfolds when you pay attention: three verbs only — *unfold*
-(reveal detail), *lift* (answer attention), *slide* (keep continuity). The full
-choreography is in `DESIGN.md` (Components → Motion) and the direction contract.
+Paper that unfolds when you pay attention, and restrained: three verbs only —
+*unfold* (reveal detail), *lift* (answer attention), *slide* (keep continuity).
+Screenshots are stills; nothing about a screenshot or a card is driven by
+scroll. The full choreography is in `DESIGN.md` (Components → Motion) and the
+direction contract.
 
 - **Tokens:** durations, easings, distances and springs live in
   `lib/motion-tokens.ts` and are mirrored as `--dur-fast|normal|slow|crawl` and
   `--ease-smooth|sharp` in `globals.css`; `tests/design/motion-tokens.test.ts`
   keeps the two in step. Never write a numeric `duration`, `ease` or `delay` in a
   `.tsx` file (`tests/design/no-inline-motion.test.ts`); a literal 0 is allowed.
-- **CSS first.** Hero sequence, scroll reveals, rack lift, preview scroll and
-  hover grammar are all CSS in `globals.css`. Animate transform and opacity only
-  (the preview's `object-position` scroll is the known exception).
-- **Scroll-driven reveals** (`.reveal`, `.reveal-flap|leaf|drop|lip|cover|postcard|fold|reply|perf|route|stop`)
+- **CSS first.** Hero sequence, scroll reveals, the card hover, the stagger and
+  the hover grammar are all CSS in `globals.css`. Animate transform and opacity
+  only; a shadow is a pseudo-element whose opacity fades.
+- **Scroll-driven reveals** (`.reveal`, `.reveal-cover|postcard|fold|reply|perf|route|stop`)
   use `animation-timeline: view()` and live inside both
   `@supports (animation-timeline: view())` and
   `@media (prefers-reduced-motion: no-preference)`. Outside the gates nothing is
@@ -256,12 +275,26 @@ choreography is in `DESIGN.md` (Components → Motion) and the direction contrac
 - **Hero sequence:** CSS keyframes on load, no JS, 1.9 s, once (H1 words rise,
   the inner panels unfold from behind the front one, creases draw, proof rises).
   It must stay under two seconds (`motion-tokens` test).
-- **Previews:** `ScrollPreview` scrolls on hover or focus over a duration scaled
-  from the shot height (1.2–4.5 s), stops at the bottom and never loops; where
-  scroll timelines exist it also follows the page (`scroll="view"` / `"page"`, and
-  the unsunk rack cards below 640px). Scroll-bound, not auto-playing.
+- **Catalog hover (`.lift-card`)**: rack cards, a product's screenshot and
+  case-study covers. On a fine pointer with motion allowed: lift 2px, border to
+  `accent`, screenshot scale 1.02 inside a clipping frame, fast/smooth, shadow
+  faded in on a pseudo-element. Keyboard focus gets the accent border with no
+  travel in every mode.
+- **Rack stagger (`.reveal-stagger`)**: from 640px, each card rises its last
+  16px once as it enters the viewport (a `timeline-trigger`, play-forwards,
+  never reversed, never on a card already in view), each visible column
+  `--stagger-card` (60ms) after the one before. Unsupported: cards at rest.
+- **View transitions** (`components/ui/view-transitions.tsx`, rules in
+  `lib/view-transition.ts`): a `/projects` filter change glides cards and tier
+  headings to their new places (FLIP, names `card-<slug>` / `tier-<heading>`
+  while it runs); a click on a project link morphs the clicked screenshot
+  (`data-vt-shot`) into the case-study header shot (`morphTarget`,
+  `shot-<slug>`) while the rest cross-fades. Feature-detected
+  (`startViewTransition`), off under reduced motion, modified clicks and other
+  routes left to next/link, 2.5s commit timeout, full-navigation fallback,
+  `::view-transition { pointer-events: none }`. Without JS, plain links.
 - **`motion/react` only in client components** (LivePreview, ImageLightbox, chat,
-  toasts), and only as `m.*` from `motion/react-m` inside
+  toasts; the view-transition island uses the browser API, not motion), and only as `m.*` from `motion/react-m` inside
   `<LazyMotion features={loadMotionFeatures} strict>`, so the engine loads in its
   own chunk. Never import `framer-motion`, render `<motion.*>`, or use
   `useAnimate` (`no-framer-motion` and `performance` tests). Dialogs use
@@ -271,13 +304,13 @@ choreography is in `DESIGN.md` (Components → Motion) and the direction contrac
   (`.live-pulse`, only in `StatusBadge`) fades twice (2.4 s each) and stops. The
   chat typing dots (`.typing-dot`) and the "Sending" spinner run only while a
   request is pending. No count-ups, parallax or continuous animation.
-- **Reduced motion:** the gates switch off every reveal and the hero sequence,
-  and the `reduce` block resets them explicitly; hover transforms go (colour and
-  underlines still change, instantly); previews pin to the top with the rule,
-  track and cue hidden; the pulse is removed; every animation and transition
+- **Reduced motion:** the gates switch off every reveal, the stagger and the hero
+  sequence, and the `reduce` block resets them explicitly; hover transforms go
+  (colour, the accent border and underlines still change, instantly); the
+  island navigates without a transition and any view-transition animation is
+  zeroed; the pulse is removed; every animation and transition
   collapses to one near-instant iteration. In JS, `useReducedMotion` drops
-  offsets (dialogs only fade). A focused rack card still lifts — a state change
-  without travel.
+  offsets (dialogs only fade).
 - Two hydration lessons: never use `whileInView` for above-the-fold content, and
   never branch the element type on reduced motion.
 
@@ -329,6 +362,7 @@ Commits use `type(scope): summary` with lowercase types — `feat`, `fix`, `refa
 `style`, `chore`, `perf`, `docs`, plus project-specific `content:`, `data:`,
 `assets:`, `resume:`. Work happens directly on `main`; every push to `main`
 deploys to production on Vercel. For a large redesign, build on a branch (as
-the Portfolio 4.0 redesign was built on `v4`, merged on 2026-10-05) so each
+the Portfolio 4.0 redesign was built on `v4`, merged on 2026-10-05, and its
+amber refinement on `v4.1`) so each
 push gets a Vercel preview URL, and merge it only with Christian's sign-off on
 the preview.

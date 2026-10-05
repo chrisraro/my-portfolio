@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-05T02:25:26Z",
-  "title": "Design System: Christian Raro, Portfolio 4.0",
+  "title": "Design System: Christian Raro, Portfolio 4.0 (v4.1)",
   "extensions": {
     "colorMeta": {
       "canvas": {
@@ -262,7 +262,7 @@
       },
       "accent": {
         "role": "primary",
-        "displayName": "Signal Amber (dark, default)",
+        "displayName": "Signal Amber ink (dark, default)",
         "canonical": "oklch(0.8200 0.1500 85)",
         "cssVar": "--accent",
         "tonalRamp": [
@@ -278,7 +278,7 @@
       },
       "accent-light": {
         "role": "primary",
-        "displayName": "Signal Amber (light)",
+        "displayName": "Signal Amber ink (light)",
         "canonical": "oklch(0.5300 0.1150 68)",
         "cssVar": "--accent",
         "tonalRamp": [
@@ -290,6 +290,38 @@
           "oklch(0.721 0.1150 68)",
           "oklch(0.836 0.1150 68)",
           "oklch(0.950 0.1150 68)"
+        ]
+      },
+      "accent-plane": {
+        "role": "primary",
+        "displayName": "Signal Amber plane (dark, default)",
+        "canonical": "oklch(0.8200 0.1500 85)",
+        "cssVar": "--accent-plane",
+        "tonalRamp": [
+          "oklch(0.150 0.1500 85)",
+          "oklch(0.264 0.1500 85)",
+          "oklch(0.379 0.1500 85)",
+          "oklch(0.493 0.1500 85)",
+          "oklch(0.607 0.1500 85)",
+          "oklch(0.721 0.1500 85)",
+          "oklch(0.836 0.1500 85)",
+          "oklch(0.950 0.1500 85)"
+        ]
+      },
+      "accent-plane-light": {
+        "role": "primary",
+        "displayName": "Signal Amber plane (light)",
+        "canonical": "oklch(0.8000 0.1500 80)",
+        "cssVar": "--accent-plane",
+        "tonalRamp": [
+          "oklch(0.150 0.1500 80)",
+          "oklch(0.264 0.1500 80)",
+          "oklch(0.379 0.1500 80)",
+          "oklch(0.493 0.1500 80)",
+          "oklch(0.607 0.1500 80)",
+          "oklch(0.721 0.1500 80)",
+          "oklch(0.836 0.1500 80)",
+          "oklch(0.950 0.1500 80)"
         ]
       },
       "on-accent": {
@@ -311,17 +343,17 @@
       "on-accent-light": {
         "role": "primary",
         "displayName": "Plane Ink (light)",
-        "canonical": "oklch(1.0000 0.0000 0)",
+        "canonical": "oklch(0.2500 0.0450 240)",
         "cssVar": "--on-accent",
         "tonalRamp": [
-          "oklch(0.150 0.0000 0)",
-          "oklch(0.264 0.0000 0)",
-          "oklch(0.379 0.0000 0)",
-          "oklch(0.493 0.0000 0)",
-          "oklch(0.607 0.0000 0)",
-          "oklch(0.721 0.0000 0)",
-          "oklch(0.836 0.0000 0)",
-          "oklch(0.950 0.0000 0)"
+          "oklch(0.150 0.0450 240)",
+          "oklch(0.264 0.0450 240)",
+          "oklch(0.379 0.0450 240)",
+          "oklch(0.493 0.0450 240)",
+          "oklch(0.607 0.0450 240)",
+          "oklch(0.721 0.0450 240)",
+          "oklch(0.836 0.0450 240)",
+          "oklch(0.950 0.0450 240)"
         ]
       },
       "live": {
@@ -516,17 +548,17 @@
       {
         "name": "dur-normal",
         "value": "0.35s",
-        "purpose": "Reveals, rack lift, dialog entrance, width squeeze."
+        "purpose": "Reveals, card hover, view transitions, dialog entrance, width squeeze."
       },
       {
         "name": "dur-slow",
         "value": "0.6s",
-        "purpose": "Hero words and panel unfolds; preview return to top."
+        "purpose": "Hero words and panel unfolds."
       },
       {
         "name": "dur-crawl",
         "value": "1.2s",
-        "purpose": "Hero creases; floor of the preview scroll (ceiling crawl x 3.75)."
+        "purpose": "Hero creases; the LivePreview load timeout (crawl x 6)."
       },
       {
         "name": "ease-smooth",
@@ -536,7 +568,7 @@
       {
         "name": "ease-sharp",
         "value": "cubic-bezier(0.4, 0, 0.2, 1)",
-        "purpose": "Press, colour changes, the preview scroll."
+        "purpose": "Press, colour changes, the root cross-fade."
       },
       {
         "name": "distance",
@@ -571,7 +603,7 @@
       "refersTo": "button-primary",
       "description": "The one primary call to action on paper (\"Start a project\", \"Send message\"): amber fill, lifts 2px on hover.",
       "html": "<button class=\"ds-btn-primary\">Start a project <span class=\"ds-arrow\">&rarr;</span></button>",
-      "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 100; font-weight:650; font-size:1rem; line-height:1; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary .ds-arrow { display:inline-block; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary:hover { transform: translateY(-2px); } .ds-btn-primary:hover .ds-arrow { transform: translateX(8px); } .ds-btn-primary:active { transform: translateY(1px) scale(0.98); } .ds-btn-primary:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--accent-plane)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 100; font-weight:650; font-size:1rem; line-height:1; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary .ds-arrow { display:inline-block; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary:hover { transform: translateY(-2px); } .ds-btn-primary:hover .ds-arrow { transform: translateX(8px); } .ds-btn-primary:active { transform: translateY(1px) scale(0.98); } .ds-btn-primary:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
     {
       "name": "Primary Button on a Plane",
@@ -579,7 +611,7 @@
       "refersTo": "button-primary-on-plane",
       "description": "Inside an amber plane (.on-plane) the primary inverts to a lagoon fill with amber text; focus is drawn in on-accent.",
       "html": "<div class=\"ds-plane\"><button class=\"ds-btn-plane\">Start a project</button></div>",
-      "css": ".ds-plane { background:oklch(var(--accent)); color:oklch(var(--on-accent)); padding:32px; border-radius:6px; } .ds-btn-plane { min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--bg)); color:oklch(var(--accent)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:1rem; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-plane:hover { transform: translateY(-2px); } .ds-btn-plane:focus-visible { outline:2px solid oklch(var(--on-accent)); outline-offset:3px; }"
+      "css": ".ds-plane { background:oklch(var(--accent-plane)); color:oklch(var(--on-accent)); padding:32px; border-radius:6px; } .ds-btn-plane { min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--bg)); color:oklch(var(--accent)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:1rem; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-plane:hover { transform: translateY(-2px); } .ds-btn-plane:focus-visible { outline:2px solid oklch(var(--on-accent)); outline-offset:3px; }"
     },
     {
       "name": "Secondary Button",
@@ -603,7 +635,7 @@
       "refersTo": "filter-tab-current",
       "description": "/projects band filter: index tabs on the rack lip; the current tier is an amber plane.",
       "html": "<ul class=\"ds-tabs\"><li><a class=\"ds-tab ds-tab--on\" aria-current=\"true\" href=\"#\">All</a></li><li><a class=\"ds-tab\" href=\"#\">Products</a></li><li><a class=\"ds-tab\" href=\"#\">Sites</a></li></ul>",
-      "css": ".ds-tabs { display:flex; gap:6px; list-style:none; margin:0; padding:0; border-bottom:2px solid oklch(var(--line-strong)); } .ds-tab { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border:1px solid oklch(var(--line)); border-bottom:0; border-radius:6px 6px 0 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:0.875rem; text-decoration:none; transition: color var(--dur-fast) var(--ease-sharp); } .ds-tab:hover { color:oklch(var(--ink)); } .ds-tab--on { background:oklch(var(--accent)); color:oklch(var(--on-accent)); border-color:transparent; } .ds-tab:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
+      "css": ".ds-tabs { display:flex; gap:6px; list-style:none; margin:0; padding:0; border-bottom:2px solid oklch(var(--line-strong)); } .ds-tab { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border:1px solid oklch(var(--line)); border-bottom:0; border-radius:6px 6px 0 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:0.875rem; text-decoration:none; transition: color var(--dur-fast) var(--ease-sharp); } .ds-tab:hover { color:oklch(var(--ink)); } .ds-tab--on { background:oklch(var(--accent-plane)); color:oklch(var(--on-accent)); border-color:transparent; } .ds-tab:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
     {
       "name": "Status Badge",
@@ -617,30 +649,31 @@
       "name": "Rack Card",
       "kind": "card",
       "refersTo": "rack-card",
-      "description": "A 9:16 brochure sunk in a pocket over the lip; hover or focus lifts it 26% with the one in-flow shadow.",
-      "html": "<div class=\"ds-pocket\"><a class=\"ds-rack-card\" href=\"#\"><span class=\"ds-code\">07 / 18 · Sites</span><span class=\"ds-title\">Graceland</span><span class=\"ds-shot\"></span></a></div><div class=\"ds-lip\"></div>",
-      "css": ".ds-pocket { width:180px; aspect-ratio:100/78; overflow:visible; clip-path: inset(-100vh -24px 0 -24px); } .ds-rack-card { display:flex; flex-direction:column; gap:8px; aspect-ratio:9/16; padding:16px; border:1px solid oklch(var(--line)); border-radius:6px; background:oklch(var(--panel)); color:oklch(var(--ink)); text-decoration:none; transition: transform var(--dur-normal) var(--ease-smooth), box-shadow var(--dur-normal) var(--ease-smooth); } .ds-pocket:hover .ds-rack-card, .ds-rack-card:focus-visible { transform: translateY(-26%); box-shadow: var(--shadow-lift); } .ds-rack-card:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; } .ds-code { font-family:var(--font-display), Arial, sans-serif; font-size:0.75rem; letter-spacing:0.04em; color:oklch(var(--muted)); } .ds-title { font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 85; font-weight:700; font-size:1.3125rem; } .ds-shot { flex:1; border-radius:6px; background:oklch(var(--bg)); } .ds-lip { width:204px; height:14px; border-top:2px solid oklch(var(--line-strong)); background:oklch(var(--panel)); }"
+      "description": "A 9:16 brochure standing whole on the lip, over a still screenshot; on a fine pointer, hover lifts it 2px, turns the border accent and scales the shot to 1.02. Focus: accent border, no travel.",
+      "html": "<div class=\"ds-slot\"><a class=\"ds-rack-card\" href=\"#\"><span class=\"ds-code\">07 / 18 · Sites</span><span class=\"ds-title\">Graceland</span><span class=\"ds-shot\"></span></a><div class=\"ds-lip\"></div></div>",
+      "css": ".ds-slot { width:180px; } .ds-rack-card { position:relative; display:flex; flex-direction:column; gap:8px; aspect-ratio:9/16; padding:16px; border:1px solid oklch(var(--line)); border-radius:6px; background:oklch(var(--panel)); color:oklch(var(--ink)); text-decoration:none; transition: transform var(--dur-fast) var(--ease-smooth), border-color var(--dur-fast) var(--ease-smooth); } .ds-rack-card::after { content:\"\"; position:absolute; inset:-1px; border-radius:inherit; box-shadow: var(--shadow-lift); opacity:0; pointer-events:none; transition: opacity var(--dur-fast) var(--ease-smooth); } .ds-rack-card:hover { transform: translateY(-2px); border-color:oklch(var(--accent)); } .ds-rack-card:hover::after { opacity:1; } .ds-rack-card:focus-visible { border-color:oklch(var(--accent)); outline:2px solid oklch(var(--accent)); outline-offset:3px; } .ds-code { font-family:var(--font-display), Arial, sans-serif; font-size:0.75rem; letter-spacing:0.04em; color:oklch(var(--muted)); } .ds-title { font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 85; font-weight:700; font-size:1.3125rem; } .ds-shot { flex:1; border-radius:6px; background:oklch(var(--bg)); } .ds-lip { height:14px; border-top:2px solid oklch(var(--line-strong)); background:oklch(var(--panel)); }"
     },
     {
       "name": "Product Spread",
       "kind": "custom",
       "refersTo": "amber-plane",
-      "description": "An amber flap joined at a dashed crease to a paper leaf; the flap tilts on hover, inviting the open.",
-      "html": "<div class=\"ds-spread\"><div class=\"ds-flap\"><span class=\"ds-code-plane\">01 / 18 · Products</span><strong>Iskotify</strong></div><span class=\"ds-crease\"></span><div class=\"ds-leaf\">Description, Live preview, Read more, and a scrolling preview.</div></div>",
-      "css": ".ds-spread { display:grid; grid-template-columns:4fr auto 8fr; perspective:1600px; } .ds-flap { display:flex; flex-direction:column; gap:12px; padding:32px; border-radius:6px 0 0 6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 75; font-size:2rem; transform-origin:right center; transition: transform var(--dur-normal) var(--ease-smooth); } .ds-spread:hover .ds-flap { transform: rotateY(-4deg); } .ds-code-plane { font-size:0.8125rem; font-variation-settings:'wdth' 100; letter-spacing:0.04em; } .ds-crease { width:1px; background: linear-gradient(to bottom, oklch(var(--line-strong)) 6px, transparent 6px) 0 0 / 1px 11px repeat-y; } .ds-leaf { padding:32px; border:1px solid oklch(var(--line)); border-radius:0 6px 6px 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); }"
+      "description": "An amber flap joined at a dashed crease to a paper leaf holding a still screenshot; on a fine pointer the flap tilts, inviting the open. The spread sits settled on scroll.",
+      "html": "<div class=\"ds-spread\"><div class=\"ds-flap\"><span class=\"ds-code-plane\">01 / 18 · Products</span><strong>Iskotify</strong></div><span class=\"ds-crease\"></span><div class=\"ds-leaf\">Description, Live preview, Read more, and a still screenshot.</div></div>",
+      "css": ".ds-spread { display:grid; grid-template-columns:4fr auto 8fr; perspective:1600px; } .ds-flap { display:flex; flex-direction:column; gap:12px; padding:32px; border-radius:6px 0 0 6px; background:oklch(var(--accent-plane)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 75; font-size:2rem; transform-origin:right center; transition: transform var(--dur-normal) var(--ease-smooth); } .ds-spread:hover .ds-flap { transform: rotateY(-4deg); } .ds-code-plane { font-size:0.8125rem; font-variation-settings:'wdth' 100; letter-spacing:0.04em; } .ds-crease { width:1px; background: linear-gradient(to bottom, oklch(var(--line-strong)) 6px, transparent 6px) 0 0 / 1px 11px repeat-y; } .ds-leaf { padding:32px; border:1px solid oklch(var(--line)); border-radius:0 6px 6px 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); }"
     }
   ],
   "narrative": {
     "northStar": "Lobby Rack",
-    "overview": "Every project is a brochure standing in a resort lobby rack at night. You see\nits top over the pocket lip; give it attention and it lifts out and shows the\nreal site scrolling. The page does the job his clients' brochures did before\nhe built their websites. The ground is a deep lagoon, the surfaces are paper\n(panels, cards, folds, a rack lip with pockets, a perforated reply card,\npostcards), and colour arrives only as whole flat amber planes locked to the\ngrid. A condensed variable display face (Anybody) shouts; Figtree reads.\n\nMotion has one meaning: **paper that unfolds when you pay attention.** Three\nverbs only. *Unfold* reveals detail (the hero tri-fold, product spreads,\ncase-study decisions). *Lift* answers attention (a card rising out of its\npocket, a postcard straightening). *Slide* keeps continuity (things move aside,\nnever vanish). Motion is CSS-first, transform-led, progressive enhancement:\noutside its gates every piece sits at rest and fully visible, and the server\nHTML is the finished page.\n\nIt replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and\nrefuses both the dev-portfolio default (dark hero, gradient blobs, a grid of\nscreenshot cards) and the mono terminal board B3 already was.",
+    "overview": "Every project is a brochure standing in a resort lobby rack at night. You see\nits top, a still screenshot of the real site; give it attention and it lifts a\nhair. The page does the job his clients' brochures did before he built their\nwebsites. The ground is a deep lagoon, the surfaces are paper (panels, cards,\nfolds, a rack lip, a perforated reply card, postcards), and colour arrives only\nas whole flat signal-amber planes locked to the grid. A condensed variable\ndisplay face (Anybody) shouts; Figtree reads.\n\nMotion is restrained, and has one meaning: **paper that unfolds when you pay\nattention.** Three verbs only. *Unfold* reveals detail (the hero tri-fold,\ncase-study decisions). *Lift* answers attention (a card rising 2px, a postcard\nstraightening). *Slide* keeps continuity (cards glide to their new place when a\nfilter changes, a screenshot morphs into the case study it opens). Nothing about\na screenshot or a card is driven by scroll: screenshots are stills, and the\nproduct spreads sit settled. Motion is CSS-first, transform-led, progressive\nenhancement: outside its gates every piece sits at rest and fully visible, and\nthe server HTML is the finished page.\n\nIt replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and\nrefuses both the dev-portfolio default (dark hero, gradient blobs, a grid of\nscreenshot cards) and the mono terminal board B3 already was.",
     "keyCharacteristics": [
       "Lagoon-night ground, paper panels, signal amber as flat printed planes; no gradients, glows or tints.",
       "Two variable families: Anybody (display, condensed on its width axis) and Figtree (reading).",
       "Edge codes: every card, cover and product carries a printed running index (\"07 / 18 · Sites\").",
       "Fold creases (dashed 6 on 5 off), a rack lip with a paper ledge, a perforation with notched ends.",
-      "Portrait previews: 9:16 rack cards and 3:4 frames that scroll the full page of the real site.",
+      "Still previews: 9:16 rack cards and 3:4 frames showing the top of a full-page screenshot of the real site. Nothing scrolls inside them.",
+      "Honest claims: the hero's AI line carries its proof (what is in use, linked where there is a page).",
       "Honest absence: a project with no public screen keeps its slot with a printed tag saying why.",
-      "One in-flow shadow, applied only while a card is lifted."
+      "One in-flow shadow, applied only while a catalog card or postcard is lifted."
     ],
     "rules": [
       {
@@ -650,7 +683,7 @@
       },
       {
         "name": "The Plane Ink Rule",
-        "body": "On an amber plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 1.6 to 2.9:1 and forbidden; an accent ring on an amber plane disappears.",
+        "body": "On an amber plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Planes and the primary button fill with `accent-plane`, never `accent`; ink on a plane is forbidden, and an accent ring on a plane disappears (`tests/design/contrast.test.ts` holds all three).",
         "section": "colors"
       },
       {
@@ -660,7 +693,7 @@
       },
       {
         "name": "The Contrast Ledger Rule",
-        "body": "Every token is a raw oklch triplet, one per line; `tests/design/contrast.test.ts` parses them and checks WCAG AA in both themes (text 4.5:1, glyphs and focus 3:1, field borders 3:1). No raw hex in components, no `dark:` colour pairs. The one hex copy is `lib/og-palette.ts`, held to `.dark` by `tests/design/og-palette.test.ts`.",
+        "body": "Every token is a raw oklch triplet, one per line; `tests/design/contrast.test.ts` parses them and checks WCAG AA in both themes (text 4.5:1, glyphs and focus 3:1, field borders 3:1, `on-accent` on `accent-plane`, `accent` as text on paper, early-access violet apart from amber). No raw hex in components, no `dark:` colour pairs. The one hex copy is `lib/og-palette.ts`, held to `.dark` by `tests/design/og-palette.test.ts`.",
         "section": "colors"
       },
       {
@@ -677,17 +710,24 @@
         "name": "The Lifted-Only Rule",
         "body": "Nothing in the page flow casts a shadow at rest.",
         "section": "elevation"
+      },
+      {
+        "name": "The Settled Shot Rule",
+        "body": "A screenshot is a still. Nothing about a screenshot or a card is driven by scroll, and catalog hover (`.lift-card`) sits behind the fine-pointer and no-preference queries (`tests/design/catalog-motion.test.ts`).",
+        "section": "components"
       }
     ],
     "dos": [
       "**Do** take every colour from the Tailwind keys (`canvas`, `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`, `live`, `status-*`) and keep `globals.css` triplets one per line.",
       "**Do** put text and focus on an amber plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.",
+      "**Do** fill planes and the primary button with `accent-plane`; use `accent` for text, rings and lines; keep violet for early access only.",
       "**Do** use `.button-primary` with `.press` for every primary call to action.",
       "**Do** render status only through `StatusBadge`.",
-      "**Do** give every project a slot: a `ScrollPreview` when a full shot exists, a printed `NoPreviewTag` when it does not.",
-      "**Do** take durations and easings from `lib/motion-tokens.ts` or `--dur-*` / `--ease-*`, and gate every scroll-driven animation behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`.",
+      "**Do** give every project a slot: a still `ProjectShot` when a full shot exists, a printed `NoPreviewTag` when it does not.",
+      "**Do** take durations and easings from `lib/motion-tokens.ts` or `--dur-*` / `--ease-*`, and gate every scroll-driven reveal behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`.",
       "**Do** keep proof (products, the rack) visible in the server HTML: transform-only motion, no opacity entrance.",
-      "**Do** keep the hero sequence under two seconds and everything bounded under five."
+      "**Do** keep the hero sequence under two seconds and everything bounded under five.",
+      "**Do** keep catalog hover on `.lift-card`, and run navigation transitions only through `components/ui/view-transitions.tsx` (feature-detected, off under reduced motion)."
     ],
     "donts": [
       "**Don't** use gradients, glows, tints or outlines on planes; colour is a whole flat plane or nothing.",
@@ -695,10 +735,11 @@
       "**Don't** use green anywhere outside `StatusBadge`'s live glyph.",
       "**Don't** add a third typeface or a mono family.",
       "**Don't** cast a shadow from anything at rest in the page flow.",
-      "**Don't** fade proof in, count numbers up, add parallax, or loop anything past five seconds.",
+      "**Don't** fade proof in, count numbers up, add parallax, drive a screenshot or card from scroll, or loop anything past five seconds.",
       "**Don't** import `framer-motion`, render `motion.*`, or use `useAnimate`; client motion is `m.*` inside a strict `LazyMotion`.",
       "**Don't** mark a preview image `priority` or fake a screenshot for a gated or internal project.",
-      "**Don't** hardcode portfolio content (headings, eyebrows, facts) in components."
+      "**Don't** hardcode portfolio content (headings, eyebrows, facts) in components.",
+      "**Don't** animate `box-shadow`; fade a pseudo-element's opacity instead."
     ]
   }
 }

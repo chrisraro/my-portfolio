@@ -13,16 +13,16 @@ Audience and job: freelance clients first (Philippine hotels, tour and shuttle
 operators, restaurants, review centres), deciding whether to hire; engineering
 hiring managers second.
 Action: Start a project (`#contact`); secondary: Résumé, View work, Live preview.
-Proof: four products of his own, 18 projects each with a scroll-through preview,
+Proof: four products of his own, 18 projects each with a still screenshot (or an honest printed tag),
 four payment gateways, six case studies, six on-site photos, four attributed
 testimonials. Every claim derives from `lib/data.ts` / `lib/case-studies.ts`.
 Constraints: WCAG 2.2 AA; status never by colour alone (`StatusBadge`); green
 only for live; nothing auto-moves longer than 5 s; CSS-first motion that is
-progressive enhancement (content visible without it); client components ≤ 9.
+progressive enhancement (content visible without it); client components ≤ 9 (8 today).
 Replaces: B3 Signal (graphite, sodium amber, Recursive, ops board). Anti-reference.
 Unresolved: OCS control-panel interior needs the client's clearance; the
 decision round ran unattended (Christian asleep), so this direction awaits his
-review on the v4 preview.
+review on the v4.1 preview (the amber refinement: still screenshots, restrained motion).
 
 ## Direction contract
 
@@ -34,9 +34,8 @@ assigned 4; it was not my top pick (1 was, and it sits too close to the B3
 board being replaced). Unattended run: no decision page could be answered, so
 the assigned direction is built and the alternates below stay adoptable.
 
-THESIS: Every project is a brochure in a lobby rack. You see its top over the
-pocket lip; give it attention and it lifts out and shows you the actual site,
-scrolling. The page's job is the job his clients' brochures did before he
+THESIS: Every project is a brochure in a lobby rack. You see its top, a still
+screenshot of the actual site; give it attention and it lifts a hair. The page's job is the job his clients' brochures did before he
 built their websites. It refuses the dev-portfolio default (dark hero, gradient
 blobs, a grid of screenshot cards) and its predictable opposite (the mono
 terminal board B3 already was).
@@ -45,23 +44,24 @@ OWN-WORLD: "Lobby Rack". Printed matter in a resort lobby at night: a deep
 lagoon ground, paper-white ink, and signal amber laid down as flat,
 confident printed planes (never glows, gradients or outlines). Ube violet
 exists only as the early-access ring. Surfaces are paper: panels, cards, folds
-and creases, a rack lip with pockets, perforated reply cards, postcards. A
+and creases, a rack lip, perforated reply cards, postcards. A
 condensed, variable display face (Anybody) does the shouting; Figtree reads.
 Recognisable with the content removed: amber planes, dashed fold creases,
-tall portrait cards half-sunk in pocketed tiers.
+tall portrait cards standing whole on a lipped shelf.
 
 STORY: The visitor opens a brochure (the hero unfolds) and understands: a
 full-stack developer in Naga City who builds hotel, tour and restaurant sites
 with booking and payments, and products of his own. They believe it because
-every card lifts out to show the real site scrolling, and the embeddable ones
-open live. They read one case study, see the people and places, and fill in the
+every card shows the real site, and the embeddable ones open live. They read one case study, see the people and places, and fill in the
 reply card: Start a project.
 
 FIRST VIEWPORT (1440×900): a 64px top bar, then a tri-fold brochure spanning
 the grid, about 640px tall. Front panel (1.3fr): a full amber plane; eyebrow
 "Christian Raro · Naga City" in on-accent; H1 "Full-stack developer" in Anybody
 800 at wdth 75, 56–112px, two lines, on-accent; lede (Figtree 19px, on-accent);
-specialism line; CTA row: primary "Start a project" (lagoon fill, amber text,
+AI line ("AI-enabled engineer and automations: Claude Code, Codex, Qwen Code,
+n8n") with its proof under it ("In use:" and one linked item per line: this
+site's assistant on Groq; the Connecta PH case study); specialism line; CTA row: primary "Start a project" (lagoon fill, amber text,
 arrow) plus "Résumé" as an on-accent outline button. Middle panel (0.85fr): the
 portrait, full bleed, hairline crease on each side. Right panel (0.85fr): `panel`
 paper, four proof points as large numerals over labels, then the stack chips,
@@ -77,7 +77,7 @@ card and each product's flap: 30–40% of the first viewport).
 
 Challenger verdicts (fused, judged on audience identification and product clarity):
 - Hand-processed 16mm film (competitive: product clarity, since a frame strip
-  maps onto the scroll-through preview; loses audience identification).
+  maps onto a screenshot strip; loses audience identification).
   Alternate. **RAISE (from 16mm film):** every card carries an edge code along
   its margin, a running index `04 / 18` plus band, so the rack reads as one
   numbered strip and position is always known.
@@ -110,10 +110,11 @@ Tailwind key `canvas` is the CSS variable `--bg` (the contrast test reads `--bg`
 | muted-strong | `0.8500 0.0220 220` | `0.3700 0.0400 238` | ledes, summaries |
 | line | `0.3450 0.0420 232` | `0.9000 0.0120 225` | hairlines, creases |
 | line-strong | `0.4300 0.0420 232` | `0.8200 0.0180 228` | control borders, rack lip |
-| accent | `0.8200 0.1500 85` | `0.5300 0.1150 68` | signal amber planes (amber-brown in light), primary, focus |
-| on-accent | `0.2350 0.0420 232` | `1.0000 0.0000 0` | text on an amber plane |
+| accent | `0.8200 0.1500 85` | `0.5300 0.1150 68` | amber as ink and line: focus ring, card hover border, links, small glyphs (a deeper amber in light, so it holds AA on paper) |
+| accent-plane | `0.8200 0.1500 85` | `0.8000 0.1500 80` | amber as flat planes and the primary button, bright in both themes |
+| on-accent | `0.2350 0.0420 232` | `0.2500 0.0450 240` | text on an amber plane (dark ink in both themes) |
 | live | `0.8200 0.1500 152` | `0.5500 0.1400 152` | live status only |
-| status-early | `0.7600 0.1200 285` | `0.5200 0.1600 285` | early-access ring (ube violet, 200° from amber) |
+| status-early | `0.7600 0.1200 285` | `0.5200 0.1600 285` | early-access ring (violet, 90°+ from amber, so never read as brand) |
 | status-private | `0.6400 0.0300 226` | `0.5600 0.0300 235` | lock glyph |
 | status-internal | `0.6400 0.0300 226` | `0.5600 0.0300 235` | square glyphs |
 
@@ -125,16 +126,18 @@ Contrast, computed with the contrast test's own OKLCH→sRGB formula (dark / lig
 | muted on canvas / panel | 6.03 / 5.35 | 5.84 / 6.21 | 4.5 |
 | muted-strong on canvas / panel | 10.55 / 9.36 | 9.73 / 10.35 | 4.5 |
 | accent on canvas / panel | 9.41 / 8.35 | 5.10 / 5.43 | 4.5 |
-| on-accent on accent | 9.41 | 5.43 | 4.5 |
+| on-accent on accent-plane | 9.41 | 8.40 | 4.5 |
 | live on canvas / panel | 10.04 / 8.91 | 4.28 / 4.55 | 3 |
 | status-early on canvas / panel | 7.51 / 6.67 | 5.49 / 5.84 | 3 |
 | status-private, -internal on canvas / panel | 4.97 / 4.41 | 4.34 / 4.62 | 3 |
 
-Rules: on an amber plane, text is `on-accent` only (ink on accent is 1.6–2.9,
-forbidden). Amber is never a text colour on an amber-adjacent plane. Green
+Rules: on an amber plane, text is `on-accent` only. Planes and the primary
+button fill with `accent-plane`, never `accent` (a test greps for it); amber
+is never a text colour on an amber-adjacent plane. Green
 stays inside `StatusBadge`. No raw hex, no `dark:` colour pairs, no gradients.
-Shadows: none in flow. A lifted card gets `0 18px 30px -18px oklch(0.12 0.03 232 / 0.55)`
-in both themes (the one in-flow shadow, applied only while lifted); floating
+Shadows: none in flow. A hovered card gets `0 18px 30px -18px oklch(0.12 0.03 232 / 0.55)`
+in both themes (the one in-flow shadow, a pseudo-element faded in by opacity,
+never an animated `box-shadow`); floating
 layers (chat, dialog, toasts) keep an overlay shadow of the same hue.
 
 ### Type
@@ -176,7 +179,7 @@ New section copy (case-study strip heading, rack tier labels) goes to
   (rack tags), dialog 10px. Postcards 2px.
 - Borders: 1px `line` hairlines; folds are 1px dashed `line-strong` creases
   (6 on, 5 off, a repeating gradient on a 1px span). The rack lip is a 2px `line-strong` rule with a
-  12px `panel` ledge under it. Perforation: 2px dotted `line-strong` with 10px
+  14px `panel` ledge under it. Perforation: 2px dotted `line-strong` with 10px
   half-circle notches at each end (radial mask).
 - Surfaces: canvas ground; `panel` paper; amber planes; nothing else.
 
@@ -184,27 +187,26 @@ New section copy (case-study strip heading, rack tier labels) goes to
 
 **Homepage, in order** (anchors kept: `#work`, `#changelog`, `#contact`):
 1. **Hero tri-fold** (`heroContent`, `availability`, `resumeUrl`, portrait
-   `profile-hiking.jpg`). As the first viewport above. Below 768px the panels
+   `profile-hiking.jpg`). As the first viewport above, plus the stack chips (`heroContent.stack`). Below 768px the panels
    stack: amber front panel, then the portrait as a 4:3 band, then the proof
    panel; the creases turn horizontal.
 2. **Products** `#work` (`sectionContent.work`; `projects` band `Products`, 4).
    Each product is an open fold-out spread at full grid width: an amber flap
    (4 cols: edge code, name, `StatusBadge`, summary) joined at a crease to a
    `panel` leaf (8 cols: description, domain link, "Live preview" when
-   embeddable, "Read more" to `/projects/<slug>`) holding a **ScrollPreview**
-   (portrait 3:4 frame, right side). Flap alternates left/right per product.
+   embeddable, "Read more" to `/projects/<slug>`) holding a still **ProjectShot**
+   (portrait 3:4 frame, right side). Flap alternates left/right per product;
+   the spread sits settled (nothing moves with scroll).
 3. **The rack** (`sectionContent.systems`; `groupForHomepage`: "Custom systems"
-   then "Client work"). Each group is a tier: tier label as an edge code, a
-   rack lip, and pocketed cards (4 per row at 1024px, 3 at 768px, a
-   horizontal scroll-snap strip with 78% card width below 640px). Card: 9:16
-   portrait; the pocket shows its top 9/16 (a square): the 44% text block
-   (edge code, name, `StatusBadge`, domain) and a sliver of the **ScrollPreview**
-   with its "scroll" cue, so a preview is seen at rest; the rest is sunk. Whole
-   card links to `/projects/<slug>`; no LivePreview in the rack (one interactive
-   target per card). Auth-gated / internal: a flat card that fits its pocket
-   whole, never lifts, and prints its `caseStudyContent.noPreview` tag in the
-   visible top. Staging: a diagonal "Staging" tag on the
-   top. On touch widths cards are not sunk (full card visible).
+   then "Client work"). Each group is a tier: tier label as an edge code with
+   its count, a rack lip, and cards standing whole on it (4 per row at 1024px,
+   3 at 640px, a horizontal scroll-snap strip with 78% card width below
+   640px). Card: 9:16 portrait; the 44% text block (edge code, name,
+   `StatusBadge`, summary, domain) over a still **ProjectShot** of the site's
+   top. Whole card links to `/projects/<slug>`; no LivePreview in the rack
+   (one interactive target per card). Auth-gated / internal: a flat square
+   card from 640px that prints its `caseStudyContent.noPreview` tag in its text
+   block. Staging: a diagonal "Staging" tag on the top.
 4. **Case studies** (new `sectionContent.caseStudies`; the six in
    `lib/case-studies.ts` joined to their projects). A row of six closed
    tri-folds (front covers): title, `role`, first sentence of `brief`, edge
@@ -220,7 +222,10 @@ New section copy (case-study strip heading, rack tier labels) goes to
    Education as two lanes.
 7. **What I ship with** (`sectionContent.stack`, `skills`). The brochure's back
    panel "amenities": category headings with skill names in columns, dotted
-   leaders, WordPress marked by a `panel` chip (never amber outline).
+   leaders, in the data's order: WordPress & e-commerce (the specialism, first),
+   Frontend, Backend, AI & automation (Claude Code, Codex, Qwen Code, n8n,
+   Groq / LLM APIs), Tools & DevOps. WordPress is marked by a `panel` chip in
+   the hero (never amber outline).
 8. **Contact** `#contact` (`sectionContent.contact`, `contactInfo`,
    `socialLinks`). A business reply card: an amber plane (left, 5 cols:
    heading, availability, email, socials, all on-accent) perforated to a
@@ -230,9 +235,10 @@ New section copy (case-study strip heading, rack tier labels) goes to
 Footer: hairline, name, year, socials, small edge code "Printed in Naga City".
 
 **`/projects`**: `projectsPageContent` heading, filter chips as rack-tier tabs
-(`?band=`, links, `aria-current`), then every band as a tier of the same pocket
-cards, in `BAND_ORDER`. Products appear as cards here too (with ScrollPreview),
-standing whole on the shelf rather than sunk: an open tier that reserves no lift.
+(`?band=`, links, `aria-current`), then every band as a tier of the same rack
+cards, in `BAND_ORDER`. Products appear as cards here too (with a ProjectShot).
+Filtering is a set of plain links; the island in `view-transitions.tsx` glides
+the cards to their new places (FLIP) where view transitions exist.
 A "Start a project" primary under the heading.
 
 **`/projects/[slug]`** (Read): front cover header full grid: "← All projects",
@@ -242,29 +248,31 @@ its own line (flagship), `band · sector` edge code, meta strip (dates, payment
 gateways), actions: "Open live site" (secondary), **LivePreview** button when
 embeddable, "Start a project" (primary). Below, a two-column spread at 1024px:
 prose leaf left (`max-w-[36rem]`, section headings at Title tier), and a sticky
-preview rail right (top: 96px): **ScrollPreview** (3:4, desktop shot), the mobile
+preview rail right (top: 96px): a **ProjectShot** (3:4, desktop shot; the end of the card morph), the mobile
 shot below it in `ImageLightbox`, crease between leaf and rail. Under 1024px the
 rail becomes a block: after the header on short pages, after "The brief" on
 flagships. Flagship sections: The brief, What I built, Decisions (numbered
 fold panels: chose / over / because), Stack, Outcome (+ metric cells), From the
-client, Related. Footer: the next case study as one pocket card ("Next in the
+client, Related. Footer: the next case study as one rack card ("Next in the
 rack"), then the CTA pair. Short page: About the project, Part of…, Stack.
 
-**404**: the grid; an empty rack pocket (lip + empty slot with a tag reading the
+**404**: the grid; an empty rack slot (lip + empty slot with a tag reading the
 `notFoundContent.eyebrow`), H1 `notFoundContent.title`, one sentence, "All
 projects" primary, "Back to the homepage" secondary.
 
 ### MOTION
 
 Brand idea: **paper that unfolds when you pay attention.** Three verbs only:
-*unfold* (reveals detail: hero, products, case studies), *lift* (attention and
-selection: a card rising out of its pocket), *slide* (continuity: things move
-aside, never vanish). Motion always answers "what did my attention just open?"
+*unfold* (reveals detail: hero, case studies), *lift* (attention: a card rising
+2px), *slide* (continuity: cards glide to a new place when a filter changes; a
+screenshot morphs into the case study). Motion is restrained: screenshots are
+stills, and nothing about a screenshot or a card is driven by scroll. Motion
+always answers "what did my attention just open?"
 
-Tokens (`lib/motion-tokens.ts` ↔ `--dur-*`, `--ease-*`): fast 0.18s, normal
-0.35s, slow 0.6s, crawl 1.2s; smooth `cubic-bezier(0.22,1,0.36,1)`, sharp
-`cubic-bezier(0.4,0,0.2,1)`; distances sm 8, md 16, lg 24, xl 40px. Settle =
-smooth easing (its overshoot-free tail is the "mass"); no spring on CSS motion.
+Tokens (`lib/motion-tokens.ts` ↔ `--dur-*`, `--ease-*`, `--stagger-card`): fast
+0.18s, normal 0.35s, slow 0.6s, crawl 1.2s; smooth `cubic-bezier(0.22,1,0.36,1)`,
+sharp `cubic-bezier(0.4,0,0.2,1)`; distances sm 8, md 16, lg 24, xl 40px. Settle
+= smooth easing (its overshoot-free tail is the "mass"); no spring on CSS motion.
 
 **Hero sequence** (CSS keyframes on load, no JS, total 1.9s, runs once):
 - 0ms: H1 words rise `translateY(0.35em) → 0`, slow/smooth, 90ms stagger.
@@ -284,52 +292,52 @@ Below 768px: panels unfold `rotateX(88deg) → 0` from their top edge instead.
 `@supports (animation-timeline: view())` and
 `@media (prefers-reduced-motion: no-preference)`; outside both, nothing is
 hidden or offset). Proof sections (Products, rack) animate transform only, never
-opacity, so server HTML stays visible:
-- Products: each flap unfolds against its leaf, `rotateY(±22deg) → 0` (hinge at
-  the crease), leaf slides xl → 0 toward the crease.
-- Rack: the lip draws `scaleX(0 → 1)` from the left; cards drop into pockets
-  `translateY(-xl) → 0`, staggered by `--i` × 40ms via `animation-delay`.
-- Case studies: covers rise md → 0, transform only (never faded: a case study is read at full contrast), staggered.
+opacity, so server HTML stays visible. These are entrances, not scrubbed
+previews:
+- Products: settled. No flap or leaf motion on scroll (a scrubbed spread left the crease seam out of line).
+- Rack: from 640px each card rises its last 16px once as it enters the viewport
+  (`.reveal-stagger`, a `timeline-trigger`, play-forwards, never reversed), each
+  visible column `--stagger-card` (60ms) after the one before; a card already in
+  view at load or after a filter change does not move. Without trigger support
+  the cards sit at rest.
+- Case studies: covers rise lg → 0, transform only (never faded: a case study is read at full contrast), staggered.
 - Field log: postcards slide in from xl at their resting rotation; quotes rise md.
-- Route line: the SVG path draws with `animation-timeline: view()` across the
-  section (`entry 0% exit 40%`), stops pop `scale(0.6 → 1)` as the line passes.
+- Route line: the path draws across the section on a named view timeline, stops pop `scale(0.6 → 1)` as the line passes.
 - Amenities: no scroll motion (a quiet passage after a dense one).
-- Contact: the reply card slides up lg and the perforation draws left→right.
+- Contact: the reply card slides up and the perforation draws.
 
 **Hover / press grammar** (transform and opacity only; colour transitions fast/sharp):
 - Text links: an underline pseudo `scaleX(0 → 1)` from left, fast/smooth; leaves right.
 - Buttons: hover lifts `translateY(-2px)`, press `translateY(1px) scale(0.98)`,
   fast/sharp; primary's arrow slides sm right on hover.
-- Rack card: hover / `:focus-visible` / `:focus-within` lifts it out of the
-  pocket `translateY(-26%)` (more of the sunk preview rises above the lip), normal/smooth,
-  lifted shadow; the ScrollPreview inside starts scrolling after the lift
-  (delay = normal). Press: `translateY(-22%)`, fast. Leave: back down, normal.
-  Each shelf reserves the lift (`.rack-shelf` / `.rack-row`): the first row is
-  padded and rows sit apart by it, so a lifted card never covers the tier
-  heading or the printed top of the row above. Within a tier, cards with a
-  preview lead; on the homepage a tier with previews leads one without.
-- Product flap: hover tilts the flap `rotateY(-4deg)`, normal/smooth, inviting the open.
+- Catalog card (`.lift-card`: rack cards, a product's screenshot, case-study
+  covers): on a fine pointer with motion allowed, hover lifts it
+  `translateY(-2px)`, turns its border `accent`, scales its screenshot to 1.02
+  inside a clipping frame (fast/smooth) and fades in the lift shadow
+  (pseudo-element, opacity only). `:focus-visible` gets the accent border beside
+  the global ring, with no travel, in every mode.
+- Product flap: on a fine pointer, hover tilts the flap `rotateY(-4deg)`, normal/smooth, inviting the open.
 - Postcard: straightens to 0° and lifts sm, normal/smooth.
 - Focus is the brightest thing on the page: 2px accent outline, 3px offset,
   plus the hover transform.
 
-**Preview scroll** (`ScrollPreview`): the full shot in a fixed 3:4 (product,
-project page) or 9:16 (rack) frame, `object-fit: cover`, `object-position: 50% 0`.
-On hover / `:focus-visible` of the frame (or its card): to `50% 100%` over
-`--scroll-dur = clamp(1.2s, shotHeight / 1500 × 1s, 4.5s)` (set inline as a CSS
-variable from the image's height), sharp easing; a 3px accent progress rule on
-the frame's right edge grows `scaleY(0 → 1)` with the same duration and easing,
-showing how far through the page you are, over a `line-strong` track that is
-visible at rest, with a printed "scroll" cue in the frame's corner. On leave:
-back to top over slow/smooth, rule shrinks. It stops at the bottom; it never
-loops. Where scroll timelines exist, the previews a visitor is meant to see
-also move without hover, scroll-bound (not auto-playing): a product frame
-scrolls the site as it crosses the viewport (`view()`, cover 15%–85%), a
-project page's sticky rail follows the page's scroll (`scroll(root)`), and the
-rack's unsunk cards below 640px follow their tier, and from 640px each rack
-card follows its own slot (`view()`, cover 15%–85%), so the sliver over the lip
-moves at rest; hover / focus lift the card to show more. Under reduced motion
-the rack's sliver and cue stay visible, the shot pinned at the top.
+**View transitions** (`components/ui/view-transitions.tsx`, the island mounted
+once in the layout inside `Suspense`; click rules in `lib/view-transition.ts`):
+- Filter FLIP: a `/projects` filter change names every card (`card-<slug>`) and
+  tier (`tier-<heading>`) while it runs (`.vt-filter` on `<html>`), so they
+  glide from old place to new, normal/smooth. Filter tabs are still plain links.
+- Card to case study: the clicked screenshot is named `shot-<slug>` and morphs
+  into the case-study header shot (statically named via `morphTarget`), cropped
+  from the top, never stretched. The old page fades out fast, then the new page
+  fades in, so the two never show at once. Only when the header shot is mostly
+  in view (on a phone it sits below the cover: plain cross-fade). Waits up to
+  300ms for the shot to decode, lands at the top, focuses the h1.
+- Safety: feature-detected `startViewTransition`; off under reduced motion;
+  modified or middle clicks, other origins and other routes are left to
+  next/link; 2.5s commit timeout; a failed client push falls back to a full
+  navigation; the latest of rapid clicks owns cleanup; `::view-transition`
+  never takes the pointer.
+
 LivePreview dialog: scrim fades normal; dialog rises md with opacity, normal/smooth;
 the desktop↔mobile toggle resizes the iframe frame via `transform: scaleX` of a
 wrapper plus width swap at the end (layout once, not animated per frame);
@@ -338,9 +346,8 @@ exit reverses at fast.
 **Reduced motion** (`prefers-reduced-motion: reduce`):
 - Hero: everything in its final state at first paint; creases drawn.
 - Scroll reveals: not applied (the `@media` gate); all content at rest.
-- Hover/press: transforms removed; colour and underline appear instantly; the
-  rack card is shown already lifted on focus (state change without travel).
-- ScrollPreview: stays at the top; no progress rule; the dialog fades only (fast).
+- Hover/press: transforms removed; colour, border and underline change instantly.
+- Card hover travel, the stagger and view transitions: off (the island navigates without a transition; the border still turns accent on focus); the dialog fades only (fast).
 - Live pulse removed. `useReducedMotion` gates every `motion/react` piece.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
