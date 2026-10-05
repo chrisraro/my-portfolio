@@ -44,7 +44,7 @@ export function CaseStudies() {
               <span aria-hidden="true" className="edge-code text-xs text-muted">
                 {edgeCode(i + 1, covers.length, caseStudyContent.eyebrow.caseStudy)}
               </span>
-              <span className="text-title mt-8 text-[1.75rem] text-ink">{project.title}</span>
+              <span className="text-title mt-8 text-ink">{project.title}</span>
               <span className="edge-code mt-2 text-xs text-muted">{sectorNames[project.sector]}</span>
               <span className="mt-5 leading-relaxed text-muted-strong">{briefLead(study)}</span>
               <span className="mt-auto pt-6 text-sm text-ink">{study.role}</span>

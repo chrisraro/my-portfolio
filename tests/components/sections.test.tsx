@@ -42,6 +42,16 @@ const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').r
 describe('Hero', () => {
   const html = renderToStaticMarkup(<Hero />)
 
+  // Confirm critique: the proof panel spread its two groups apart (a ~234px
+  // void), and at 1440x900 the fold cut the Products heading in half.
+  it('stacks the proof panel from the top, and leaves the next heading inside the first viewport', () => {
+    const panel = html.match(/<div class="hero-unfold-right[^"]*"/)?.[0] ?? ''
+    expect(panel).toContain('justify-start')
+    expect(panel).not.toContain('justify-between')
+    const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
+    expect(section).toContain('md:pb-[72px]')
+  })
+
   it('states availability in the first mobile viewport, where the top bar hides it', () => {
     const line = html.match(/<p class="([^"]*)">(?:(?!<\/p>).)*Open to freelance/)
     expect(html).toContain(availability)
@@ -161,6 +171,29 @@ describe('Rack', () => {
       expect(card.slice(3)).not.toContain('<a ')
       expect(card).not.toContain('<button')
       expect(card).not.toMatch(/tabindex/i)
+    }
+  })
+
+  it('reserves no lift on a row where nothing lifts (every card flat)', () => {
+    const rows = html.match(/<ul class="rack-row[^"]*"[\s\S]*?<\/ul>/g) ?? []
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) {
+      const allFlat = !/class="rack-card (?!rack-card--flat)/.test(row)
+      expect(/rack-row--open/.test(row.slice(0, 200)), row.slice(0, 80)).toBe(allFlat)
+    }
+  })
+
+  it('keeps a card with no preview flat, its reason printed in the visible top', () => {
+    for (const p of racked.filter((p) => !fullShotFor(p))) {
+      const card = cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
+      expect(card, p.slug).toMatch(/class="rack-card rack-card--flat/)
+      // The reason sits in the top area (the part above the lip), not only in the sunk half.
+      const top = card.match(/<span class="rack-card__top[^"]*">([\s\S]*?)<\/span><span class="rack-card__sunk/)?.[1] ?? ''
+      expect(top, p.slug).toContain(escape(noPreviewCopy(p)))
+    }
+    for (const p of racked.filter((p) => fullShotFor(p))) {
+      const card = cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
+      expect(card, p.slug).not.toContain('rack-card--flat')
     }
   })
 

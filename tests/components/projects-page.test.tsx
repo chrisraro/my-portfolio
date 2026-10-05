@@ -118,7 +118,38 @@ describe('rack card focus', () => {
   // the bottom of its focus ring was cut off. Focus takes the card out whole.
   it('lifts the pocket clip while a card inside it has keyboard focus', () => {
     const css = readFileSync('app/globals.css', 'utf8')
-    expect(css).toMatch(/\.rack-pocket:has\(:focus-visible\) \{ clip-path: none; \}/)
+    expect(css).toMatch(/\.rack-pocket:has\(:focus-visible\) \{[^}]*clip-path: none;/)
     expect(css).not.toContain('.rack-pocket:focus-within')
+  })
+
+  // The lip is painted after the pocket, so a focused card was sliced by it.
+  it('raises the focused pocket above its lip', () => {
+    const css = readFileSync('app/globals.css', 'utf8')
+    const rule = css.match(/\.rack-pocket:has\(:focus-visible\) \{([^}]*)\}/)?.[1] ?? ''
+    expect(rule).toMatch(/position:\s*relative/)
+    expect(rule).toMatch(/z-index:\s*[1-9]/)
+  })
+})
+
+describe('/projects Products tier', () => {
+  const html = render()
+  const tier = (heading: string) => {
+    const start = html.indexOf(`id="rack-${heading.toLowerCase().replace(/\s+/g, '-')}"`)
+    const end = html.indexOf('</section>', start)
+    return html.slice(start, end)
+  }
+
+  it('stands the products whole on the shelf, not sunk in pockets', () => {
+    const products = tier('Products')
+    expect(products).toContain('class="rack-card')
+    expect(products).not.toContain('rack-pocket')
+    expect(products).toContain('rack-row--open')
+  })
+
+  it('keeps every other tier sunk', () => {
+    for (const band of BAND_ORDER.filter((b) => b !== 'Products')) {
+      if (!projects.some((p) => p.band === band)) continue
+      expect(tier(band), band).toContain('rack-pocket')
+    }
   })
 })

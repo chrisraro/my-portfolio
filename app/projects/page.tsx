@@ -46,7 +46,15 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
 
       <div className="grid gap-14 sm:gap-20">
         {groupByBand(visible, hasFullShot).map((group) => (
-          <RackTier key={group.heading} heading={group.heading} projects={group.projects} order={strip} headingLevel="h2" />
+          <RackTier
+            key={group.heading}
+            heading={group.heading}
+            projects={group.projects}
+            order={strip}
+            headingLevel="h2"
+            // Products stand whole: they are the work a visitor came to see.
+            sunk={group.heading !== 'Products'}
+          />
         ))}
       </div>
 

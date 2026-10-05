@@ -424,8 +424,9 @@
 .hero-front { container-type: inline-size; }
 .hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
 
-/* The rack: a pocket shows the top 44% of a 9:16 card over its lip. Below
- * 640px (touch) the cards sit unsunk in a scroll-snap strip. */
+/* The rack: a pocket shows the top 9/16 (56%) of a 9:16 card over its lip:
+ * the 44% text block plus a sliver of the preview with its cue, so the shot is
+ * seen at rest. Below 640px (touch) the cards sit unsunk in a scroll-snap strip. */
 .rack-card {
 	transition:
 		transform var(--dur-normal) var(--ease-smooth),
@@ -451,10 +452,19 @@
 @media (min-width: 1024px) {
 	.rack-shelf { --slot-w: calc((100cqi - 72px) / 4); }
 }
+/* An open tier (/projects' Products, cards whole) or a tier of flat cards (no
+ * preview): nothing lifts, so no lift is reserved. */
+@media (min-width: 640px) {
+	.rack-row.rack-row--open {
+		padding-top: 0;
+		row-gap: 3.5rem;
+	}
+}
 @media (min-width: 640px) {
 	.rack-pocket {
-		/* 9:16 card, 44% of it visible: width / (16/9 x 0.44). */
-		aspect-ratio: 100 / 78;
+		/* 9:16 card, 9/16 of it visible: width / (16/9 x 9/16), a square. A flat
+		 * card (no preview) is square too, so it fits its pocket whole. */
+		aspect-ratio: 1 / 1;
 		/* Without this the taller card would stretch the pocket to fit it. */
 		min-height: 0;
 		overflow: visible;
@@ -463,20 +473,27 @@
 	.rack-slot:is(:hover, :focus-within) { z-index: 10; }
 	/* Lifted 26%, a card's lower edge still sits under the pocket's clip, which
 	 * cut the bottom of its focus ring. Keyboard focus takes the whole card out
-	 * of the pocket, so the ring is drawn on all four sides. */
-	.rack-pocket:has(:focus-visible) { clip-path: none; }
+	 * of the pocket, so the ring is drawn on all four sides, and raises it over
+	 * its own lip, which is painted after it and sliced across the card. Lifted
+	 * 26% with 56% showing, the card ends 18% of its height below the pocket:
+	 * inside the row gap (at least the 26% lift), short of the next row's code. */
+	.rack-pocket:has(:focus-visible) {
+		clip-path: none;
+		position: relative;
+		z-index: 1;
+	}
 	/* Focus lifts it even under reduced motion: a state change without travel. */
-	.rack-card:focus-visible {
+	.rack-pocket .rack-card:not(.rack-card--flat):focus-visible {
 		transform: translateY(-26%);
 		box-shadow: var(--shadow-lift);
 	}
 }
 @media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
-	.rack-pocket:hover .rack-card {
+	.rack-pocket:hover .rack-card:not(.rack-card--flat) {
 		transform: translateY(-26%);
 		box-shadow: var(--shadow-lift);
 	}
-	.rack-pocket .rack-card:active {
+	.rack-pocket .rack-card:not(.rack-card--flat):active {
 		transform: translateY(-22%);
 		transition-duration: var(--dur-fast);
 	}
@@ -783,6 +800,14 @@
 @media (prefers-reduced-motion: no-preference) and (hover: hover) {
 	.scroll-preview__cue { display: inline-flex; }
 }
+/* In the rack the cue is printed at the top of the frame, in the sliver that
+ * shows over the lip. */
+@media (min-width: 640px) {
+	.rack-card .scroll-preview__cue {
+		top: 0.5rem;
+		bottom: auto;
+	}
+}
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
 		@keyframes preview-scroll {
@@ -832,6 +857,23 @@
 			}
 			.rack-card .scroll-preview__cue { display: inline-flex; }
 		}
+		/* From 640px the rack is a grid: each card follows its own slot through
+		 * the viewport, so the sliver over the lip shows the site moving at rest.
+		 * Hover and focus still lift the card to show more of it. */
+		@media (min-width: 640px) {
+			.rack-slot { view-timeline: --slot block; }
+			.rack-card .scroll-preview__shot {
+				animation: preview-scroll var(--dur-normal) linear both;
+				animation-timeline: --slot;
+				animation-range: cover 15% cover 85%;
+			}
+			.rack-card .scroll-preview__progress {
+				animation: preview-progress var(--dur-normal) linear both;
+				animation-timeline: --slot;
+				animation-range: cover 15% cover 85%;
+			}
+			.rack-card .scroll-preview__cue { display: inline-flex; }
+		}
 	}
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -861,6 +903,9 @@
 	.rack-card, .flap-tilt, .postcard, .arrow-nudge { transition: none; }
 	.scroll-preview__shot { object-position: 50% 0% !important; transition: none !important; }
 	.scroll-preview__progress, .scroll-preview__track, .scroll-preview__cue { display: none; }
+	/* The rack's sliver keeps its printed cue: it says a site is sunk below,
+	 * which a lift (focus) shows; the shot itself stays at the top. */
+	.rack-card .scroll-preview__cue { display: inline-flex; }
 	.live-pulse::after { display: none; }
 	/* State changes without travel: the underline and colours still change. */
 	.press:hover, .press:active { transform: none; }

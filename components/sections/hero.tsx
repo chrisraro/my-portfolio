@@ -27,7 +27,7 @@ export function Hero() {
   const words = heroContent.title.split(' ')
 
   return (
-    <section id="top" aria-labelledby="hero-title" className="overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] pt-6 sm:px-8 md:pb-[112px] md:pt-8">
+    <section id="top" aria-labelledby="hero-title" className="overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] pt-6 sm:px-8 md:pb-[72px] md:pt-8">
       <div className="hero-fold grid md:min-h-[640px] md:grid-cols-[1.3fr_auto_0.85fr_auto_0.85fr]">
         {/* Front panel: the LCP surface, static from the first frame. */}
         <div className="on-plane hero-front relative z-10 flex flex-col rounded-t bg-accent p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
@@ -88,7 +88,7 @@ export function Hero() {
         <span aria-hidden="true" className="hero-crease-2 crease-fold" />
 
         {/* Back panel: the proof, on paper. */}
-        <div className="hero-unfold-right flex flex-col justify-between gap-8 rounded-b bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none">
+        <div className="hero-unfold-right flex flex-col justify-start gap-8 rounded-b bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none">
           <ProofBand />
           <ul aria-label="Core stack" className="flex flex-wrap gap-2">
             {chips.map((skill) => (

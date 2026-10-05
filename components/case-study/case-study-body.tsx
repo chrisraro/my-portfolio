@@ -71,7 +71,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
                 key={d.chose}
                 className="reveal-fold relative grid grid-cols-[2.25rem_1fr] gap-x-3 rounded border border-line bg-panel p-5"
               >
-                <span aria-hidden="true" className="text-numeral text-[2rem] text-accent">
+                <span aria-hidden="true" className="text-title tabular-nums text-accent">
                   {i + 1}
                 </span>
                 <div>
@@ -102,12 +102,12 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             <p key={p} className={P}>{p}</p>
           ))}
           {study.metrics && study.metrics.length > 0 && (
-            <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <dl className="mt-6 grid gap-4 sm:grid-cols-2">
               {study.metrics.map((m) => (
                 // dt before dd, as HTML requires; flex-col-reverse puts the number on top.
                 <div key={m.label} className="flex flex-col-reverse rounded border border-line bg-panel p-4">
                   <dt className="mt-1 text-sm text-muted-strong">{m.label}</dt>
-                  <dd className="text-numeral text-[2.25rem] text-ink">{m.value}</dd>
+                  <dd className="text-numeral break-words text-ink">{m.value}</dd>
                 </div>
               ))}
             </dl>
