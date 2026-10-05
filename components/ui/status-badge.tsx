@@ -3,8 +3,8 @@ import { DISPLAY_STATUS_LABEL, displayStatus } from '@/lib/display-status'
 import type { DisplayStatus, ProjectStatus } from '@/types'
 
 // Status is never colour alone: each one has its own glyph shape and always a
-// text label. Amber is both the brand colour and the early-access colour, so
-// the shape is what tells them apart.
+// text label. Shape is what tells the statuses apart; colour never does on
+// its own.
 function StatusGlyph({ status }: { status: DisplayStatus }) {
   if (status === 'private') {
     return (

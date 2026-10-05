@@ -37,7 +37,7 @@ const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contac
 const CHIP =
   'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
 
-// The status dots are amber, never green: green means a live system and
+// The status dots are the accent (magenta), never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
 // reply arrives. Once the API answers `offline: true`, the header says so in
 // words (status is never colour alone) and the launcher drops its dot.
@@ -286,9 +286,9 @@ export function ChatWidget() {
       <AnimatePresence>
         {isOpen && (
           <m.div
-            initial={{ opacity: 0, y: reduce ? 0 : 8 }}
+            initial={{ opacity: 0, y: reduce ? 0 : motionTokens.distance.sm }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: reduce ? 0 : 8 }}
+            exit={{ opacity: 0, y: reduce ? 0 : motionTokens.distance.sm }}
             transition={fade}
             className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-overlay sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
             ref={dialogRef}

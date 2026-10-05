@@ -21,6 +21,9 @@ export function TopBar() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const isDark = resolvedTheme !== 'light'
+  // The label is gated on mount like the icon. React does not patch attribute
+  // mismatches on hydration, so a theme-specific server label would stick.
+  const themeLabel = !mounted ? 'Toggle theme' : isDark ? 'Switch to light theme' : 'Switch to dark theme'
 
   // Colours swap at once on a theme switch: transitions are held off for the
   // two frames the swap takes. This replaces next-themes'
@@ -138,7 +141,7 @@ export function TopBar() {
           <button
             type="button"
             onClick={() => switchTheme(isDark ? 'light' : 'dark')}
-            aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+            aria-label={themeLabel}
             className="press inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-muted-strong hover:border-accent hover:text-accent"
           >
             {mounted ? (

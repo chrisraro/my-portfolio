@@ -46,6 +46,18 @@ describe('LivePreview source', () => {
     expect(source).toContain("document.body.style.overflow = 'hidden'")
   })
 
+  it('keeps the toast region live while the rest of the page is inert', () => {
+    expect(source).toContain("document.querySelectorAll('[data-keep-active]')")
+    expect(source).toContain('inertAllBut(keep)')
+    expect(source).toContain("removeAttribute('inert')")
+  })
+
+  it('resets the load state in the same update that opens, so no stale frame paints', () => {
+    expect(source).toMatch(/const openPreview = \(\) => \{\s*setDevice\('desktop'\)\s*setPressed\('desktop'\)\s*setLoad\('loading'\)\s*setOpen\(true\)/)
+    expect(source).toContain('onClick={openPreview}')
+    expect(source).not.toMatch(/if \(open\) \{\s*setDevice/)
+  })
+
   it('sandboxes the iframe and names it', () => {
     expect(source).toContain('sandbox="allow-scripts allow-same-origin allow-popups"')
     expect(source).not.toContain('allow-forms')

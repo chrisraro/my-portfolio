@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { heroContent } from '@/lib/data'
 import { motionTokens, springs } from '@/lib/motion-tokens'
 
 const css = readFileSync('app/globals.css', 'utf8')
@@ -14,6 +15,7 @@ describe('motion tokens', () => {
   it('has the spec durations, distances and easings', () => {
     expect(motionTokens.duration).toEqual({ fast: 0.18, normal: 0.35, slow: 0.6, crawl: 1.2 })
     expect(motionTokens.distance).toEqual({ sm: 8, md: 16, lg: 24, xl: 40 })
+    expect(motionTokens.scale).toEqual({ settle: 0.98 })
     expect(motionTokens.easing.smooth).toEqual([0.22, 1, 0.36, 1])
     expect(motionTokens.easing.sharp).toEqual([0.4, 0, 0.2, 1])
   })
@@ -86,9 +88,26 @@ describe('motion tokens', () => {
       if (!m) throw new Error(`missing ${name}`)
       return Number(m[1])
     }
-    // The last crease starts latest and draws over the crawl duration.
-    const end = ms('--t-crease-2') + motionTokens.duration.crawl * 1000
-    expect(end).toBeLessThan(2000)
+    const dur = motionTokens.duration
+    const words = heroContent.title.split(' ').length
+    const proofs = heroContent.proofPoints.length
+    // Every part of the timeline ends by 2 s, not just the latest-starting one.
+    const ends = {
+      // H1 words: staggered, each over the slow duration.
+      words: (words - 1) * ms('--stagger-word') + dur.slow * 1000,
+      lede: ms('--t-lede') + dur.normal * 1000,
+      // Panels unfold over the slow duration; the right one starts later.
+      panelMid: ms('--t-mid') + dur.slow * 1000,
+      panelRight: ms('--t-right') + dur.slow * 1000,
+      // Creases draw over the crawl duration.
+      crease1: ms('--t-crease-1') + dur.crawl * 1000,
+      crease2: ms('--t-crease-2') + dur.crawl * 1000,
+      // Proof cells lift in turn after --t-proof.
+      proof: ms('--t-proof') + (proofs - 1) * ms('--stagger-proof') + dur.normal * 1000,
+    }
+    for (const [part, end] of Object.entries(ends)) {
+      expect(end, part).toBeLessThan(2000)
+    }
   })
 
   it('switches .reveal off under prefers-reduced-motion: reduce', () => {

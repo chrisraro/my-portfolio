@@ -114,4 +114,12 @@ describe('fullShotHeight', () => {
     expect(fullShotHeight(undefined)).toBeUndefined()
     expect(fullShotHeight('/assets/images/projects/nope-full.webp')).toBeUndefined()
   })
+
+  it('reads only the header bytes, not the whole shot', () => {
+    const source = readFileSync('lib/project-page.ts', 'utf8')
+    const body = source.slice(source.indexOf('export function fullShotHeight'))
+    const fn = body.slice(0, body.indexOf('\n}\n'))
+    expect(fn).toMatch(/readSync\(/)
+    expect(fn).not.toMatch(/readFileSync\(/)
+  })
 })

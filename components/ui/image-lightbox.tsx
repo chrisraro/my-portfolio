@@ -113,9 +113,9 @@ export function ImageLightbox({ src, alt, children, className, describedBy }: Im
               key={src}
               src={src}
               alt=""
-              initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+              initial={{ opacity: 0, scale: reduce ? 1 : motionTokens.scale.settle }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+              exit={{ opacity: 0, scale: reduce ? 1 : motionTokens.scale.settle }}
               transition={transition}
               onClick={(e) => e.stopPropagation()}
               className="max-h-[90vh] max-w-full rounded-lg border border-line object-contain shadow-overlay"

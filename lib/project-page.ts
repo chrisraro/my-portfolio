@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { closeSync, existsSync, openSync, readSync } from 'node:fs'
 import { join } from 'node:path'
 import { recommendations } from '@/lib/data'
 import embeddable from '@/lib/embeddable.json'
@@ -50,12 +50,18 @@ export function hasFullShot(project: Project): boolean {
 // preview falls back to its default duration.
 export function fullShotHeight(src: string | undefined): number | undefined {
   if (!src) return undefined
+  let fd: number | undefined
   try {
-    const head = readFileSync(join(process.cwd(), 'public', src)).subarray(0, 30)
+    // Only the 30-byte header is needed; the shot itself can run to 600 KB.
+    fd = openSync(join(process.cwd(), 'public', src), 'r')
+    const head = Buffer.alloc(30)
+    if (readSync(fd, head, 0, 30, 0) < 30) return undefined
     if (head.toString('ascii', 0, 4) !== 'RIFF' || head.toString('ascii', 12, 16) !== 'VP8X') return undefined
     return head.readUIntLE(27, 3) + 1
   } catch {
     return undefined
+  } finally {
+    if (fd !== undefined) closeSync(fd)
   }
 }
 

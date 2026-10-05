@@ -83,7 +83,7 @@ function ToastItem({ toast, onDismiss, transition, reduce }: ToastItemProps) {
 
   return (
     <m.div
-      initial={{ opacity: 0, y: reduce ? 0 : -8 }}
+      initial={{ opacity: 0, y: reduce ? 0 : -motionTokens.distance.sm }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={transition}

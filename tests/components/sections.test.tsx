@@ -1,8 +1,9 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { Footer } from '@/components/footer'
+import { TopBar } from '@/components/top-bar'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { FieldLog } from '@/components/sections/field-log'
 import { Hero } from '@/components/sections/hero'
@@ -30,6 +31,9 @@ import {
 import { buildFieldLog } from '@/lib/field-log'
 import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
 import type { Project } from '@/types'
+
+// The top bar reads the route; outside the App Router there is none.
+vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
 const products = projects.filter((p) => p.band === 'Products')
 const racked = projects.filter((p) => p.band !== 'Products')
@@ -305,6 +309,16 @@ describe('Top bar', () => {
     expect(ul).toContain('max-md:overflow-x-auto')
     expect(ul).not.toMatch(/(^|\s)overflow-x-auto/)
     expect(ul).toMatch(/max-md:p-1\.5/)
+  })
+
+  it('names the theme toggle neutrally until mount, so hydration cannot leave a wrong label', () => {
+    const source = readFileSync('components/top-bar.tsx', 'utf8')
+    // The label is gated on mount, like the icon: the server cannot know the theme.
+    expect(source).toMatch(/aria-label=\{themeLabel\}/)
+    expect(source).toMatch(/const themeLabel = !mounted \? 'Toggle theme'/)
+    // The server render (mounted false) is the neutral name.
+    const html = renderToStaticMarkup(<TopBar />)
+    expect(html).toContain('aria-label="Toggle theme"')
   })
 })
 

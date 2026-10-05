@@ -7,6 +7,8 @@ export const motionTokens = {
     sharp: [0.4, 0, 0.2, 1],
   },
   distance: { sm: 8, md: 16, lg: 24, xl: 40 },
+  // A dialog's image settles from just under full size.
+  scale: { settle: 0.98 },
 } as const
 
 export const springs = {

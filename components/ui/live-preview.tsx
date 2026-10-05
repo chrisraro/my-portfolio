@@ -38,11 +38,34 @@ const STATUS_TEXT: Record<LoadState, string> = {
 const FOCUSABLE = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), iframe:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
 
 /**
+ * Make everything in <body> inert except `keep`: the dialog and any region
+ * marked data-keep-active (the toasts). Only a branch that holds a kept
+ * element is descended into, so its siblings go inert and it stays live.
+ * Anything already inert is skipped, so closing restores only what this made.
+ */
+function inertAllBut(keep: Element[]): Element[] {
+  const made: Element[] = []
+  const walk = (parent: Element) => {
+    for (const child of Array.from(parent.children)) {
+      if (keep.includes(child) || child.hasAttribute('inert')) continue
+      if (keep.some((k) => child.contains(k))) {
+        walk(child)
+      } else {
+        child.setAttribute('inert', '')
+        made.push(child)
+      }
+    }
+  }
+  walk(document.body)
+  return made
+}
+
+/**
  * A "Live preview" button that opens the real site in a sandboxed iframe.
  *
- * The dialog is portalled to <body>, and every other child of <body> is made
- * inert while it is open (aria-modal alone does not stop browse mode), as in
- * ImageLightbox. Focus moves to Close on open, Tab cycles inside the dialog,
+ * The dialog is portalled to <body>, and the rest of the page is made inert
+ * while it is open (aria-modal alone does not stop browse mode), except the
+ * toast region, which stays live as it does under the chat's modal. Focus moves to Close on open, Tab cycles inside the dialog,
  * Escape and Close dismiss it, and focus returns to the trigger.
  *
  * The desktop/mobile toggle squeezes the frame with a scaleX transform, then
@@ -69,14 +92,15 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
 
   useEffect(() => setMounted(true), [])
 
-  // A fresh open starts on desktop with the loading state showing.
-  useEffect(() => {
-    if (open) {
-      setDevice('desktop')
-      setPressed('desktop')
-      setLoad('loading')
-    }
-  }, [open, url])
+  // A fresh open starts on desktop with the loading state showing. The reset
+  // is batched with the open itself, so a reopen never paints one frame of
+  // the previous visit's state (resetting on close would flash during the exit).
+  const openPreview = () => {
+    setDevice('desktop')
+    setPressed('desktop')
+    setLoad('loading')
+    setOpen(true)
+  }
 
   useEffect(() => {
     if (!open) {
@@ -95,12 +119,9 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
   }, [open, load, url])
 
   useEffect(() => {
-    if (!open) return
-    // Skip anything already inert, so closing restores only what this opened.
-    const made = Array.from(document.body.children).filter(
-      (el) => el !== dialogRef.current && !el.hasAttribute('inert'),
-    )
-    made.forEach((el) => el.setAttribute('inert', ''))
+    if (!open || !dialogRef.current) return
+    const keep = [dialogRef.current, ...Array.from(document.querySelectorAll('[data-keep-active]'))]
+    const made = inertAllBut(keep)
     return () => made.forEach((el) => el.removeAttribute('inert'))
   }, [open])
 
@@ -318,7 +339,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
         ref={triggerRef}
         type="button"
         aria-haspopup="dialog"
-        onClick={() => setOpen(true)}
+        onClick={openPreview}
         className="inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink transition-colors hover:border-accent hover:text-accent"
       >
         <Monitor className="h-4 w-4" aria-hidden="true" />
