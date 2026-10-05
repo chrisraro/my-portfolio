@@ -31,6 +31,28 @@ describe('allowsFraming', () => {
     ).toBe(false)
   })
 
+  const portfolio = 'https://christian-digital-portfolio.vercel.app'
+
+  it('allows a frame-ancestors list that names the portfolio origin', () => {
+    const csp = `frame-ancestors 'self' ${portfolio}/; object-src 'none'`
+    expect(allowsFraming(h({ 'content-security-policy': csp }), portfolio)).toBe(true)
+  })
+
+  it('still blocks a list that names only other origins', () => {
+    const csp = "frame-ancestors 'self' https://ocs-wp-control.vercel.app"
+    expect(allowsFraming(h({ 'content-security-policy': csp }), portfolio)).toBe(false)
+  })
+
+  it('lets a frame-ancestors that names the portfolio override X-Frame-Options', () => {
+    const headers = h({ 'content-security-policy': `frame-ancestors ${portfolio}`, 'x-frame-options': 'SAMEORIGIN' })
+    expect(allowsFraming(headers, portfolio)).toBe(true)
+  })
+
+  it('blocks X-Frame-Options alongside a CSP with no frame-ancestors', () => {
+    const headers = h({ 'content-security-policy': "default-src 'self'", 'x-frame-options': 'SAMEORIGIN' })
+    expect(allowsFraming(headers, portfolio)).toBe(false)
+  })
+
   it('allows a CSP without frame-ancestors', () => {
     expect(allowsFraming(h({ 'content-security-policy': "default-src 'self'; img-src *" }))).toBe(true)
   })

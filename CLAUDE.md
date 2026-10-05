@@ -155,9 +155,10 @@ Every project gets a slot in the rack. What fills it:
   the client's clearance.
 - **LivePreview** (`components/ui/live-preview.tsx`, client) appears only when
   `isEmbeddable(project)` is true, which reads `lib/embeddable.json`. Refresh it
-  with `npm run check:embeds` (a site is embeddable when it answers 2xx and sends
-  neither `X-Frame-Options` DENY/SAMEORIGIN nor a CSP `frame-ancestors` that
-  excludes other origins) and commit the JSON. A project missing from it is not
+  with `npm run check:embeds` (a site is embeddable when it answers 2xx and its
+  CSP `frame-ancestors` names this portfolio's origin or `*`, or, with no
+  `frame-ancestors`, it sends no `X-Frame-Options` DENY/SAMEORIGIN) and commit
+  the JSON. A project missing from it is not
   embeddable.
 
 ## Code Style

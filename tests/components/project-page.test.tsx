@@ -87,8 +87,9 @@ describe('/projects/[slug]', () => {
       if (canLinkLive(p)) expect(html, p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
     }
     // The ones Christian named: Giya, Connecta PH, the WordPress sites, staging Eastwind.
+    // Each has a preview; which mode depends on whether the site now lets the portfolio frame it.
     for (const slug of ['giya', 'connecta-ph', 'el-nido-guide-ph', 'eastwind-beach-villas']) {
-      expect(render(slug), slug).toContain('data-preview="capture"')
+      expect(render(slug), slug).toMatch(/data-preview="(live|capture)"/)
     }
   })
 
