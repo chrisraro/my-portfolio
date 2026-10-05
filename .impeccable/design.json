@@ -1,501 +1,552 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-23T00:18:38.259Z",
-  "title": "Design System: Christian Raro — Portfolio 4.0",
+  "generatedAt": "2026-10-05T02:25:26Z",
+  "title": "Design System: Christian Raro, Portfolio 4.0",
   "extensions": {
     "colorMeta": {
       "canvas": {
         "role": "neutral",
-        "displayName": "Warm Graphite (dark, default)",
-        "canonical": "oklch(0.1838 0.0052 67.50)",
+        "displayName": "Lagoon Night (dark, default)",
+        "canonical": "oklch(0.2350 0.0420 232)",
         "cssVar": "--bg",
         "tonalRamp": [
-          "oklch(0.150 0.0052 67.50)",
-          "oklch(0.264 0.0052 67.50)",
-          "oklch(0.379 0.0052 67.50)",
-          "oklch(0.493 0.0052 67.50)",
-          "oklch(0.607 0.0052 67.50)",
-          "oklch(0.721 0.0052 67.50)",
-          "oklch(0.836 0.0052 67.50)",
-          "oklch(0.950 0.0052 67.50)"
+          "oklch(0.150 0.0420 232)",
+          "oklch(0.264 0.0420 232)",
+          "oklch(0.379 0.0420 232)",
+          "oklch(0.493 0.0420 232)",
+          "oklch(0.607 0.0420 232)",
+          "oklch(0.721 0.0420 232)",
+          "oklch(0.836 0.0420 232)",
+          "oklch(0.950 0.0420 232)"
         ]
       },
       "canvas-light": {
         "role": "neutral",
-        "displayName": "Warm Graphite (light)",
-        "canonical": "oklch(0.9620 0.0115 84.58)",
+        "displayName": "Lagoon Night (light)",
+        "canonical": "oklch(0.9780 0.0060 220)",
         "cssVar": "--bg",
         "tonalRamp": [
-          "oklch(0.150 0.0115 84.58)",
-          "oklch(0.264 0.0115 84.58)",
-          "oklch(0.379 0.0115 84.58)",
-          "oklch(0.493 0.0115 84.58)",
-          "oklch(0.607 0.0115 84.58)",
-          "oklch(0.721 0.0115 84.58)",
-          "oklch(0.836 0.0115 84.58)",
-          "oklch(0.950 0.0115 84.58)"
+          "oklch(0.150 0.0060 220)",
+          "oklch(0.264 0.0060 220)",
+          "oklch(0.379 0.0060 220)",
+          "oklch(0.493 0.0060 220)",
+          "oklch(0.607 0.0060 220)",
+          "oklch(0.721 0.0060 220)",
+          "oklch(0.836 0.0060 220)",
+          "oklch(0.950 0.0060 220)"
         ]
       },
       "panel": {
         "role": "neutral",
-        "displayName": "Graphite Panel (dark, default)",
-        "canonical": "oklch(0.2114 0.0075 67.40)",
+        "displayName": "Paper (dark, default)",
+        "canonical": "oklch(0.2750 0.0460 232)",
         "cssVar": "--panel",
         "tonalRamp": [
-          "oklch(0.150 0.0075 67.40)",
-          "oklch(0.264 0.0075 67.40)",
-          "oklch(0.379 0.0075 67.40)",
-          "oklch(0.493 0.0075 67.40)",
-          "oklch(0.607 0.0075 67.40)",
-          "oklch(0.721 0.0075 67.40)",
-          "oklch(0.836 0.0075 67.40)",
-          "oklch(0.950 0.0075 67.40)"
+          "oklch(0.150 0.0460 232)",
+          "oklch(0.264 0.0460 232)",
+          "oklch(0.379 0.0460 232)",
+          "oklch(0.493 0.0460 232)",
+          "oklch(0.607 0.0460 232)",
+          "oklch(0.721 0.0460 232)",
+          "oklch(0.836 0.0460 232)",
+          "oklch(0.950 0.0460 232)"
         ]
       },
       "panel-light": {
         "role": "neutral",
-        "displayName": "Graphite Panel (light)",
-        "canonical": "oklch(0.9798 0.0086 84.57)",
+        "displayName": "Paper (light)",
+        "canonical": "oklch(1.0000 0.0000 0)",
         "cssVar": "--panel",
         "tonalRamp": [
-          "oklch(0.150 0.0086 84.57)",
-          "oklch(0.264 0.0086 84.57)",
-          "oklch(0.379 0.0086 84.57)",
-          "oklch(0.493 0.0086 84.57)",
-          "oklch(0.607 0.0086 84.57)",
-          "oklch(0.721 0.0086 84.57)",
-          "oklch(0.836 0.0086 84.57)",
-          "oklch(0.950 0.0086 84.57)"
+          "oklch(0.150 0.0000 0)",
+          "oklch(0.264 0.0000 0)",
+          "oklch(0.379 0.0000 0)",
+          "oklch(0.493 0.0000 0)",
+          "oklch(0.607 0.0000 0)",
+          "oklch(0.721 0.0000 0)",
+          "oklch(0.836 0.0000 0)",
+          "oklch(0.950 0.0000 0)"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Cream Ink (dark, default)",
-        "canonical": "oklch(0.9448 0.0120 79.78)",
+        "displayName": "Paper Ink (dark, default)",
+        "canonical": "oklch(0.9640 0.0110 100)",
         "cssVar": "--ink",
         "tonalRamp": [
-          "oklch(0.150 0.0120 79.78)",
-          "oklch(0.264 0.0120 79.78)",
-          "oklch(0.379 0.0120 79.78)",
-          "oklch(0.493 0.0120 79.78)",
-          "oklch(0.607 0.0120 79.78)",
-          "oklch(0.721 0.0120 79.78)",
-          "oklch(0.836 0.0120 79.78)",
-          "oklch(0.950 0.0120 79.78)"
+          "oklch(0.150 0.0110 100)",
+          "oklch(0.264 0.0110 100)",
+          "oklch(0.379 0.0110 100)",
+          "oklch(0.493 0.0110 100)",
+          "oklch(0.607 0.0110 100)",
+          "oklch(0.721 0.0110 100)",
+          "oklch(0.836 0.0110 100)",
+          "oklch(0.950 0.0110 100)"
         ]
       },
       "ink-light": {
         "role": "neutral",
-        "displayName": "Cream Ink (light)",
-        "canonical": "oklch(0.2070 0.0075 67.39)",
+        "displayName": "Paper Ink (light)",
+        "canonical": "oklch(0.2500 0.0450 240)",
         "cssVar": "--ink",
         "tonalRamp": [
-          "oklch(0.150 0.0075 67.39)",
-          "oklch(0.264 0.0075 67.39)",
-          "oklch(0.379 0.0075 67.39)",
-          "oklch(0.493 0.0075 67.39)",
-          "oklch(0.607 0.0075 67.39)",
-          "oklch(0.721 0.0075 67.39)",
-          "oklch(0.836 0.0075 67.39)",
-          "oklch(0.950 0.0075 67.39)"
+          "oklch(0.150 0.0450 240)",
+          "oklch(0.264 0.0450 240)",
+          "oklch(0.379 0.0450 240)",
+          "oklch(0.493 0.0450 240)",
+          "oklch(0.607 0.0450 240)",
+          "oklch(0.721 0.0450 240)",
+          "oklch(0.836 0.0450 240)",
+          "oklch(0.950 0.0450 240)"
         ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted (dark, default)",
-        "canonical": "oklch(0.6480 0.0193 72.97)",
+        "displayName": "Margin Note (dark, default)",
+        "canonical": "oklch(0.6900 0.0320 226)",
         "cssVar": "--muted",
         "tonalRamp": [
-          "oklch(0.150 0.0193 72.97)",
-          "oklch(0.264 0.0193 72.97)",
-          "oklch(0.379 0.0193 72.97)",
-          "oklch(0.493 0.0193 72.97)",
-          "oklch(0.607 0.0193 72.97)",
-          "oklch(0.721 0.0193 72.97)",
-          "oklch(0.836 0.0193 72.97)",
-          "oklch(0.950 0.0193 72.97)"
+          "oklch(0.150 0.0320 226)",
+          "oklch(0.264 0.0320 226)",
+          "oklch(0.379 0.0320 226)",
+          "oklch(0.493 0.0320 226)",
+          "oklch(0.607 0.0320 226)",
+          "oklch(0.721 0.0320 226)",
+          "oklch(0.836 0.0320 226)",
+          "oklch(0.950 0.0320 226)"
         ]
       },
       "muted-light": {
         "role": "neutral",
-        "displayName": "Muted (light)",
-        "canonical": "oklch(0.5018 0.0181 67.40)",
+        "displayName": "Margin Note (light)",
+        "canonical": "oklch(0.4900 0.0350 235)",
         "cssVar": "--muted",
         "tonalRamp": [
-          "oklch(0.150 0.0181 67.40)",
-          "oklch(0.264 0.0181 67.40)",
-          "oklch(0.379 0.0181 67.40)",
-          "oklch(0.493 0.0181 67.40)",
-          "oklch(0.607 0.0181 67.40)",
-          "oklch(0.721 0.0181 67.40)",
-          "oklch(0.836 0.0181 67.40)",
-          "oklch(0.950 0.0181 67.40)"
+          "oklch(0.150 0.0350 235)",
+          "oklch(0.264 0.0350 235)",
+          "oklch(0.379 0.0350 235)",
+          "oklch(0.493 0.0350 235)",
+          "oklch(0.607 0.0350 235)",
+          "oklch(0.721 0.0350 235)",
+          "oklch(0.836 0.0350 235)",
+          "oklch(0.950 0.0350 235)"
         ]
       },
       "muted-strong": {
         "role": "neutral",
-        "displayName": "Strong Muted (dark, default)",
-        "canonical": "oklch(0.8055 0.0195 75.29)",
+        "displayName": "Lede Ink (dark, default)",
+        "canonical": "oklch(0.8500 0.0220 220)",
         "cssVar": "--muted-strong",
         "tonalRamp": [
-          "oklch(0.150 0.0195 75.29)",
-          "oklch(0.264 0.0195 75.29)",
-          "oklch(0.379 0.0195 75.29)",
-          "oklch(0.493 0.0195 75.29)",
-          "oklch(0.607 0.0195 75.29)",
-          "oklch(0.721 0.0195 75.29)",
-          "oklch(0.836 0.0195 75.29)",
-          "oklch(0.950 0.0195 75.29)"
+          "oklch(0.150 0.0220 220)",
+          "oklch(0.264 0.0220 220)",
+          "oklch(0.379 0.0220 220)",
+          "oklch(0.493 0.0220 220)",
+          "oklch(0.607 0.0220 220)",
+          "oklch(0.721 0.0220 220)",
+          "oklch(0.836 0.0220 220)",
+          "oklch(0.950 0.0220 220)"
         ]
       },
       "muted-strong-light": {
         "role": "neutral",
-        "displayName": "Strong Muted (light)",
-        "canonical": "oklch(0.3491 0.0120 62.25)",
+        "displayName": "Lede Ink (light)",
+        "canonical": "oklch(0.3700 0.0400 238)",
         "cssVar": "--muted-strong",
         "tonalRamp": [
-          "oklch(0.150 0.0120 62.25)",
-          "oklch(0.264 0.0120 62.25)",
-          "oklch(0.379 0.0120 62.25)",
-          "oklch(0.493 0.0120 62.25)",
-          "oklch(0.607 0.0120 62.25)",
-          "oklch(0.721 0.0120 62.25)",
-          "oklch(0.836 0.0120 62.25)",
-          "oklch(0.950 0.0120 62.25)"
+          "oklch(0.150 0.0400 238)",
+          "oklch(0.264 0.0400 238)",
+          "oklch(0.379 0.0400 238)",
+          "oklch(0.493 0.0400 238)",
+          "oklch(0.607 0.0400 238)",
+          "oklch(0.721 0.0400 238)",
+          "oklch(0.836 0.0400 238)",
+          "oklch(0.950 0.0400 238)"
         ]
       },
       "line": {
         "role": "neutral",
         "displayName": "Hairline (dark, default)",
-        "canonical": "oklch(0.2724 0.0117 67.30)",
+        "canonical": "oklch(0.3450 0.0420 232)",
         "cssVar": "--line",
         "tonalRamp": [
-          "oklch(0.150 0.0117 67.30)",
-          "oklch(0.264 0.0117 67.30)",
-          "oklch(0.379 0.0117 67.30)",
-          "oklch(0.493 0.0117 67.30)",
-          "oklch(0.607 0.0117 67.30)",
-          "oklch(0.721 0.0117 67.30)",
-          "oklch(0.836 0.0117 67.30)",
-          "oklch(0.950 0.0117 67.30)"
+          "oklch(0.150 0.0420 232)",
+          "oklch(0.264 0.0420 232)",
+          "oklch(0.379 0.0420 232)",
+          "oklch(0.493 0.0420 232)",
+          "oklch(0.607 0.0420 232)",
+          "oklch(0.721 0.0420 232)",
+          "oklch(0.836 0.0420 232)",
+          "oklch(0.950 0.0420 232)"
         ]
       },
       "line-light": {
         "role": "neutral",
         "displayName": "Hairline (light)",
-        "canonical": "oklch(0.8967 0.0179 81.33)",
+        "canonical": "oklch(0.9000 0.0120 225)",
         "cssVar": "--line",
         "tonalRamp": [
-          "oklch(0.150 0.0179 81.33)",
-          "oklch(0.264 0.0179 81.33)",
-          "oklch(0.379 0.0179 81.33)",
-          "oklch(0.493 0.0179 81.33)",
-          "oklch(0.607 0.0179 81.33)",
-          "oklch(0.721 0.0179 81.33)",
-          "oklch(0.836 0.0179 81.33)",
-          "oklch(0.950 0.0179 81.33)"
+          "oklch(0.150 0.0120 225)",
+          "oklch(0.264 0.0120 225)",
+          "oklch(0.379 0.0120 225)",
+          "oklch(0.493 0.0120 225)",
+          "oklch(0.607 0.0120 225)",
+          "oklch(0.721 0.0120 225)",
+          "oklch(0.836 0.0120 225)",
+          "oklch(0.950 0.0120 225)"
         ]
       },
       "line-strong": {
         "role": "neutral",
-        "displayName": "Strong Hairline (dark, default)",
-        "canonical": "oklch(0.3262 0.0157 67.23)",
+        "displayName": "Crease (dark, default)",
+        "canonical": "oklch(0.4300 0.0420 232)",
         "cssVar": "--line-strong",
         "tonalRamp": [
-          "oklch(0.150 0.0157 67.23)",
-          "oklch(0.264 0.0157 67.23)",
-          "oklch(0.379 0.0157 67.23)",
-          "oklch(0.493 0.0157 67.23)",
-          "oklch(0.607 0.0157 67.23)",
-          "oklch(0.721 0.0157 67.23)",
-          "oklch(0.836 0.0157 67.23)",
-          "oklch(0.950 0.0157 67.23)"
+          "oklch(0.150 0.0420 232)",
+          "oklch(0.264 0.0420 232)",
+          "oklch(0.379 0.0420 232)",
+          "oklch(0.493 0.0420 232)",
+          "oklch(0.607 0.0420 232)",
+          "oklch(0.721 0.0420 232)",
+          "oklch(0.836 0.0420 232)",
+          "oklch(0.950 0.0420 232)"
         ]
       },
       "line-strong-light": {
         "role": "neutral",
-        "displayName": "Strong Hairline (light)",
-        "canonical": "oklch(0.8300 0.0217 79.08)",
+        "displayName": "Crease (light)",
+        "canonical": "oklch(0.8200 0.0180 228)",
         "cssVar": "--line-strong",
         "tonalRamp": [
-          "oklch(0.150 0.0217 79.08)",
-          "oklch(0.264 0.0217 79.08)",
-          "oklch(0.379 0.0217 79.08)",
-          "oklch(0.493 0.0217 79.08)",
-          "oklch(0.607 0.0217 79.08)",
-          "oklch(0.721 0.0217 79.08)",
-          "oklch(0.836 0.0217 79.08)",
-          "oklch(0.950 0.0217 79.08)"
+          "oklch(0.150 0.0180 228)",
+          "oklch(0.264 0.0180 228)",
+          "oklch(0.379 0.0180 228)",
+          "oklch(0.493 0.0180 228)",
+          "oklch(0.607 0.0180 228)",
+          "oklch(0.721 0.0180 228)",
+          "oklch(0.836 0.0180 228)",
+          "oklch(0.950 0.0180 228)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Border (dark, default)",
+        "canonical": "oklch(0.6000 0.0350 228)",
+        "cssVar": "--field-border",
+        "tonalRamp": [
+          "oklch(0.150 0.0350 228)",
+          "oklch(0.264 0.0350 228)",
+          "oklch(0.379 0.0350 228)",
+          "oklch(0.493 0.0350 228)",
+          "oklch(0.607 0.0350 228)",
+          "oklch(0.721 0.0350 228)",
+          "oklch(0.836 0.0350 228)",
+          "oklch(0.950 0.0350 228)"
+        ]
+      },
+      "field-border-light": {
+        "role": "neutral",
+        "displayName": "Field Border (light)",
+        "canonical": "oklch(0.6000 0.0350 232)",
+        "cssVar": "--field-border",
+        "tonalRamp": [
+          "oklch(0.150 0.0350 232)",
+          "oklch(0.264 0.0350 232)",
+          "oklch(0.379 0.0350 232)",
+          "oklch(0.493 0.0350 232)",
+          "oklch(0.607 0.0350 232)",
+          "oklch(0.721 0.0350 232)",
+          "oklch(0.836 0.0350 232)",
+          "oklch(0.950 0.0350 232)"
         ]
       },
       "accent": {
         "role": "primary",
-        "displayName": "Sodium Amber (dark, default)",
-        "canonical": "oklch(0.7743 0.1479 68.78)",
+        "displayName": "Bougainvillea Magenta (dark, default)",
+        "canonical": "oklch(0.7600 0.1600 352)",
         "cssVar": "--accent",
         "tonalRamp": [
-          "oklch(0.150 0.1479 68.78)",
-          "oklch(0.264 0.1479 68.78)",
-          "oklch(0.379 0.1479 68.78)",
-          "oklch(0.493 0.1479 68.78)",
-          "oklch(0.607 0.1479 68.78)",
-          "oklch(0.721 0.1479 68.78)",
-          "oklch(0.836 0.1479 68.78)",
-          "oklch(0.950 0.1479 68.78)"
+          "oklch(0.150 0.1600 352)",
+          "oklch(0.264 0.1600 352)",
+          "oklch(0.379 0.1600 352)",
+          "oklch(0.493 0.1600 352)",
+          "oklch(0.607 0.1600 352)",
+          "oklch(0.721 0.1600 352)",
+          "oklch(0.836 0.1600 352)",
+          "oklch(0.950 0.1600 352)"
         ]
       },
       "accent-light": {
         "role": "primary",
-        "displayName": "Sodium Amber (light)",
-        "canonical": "oklch(0.5099 0.1227 54.58)",
+        "displayName": "Bougainvillea Magenta (light)",
+        "canonical": "oklch(0.5100 0.2000 352)",
         "cssVar": "--accent",
         "tonalRamp": [
-          "oklch(0.150 0.1227 54.58)",
-          "oklch(0.264 0.1227 54.58)",
-          "oklch(0.379 0.1227 54.58)",
-          "oklch(0.493 0.1227 54.58)",
-          "oklch(0.607 0.1227 54.58)",
-          "oklch(0.721 0.1227 54.58)",
-          "oklch(0.836 0.1227 54.58)",
-          "oklch(0.950 0.1227 54.58)"
+          "oklch(0.150 0.2000 352)",
+          "oklch(0.264 0.2000 352)",
+          "oklch(0.379 0.2000 352)",
+          "oklch(0.493 0.2000 352)",
+          "oklch(0.607 0.2000 352)",
+          "oklch(0.721 0.2000 352)",
+          "oklch(0.836 0.2000 352)",
+          "oklch(0.950 0.2000 352)"
         ]
       },
       "on-accent": {
         "role": "primary",
-        "displayName": "On Amber (dark, default)",
-        "canonical": "oklch(0.1838 0.0052 67.50)",
+        "displayName": "Plane Ink (dark, default)",
+        "canonical": "oklch(0.2350 0.0420 232)",
         "cssVar": "--on-accent",
         "tonalRamp": [
-          "oklch(0.150 0.0052 67.50)",
-          "oklch(0.264 0.0052 67.50)",
-          "oklch(0.379 0.0052 67.50)",
-          "oklch(0.493 0.0052 67.50)",
-          "oklch(0.607 0.0052 67.50)",
-          "oklch(0.721 0.0052 67.50)",
-          "oklch(0.836 0.0052 67.50)",
-          "oklch(0.950 0.0052 67.50)"
+          "oklch(0.150 0.0420 232)",
+          "oklch(0.264 0.0420 232)",
+          "oklch(0.379 0.0420 232)",
+          "oklch(0.493 0.0420 232)",
+          "oklch(0.607 0.0420 232)",
+          "oklch(0.721 0.0420 232)",
+          "oklch(0.836 0.0420 232)",
+          "oklch(0.950 0.0420 232)"
         ]
       },
       "on-accent-light": {
         "role": "primary",
-        "displayName": "On Amber (light)",
-        "canonical": "oklch(0.9798 0.0086 84.57)",
+        "displayName": "Plane Ink (light)",
+        "canonical": "oklch(1.0000 0.0000 0)",
         "cssVar": "--on-accent",
         "tonalRamp": [
-          "oklch(0.150 0.0086 84.57)",
-          "oklch(0.264 0.0086 84.57)",
-          "oklch(0.379 0.0086 84.57)",
-          "oklch(0.493 0.0086 84.57)",
-          "oklch(0.607 0.0086 84.57)",
-          "oklch(0.721 0.0086 84.57)",
-          "oklch(0.836 0.0086 84.57)",
-          "oklch(0.950 0.0086 84.57)"
+          "oklch(0.150 0.0000 0)",
+          "oklch(0.264 0.0000 0)",
+          "oklch(0.379 0.0000 0)",
+          "oklch(0.493 0.0000 0)",
+          "oklch(0.607 0.0000 0)",
+          "oklch(0.721 0.0000 0)",
+          "oklch(0.836 0.0000 0)",
+          "oklch(0.950 0.0000 0)"
         ]
       },
       "live": {
-        "role": "secondary",
-        "displayName": "Signal Green (dark, default)",
-        "canonical": "oklch(0.7972 0.1171 153.88)",
+        "role": "tertiary",
+        "displayName": "Live Green (dark, default)",
+        "canonical": "oklch(0.8200 0.1500 152)",
         "cssVar": "--live",
         "tonalRamp": [
-          "oklch(0.150 0.1171 153.88)",
-          "oklch(0.264 0.1171 153.88)",
-          "oklch(0.379 0.1171 153.88)",
-          "oklch(0.493 0.1171 153.88)",
-          "oklch(0.607 0.1171 153.88)",
-          "oklch(0.721 0.1171 153.88)",
-          "oklch(0.836 0.1171 153.88)",
-          "oklch(0.950 0.1171 153.88)"
+          "oklch(0.150 0.1500 152)",
+          "oklch(0.264 0.1500 152)",
+          "oklch(0.379 0.1500 152)",
+          "oklch(0.493 0.1500 152)",
+          "oklch(0.607 0.1500 152)",
+          "oklch(0.721 0.1500 152)",
+          "oklch(0.836 0.1500 152)",
+          "oklch(0.950 0.1500 152)"
         ]
       },
       "live-light": {
-        "role": "secondary",
-        "displayName": "Signal Green (light)",
-        "canonical": "oklch(0.5599 0.1335 152.55)",
+        "role": "tertiary",
+        "displayName": "Live Green (light)",
+        "canonical": "oklch(0.5500 0.1400 152)",
         "cssVar": "--live",
         "tonalRamp": [
-          "oklch(0.150 0.1335 152.55)",
-          "oklch(0.264 0.1335 152.55)",
-          "oklch(0.379 0.1335 152.55)",
-          "oklch(0.493 0.1335 152.55)",
-          "oklch(0.607 0.1335 152.55)",
-          "oklch(0.721 0.1335 152.55)",
-          "oklch(0.836 0.1335 152.55)",
-          "oklch(0.950 0.1335 152.55)"
+          "oklch(0.150 0.1400 152)",
+          "oklch(0.264 0.1400 152)",
+          "oklch(0.379 0.1400 152)",
+          "oklch(0.493 0.1400 152)",
+          "oklch(0.607 0.1400 152)",
+          "oklch(0.721 0.1400 152)",
+          "oklch(0.836 0.1400 152)",
+          "oklch(0.950 0.1400 152)"
         ]
       },
       "status-early": {
         "role": "tertiary",
-        "displayName": "Early-access Amber (dark, default)",
-        "canonical": "oklch(0.7743 0.1479 68.78)",
+        "displayName": "Calamansi (dark, default)",
+        "canonical": "oklch(0.8600 0.1300 95)",
         "cssVar": "--status-early",
         "tonalRamp": [
-          "oklch(0.150 0.1479 68.78)",
-          "oklch(0.264 0.1479 68.78)",
-          "oklch(0.379 0.1479 68.78)",
-          "oklch(0.493 0.1479 68.78)",
-          "oklch(0.607 0.1479 68.78)",
-          "oklch(0.721 0.1479 68.78)",
-          "oklch(0.836 0.1479 68.78)",
-          "oklch(0.950 0.1479 68.78)"
+          "oklch(0.150 0.1300 95)",
+          "oklch(0.264 0.1300 95)",
+          "oklch(0.379 0.1300 95)",
+          "oklch(0.493 0.1300 95)",
+          "oklch(0.607 0.1300 95)",
+          "oklch(0.721 0.1300 95)",
+          "oklch(0.836 0.1300 95)",
+          "oklch(0.950 0.1300 95)"
         ]
       },
       "status-early-light": {
         "role": "tertiary",
-        "displayName": "Early-access Amber (light)",
-        "canonical": "oklch(0.5099 0.1227 54.58)",
+        "displayName": "Calamansi (light)",
+        "canonical": "oklch(0.6000 0.1300 75)",
         "cssVar": "--status-early",
         "tonalRamp": [
-          "oklch(0.150 0.1227 54.58)",
-          "oklch(0.264 0.1227 54.58)",
-          "oklch(0.379 0.1227 54.58)",
-          "oklch(0.493 0.1227 54.58)",
-          "oklch(0.607 0.1227 54.58)",
-          "oklch(0.721 0.1227 54.58)",
-          "oklch(0.836 0.1227 54.58)",
-          "oklch(0.950 0.1227 54.58)"
+          "oklch(0.150 0.1300 75)",
+          "oklch(0.264 0.1300 75)",
+          "oklch(0.379 0.1300 75)",
+          "oklch(0.493 0.1300 75)",
+          "oklch(0.607 0.1300 75)",
+          "oklch(0.721 0.1300 75)",
+          "oklch(0.836 0.1300 75)",
+          "oklch(0.950 0.1300 75)"
         ]
       },
       "status-private": {
         "role": "tertiary",
-        "displayName": "Gated Grey (private) (dark, default)",
-        "canonical": "oklch(0.5886 0.0205 70.06)",
+        "displayName": "Slate Glyph (private) (dark, default)",
+        "canonical": "oklch(0.6400 0.0300 226)",
         "cssVar": "--status-private",
         "tonalRamp": [
-          "oklch(0.150 0.0205 70.06)",
-          "oklch(0.264 0.0205 70.06)",
-          "oklch(0.379 0.0205 70.06)",
-          "oklch(0.493 0.0205 70.06)",
-          "oklch(0.607 0.0205 70.06)",
-          "oklch(0.721 0.0205 70.06)",
-          "oklch(0.836 0.0205 70.06)",
-          "oklch(0.950 0.0205 70.06)"
+          "oklch(0.150 0.0300 226)",
+          "oklch(0.264 0.0300 226)",
+          "oklch(0.379 0.0300 226)",
+          "oklch(0.493 0.0300 226)",
+          "oklch(0.607 0.0300 226)",
+          "oklch(0.721 0.0300 226)",
+          "oklch(0.836 0.0300 226)",
+          "oklch(0.950 0.0300 226)"
         ]
       },
       "status-private-light": {
         "role": "tertiary",
-        "displayName": "Gated Grey (private) (light)",
-        "canonical": "oklch(0.5644 0.0176 67.46)",
+        "displayName": "Slate Glyph (private) (light)",
+        "canonical": "oklch(0.5600 0.0300 235)",
         "cssVar": "--status-private",
         "tonalRamp": [
-          "oklch(0.150 0.0176 67.46)",
-          "oklch(0.264 0.0176 67.46)",
-          "oklch(0.379 0.0176 67.46)",
-          "oklch(0.493 0.0176 67.46)",
-          "oklch(0.607 0.0176 67.46)",
-          "oklch(0.721 0.0176 67.46)",
-          "oklch(0.836 0.0176 67.46)",
-          "oklch(0.950 0.0176 67.46)"
+          "oklch(0.150 0.0300 235)",
+          "oklch(0.264 0.0300 235)",
+          "oklch(0.379 0.0300 235)",
+          "oklch(0.493 0.0300 235)",
+          "oklch(0.607 0.0300 235)",
+          "oklch(0.721 0.0300 235)",
+          "oklch(0.836 0.0300 235)",
+          "oklch(0.950 0.0300 235)"
         ]
       },
       "status-internal": {
         "role": "tertiary",
-        "displayName": "Gated Grey (internal) (dark, default)",
-        "canonical": "oklch(0.5886 0.0205 70.06)",
+        "displayName": "Slate Glyph (internal) (dark, default)",
+        "canonical": "oklch(0.6400 0.0300 226)",
         "cssVar": "--status-internal",
         "tonalRamp": [
-          "oklch(0.150 0.0205 70.06)",
-          "oklch(0.264 0.0205 70.06)",
-          "oklch(0.379 0.0205 70.06)",
-          "oklch(0.493 0.0205 70.06)",
-          "oklch(0.607 0.0205 70.06)",
-          "oklch(0.721 0.0205 70.06)",
-          "oklch(0.836 0.0205 70.06)",
-          "oklch(0.950 0.0205 70.06)"
+          "oklch(0.150 0.0300 226)",
+          "oklch(0.264 0.0300 226)",
+          "oklch(0.379 0.0300 226)",
+          "oklch(0.493 0.0300 226)",
+          "oklch(0.607 0.0300 226)",
+          "oklch(0.721 0.0300 226)",
+          "oklch(0.836 0.0300 226)",
+          "oklch(0.950 0.0300 226)"
         ]
       },
       "status-internal-light": {
         "role": "tertiary",
-        "displayName": "Gated Grey (internal) (light)",
-        "canonical": "oklch(0.5644 0.0176 67.46)",
+        "displayName": "Slate Glyph (internal) (light)",
+        "canonical": "oklch(0.5600 0.0300 235)",
         "cssVar": "--status-internal",
         "tonalRamp": [
-          "oklch(0.150 0.0176 67.46)",
-          "oklch(0.264 0.0176 67.46)",
-          "oklch(0.379 0.0176 67.46)",
-          "oklch(0.493 0.0176 67.46)",
-          "oklch(0.607 0.0176 67.46)",
-          "oklch(0.721 0.0176 67.46)",
-          "oklch(0.836 0.0176 67.46)",
-          "oklch(0.950 0.0176 67.46)"
+          "oklch(0.150 0.0300 235)",
+          "oklch(0.264 0.0300 235)",
+          "oklch(0.379 0.0300 235)",
+          "oklch(0.493 0.0300 235)",
+          "oklch(0.607 0.0300 235)",
+          "oklch(0.721 0.0300 235)",
+          "oklch(0.836 0.0300 235)",
+          "oklch(0.950 0.0300 235)"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The hero H1 and the /projects H1 (.text-fluid-h1)."
+        "purpose": "The homepage H1 (.text-fluid-h1); the hero title is container-sized to its plane."
+      },
+      "display-page": {
+        "displayName": "Display (read pages)",
+        "purpose": ".text-page-h1 on /projects, project pages and the 404."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Every section H2 (.text-fluid-h2)."
+        "purpose": ".text-fluid-h2: section titles and product names."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Product panel names."
-      },
-      "lede": {
-        "displayName": "Lede",
-        "purpose": "The hero lede and the /projects description, in muted-strong."
-      },
-      "body": {
-        "displayName": "Body",
-        "purpose": "The page default; long copy caps at 65ch."
-      },
-      "body-sm": {
-        "displayName": "Body small",
-        "purpose": "Summaries, captions and timeline subtitles."
-      },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Eyebrows, board group headings and category terms: mono, uppercase, amber."
-      },
-      "mono": {
-        "displayName": "Mono",
-        "purpose": "The systems voice: nav, chips, domains, dates, status labels and form labels."
+        "purpose": ".text-title: card names, h3s, case-study section headings."
       },
       "numeral": {
         "displayName": "Numeral",
-        "purpose": "Proof-band values, zero-padded and tabular."
+        "purpose": ".text-numeral: the proof band. Plain, never counted up."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": ".text-lede in Figtree."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Figtree reading text."
+      },
+      "label": {
+        "displayName": "Eyebrow",
+        "purpose": ".eyebrow: sentence-case printed labels from lib/data.ts."
+      },
+      "edge-code": {
+        "displayName": "Edge code",
+        "purpose": ".edge-code: running indexes, dates, domains, counts. Replaces a mono family."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": ".button-label."
       }
     },
     "shadows": [
       {
-        "name": "float",
-        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-        "purpose": "shadow-lg on floating layers only: the chat launcher, its label and toasts."
+        "name": "lift",
+        "value": "0 18px 30px -18px oklch(0.12 0.03 232 / 0.55)",
+        "purpose": "The one in-flow shadow, only while a card or postcard is lifted."
       },
       {
         "name": "overlay",
-        "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
-        "purpose": "shadow-2xl on the open chat dialog and the lightbox image."
+        "value": "0 24px 48px -12px oklch(0.12 0.03 232 / 0.5)",
+        "purpose": "LivePreview dialog, chat, toasts."
       }
     ],
     "motion": [
       {
-        "name": "live-pulse",
-        "value": "live-pulse 2.4s ease-out 2",
-        "purpose": "An opacity-only ring around a live dot. It runs twice (4.8s), then stops, and reduced motion removes it."
+        "name": "dur-fast",
+        "value": "0.18s",
+        "purpose": "Hover colour, press, link underline, dialog exit."
       },
       {
-        "name": "ease-out-overlay",
-        "value": "200ms cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Enter and exit fades for the chat, toasts and lightbox. Instant under reduced motion."
+        "name": "dur-normal",
+        "value": "0.35s",
+        "purpose": "Reveals, rack lift, dialog entrance, width squeeze."
       },
       {
-        "name": "reveal",
-        "value": "500ms cubic-bezier(0.21, 0.47, 0.32, 0.98)",
-        "purpose": "The Reveal fade and 20px rise on mount. Never used on primary proof."
+        "name": "dur-slow",
+        "value": "0.6s",
+        "purpose": "Hero words and panel unfolds; preview return to top."
       },
       {
-        "name": "typing-fade",
-        "value": "typing-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite",
-        "purpose": "Chat typing dots, mounted only while a reply loads."
+        "name": "dur-crawl",
+        "value": "1.2s",
+        "purpose": "Hero creases; floor of the preview scroll (ceiling crawl x 3.75)."
       },
       {
-        "name": "hover",
-        "value": "150ms",
-        "purpose": "Colour and opacity state changes only (Tailwind's transition-colors default)."
+        "name": "ease-smooth",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Settle: unfolds, lifts, reveals."
+      },
+      {
+        "name": "ease-sharp",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Press, colour changes, the preview scroll."
+      },
+      {
+        "name": "distance",
+        "value": "sm 8 / md 16 / lg 24 / xl 40 px",
+        "purpose": "Rise and slide offsets."
+      },
+      {
+        "name": "springs",
+        "value": "snappy 400/32, gentle 180/26",
+        "purpose": "Available to motion/react pieces."
       }
     ],
     "breakpoints": [
@@ -518,162 +569,135 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one amber action per section: Start a project, Send message.",
-      "html": "<a class=\"ds-btn-primary\" href=\"#contact\">Start a project <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 4px; background: oklch(var(--accent)); color: oklch(var(--on-accent)); font-family: var(--font-sans), system-ui, sans-serif; font-weight: 500; text-decoration: none; transition: background-color 150ms; } .ds-btn-primary:hover { background: oklch(var(--accent) / 0.9); } .ds-btn-primary:focus-visible { outline: 2px solid oklch(var(--accent)); outline-offset: 2px; }"
+      "description": "The one primary call to action on paper (\"Start a project\", \"Send message\"): magenta fill, lifts 2px on hover.",
+      "html": "<button class=\"ds-btn-primary\">Start a project <span class=\"ds-arrow\">&rarr;</span></button>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 100; font-weight:650; font-size:1rem; line-height:1; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary .ds-arrow { display:inline-block; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-primary:hover { transform: translateY(-2px); } .ds-btn-primary:hover .ds-arrow { transform: translateX(8px); } .ds-btn-primary:active { transform: translateY(1px) scale(0.98); } .ds-btn-primary:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
+    },
+    {
+      "name": "Primary Button on a Plane",
+      "kind": "button",
+      "refersTo": "button-primary-on-plane",
+      "description": "Inside a magenta plane (.on-plane) the primary inverts to a lagoon fill with magenta text; focus is drawn in on-accent.",
+      "html": "<div class=\"ds-plane\"><button class=\"ds-btn-plane\">Start a project</button></div>",
+      "css": ".ds-plane { background:oklch(var(--accent)); color:oklch(var(--on-accent)); padding:32px; border-radius:6px; } .ds-btn-plane { min-height:44px; padding:10px 20px; border:0; border-radius:6px; background:oklch(var(--bg)); color:oklch(var(--accent)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:1rem; cursor:pointer; transition: transform var(--dur-fast) var(--ease-sharp); } .ds-btn-plane:hover { transform: translateY(-2px); } .ds-btn-plane:focus-visible { outline:2px solid oklch(var(--on-accent)); outline-offset:3px; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Outlined companion to the primary: Résumé, View work.",
-      "html": "<a class=\"ds-btn-secondary\" href=\"#work\">View work</a>",
-      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 4px; border: 1px solid oklch(var(--line-strong)); background: transparent; color: oklch(var(--ink)); font-family: var(--font-sans), system-ui, sans-serif; font-weight: 500; text-decoration: none; transition: color 150ms, border-color 150ms; } .ds-btn-secondary:hover { border-color: oklch(var(--accent)); color: oklch(var(--accent)); } .ds-btn-secondary:focus-visible { outline: 2px solid oklch(var(--accent)); outline-offset: 2px; }"
-    },
-    {
-      "name": "Status Badge",
-      "kind": "custom",
-      "refersTo": "status-badge",
-      "description": "Status is never colour alone: glyph shape (dot, ring, lock, square) plus a mono label.",
-      "html": "<div class=\"ds-status-row\"><span class=\"ds-status\"><span class=\"ds-glyph ds-glyph-live\"></span>Live</span><span class=\"ds-status\"><span class=\"ds-glyph ds-glyph-early\"></span>Early access</span><span class=\"ds-status\"><svg class=\"ds-glyph-lock\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><rect x=\"2.5\" y=\"5.5\" width=\"7\" height=\"5\" rx=\"1\"/><path d=\"M4 5.5V4a2 2 0 0 1 4 0v1.5\"/></svg>Private</span><span class=\"ds-status\"><span class=\"ds-glyph ds-glyph-internal\"></span>Internal</span></div>",
-      "css": ".ds-status-row { display: flex; flex-wrap: wrap; gap: 20px; } .ds-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted)); } .ds-glyph { display: inline-block; flex-shrink: 0; width: 8px; height: 8px; } .ds-glyph-live { position: relative; border-radius: 9999px; background: oklch(var(--live)); } .ds-glyph-live::after { content: ''; position: absolute; inset: -3px; border-radius: 9999px; border: 1px solid oklch(var(--live)); opacity: 0; animation: ds-live-pulse 2.4s ease-out 2; } @keyframes ds-live-pulse { 0% { opacity: 0.7; } 100% { opacity: 0; } } @media (prefers-reduced-motion: reduce) { .ds-glyph-live::after { display: none; } } .ds-glyph-early { border-radius: 9999px; border: 1.5px solid oklch(var(--status-early)); } .ds-glyph-internal { border-radius: 1px; background: oklch(var(--status-internal)); } .ds-glyph-lock { width: 12px; height: 12px; color: oklch(var(--status-private)); }"
-    },
-    {
-      "name": "Board Row",
-      "kind": "custom",
-      "refersTo": "board-row",
-      "description": "One line of the systems board: name, domain, what it does, status; an amber left rule on hover.",
-      "html": "<ul class=\"ds-board\"><li><a class=\"ds-board-row\" href=\"#\"><span class=\"ds-board-name\">Graceland <span class=\"ds-board-arrow\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></span></span><span class=\"ds-board-domain\">graceland.ph</span><span class=\"ds-board-summary\">Hotel website with online booking</span><span class=\"ds-status\"><span class=\"ds-glyph ds-glyph-live\"></span>Live</span></a></li></ul>",
-      "css": ".ds-board { list-style: none; margin: 0; padding: 0; border: 1px solid oklch(var(--line)); border-radius: 8px; overflow: hidden; background: oklch(var(--panel)); } .ds-board-row { position: relative; display: grid; grid-template-columns: 1.1fr 1fr 1.7fr 7.5rem; align-items: center; gap: 16px; padding: 12px 16px; color: oklch(var(--ink)); text-decoration: none; transition: background-color 150ms; } .ds-board-row::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: oklch(var(--accent)); opacity: 0; transition: opacity 150ms; } .ds-board-row:hover { background: oklch(var(--bg) / 0.6); } .ds-board-row:hover::before { opacity: 1; } .ds-board-row:focus-visible { outline: 2px solid oklch(var(--accent)); outline-offset: 2px; outline-offset: -2px; } .ds-board-name { display: flex; align-items: center; gap: 6px; font-family: var(--font-sans), system-ui, sans-serif; font-weight: 500; } .ds-board-arrow { display: inline-flex; color: oklch(var(--muted)); transition: color 150ms; } .ds-board-row:hover .ds-board-arrow { color: oklch(var(--accent)); } .ds-board-domain { font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted)); } .ds-board-summary { font-family: var(--font-sans), system-ui, sans-serif; font-size: 0.875rem; line-height: 1.375; color: oklch(var(--muted-strong)); } .ds-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted)); } .ds-glyph { display: inline-block; flex-shrink: 0; width: 8px; height: 8px; } .ds-glyph-live { position: relative; border-radius: 9999px; background: oklch(var(--live)); } .ds-board-row .ds-status { justify-self: end; }"
-    },
-    {
-      "name": "Proof Band",
-      "kind": "custom",
-      "refersTo": "proof-cell",
-      "description": "Hairline cells: a zero-padded tabular mono numeral over a sans label.",
-      "html": "<ul class=\"ds-proof\"><li><span class=\"ds-proof-value\">03</span><span class=\"ds-proof-label\">products of my own</span></li><li><span class=\"ds-proof-value\">15</span><span class=\"ds-proof-label\">projects shipped</span></li><li><span class=\"ds-proof-value\">04</span><span class=\"ds-proof-label\">payment gateways</span></li><li><span class=\"ds-proof-value\">01</span><span class=\"ds-proof-label\">NFC card system</span></li></ul>",
-      "css": ".ds-proof { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; overflow: hidden; border-radius: 8px; border: 1px solid oklch(var(--line)); background: oklch(var(--line)); } .ds-proof li { display: flex; flex-direction: column; padding: 16px; background: oklch(var(--bg)); } .ds-proof-value { font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 1.875rem; font-weight: 500; color: oklch(var(--ink)); } .ds-proof-label { margin-top: 4px; font-family: var(--font-sans), system-ui, sans-serif; font-size: 0.875rem; color: oklch(var(--muted)); }"
-    },
-    {
-      "name": "Stack Chip",
-      "kind": "chip",
-      "refersTo": "chip",
-      "description": "A mono tag on a strong hairline; the specialism chip is marked by fill, not amber.",
-      "html": "<ul class=\"ds-chips\"><li class=\"ds-chip ds-chip-specialism\">WordPress</li><li class=\"ds-chip\">Next.js</li><li class=\"ds-chip\">TypeScript</li></ul>",
-      "css": ".ds-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { padding: 4px 10px; border-radius: 4px; border: 1px solid oklch(var(--line-strong)); font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted-strong)); } .ds-chip-specialism { background: oklch(var(--panel)); color: oklch(var(--ink)); }"
-    },
-    {
-      "name": "Board Filter",
-      "kind": "chip",
-      "refersTo": "filter-chip",
-      "description": "Plain links; the current band takes an amber outline and aria-current.",
-      "html": "<nav class=\"ds-filter\"><a href=\"#\" aria-current=\"page\">All</a><a href=\"#\">Products</a><a href=\"#\">Custom systems</a><a href=\"#\">Sites</a></nav>",
-      "css": ".ds-filter { display: flex; flex-wrap: wrap; gap: 8px; } .ds-filter a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 4px; border: 1px solid oklch(var(--line-strong)); font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted-strong)); text-decoration: none; transition: color 150ms, border-color 150ms; } .ds-filter a:hover, .ds-filter a[aria-current='page'] { border-color: oklch(var(--accent)); color: oklch(var(--accent)); } .ds-filter a:focus-visible { outline: 2px solid oklch(var(--accent)); outline-offset: 2px; }"
+      "description": "Outline button (\"Live preview\", \"Open live site\"): line-strong border, ink text, accent on hover.",
+      "html": "<button class=\"ds-btn-secondary\">Live preview</button>",
+      "css": ".ds-btn-secondary { min-height:44px; padding:10px 20px; border:1px solid oklch(var(--line-strong)); border-radius:6px; background:transparent; color:oklch(var(--ink)); font-weight:500; cursor:pointer; transition: color var(--dur-fast) var(--ease-sharp), border-color var(--dur-fast) var(--ease-sharp); } .ds-btn-secondary:hover { border-color:oklch(var(--accent)); color:oklch(var(--accent)); } .ds-btn-secondary:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
     {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "A canvas well inside a panel form with a mono label above; an error turns the border ink, never red.",
-      "html": "<div class=\"ds-field\"><label for=\"ds-email\">Email</label><input id=\"ds-email\" type=\"email\" placeholder=\"you@example.com\"></div>",
-      "css": ".ds-field label { display: block; margin-bottom: 6px; font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: oklch(var(--muted-strong)); } .ds-field input { width: 100%; padding: 10px 12px; border-radius: 4px; border: 1px solid oklch(var(--line-strong)); background: oklch(var(--bg)); color: oklch(var(--ink)); font-family: var(--font-sans), system-ui, sans-serif; font-size: 1rem; } .ds-field input::placeholder { color: oklch(var(--muted)); } .ds-field input:focus-visible { border-color: oklch(var(--accent)); outline: 2px solid oklch(var(--accent)); outline-offset: 2px; } .ds-field input[aria-invalid='true'] { border-color: oklch(var(--ink)); }"
+      "description": "Contact and chat fields: canvas fill, field-border at 3:1, accent border on focus.",
+      "html": "<label class=\"ds-label\" for=\"ds-name\">Name</label><input id=\"ds-name\" class=\"ds-input\" placeholder=\"Your name\">",
+      "css": ".ds-label { display:block; margin-bottom:6px; font-family:var(--font-display), Arial, sans-serif; font-size:0.8125rem; font-weight:500; letter-spacing:0.04em; color:oklch(var(--muted-strong)); } .ds-input { width:100%; padding:10px 12px; border:1px solid oklch(var(--field-border)); border-radius:6px; background:oklch(var(--bg)); color:oklch(var(--ink)); font:inherit; } .ds-input::placeholder { color:oklch(var(--muted)); } .ds-input:focus-visible { border-color:oklch(var(--accent)); outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
     {
-      "name": "Top Bar",
+      "name": "Filter Tabs",
       "kind": "nav",
-      "refersTo": "top-bar",
-      "description": "A sticky translucent bar: mono mark, amber availability, mono nav.",
-      "html": "<header class=\"ds-topbar\"><a class=\"ds-mark\" href=\"#\">~/christian-raro</a><span class=\"ds-avail\"><span class=\"ds-avail-dot\"></span>Open to freelance and full-time roles</span><nav><a href=\"#work\">Work</a><a href=\"#systems\">Systems</a><a href=\"#contact\">Contact</a></nav></header>",
-      "css": ".ds-topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; padding: 12px 32px; border-bottom: 1px solid oklch(var(--line)); background: oklch(var(--bg) / 0.9); backdrop-filter: blur(8px); font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; } .ds-mark { font-size: 0.875rem; color: oklch(var(--ink)); text-decoration: none; } .ds-avail { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; color: oklch(var(--accent)); } .ds-avail-dot { width: 6px; height: 6px; border-radius: 9999px; background: oklch(var(--accent)); } .ds-topbar nav { margin-left: auto; display: flex; gap: 24px; } .ds-topbar nav a { font-size: 0.75rem; color: oklch(var(--muted-strong)); text-decoration: none; transition: color 150ms; } .ds-topbar nav a:hover { color: oklch(var(--accent)); } .ds-topbar a:focus-visible { outline: 2px solid oklch(var(--accent)); outline-offset: 2px; }"
+      "refersTo": "filter-tab-current",
+      "description": "/projects band filter: index tabs on the rack lip; the current tier is a magenta plane.",
+      "html": "<ul class=\"ds-tabs\"><li><a class=\"ds-tab ds-tab--on\" aria-current=\"true\" href=\"#\">All</a></li><li><a class=\"ds-tab\" href=\"#\">Products</a></li><li><a class=\"ds-tab\" href=\"#\">Sites</a></li></ul>",
+      "css": ".ds-tabs { display:flex; gap:6px; list-style:none; margin:0; padding:0; border-bottom:2px solid oklch(var(--line-strong)); } .ds-tab { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border:1px solid oklch(var(--line)); border-bottom:0; border-radius:6px 6px 0 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); font-family:var(--font-display), Arial, sans-serif; font-weight:650; font-size:0.875rem; text-decoration:none; transition: color var(--dur-fast) var(--ease-sharp); } .ds-tab:hover { color:oklch(var(--ink)); } .ds-tab--on { background:oklch(var(--accent)); color:oklch(var(--on-accent)); border-color:transparent; } .ds-tab:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; }"
     },
     {
-      "name": "Section Heading",
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "status-chip",
+      "description": "Status is a glyph shape plus a label: live dot, early-access ring, lock, internal square, staging outlined square.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-dot ds-live\"></span>Live</span> <span class=\"ds-status\"><span class=\"ds-dot ds-early\"></span>Early access</span> <span class=\"ds-status\"><span class=\"ds-dot ds-internal\"></span>Internal</span> <span class=\"ds-status\"><span class=\"ds-dot ds-staging\"></span>Staging</span>",
+      "css": ".ds-status { display:inline-flex; align-items:center; gap:6px; font-family:var(--font-display), Arial, sans-serif; font-size:0.75rem; font-weight:500; letter-spacing:0.04em; color:oklch(var(--muted)); margin-right:12px; } .ds-dot { width:8px; height:8px; display:inline-block; box-sizing:border-box; } .ds-live { border-radius:9999px; background:oklch(var(--live)); } .ds-early { border-radius:9999px; border:1.5px solid oklch(var(--status-early)); } .ds-internal { border-radius:1px; background:oklch(var(--status-internal)); } .ds-staging { border-radius:1px; border:1.5px solid oklch(var(--status-internal)); }"
+    },
+    {
+      "name": "Rack Card",
+      "kind": "card",
+      "refersTo": "rack-card",
+      "description": "A 9:16 brochure sunk in a pocket over the lip; hover or focus lifts it 26% with the one in-flow shadow.",
+      "html": "<div class=\"ds-pocket\"><a class=\"ds-rack-card\" href=\"#\"><span class=\"ds-code\">07 / 18 · Sites</span><span class=\"ds-title\">Graceland</span><span class=\"ds-shot\"></span></a></div><div class=\"ds-lip\"></div>",
+      "css": ".ds-pocket { width:180px; aspect-ratio:100/78; overflow:visible; clip-path: inset(-100vh -24px 0 -24px); } .ds-rack-card { display:flex; flex-direction:column; gap:8px; aspect-ratio:9/16; padding:16px; border:1px solid oklch(var(--line)); border-radius:6px; background:oklch(var(--panel)); color:oklch(var(--ink)); text-decoration:none; transition: transform var(--dur-normal) var(--ease-smooth), box-shadow var(--dur-normal) var(--ease-smooth); } .ds-pocket:hover .ds-rack-card, .ds-rack-card:focus-visible { transform: translateY(-26%); box-shadow: var(--shadow-lift); } .ds-rack-card:focus-visible { outline:2px solid oklch(var(--accent)); outline-offset:3px; } .ds-code { font-family:var(--font-display), Arial, sans-serif; font-size:0.75rem; letter-spacing:0.04em; color:oklch(var(--muted)); } .ds-title { font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 85; font-weight:700; font-size:1.3125rem; } .ds-shot { flex:1; border-radius:6px; background:oklch(var(--bg)); } .ds-lip { width:204px; height:14px; border-top:2px solid oklch(var(--line-strong)); background:oklch(var(--panel)); }"
+    },
+    {
+      "name": "Product Spread",
       "kind": "custom",
-      "refersTo": "eyebrow",
-      "description": "Every section opens with a mono amber eyebrow then a fluid H2; both strings live in lib/data.ts.",
-      "html": "<div class=\"ds-heading\"><p class=\"ds-eyebrow\">// products</p><h2>Products of my own <span class=\"ds-count\">products · 3</span></h2></div>",
-      "css": ".ds-eyebrow { margin: 0 0 12px; font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(var(--accent)); } .ds-heading h2 { margin: 0; font-family: var(--font-sans), system-ui, sans-serif; font-size: clamp(1.5rem, 1.2rem + 1.25vw, 2.125rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; color: oklch(var(--ink)); } .ds-count { margin-left: 12px; font-family: var(--font-sans), ui-monospace, monospace; font-variation-settings: 'MONO' 1; font-variant-numeric: tabular-nums; font-size: 0.875rem; font-weight: 400; letter-spacing: 0; color: oklch(var(--muted)); }"
+      "refersTo": "magenta-plane",
+      "description": "A magenta flap joined at a dashed crease to a paper leaf; the flap tilts on hover, inviting the open.",
+      "html": "<div class=\"ds-spread\"><div class=\"ds-flap\"><span class=\"ds-code-plane\">01 / 18 · Products</span><strong>Iskotify</strong></div><span class=\"ds-crease\"></span><div class=\"ds-leaf\">Description, Live preview, Read more, and a scrolling preview.</div></div>",
+      "css": ".ds-spread { display:grid; grid-template-columns:4fr auto 8fr; perspective:1600px; } .ds-flap { display:flex; flex-direction:column; gap:12px; padding:32px; border-radius:6px 0 0 6px; background:oklch(var(--accent)); color:oklch(var(--on-accent)); font-family:var(--font-display), Arial, sans-serif; font-variation-settings:'wdth' 75; font-size:2rem; transform-origin:right center; transition: transform var(--dur-normal) var(--ease-smooth); } .ds-spread:hover .ds-flap { transform: rotateY(-4deg); } .ds-code-plane { font-size:0.8125rem; font-variation-settings:'wdth' 100; letter-spacing:0.04em; } .ds-crease { width:1px; background: linear-gradient(to bottom, oklch(var(--line-strong)) 6px, transparent 6px) 0 0 / 1px 11px repeat-y; } .ds-leaf { padding:32px; border:1px solid oklch(var(--line)); border-radius:0 6px 6px 0; background:oklch(var(--panel)); color:oklch(var(--muted-strong)); }"
     }
   ],
   "narrative": {
-    "northStar": "The Operator's Board",
-    "overview": "B3 Signal treats a portfolio as an operations board, not a gallery. Projects are running systems, so they appear as rows with an honest status beside a domain, never as a hero over a grid of screenshot cards. The ground is warm graphite, panels sit one step lighter, and ink is cream. Sodium amber, the colour of a street lamp at night, is the only brand colour. Green appears only where a system is live.\n\nThe system is dense and exact rather than expressive. Structure comes from hairline rules and a single column system that panels, board columns and proof cells all measure against. It uses one typeface in two voices: Recursive's linear sans for people (headlines, ledes, summaries, testimonials) and its MONO axis for systems (labels, domains, dates, counts, status). Every numeral is tabular. Motion is almost absent. Content is visible in the server HTML, the live dot pulses twice and rests, and nothing moves for more than five seconds.\n\nThe rejected default is the one the thesis names: the developer portfolio made of a hero followed by a grid of screenshot cards. Screenshots appear only as small supporting insets inside product panels.",
+    "northStar": "Lobby Rack",
+    "overview": "Every project is a brochure standing in a resort lobby rack at night. You see\nits top over the pocket lip; give it attention and it lifts out and shows the\nreal site scrolling. The page does the job his clients' brochures did before\nhe built their websites. The ground is a deep lagoon, the surfaces are paper\n(panels, cards, folds, a rack lip with pockets, a perforated reply card,\npostcards), and colour arrives only as whole flat magenta planes locked to the\ngrid. A condensed variable display face (Anybody) shouts; Figtree reads.\n\nMotion has one meaning: **paper that unfolds when you pay attention.** Three\nverbs only. *Unfold* reveals detail (the hero tri-fold, product spreads,\ncase-study decisions). *Lift* answers attention (a card rising out of its\npocket, a postcard straightening). *Slide* keeps continuity (things move aside,\nnever vanish). Motion is CSS-first, transform-led, progressive enhancement:\noutside its gates every piece sits at rest and fully visible, and the server\nHTML is the finished page.\n\nIt replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and\nrefuses both the dev-portfolio default (dark hero, gradient blobs, a grid of\nscreenshot cards) and the mono terminal board B3 already was.",
     "keyCharacteristics": [
-      "Warm graphite ground (dark is the default theme) with a cream-paper light theme built from the same hues.",
-      "One brand colour, sodium amber. Green is reserved for live status.",
-      "Status is always a glyph shape plus a text label: dot, ring, lock, square.",
-      "Hairline rules, 8px panels, 4px chips. The ground is flat, and shadows appear only on floating layers.",
-      "One grid, `mx-auto max-w-6xl px-5 sm:px-8`, and tabular mono numerals.",
-      "One variable family, Recursive, whose MONO axis gives the system voice.",
-      "Motion is limited to two pulses and short fades, and reduced motion removes the pulse."
+      "Lagoon-night ground, paper panels, bougainvillea magenta as flat printed planes; no gradients, glows or tints.",
+      "Two variable families: Anybody (display, condensed on its width axis) and Figtree (reading).",
+      "Edge codes: every card, cover and product carries a printed running index (\"07 / 18 · Sites\").",
+      "Fold creases (dashed 6 on 5 off), a rack lip with a paper ledge, a perforation with notched ends.",
+      "Portrait previews: 9:16 rack cards and 3:4 frames that scroll the full page of the real site.",
+      "Honest absence: a project with no public screen keeps its slot with a printed tag saying why.",
+      "One in-flow shadow, applied only while a card is lifted."
     ],
     "rules": [
       {
+        "name": "The Flat Plane Rule",
+        "body": "Colour arrives as whole planes locked to the grid: no outlines on planes, no tints, no gradients. Removing a plane must break the composition.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plane Ink Rule",
+        "body": "On a magenta plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Ink on accent is 2.1 to 2.5:1 and forbidden; an accent ring on a magenta plane disappears.",
+        "section": "colors"
+      },
+      {
         "name": "The Green Means Live Rule",
-        "body": "Green (`live`) marks a live system and nothing else. Success toasts use an amber check, availability uses amber, and brand uses amber.",
+        "body": "`live` and `.live-pulse` appear only inside `StatusBadge` (`tests/design/green-means-live.test.ts`). Brand and availability use `accent`.",
         "section": "colors"
       },
       {
-        "name": "The One Amber Rule",
-        "body": "Amber is the only brand hue. Never introduce a second accent, and never use raw hex or `dark:` colour pairs. Change the token, and both themes follow.",
+        "name": "The Contrast Ledger Rule",
+        "body": "Every token is a raw oklch triplet, one per line; `tests/design/contrast.test.ts` parses them and checks WCAG AA in both themes (text 4.5:1, glyphs and focus 3:1, field borders 3:1). No raw hex in components, no `dark:` colour pairs. The one hex copy is `lib/og-palette.ts`, held to `.dark` by `tests/design/og-palette.test.ts`.",
         "section": "colors"
       },
       {
-        "name": "The No-Red Rule",
-        "body": "Errors are ink, not red. An invalid field's border turns `ink`, the inline error and urgent toasts carry an octagon glyph in `ink`, and urgent toasts get an `ink` border. The glyph and the words carry the meaning.",
-        "section": "colors"
-      },
-      {
-        "name": "The One Family Rule",
-        "body": "Recursive is the only typeface. Never add a second one. For a second voice, turn the MONO axis on instead.",
+        "name": "The Two Families Rule",
+        "body": "Anybody and Figtree, nothing else. There is no `font-mono` key; `tests/design/legacy-tokens.test.ts` fails a stray one.",
         "section": "typography"
       },
       {
-        "name": "The Tabular Rule",
-        "body": "Every numeral, including proof values, counts, dates and \"9 of 15\", is set in mono, and `.font-mono` applies `tabular-nums`. That puts every number on the one grid automatically.",
+        "name": "The Printed Label Rule",
+        "body": "Eyebrows are edge-code labels from `lib/data.ts`, without the old `// ` prefix.",
         "section": "typography"
       },
       {
-        "name": "The Braced Eyebrow Rule",
-        "body": "Eyebrow copy reads `// section` and lives in `lib/data.ts`. In JSX it is rendered from data or as a braced string (`{'// about'}`), because a bare `// text` child parses as a comment.",
-        "section": "typography"
-      },
-      {
-        "name": "The Flat Ground Rule",
-        "body": "Nothing that sits in the page flow casts a shadow. A panel is separated from the ground by one tonal step and a hairline. Only floating layers (chat, toasts, the lightbox) are lifted.",
+        "name": "The Lifted-Only Rule",
+        "body": "Nothing in the page flow casts a shadow at rest.",
         "section": "elevation"
-      },
-      {
-        "name": "The Hairline Rule",
-        "body": "Structure is drawn with 1px lines in `line`, and interactive controls step up to `line-strong`. No border is decorative. Each one either separates content or outlines something you can press.",
-        "section": "shapes"
-      },
-      {
-        "name": "The Two Pulses Rule",
-        "body": "Nothing moves continuously for more than five seconds (WCAG 2.2.2). The live pulse runs twice and stops. There are no count-ups, no parallax and no scroll-linked motion.",
-        "section": "components"
       }
     ],
     "dos": [
-      "**Do** wrap every section in `mx-auto max-w-6xl px-5 sm:px-8`, and put new columns on an existing template (`BOARD_COLUMNS`, or hairline cells with a 1px gap).",
-      "**Do** open every section with `<p className=\"eyebrow\">` then `<h2 className=\"text-fluid-h2\">`, with both strings in `lib/data.ts` (`sectionContent`, `galleryContent`, `projectsPageContent`).",
-      "**Do** keep control labels in the component. \"Start a project\", \"View work\", \"All\", \"Work\" / \"Education\" and form labels are chrome. Headings, eyebrows and facts are content.",
-      "**Do** render status only through `StatusBadge`, with a glyph shape and a text label.",
-      "**Do** set numerals, domains, dates and metadata in mono. `.font-mono` makes them tabular.",
-      "**Do** use amber for the one primary action per section, for hover, for focus and for availability.",
-      "**Do** add new colours as oklch `L C H` triplets in both `:root` and `.dark`, one per line, so the contrast test can parse them.",
-      "**Do** give every interactive element a 44px minimum target on touch widths."
+      "**Do** take every colour from the Tailwind keys (`canvas`, `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`, `live`, `status-*`) and keep `globals.css` triplets one per line.",
+      "**Do** put text and focus on a magenta plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.",
+      "**Do** use `.button-primary` with `.press` for every primary call to action.",
+      "**Do** render status only through `StatusBadge`.",
+      "**Do** give every project a slot: a `ScrollPreview` when a full shot exists, a printed `NoPreviewTag` when it does not.",
+      "**Do** take durations and easings from `lib/motion-tokens.ts` or `--dur-*` / `--ease-*`, and gate every scroll-driven animation behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`.",
+      "**Do** keep proof (products, the rack) visible in the server HTML: transform-only motion, no opacity entrance.",
+      "**Do** keep the hero sequence under two seconds and everything bounded under five."
     ],
     "donts": [
-      "**Don't** use green for anything but a live system: not success, not availability, not brand.",
-      "**Don't** convey status, error or selection by colour alone.",
-      "**Don't** add a second typeface. Use Recursive's MONO axis for the second voice.",
-      "**Don't** use raw hex, `dark:` colour pairs or a second accent hue.",
-      "**Don't** use red for errors. Use `ink` with an octagon glyph.",
-      "**Don't** put shadows on in-flow panels. Use a tonal step and a hairline.",
-      "**Don't** build a hero over a grid of screenshot cards. Screenshots are insets inside panels that lead with name, summary and status.",
-      "**Don't** animate continuously, count up numbers, use parallax or trigger motion from scroll position. Don't wrap primary proof in `Reveal`.",
-      "**Don't** mark a selected-looking state with an amber outline unless it is actually selected. That treatment belongs to the board filter.",
+      "**Don't** use gradients, glows, tints or outlines on planes; colour is a whole flat plane or nothing.",
+      "**Don't** set ink text on magenta, or use magenta as a text colour on a magenta-adjacent plane.",
+      "**Don't** use green anywhere outside `StatusBadge`'s live glyph.",
+      "**Don't** add a third typeface or a mono family.",
+      "**Don't** cast a shadow from anything at rest in the page flow.",
+      "**Don't** fade proof in, count numbers up, add parallax, or loop anything past five seconds.",
+      "**Don't** import `framer-motion`, render `motion.*`, or use `useAnimate`; client motion is `m.*` inside a strict `LazyMotion`.",
+      "**Don't** mark a preview image `priority` or fake a screenshot for a gated or internal project.",
       "**Don't** hardcode portfolio content (headings, eyebrows, facts) in components."
     ]
   }
