@@ -52,8 +52,6 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
             projects={group.projects}
             order={strip}
             headingLevel="h2"
-            // Products stand whole: they are the work a visitor came to see.
-            sunk={group.heading !== 'Products'}
           />
         ))}
       </div>

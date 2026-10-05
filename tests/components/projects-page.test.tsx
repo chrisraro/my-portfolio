@@ -59,9 +59,9 @@ describe('/projects as the rack', () => {
     expect(html).not.toContain('—')
   })
 
-  it('sinks a scroll preview in each pocket, or a printed tag where there is none', () => {
+  it('shows a still screenshot on each card, or a printed tag where there is none', () => {
     for (const p of projects) {
-      if (fullShotFor(p)) expect(cardFor(p), p.slug).toContain('scroll-preview__shot')
+      if (fullShotFor(p)) expect(cardFor(p), p.slug).toContain('project-shot__frame')
       else expect(cardFor(p), p.slug).toContain(escape(noPreviewCopy(p)))
     }
   })
@@ -114,42 +114,20 @@ describe('/projects filter', () => {
 })
 
 describe('rack card focus', () => {
-  // Lifted 38%, a card's lower edge still sat under the pocket's clip-path, so
-  // the bottom of its focus ring was cut off. Focus takes the card out whole.
-  it('lifts the pocket clip while a card inside it has keyboard focus', () => {
+  // The pocket's clip once cut the focus ring; cards now stand whole, so the
+  // ring is never clipped and focus needs no lift.
+  it('keeps no pocket clip and no focus lift', () => {
     const css = readFileSync('app/globals.css', 'utf8')
-    expect(css).toMatch(/\.rack-pocket:has\(:focus-visible\) \{[^}]*clip-path: none;/)
-    expect(css).not.toContain('.rack-pocket:focus-within')
-  })
-
-  // The lip is painted after the pocket, so a focused card was sliced by it.
-  it('raises the focused pocket above its lip', () => {
-    const css = readFileSync('app/globals.css', 'utf8')
-    const rule = css.match(/\.rack-pocket:has\(:focus-visible\) \{([^}]*)\}/)?.[1] ?? ''
-    expect(rule).toMatch(/position:\s*relative/)
-    expect(rule).toMatch(/z-index:\s*[1-9]/)
+    expect(css).not.toContain('rack-pocket')
+    expect(css).toMatch(/\.lift-card:focus-visible \{[^}]*border-color/)
   })
 })
 
-describe('/projects Products tier', () => {
+describe('/projects tiers', () => {
   const html = render()
-  const tier = (heading: string) => {
-    const start = html.indexOf(`id="rack-${heading.toLowerCase().replace(/\s+/g, '-')}"`)
-    const end = html.indexOf('</section>', start)
-    return html.slice(start, end)
-  }
 
-  it('stands the products whole on the shelf, not sunk in pockets', () => {
-    const products = tier('Products')
-    expect(products).toContain('class="rack-card')
-    expect(products).not.toContain('rack-pocket')
-    expect(products).toContain('rack-row--open')
-  })
-
-  it('keeps every other tier sunk', () => {
-    for (const band of BAND_ORDER.filter((b) => b !== 'Products')) {
-      if (!projects.some((p) => p.band === band)) continue
-      expect(tier(band), band).toContain('rack-pocket')
-    }
+  it('stands every tier whole on the shelf, Products included', () => {
+    expect(html).toContain('class="rack-card')
+    expect(html).not.toMatch(/rack-pocket|rack-row--open/)
   })
 })

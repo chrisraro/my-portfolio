@@ -1,4 +1,4 @@
-import { closeSync, existsSync, openSync, readSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { recommendations } from '@/lib/data'
 import embeddable from '@/lib/embeddable.json'
@@ -39,30 +39,9 @@ export function fullShotFor(project: Project): string | undefined {
   return existsSync(join(process.cwd(), 'public', path)) ? path : undefined
 }
 
-/** For lib/board.ts: a card with a full shot lifts out to show the site; lead with those. */
+/** For lib/board.ts: a card with a full shot shows the site; lead with those. */
 export function hasFullShot(project: Project): boolean {
   return fullShotFor(project) !== undefined
-}
-
-// The full shot's pixel height, read from its WebP header, so ScrollPreview can
-// scale its scroll duration to the page's length. Handles the extended (VP8X)
-// header the capture script writes; anything else returns undefined and the
-// preview falls back to its default duration.
-export function fullShotHeight(src: string | undefined): number | undefined {
-  if (!src) return undefined
-  let fd: number | undefined
-  try {
-    // Only the 30-byte header is needed; the shot itself can run to 600 KB.
-    fd = openSync(join(process.cwd(), 'public', src), 'r')
-    const head = Buffer.alloc(30)
-    if (readSync(fd, head, 0, 30, 0) < 30) return undefined
-    if (head.toString('ascii', 0, 4) !== 'RIFF' || head.toString('ascii', 12, 16) !== 'VP8X') return undefined
-    return head.readUIntLE(27, 3) + 1
-  } catch {
-    return undefined
-  } finally {
-    if (fd !== undefined) closeSync(fd)
-  }
 }
 
 // lib/embeddable.json is written by `npm run check:embeds`. Only a site that

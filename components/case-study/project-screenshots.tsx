@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
-import { ScrollPreview } from '@/components/ui/scroll-preview'
-import { fullShotFor, fullShotHeight, screenshotsFor } from '@/lib/project-page'
+import { ProjectShot } from '@/components/ui/project-shot'
+import { fullShotFor, screenshotsFor } from '@/lib/project-page'
 import { extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -11,9 +11,9 @@ import type { Project } from '@/types'
 const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_22rem)_*_0.75))]'
 
 /**
- * The preview rail of a project page: the whole site scrolling in a 3:4
- * ScrollPreview (it follows the page's scroll, and hover scrolls it too), with
- * the phone shot beside or below it in a lightbox. A project with no full-page
+ * The preview rail of a project page: the top of the site's full-page shot,
+ * still, in a 3:4 ProjectShot, with the phone shot beside or below it in a
+ * lightbox. A project with no full-page
  * shot falls back to its desktop screenshot; one with no public screen at all
  * keeps the slot with a printed tag saying why.
  */
@@ -30,11 +30,9 @@ export function ProjectScreenshots({ project }: { project: Project }) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end lg:flex-col lg:items-start">
       {full ? (
-        <ScrollPreview
+        <ProjectShot
           src={full}
-          label={`Scroll preview of ${name}`}
-          scroll="page"
-          shotHeight={fullShotHeight(full)}
+          label={`Screenshot of ${name}`}
           sizes="(min-width: 1024px) 420px, (min-width: 640px) 352px, calc(100vw - 40px)"
           className={FRAME}
         />

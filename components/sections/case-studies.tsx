@@ -16,7 +16,7 @@ interface Cover {
 /**
  * Six closed tri-folds, front covers out: the project, Christian's role and
  * the brief's first sentence. Each opens its flagship page. They rise into
- * place as the row scrolls in, staggered.
+ * place as the row scrolls in, staggered; hover lifts a cover like a rack card.
  */
 export function CaseStudies() {
   const covers = FLAGSHIP_SLUGS.flatMap((slug): Cover[] => {
@@ -37,7 +37,7 @@ export function CaseStudies() {
           <li key={project.slug} className="reveal-cover" style={{ '--i': i % 3 } as CSSProperties}>
             <Link
               href={projectHref(project)}
-              className="press group relative flex h-full min-h-[22rem] flex-col rounded border border-line bg-panel p-6 pr-10"
+              className="lift-card group relative flex h-full min-h-[22rem] flex-col rounded border border-line bg-panel p-6 pr-10"
             >
               {/* The closed tri-fold's edge: the inner flap's crease, just inside the right side. */}
               <span aria-hidden="true" className="crease-v absolute bottom-0 right-5 top-0" />

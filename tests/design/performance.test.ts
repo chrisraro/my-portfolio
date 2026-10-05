@@ -24,8 +24,8 @@ describe('image priority', () => {
     expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/hero.tsx'])
   })
 
-  it('never prioritises a full-page scroll preview', () => {
-    const preview = readFileSync('components/ui/scroll-preview.tsx', 'utf8')
+  it('never prioritises a full-page project shot', () => {
+    const preview = readFileSync('components/ui/project-shot.tsx', 'utf8')
     expect(preview).not.toMatch(/\bpriority\b/)
     expect(preview).toContain('quality={50}')
   })
@@ -65,9 +65,10 @@ describe('first layout', () => {
   })
 
   it('skips rendering of off-screen preview frames and far sections', () => {
-    expect(css).toMatch(/\.scroll-preview \{[^}]*content-visibility:\s*auto/)
+    // On the frame, not the link: containment would clip the hover shadow.
+    expect(css).toMatch(/\.project-shot__frame \{[^}]*content-visibility:\s*auto/)
     expect(css).toMatch(/\.defer-render \{[^}]*content-visibility:\s*auto;[^}]*contain-intrinsic-size:\s*auto/)
-    // A lifted rack card paints above its tier: the tier defers only where it can let paint out.
+    // A hovered rack card's shadow paints past its tier: the tier defers only where it can let paint out.
     expect(css).toMatch(/@supports \(overflow-clip-margin: 1px\) \{\s*\.defer-render-lift \{[^}]*overflow-clip-margin/)
   })
 

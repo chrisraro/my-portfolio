@@ -3,19 +3,19 @@ import type { CSSProperties } from 'react'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { LivePreview } from '@/components/ui/live-preview'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
-import { ScrollPreview } from '@/components/ui/scroll-preview'
+import { ProjectShot } from '@/components/ui/project-shot'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { edgeCode, homepageOrder } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
-import { canLinkLive, fullShotFor, fullShotHeight, hasFullShot, isEmbeddable, projectHref } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable, projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
 /**
  * One product as an open fold-out spread: an amber flap (who it is, its
  * status, what it does) joined at a crease to a paper leaf (the detail, the
- * ways in, and the real site scrolling in a ScrollPreview). Flaps alternate
+ * ways in, and a still screenshot of the real site). Flaps alternate
  * sides. As it scrolls in, the flap unfolds against its leaf and the leaf
  * slides toward the crease: transform only, so the server HTML is the page.
  */
@@ -99,13 +99,11 @@ function Spread({ project, index, position, total }: { project: Project; index: 
           </div>
         </div>
         {shot ? (
-          <ScrollPreview
+          <ProjectShot
             src={shot}
-            label={`Scroll preview of ${domain ?? project.title}`}
+            label={`Screenshot of ${domain ?? project.title}`}
             href={projectHref(project)}
             duplicateLink
-            scroll="view"
-            shotHeight={fullShotHeight(shot)}
             sizes="(min-width: 1024px) 272px, (min-width: 640px) 240px, calc(100vw - 40px)"
             className="w-full max-w-[17rem] sm:max-w-none"
           />

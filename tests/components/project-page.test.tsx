@@ -63,21 +63,21 @@ describe('/projects/[slug]', () => {
   })
 
   it('labels screenshots for what they show', () => {
-    expect(render('latag')).toContain('aria-label="Scroll preview of latag.vercel.app"')
+    expect(render('latag')).toContain('aria-label="Screenshot of latag.vercel.app"')
     expect(render('latag')).toContain('aria-label="View larger image: Mobile screenshot of latag.vercel.app"')
   })
 
-  it('scrolls the whole site where there is a full-page shot, else shows the desktop shot', () => {
+  it('shows the top of the full-page shot where there is one, else the desktop shot', () => {
     for (const p of projects) {
       const html = render(p.slug)
       const rail = html.slice(0, html.indexOf('</article>'))
-      if (fullShotFor(p)) expect(rail, p.slug).toContain('aria-label="Scroll preview of ')
+      if (fullShotFor(p)) expect(rail, p.slug).toContain('aria-label="Screenshot of ')
       else if (p.image) expect(rail, p.slug).toContain('Desktop screenshot of ')
     }
     // Connecta's full shot was recaptured under reduced motion (its scroll
-    // reveals had captured blank), so it scrolls like every other product.
+    // reveals had captured blank), so it shows like every other product.
     expect(fullShotFor(projects.find((p) => p.slug === 'connecta-ph')!)).toBeDefined()
-    expect(render('connecta-ph')).toContain('aria-label="Scroll preview of ')
+    expect(render('connecta-ph')).toContain('aria-label="Screenshot of ')
   })
 
   it('offers a live preview exactly where the site can be framed', () => {
@@ -173,8 +173,8 @@ describe('/projects/[slug]', () => {
 
   it('keeps screenshots above the body on a short page', () => {
     const html = render('latag')
-    expect(html.indexOf('Scroll preview of')).toBeGreaterThan(-1)
-    expect(html.indexOf('Scroll preview of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
+    expect(html.indexOf('Screenshot of')).toBeGreaterThan(-1)
+    expect(html.indexOf('Screenshot of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
   })
 })
 
@@ -200,7 +200,7 @@ describe('flagship case studies', () => {
     for (const s of caseStudies) {
       const html = render(s.slug)
       const brief = html.indexOf(`>${h.brief}</h2>`)
-      const shot = html.search(/Scroll preview of|Desktop screenshot of/)
+      const shot = html.search(/Screenshot of|Desktop screenshot of/)
       const built = html.indexOf(`>${h.built}</h2>`)
       expect(shot).toBeGreaterThan(brief)
       expect(shot).toBeLessThan(built)

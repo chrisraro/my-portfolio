@@ -148,7 +148,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
       {next && (
         <nav aria-label={h.next} className="rack-shelf mx-auto max-w-6xl px-5 sm:px-8">
           <p className="edge-code mb-5 text-sm text-ink sm:mb-8">{h.next}</p>
-          {/* One pocket of the rack: the card's link reads its label first, since the nav's name is not part of it. */}
+          {/* One card of the rack: its link reads its label first, since the nav's name is not part of it. */}
           <ul className="rack-row flex sm:grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
             <RackCard
               project={next}

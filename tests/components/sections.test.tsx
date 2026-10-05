@@ -125,15 +125,15 @@ describe('Products', () => {
     })
   })
 
-  it('shows the real site scrolling, or says honestly why there is no picture', () => {
+  it('shows the real site in a still screenshot, or says honestly why there is no picture', () => {
     products.forEach((project, i) => {
       if (fullShotFor(project)) {
-        expect(spreads[i]).toContain('scroll-preview__shot')
-        expect(spreads[i]).toContain('scroll-preview--view')
-        // "Read more" is the named link to the same page: the preview is not a second tab stop.
-        expect(spreads[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="scroll-preview /)
+        expect(spreads[i]).toContain('project-shot__frame')
+        expect(spreads[i]).not.toMatch(/scroll-preview|animation-timeline/)
+        // "Read more" is the named link to the same page: the screenshot is not a second tab stop.
+        expect(spreads[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="project-shot lift-card /)
       } else {
-        expect(spreads[i]).not.toContain('scroll-preview__shot')
+        expect(spreads[i]).not.toContain('project-shot__frame')
         expect(spreads[i]).toContain(escape(noPreviewCopy(project)))
       }
     })
@@ -180,21 +180,16 @@ describe('Rack', () => {
     }
   })
 
-  it('reserves no lift on a row where nothing lifts (every card flat)', () => {
-    const rows = html.match(/<ul class="rack-row[^"]*"[\s\S]*?<\/ul>/g) ?? []
-    expect(rows.length).toBeGreaterThan(0)
-    for (const row of rows) {
-      const allFlat = !/class="rack-card (?!rack-card--flat)/.test(row)
-      expect(/rack-row--open/.test(row.slice(0, 200)), row.slice(0, 80)).toBe(allFlat)
-    }
+  it('stands every card whole on the shelf: no pocket, no reserved lift', () => {
+    expect(html).not.toMatch(/rack-pocket|rack-row--open|rack-card__sunk/)
   })
 
   it('keeps a card with no preview flat, its reason printed in the visible top', () => {
     for (const p of racked.filter((p) => !fullShotFor(p))) {
       const card = cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
-      expect(card, p.slug).toMatch(/class="rack-card rack-card--flat/)
-      // The reason sits in the top area (the part above the lip), not only in the sunk half.
-      const top = card.match(/<span class="rack-card__top[^"]*">([\s\S]*?)<\/span><span class="rack-card__sunk/)?.[1] ?? ''
+      expect(card, p.slug).toMatch(/class="rack-card lift-card rack-card--flat/)
+      // The reason sits in the text block, not only in the (wide-screen hidden) picture half.
+      const top = card.match(/<span class="rack-card__top[^"]*">([\s\S]*?)<\/span><span class="rack-card__shot/)?.[1] ?? ''
       expect(top, p.slug).toContain(escape(noPreviewCopy(p)))
     }
     for (const p of racked.filter((p) => fullShotFor(p))) {
@@ -203,10 +198,10 @@ describe('Rack', () => {
     }
   })
 
-  it('sinks a scroll preview in each pocket, or a printed tag where there is none', () => {
+  it('shows a still screenshot on each card, or a printed tag where there is none', () => {
     for (const p of racked) {
       const card = cardFor(p)
-      if (fullShotFor(p)) expect(card, p.slug).toContain('scroll-preview__shot')
+      if (fullShotFor(p)) expect(card, p.slug).toContain('project-shot__frame')
       else expect(card, p.slug).toContain(escape(noPreviewCopy(p)))
     }
   })
@@ -323,7 +318,7 @@ describe('primary proof renders visible without JavaScript', () => {
 
   it('moves proof by transform only as it scrolls in, never by opacity', () => {
     const css = readFileSync('app/globals.css', 'utf8')
-    for (const name of ['reveal-flap', 'reveal-slide', 'reveal-drop', 'reveal-draw-x']) {
+    for (const name of ['reveal-flap', 'reveal-slide', 'reveal-stagger', 'reveal-draw-x']) {
       const frames = css.match(new RegExp(`@keyframes ${name} \\{[\\s\\S]*?\\n\\t\\t\\}`))?.[0]
       expect(frames, name).toBeDefined()
       expect(frames).not.toContain('opacity')

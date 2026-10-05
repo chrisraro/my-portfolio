@@ -9,9 +9,9 @@ import { hasFullShot } from '@/lib/project-page'
 /**
  * The lobby rack: every project that is not a product, in tiers ("Client
  * work", hospitality first, then "Custom systems"); within a tier, cards with a
- * preview lead, so the first card lifted shows a real site. Each tier is a row of
- * pockets on a lip. Proof: no entrance hides it; the cards only drop the last
- * few pixels into their pockets as they scroll in (transform only).
+ * screenshot lead, so a tier opens on a real site. Each tier is a row of cards
+ * standing on a lip. Proof: no entrance hides it; from 640px a row only rises
+ * the last 16px into place, once, staggered (transform only).
  */
 export function Rack() {
   const order = homepageOrder(projects, hasFullShot)
