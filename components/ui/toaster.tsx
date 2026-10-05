@@ -1,7 +1,9 @@
 'use client'
 
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { motion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import * as m from 'motion/react-m'
+import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { X, Check, AlertTriangle, Info, AlertOctagon } from 'lucide-react'
 
@@ -72,7 +74,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const renderList = (list: Toast[]) => (
     <AnimatePresence>
       {list.map((toast) => (
-        <motion.div
+        <m.div
           key={toast.id}
           initial={{ opacity: 0, y: reduce ? 0 : -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,7 +96,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
           >
             <X aria-hidden="true" className="h-4 w-4" />
           </button>
-        </motion.div>
+        </m.div>
       ))}
     </AnimatePresence>
   )
@@ -106,14 +108,16 @@ export function ToastProvider({ children }: ToastProviderProps) {
         Two regions, both present from first render so assistive technology is
         already watching them: confirmations are polite, errors interrupt.
       */}
-      <div className="fixed right-4 top-4 z-50 space-y-2">
-        <div role="alert" className="space-y-2">
-          {renderList(toasts.filter((t) => isUrgent(t.type)))}
+      <LazyMotion features={loadMotionFeatures} strict>
+        <div className="fixed right-4 top-4 z-50 space-y-2">
+          <div role="alert" className="space-y-2">
+            {renderList(toasts.filter((t) => isUrgent(t.type)))}
+          </div>
+          <div role="status" aria-live="polite" className="space-y-2">
+            {renderList(toasts.filter((t) => !isUrgent(t.type)))}
+          </div>
         </div>
-        <div role="status" aria-live="polite" className="space-y-2">
-          {renderList(toasts.filter((t) => !isUrgent(t.type)))}
-        </div>
-      </div>
+      </LazyMotion>
     </ToastContext.Provider>
   )
 }

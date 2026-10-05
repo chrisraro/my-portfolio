@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef, useId, useCallback } from 'react'
 import { createPortal, flushSync } from 'react-dom'
-import { motion, AnimatePresence, useReducedMotion, useAnimate, type Transition } from 'motion/react'
+import * as m from 'motion/react-m'
+import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
 import { ExternalLink, Monitor, Smartphone, X } from 'lucide-react'
+import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { cn } from '@/lib/utils'
 
@@ -57,7 +59,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
   const wasOpen = useRef(false)
   const switching = useRef(false)
-  const [frameRef, animate] = useAnimate<HTMLDivElement>()
+  const frameRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const titleId = useId()
 
@@ -142,20 +144,24 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
         const padding = hostStyle ? parseFloat(hostStyle.paddingLeft) + parseFloat(hostStyle.paddingRight) : 0
         const available = host ? host.clientWidth - padding : el.offsetWidth
         const target = next === 'mobile' ? Math.min(MOBILE_WIDTH, available) : available
-        if (!reduce && el.offsetWidth > 0) {
-          await animate(
-            el,
-            { scaleX: target / el.offsetWidth },
-            { duration: motionTokens.duration.normal, ease: motionTokens.easing.smooth },
-          )
-        }
+        // The browser's own animation (WAAPI) on transform: no animation
+        // engine is loaded for one squeeze, and it runs on the compositor.
+        const squeeze =
+          !reduce && el.offsetWidth > 0
+            ? el.animate([{ transform: 'scaleX(1)' }, { transform: `scaleX(${target / el.offsetWidth})` }], {
+                duration: motionTokens.duration.normal * 1000,
+                easing: `cubic-bezier(${motionTokens.easing.smooth.join(', ')})`,
+                fill: 'forwards',
+              })
+            : undefined
+        if (squeeze) await squeeze.finished
         flushSync(() => setDevice(next))
-        await animate(el, { scaleX: 1 }, { duration: 0 })
+        squeeze?.cancel()
       } finally {
         switching.current = false
       }
     },
-    [animate, device, frameRef, reduce],
+    [device, reduce],
   )
 
   const scrim: Transition = reduce
@@ -171,124 +177,126 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
     )
 
   const dialog = (
-    <AnimatePresence mode="wait">
-      {open && (
-        <motion.div
-          key="live-preview-dialog"
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: scrim }}
-          exit={{ opacity: 0, transition: exit }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-canvas/90 p-3 sm:p-6"
-          onClick={() => setOpen(false)}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: rise }}
-            animate={{ opacity: 1, y: 0, transition: scrim }}
-            exit={{ opacity: 0, y: rise, transition: exit }}
-            onClick={(e) => e.stopPropagation()}
-            className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-line-strong bg-panel shadow-overlay"
+    <LazyMotion features={loadMotionFeatures} strict>
+      <AnimatePresence mode="wait">
+        {open && (
+          <m.div
+            key="live-preview-dialog"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: scrim }}
+            exit={{ opacity: 0, transition: exit }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-canvas/90 p-3 sm:p-6"
+            onClick={() => setOpen(false)}
           >
-            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-            <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
-              <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
-                Live preview: {title}
-                {staging && (
-                  <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
-                    Staging site
-                  </span>
-                )}
-              </h2>
+            <m.div
+              initial={{ opacity: 0, y: rise }}
+              animate={{ opacity: 1, y: 0, transition: scrim }}
+              exit={{ opacity: 0, y: rise, transition: exit }}
+              onClick={(e) => e.stopPropagation()}
+              className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-line-strong bg-panel shadow-overlay"
+            >
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+              <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
+                <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
+                  Live preview: {title}
+                  {staging && (
+                    <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
+                      Staging site
+                    </span>
+                  )}
+                </h2>
 
-              <div role="group" aria-label="Preview width" className="flex gap-2">
-                <button
-                  type="button"
-                  aria-pressed={pressed === 'desktop'}
-                  onClick={() => handleDevice('desktop')}
-                  className={toggleClass(pressed === 'desktop')}
-                >
-                  <Monitor className="h-4 w-4" aria-hidden="true" />
-                  Desktop
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={pressed === 'mobile'}
-                  onClick={() => handleDevice('mobile')}
-                  className={toggleClass(pressed === 'mobile')}
-                >
-                  <Smartphone className="h-4 w-4" aria-hidden="true" />
-                  Mobile
-                </button>
-              </div>
-
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors hover:border-accent hover:text-accent',
-                  load === 'failed' ? 'border-accent bg-accent font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
-                )}
-              >
-                Open site in a new tab
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                className="inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-ink transition-colors hover:border-accent hover:text-accent"
-              >
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
-            </div>
-
-            <div className="relative flex min-h-[60vh] flex-1 justify-center bg-canvas p-3">
-              <div
-                ref={frameRef}
-                className={cn(
-                  'relative h-full overflow-hidden rounded border border-line bg-panel',
-                  device === 'mobile' ? 'w-full max-w-[390px]' : 'w-full',
-                )}
-              >
-                {load !== 'loaded' && (
-                  <p
-                    aria-hidden="true"
-                    className={cn(
-                      'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
-                      load === 'failed' ? 'text-ink' : 'text-muted',
-                    )}
+                <div role="group" aria-label="Preview width" className="flex gap-2">
+                  <button
+                    type="button"
+                    aria-pressed={pressed === 'desktop'}
+                    onClick={() => handleDevice('desktop')}
+                    className={toggleClass(pressed === 'desktop')}
                   >
-                    {STATUS_TEXT[load]}
-                  </p>
-                )}
-                <iframe
-                  src={url}
-                  title={`Live preview of ${title}`}
-                  sandbox="allow-scripts allow-same-origin allow-popups"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                  tabIndex={load === 'loaded' ? undefined : -1}
-                  aria-hidden={load === 'loaded' ? undefined : 'true'}
-                  onLoad={() => setLoad('loaded')}
-                  className={cn('relative h-full w-full bg-panel', load !== 'loaded' && 'opacity-0')}
-                />
+                    <Monitor className="h-4 w-4" aria-hidden="true" />
+                    Desktop
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={pressed === 'mobile'}
+                    onClick={() => handleDevice('mobile')}
+                    className={toggleClass(pressed === 'mobile')}
+                  >
+                    <Smartphone className="h-4 w-4" aria-hidden="true" />
+                    Mobile
+                  </button>
+                </div>
+
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors hover:border-accent hover:text-accent',
+                    load === 'failed' ? 'border-accent bg-accent font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
+                  )}
+                >
+                  Open site in a new tab
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
+
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-ink transition-colors hover:border-accent hover:text-accent"
+                >
+                  <X className="h-5 w-5" aria-hidden="true" />
+                </button>
               </div>
-            </div>
-            <p role="status" className="sr-only">
-              {STATUS_TEXT[load]}
-            </p>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+
+              <div className="relative flex min-h-[60vh] flex-1 justify-center bg-canvas p-3">
+                <div
+                  ref={frameRef}
+                  className={cn(
+                    'relative h-full overflow-hidden rounded border border-line bg-panel',
+                    device === 'mobile' ? 'w-full max-w-[390px]' : 'w-full',
+                  )}
+                >
+                  {load !== 'loaded' && (
+                    <p
+                      aria-hidden="true"
+                      className={cn(
+                        'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
+                        load === 'failed' ? 'text-ink' : 'text-muted',
+                      )}
+                    >
+                      {STATUS_TEXT[load]}
+                    </p>
+                  )}
+                  <iframe
+                    src={url}
+                    title={`Live preview of ${title}`}
+                    sandbox="allow-scripts allow-same-origin allow-popups"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    tabIndex={load === 'loaded' ? undefined : -1}
+                    aria-hidden={load === 'loaded' ? undefined : 'true'}
+                    onLoad={() => setLoad('loaded')}
+                    className={cn('relative h-full w-full bg-panel', load !== 'loaded' && 'opacity-0')}
+                  />
+                </div>
+              </div>
+              <p role="status" className="sr-only">
+                {STATUS_TEXT[load]}
+              </p>
+              </div>
+            </m.div>
+          </m.div>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   )
 
   return (

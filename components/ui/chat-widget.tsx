@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import * as m from 'motion/react-m'
+import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { MessageCircle, X, Send } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -175,10 +177,10 @@ export function ChatWidget() {
     date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
   return (
-    <>
+    <LazyMotion features={loadMotionFeatures} strict>
       <AnimatePresence>
         {!isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -189,7 +191,7 @@ export function ChatWidget() {
           >
             <AnimatePresence>
               {(showLabel || isHovered) && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -199,7 +201,7 @@ export function ChatWidget() {
                   onClick={() => setIsOpen(true)}
                 >
                   <span className="whitespace-nowrap edge-code text-xs text-ink">Ask Chunks about my work</span>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -219,13 +221,13 @@ export function ChatWidget() {
                 />
               )}
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: reduce ? 0 : 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: reduce ? 0 : 8 }}
@@ -272,7 +274,7 @@ export function ChatWidget() {
               {messages.map((message) => {
                 const mine = message.sender === 'user'
                 return (
-                  <motion.div
+                  <m.div
                     key={message.id}
                     initial={reduce ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -291,7 +293,7 @@ export function ChatWidget() {
                     >
                       <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.text}</p>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )
               })}
 
@@ -349,9 +351,9 @@ export function ChatWidget() {
               </div>
               <p className="mt-2 text-center edge-code text-xs text-muted">Powered by AI · portfolio questions only</p>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </>
+    </LazyMotion>
   )
 }

@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import * as m from 'motion/react-m'
+import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
+import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -81,45 +83,47 @@ export function ImageLightbox({ src, alt, children, className, describedBy }: Im
   const transition: Transition = reduce ? { duration: 0 } : { duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }
 
   const dialog = (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          ref={dialogRef}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={transition}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-canvas/95 p-4"
-          onClick={() => setOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label={alt}
-        >
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong bg-panel text-ink transition-colors hover:border-accent hover:text-accent"
-            aria-label="Close"
-          >
-            <X className="h-5 w-5" aria-hidden="true" />
-          </button>
-
-          {/* alt="" because the dialog is already labelled with the same text. */}
-          <motion.img
-            key={src}
-            src={src}
-            alt=""
-            initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+    <LazyMotion features={loadMotionFeatures} strict>
+      <AnimatePresence>
+        {open && (
+          <m.div
+            ref={dialogRef}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={transition}
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-[90vh] max-w-full rounded-lg border border-line object-contain shadow-overlay"
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-canvas/95 p-4"
+            onClick={() => setOpen(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={alt}
+          >
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong bg-panel text-ink transition-colors hover:border-accent hover:text-accent"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+
+            {/* alt="" because the dialog is already labelled with the same text. */}
+            <m.img
+              key={src}
+              src={src}
+              alt=""
+              initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+              transition={transition}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[90vh] max-w-full rounded-lg border border-line object-contain shadow-overlay"
+            />
+          </m.div>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   )
 
   return (
