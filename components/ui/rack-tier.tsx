@@ -19,7 +19,7 @@ interface RackTierProps {
 export function RackTier({ heading, projects, order, headingLevel: Heading }: RackTierProps) {
   const id = `rack-${heading.toLowerCase().replace(/\s+/g, '-')}`
   return (
-    <section aria-labelledby={id} className="min-w-0">
+    <section aria-labelledby={id} className="defer-render-lift min-w-0">
       <Heading id={id} className="edge-code mb-5 text-sm text-ink sm:mb-8">
         {heading}
         <span className="text-muted"> · {projects.length}</span>

@@ -42,7 +42,7 @@ export function RouteLine() {
   const timeline = buildTimeline()
 
   return (
-    <section id="changelog" aria-labelledby="changelog-title" className="route mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="changelog" aria-labelledby="changelog-title" className="defer-render route mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="changelog-title" eyebrow={sectionContent.changelog.eyebrow} title={sectionContent.changelog.title} />
       <div className="grid gap-10">
         <Lane label="Work" entries={timeline.filter((e) => e.type === 'work')} />

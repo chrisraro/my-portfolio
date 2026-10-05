@@ -74,7 +74,7 @@ export function Hero() {
               alt=""
               fill
               priority
-              sizes="(min-width: 768px) 280px, 100vw"
+              sizes="(min-width: 768px) 280px, calc(100vw - 40px)"
               className="object-cover"
             />
           </ImageLightbox>

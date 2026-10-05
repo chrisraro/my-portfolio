@@ -49,9 +49,12 @@ export function ScrollPreview({
     className,
   )
 
+  // Quality 50: at frame size a web page's screenshot looks the same as at the
+  // default 75 and weighs about a quarter less, and on a project page this
+  // shot is the first viewport's largest paint.
   const inner = (
     <>
-      <Image src={src} alt="" fill sizes={sizes} className="scroll-preview__shot" />
+      <Image src={src} alt="" fill sizes={sizes} quality={50} className="scroll-preview__shot" />
       <span className="scroll-preview__progress" aria-hidden="true" />
     </>
   )

@@ -11,7 +11,7 @@ export function Stack() {
   const categories = Array.from(new Set(skills.map((s) => s.category)))
 
   return (
-    <section id="stack" aria-labelledby="stack-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="stack" aria-labelledby="stack-title" className="defer-render mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="stack-title" eyebrow={sectionContent.stack.eyebrow} title={sectionContent.stack.title} />
       <dl className="grid gap-x-10 gap-y-10 border-t border-line pt-6 sm:grid-cols-3">
         {categories.map((category) => (

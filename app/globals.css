@@ -88,6 +88,12 @@
 		text-wrap: balance;
 	}
 	a { text-underline-offset: 0.2em; }
+	/* A theme switch changes colours at once (components/top-bar.tsx). */
+	.theme-switching *,
+	.theme-switching *::before,
+	.theme-switching *::after {
+		transition: none !important;
+	}
 	/* Focus is the brightest thing on the page. */
 	:focus-visible {
 		outline: 2px solid oklch(var(--accent));
@@ -251,9 +257,10 @@
 /* Scroll-driven reveal: CSS only. Outside both gates content is simply visible. */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
+		/* Transform only: text is never painted (or measured for contrast) faded. */
 		@keyframes reveal-rise {
-			from { opacity: 0.01; transform: translateY(16px); }
-			to { opacity: 1; transform: none; }
+			from { transform: translateY(16px); }
+			to { transform: none; }
 		}
 		.reveal {
 			animation: reveal-rise var(--dur-normal) var(--ease-smooth) both;
@@ -339,6 +346,29 @@
 	}
 	.perforation::before { top: -10px; }
 	.perforation::after { top: auto; bottom: -10px; }
+}
+
+/*
+ * Sections far below the fold skip style, layout and paint until they near the
+ * viewport, so the first layout (and the relayout when the web fonts arrive)
+ * covers the hero and the work, not the whole page. Containment clips paint
+ * to the box, so .defer-render goes only on sections whose content never
+ * paints outside it. The intrinsic size is a placeholder until a section has
+ * rendered once; `auto` then remembers its real height.
+ */
+.defer-render {
+	content-visibility: auto;
+	contain-intrinsic-size: auto 600px;
+}
+/* A rack tier: a lifted card rises up to 38% of its height (and its shadow)
+ * above the tier's box, so the tier lets paint run 16rem out. Where
+ * overflow-clip-margin is unsupported the tier simply renders as usual. */
+@supports (overflow-clip-margin: 1px) {
+	.defer-render-lift {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 900px;
+		overflow-clip-margin: 16rem;
+	}
 }
 
 /* Hero tri-fold: the whole load timeline in one place (1.9s, runs once). */
@@ -523,9 +553,10 @@
 			from { transform: scaleY(0); }
 			to { transform: none; }
 		}
+		/* Transform only, like reveal-rise: a case study is never read faded. */
 		@keyframes reveal-cover {
-			from { opacity: 0.2; transform: translateY(16px); }
-			to { opacity: 1; transform: none; }
+			from { transform: translateY(16px); }
+			to { transform: none; }
 		}
 		@keyframes reveal-lift {
 			from { transform: translateY(24px); }
@@ -622,6 +653,12 @@
  * (hover: hover), and reduced motion pins it to the top (block below). */
 .scroll-preview {
 	--scroll-dur: clamp(var(--dur-crawl), calc(var(--shot-h, 4500) * 1s / 1500), calc(var(--dur-crawl) * 3.75));
+	/* A frame away from the viewport (below the fold, or scrolled out of a rack
+	 * strip) skips rendering, so its full-page shot, a lazy image, is not even
+	 * requested until the frame comes near. The frame's size never depends on
+	 * its content (an aspect ratio, or its card's height), so nothing shifts,
+	 * and it already clips its content, so the containment changes nothing seen. */
+	content-visibility: auto;
 }
 .scroll-preview__shot {
 	object-fit: cover;

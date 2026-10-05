@@ -12,9 +12,11 @@ import type { CaseStudy, Project } from '@/types'
 const H2 = 'text-title text-ink'
 const P = 'mt-3 text-base leading-relaxed text-muted-strong'
 
-function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+// Sections render lazily (.defer-render) unless their content tilts out of
+// their box: the decision panels fold in perspective.
+function Section({ id, title, defer = true, children }: { id: string; title: string; defer?: boolean; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="mt-14 first:mt-0">
+    <section aria-labelledby={id} className={defer ? 'defer-render mt-14 first:mt-0' : 'mt-14 first:mt-0'}>
       <h2 id={id} className={H2}>
         {title}
       </h2>
@@ -60,7 +62,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
           ))}
         </Section>
 
-        <Section id="decisions" title={h.decisions}>
+        <Section id="decisions" title={h.decisions} defer={false}>
           {/* Numbered fold panels: what was chosen, over what, and why. */}
           <ol className="mt-5 grid gap-4 [perspective:1600px]">
             {study.decisions.map((d, i) => (

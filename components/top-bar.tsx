@@ -22,6 +22,17 @@ export function TopBar() {
   useEffect(() => setMounted(true), [])
   const isDark = resolvedTheme !== 'light'
 
+  // Colours swap at once on a theme switch: transitions are held off for the
+  // two frames the swap takes. This replaces next-themes'
+  // disableTransitionOnChange, which also ran on every page load and cost two
+  // full-page style recalculations and a forced one.
+  const switchTheme = (next: 'light' | 'dark') => {
+    const root = document.documentElement
+    root.classList.add('theme-switching')
+    setTheme(next)
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('theme-switching')))
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas">
       {/*
@@ -82,7 +93,7 @@ export function TopBar() {
           </p>
           <button
             type="button"
-            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            onClick={() => switchTheme(isDark ? 'light' : 'dark')}
             aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
             className="press inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-muted-strong hover:border-accent hover:text-accent"
           >

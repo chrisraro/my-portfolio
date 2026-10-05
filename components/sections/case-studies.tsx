@@ -26,7 +26,7 @@ export function CaseStudies() {
   })
 
   return (
-    <section id="case-studies" aria-labelledby="case-studies-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="case-studies" aria-labelledby="case-studies-title" className="defer-render mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading
         id="case-studies-title"
         eyebrow={sectionContent.caseStudies.eyebrow}

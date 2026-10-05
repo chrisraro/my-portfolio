@@ -34,7 +34,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
           src={full}
           label={`Scroll preview of ${name}`}
           shotHeight={fullShotHeight(full)}
-          sizes="(min-width: 1024px) 420px, (min-width: 640px) 352px, 100vw"
+          sizes="(min-width: 1024px) 420px, (min-width: 640px) 352px, calc(100vw - 40px)"
           className={FRAME}
         />
       ) : (

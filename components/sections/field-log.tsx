@@ -27,7 +27,7 @@ export function FieldLog() {
   let photoIndex = 0
 
   return (
-    <section id="field-log" aria-labelledby="field-log-title" className="overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="field-log" aria-labelledby="field-log-title" className="defer-render overflow-x-clip mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="field-log-title" eyebrow={galleryContent.eyebrow} title={galleryContent.title} />
       <ul className="grid items-start gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {entries.map((entry, i) => {

@@ -15,17 +15,28 @@ import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structu
 // at normal width with tabular figures. Figtree reads: body, ledes, forms, chat.
 // Both are variable; weight comes with the variable file, and Anybody also
 // loads its wdth axis.
+//
+// The fallback is plain Arial, not next/font's metric-adjusted
+// `local("Arial")` face. Until the woff2 files arrive the page is laid out in
+// the fallback, and a local() face is instantiated afresh for every weight,
+// width and size on the page: on the first layout that cost ~200ms of main
+// thread (traced). The adjustment matched ascent and size only, never
+// Anybody's condensed width, so it saved little shift for what it cost.
 const anybody = Anybody({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
   axes: ['wdth'],
+  adjustFontFallback: false,
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const figtree = Figtree({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Arial', 'sans-serif'],
 })
 
 export const metadata: Metadata = buildSiteMetadata(SITE_URL)
@@ -39,7 +50,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${anybody.variable} ${figtree.variable}`}>
       <body>
         <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <ToastProvider>
             <a
               href="#main"
