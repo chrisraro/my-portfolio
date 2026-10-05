@@ -724,27 +724,45 @@
 	animation-duration: var(--dur-normal);
 	animation-timing-function: var(--ease-smooth);
 }
-/* The old page is gone before the new one arrives, so the two never show at
- * once (the gate saw the case-study H1 printed over the old grid); only a
- * named shot travels across the clean frame. */
-::view-transition-old(root) {
+/* A project navigation: the old page is gone before the new one arrives, so
+ * the two never show at once (the gate saw the case-study H1 printed over the
+ * old grid); only a named shot travels across the clean frame. */
+:root:not(.vt-filter)::view-transition-old(root) {
 	animation-name: vt-fade-out;
 	animation-duration: calc(var(--dur-fast) * 0.6);
 	animation-timing-function: var(--ease-sharp);
 	animation-fill-mode: both;
 }
-::view-transition-new(root) {
+:root:not(.vt-filter)::view-transition-new(root) {
 	animation-name: vt-fade-in;
 	animation-duration: var(--dur-fast);
 	animation-delay: calc(var(--dur-fast) * 0.5);
 	animation-timing-function: var(--ease-sharp);
 	animation-fill-mode: both;
 }
+/* A filter change: the heading, tabs and bar are the same page, so the root
+ * swaps in place (no dip) and only the named cards and tiers glide. */
+.vt-filter::view-transition-old(root) {
+	animation: none;
+	opacity: 0;
+}
+.vt-filter::view-transition-new(root) {
+	animation: none;
+}
 /* A clicked shot with no header shot to land on (the island leaves an
  * off-screen target unnamed) leaves with the old page, not after it. */
 ::view-transition-old(*.shot):only-child {
 	animation-name: vt-fade-out;
 	animation-duration: calc(var(--dur-fast) * 0.6);
+}
+/* A header shot with no clicked shot to come from (a text link, or a source
+ * scrolled away) arrives with the new page, not over the old one. */
+::view-transition-new(*.shot):only-child {
+	animation-name: vt-fade-in;
+	animation-duration: var(--dur-fast);
+	animation-delay: calc(var(--dur-fast) * 0.5);
+	animation-timing-function: var(--ease-sharp);
+	animation-fill-mode: both;
 }
 /* A 9:16 card shot and a 3:4 header shot both show the top of the page: keep
  * the top fixed and crop, never stretch, while the frame changes shape. */

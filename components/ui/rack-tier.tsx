@@ -32,7 +32,7 @@ export function RackTier({ heading, projects, order, headingLevel: Heading }: Ra
         {heading}
         <span className="text-muted"> · {projects.length}</span>
       </Heading>
-      <ul className="rack-row -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 pt-2 [scroll-padding-inline:1.25rem] sm:mx-0 sm:grid sm:snap-none sm:grid-cols-3 sm:gap-x-6 sm:gap-y-14 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+      <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 pt-2 [scroll-padding-inline:1.25rem] sm:mx-0 sm:grid sm:snap-none sm:grid-cols-3 sm:gap-x-6 sm:gap-y-14 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
         {projects.map((project, i) => (
           <RackCard
             key={project.id}

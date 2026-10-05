@@ -44,7 +44,7 @@ export function RackCard({ project, code, index, labelPrefix }: RackCardProps) {
           href={projectHref(project)}
           className={cn(
             'rack-card lift-card',
-            flat && 'rack-card--flat sm:aspect-square',
+            flat && 'sm:aspect-square',
             'relative flex aspect-[9/16] flex-col rounded border border-line bg-panel',
           )}
         >
@@ -57,7 +57,7 @@ export function RackCard({ project, code, index, labelPrefix }: RackCardProps) {
               Staging
             </span>
           )}
-          <span className={cn('rack-card__top flex h-[44%] flex-col gap-2 p-4', flat && 'sm:h-full')}>
+          <span className={cn('flex h-[44%] flex-col gap-2 p-4', flat && 'sm:h-full')}>
             <span aria-hidden="true" className="edge-code text-xs text-muted">
               {code}
             </span>
@@ -75,7 +75,7 @@ export function RackCard({ project, code, index, labelPrefix }: RackCardProps) {
               {domain ?? 'no public URL'}
             </span>
           </span>
-          <span className={cn('rack-card__shot block min-h-0 flex-1 px-2 pb-2', flat && 'sm:hidden')}>
+          <span className={cn('block min-h-0 flex-1 px-2 pb-2', flat && 'sm:hidden')}>
             {shot ? (
               <ProjectShot
                 src={shot}

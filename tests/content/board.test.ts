@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bandSlug, bySector, edgeCode, groupByBand, groupForHomepage, homepageOrder, parseBandParam } from '@/lib/board'
+import { bandSlug, bySector, edgeCode, groupByBand, groupForHomepage, parseBandParam } from '@/lib/board'
 import { projects } from '@/lib/data'
 import { BAND_ORDER, SECTOR_ORDER } from '@/types'
 
@@ -112,16 +112,6 @@ describe('band parameter', () => {
   })
 })
 
-describe('homepageOrder', () => {
-  it('lists every project exactly once, Products first', () => {
-    const order = homepageOrder(projects)
-    expect(order).toHaveLength(projects.length)
-    expect(new Set(order.map((p) => p.id)).size).toBe(projects.length)
-    const products = projects.filter((p) => p.band === 'Products').length
-    expect(order.slice(0, products).every((p) => p.band === 'Products')).toBe(true)
-  })
-})
-
 describe('edgeCode', () => {
   it('pads the running index to the width of the total', () => {
     expect(edgeCode(4, 18, 'Products')).toBe('04 / 18 · Products')
@@ -164,12 +154,6 @@ describe('preview first', () => {
     const groups = groupByBand(projects, hasPreview)
     expect(groups.map((g) => g.heading)).toEqual([...BAND_ORDER])
     expect(groups.find((g) => g.heading === 'Products')!.projects[0].id).toBe('latag')
-  })
-
-  it('numbers the homepage strip in the order the cards appear', () => {
-    const order = homepageOrder(projects, hasPreview)
-    const shownRest = groupForHomepage(rest, hasPreview).flatMap((g) => g.projects)
-    expect(order.filter((p) => p.band !== 'Products')).toEqual(shownRest)
   })
 
   it('changes nothing without a preview test', () => {

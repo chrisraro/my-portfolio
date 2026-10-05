@@ -192,14 +192,14 @@ describe('Rack', () => {
   it('keeps a card with no preview flat, its reason printed in the visible top', () => {
     for (const p of racked.filter((p) => !fullShotFor(p))) {
       const card = cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
-      expect(card, p.slug).toMatch(/class="rack-card lift-card rack-card--flat/)
+      expect(card, p.slug).toMatch(/class="rack-card lift-card sm:aspect-square/)
       // The reason sits in the text block, not only in the (wide-screen hidden) picture half.
-      const top = card.match(/<span class="rack-card__top[^"]*">([\s\S]*?)<\/span><span class="rack-card__shot/)?.[1] ?? ''
+      const top = card.match(/<span class="flex h-\[44%\][^"]*">([\s\S]*?)<\/span><span class="block min-h-0/)?.[1] ?? ''
       expect(top, p.slug).toContain(escape(noPreviewCopy(p)))
     }
     for (const p of racked.filter((p) => fullShotFor(p))) {
       const card = cards.find((c) => c.includes(`href="/projects/${p.slug}"`)) ?? ''
-      expect(card, p.slug).not.toContain('rack-card--flat')
+      expect(card, p.slug).not.toContain('sm:aspect-square')
     }
   })
 

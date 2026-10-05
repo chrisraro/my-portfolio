@@ -26,6 +26,9 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
           <li key={item.label} className={cn('shrink-0', item.current && '[scroll-initial-target:nearest]')}>
             <Link
               href={item.href}
+              // /projects reads ?band=, so it is dynamic: fetch each filtered
+              // view in full ahead, or a tab click waits on the server.
+              prefetch
               // "true", not "page": every tab is the same page, filtered.
               aria-current={item.current ? 'true' : undefined}
               className={cn(

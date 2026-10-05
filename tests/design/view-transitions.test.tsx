@@ -118,10 +118,11 @@ describe('the view-transition island', () => {
     expect(island).toContain('event.preventDefault()')
   })
 
-  it('waits for the route to commit, with a safety timeout, and cleans up its names', () => {
+  it('waits for the route it navigated to (the commit tracker), and cleans up its names', () => {
     expect(island).toContain('usePathname()')
     expect(island).toContain('useSearchParams()')
-    expect(island).toMatch(/setTimeout\(/)
+    expect(island).toMatch(/tracker\.committed\(url\)/)
+    expect(island).toMatch(/tracker\.wait\(token, routeKey\(plan\.href\), COMMIT_WAIT/)
     expect(island).toMatch(/removeProperty\('view-transition-name'\)/)
     expect(island).toMatch(/classList\.remove\('vt-filter'\)/)
   })
@@ -131,12 +132,28 @@ describe('the view-transition island', () => {
 describe('the island, hardened', () => {
   it('falls back to a full navigation if the client push fails, and never leaves a rejection unhandled', () => {
     expect(island).toMatch(/window\.location\.assign\(/)
-    expect(island).toMatch(/updateCallbackDone\.catch\(/)
+    expect(island).toMatch(/updateCallbackDone\.then\([\s\S]*?\}, fallback\)/)
   })
 
-  it('lets only the latest transition clean up its names (rapid clicks)', () => {
-    expect(island).toMatch(/const token = \+\+active/)
-    expect(island).toMatch(/if \(token !== active\) return/)
+  it('lets only the latest transition navigate, clean up its names or move focus (rapid clicks)', () => {
+    expect(island).toMatch(/const token = tracker\.begin\(\)/)
+    expect(island).toMatch(/if \(!tracker\.isLatest\(token\)\) return/)
+    // The token logic itself is unit-tested in view-transition-commit.test.ts.
+  })
+
+  it('scrolls and focuses only on a committed route: in the frame, or after a late commit', () => {
+    expect(island).toMatch(/if \(!landed \|\| plan\.kind !== 'project' \|\| !tracker\.isLatest\(token\)\) return/)
+    expect(island).toMatch(/const late = plan\.kind === 'project' \? landOnCaseStudy : undefined/)
+    // A frame with nothing committed is dropped, not faded into itself.
+    expect(island).toMatch(/if \(!landed\) transition\.skipTransition/)
+  })
+
+  it('prefetches project pages on hover or focus, and the filter tabs in full', () => {
+    expect(island).toMatch(/router\.prefetch\(/)
+    expect(island).toMatch(/addEventListener\('pointerover'/)
+    expect(island).toMatch(/addEventListener\('focusin'/)
+    const filter = readFileSync('components/ui/board-filter.tsx', 'utf8')
+    expect(filter).toMatch(/^\s*prefetch$/m)
   })
 
   it('morphs only to a header shot that is in the viewport, and lands at the top', () => {
@@ -153,14 +170,30 @@ describe('the island, hardened', () => {
 
 describe('root cross-fade', () => {
   const live = rules.filter((r) => /::view-transition-(old|new)\(root\)/.test(r.selector) && !r.ancestors.join(' ').includes('reduce'))
-  const old = live.find((r) => /old\(root\)/.test(r.selector) && !/new\(root\)/.test(r.selector))
-  const fresh = live.find((r) => /new\(root\)/.test(r.selector) && !/old\(root\)/.test(r.selector))
+  const old = live.find((r) => r.selector === ':root:not(.vt-filter)::view-transition-old(root)')
+  const fresh = live.find((r) => r.selector === ':root:not(.vt-filter)::view-transition-new(root)')
 
-  it('fades the old page out before the new one fades in, so the two never double-expose', () => {
+  it('fades the old page out before the new one fades in on a project navigation, so the two never double-expose', () => {
     expect(old?.body).toMatch(/animation-name:\s*vt-fade-out/)
     expect(fresh?.body).toMatch(/animation-name:\s*vt-fade-in/)
     expect(fresh?.body).toMatch(/animation-delay:\s*calc\(var\(--dur-fast\)/)
     expect(fresh?.body).toMatch(/animation-fill-mode:\s*both/)
+  })
+
+  it('never dips the page on a filter change: the fades are scoped away from .vt-filter, whose root swaps in place', () => {
+    for (const r of live.filter((x) => /vt-fade/.test(x.body))) expect(r.selector, r.selector).toMatch(/^:root:not\(\.vt-filter\)::/)
+    const filterOld = live.find((r) => r.selector === '.vt-filter::view-transition-old(root)')
+    const filterNew = live.find((r) => r.selector === '.vt-filter::view-transition-new(root)')
+    expect(filterOld?.body).toMatch(/animation:\s*none/)
+    expect(filterOld?.body).toMatch(/opacity:\s*0/)
+    expect(filterNew?.body).toMatch(/animation:\s*none/)
+  })
+
+  it('brings a header shot with no source in with the new page, not over the old one', () => {
+    const lone = rules.find((r) => r.selector === '::view-transition-new(*.shot):only-child')
+    expect(lone?.body).toMatch(/animation-name:\s*vt-fade-in/)
+    expect(lone?.body).toMatch(/animation-delay:\s*calc\(var\(--dur-fast\) \* 0\.5\)/)
+    expect(lone?.body).toMatch(/animation-fill-mode:\s*both/)
   })
 })
 

@@ -1,19 +1,12 @@
 'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { startTransition, useEffect, useRef } from 'react'
-import { planTransition, shotTransitionName } from '@/lib/view-transition'
+import { startTransition, useEffect, useState } from 'react'
+import { COMMIT_WAIT, createCommitTracker, planTransition, routeKey, shotTransitionName } from '@/lib/view-transition'
 
-// Longest the old page stays frozen waiting for the route to commit. The
-// browser gives up on its own at about 4s; a slow fetch should not get there.
-const COMMIT_TIMEOUT = 2500
 // Longest the new page waits for its header shot to decode, so the morph lands
 // on the picture rather than an empty frame.
 const IMAGE_WAIT = 300
-
-// Each click takes a token; only the latest transition may clear names or move
-// focus, so a rapid second click is not undone by the first one finishing.
-let active = 0
 
 function sleep(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms))
@@ -57,6 +50,12 @@ async function shotReady(target: HTMLElement) {
   await Promise.race([img.decode().catch(() => undefined), sleep(IMAGE_WAIT)])
 }
 
+/** On the new case study: land at the very top (the root's smooth scrolling would stop short) and move focus to its heading. */
+function landOnCaseStudy() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  document.querySelector<HTMLElement>('main h1[tabindex="-1"]')?.focus({ preventScroll: true })
+}
+
 /** Remove every name this island set (a source shot, the filter's card names). */
 function clearNames() {
   document.documentElement.classList.remove('vt-filter')
@@ -83,16 +82,27 @@ export function ViewTransitions() {
   const router = useRouter()
   const pathname = usePathname()
   const search = useSearchParams()
-  const url = `${pathname}?${search.toString()}`
-  const commit = useRef<(() => void) | null>(null)
+  const url = routeKey(`${pathname}?${search.toString()}`)
+  // Each click takes a token; only the route that click navigated to releases
+  // its frozen frame, and only the latest transition clears names or moves focus.
+  const [tracker] = useState(createCommitTracker)
 
-  // The route has committed (path or query changed): release the frozen frame.
-  useEffect(() => {
-    commit.current?.()
-    commit.current = null
-  }, [url])
+  // A route has committed (path or query changed).
+  useEffect(() => tracker.committed(url), [tracker, url])
 
   useEffect(() => {
+    const fetched = new Set<string>()
+    /** Hover or focus on a project link fetches its page ahead, so the morph has it in hand. */
+    function onIntent(event: Event) {
+      const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.target === '_blank') return
+      const target = new URL(anchor.href, window.location.href)
+      if (target.origin !== window.location.origin || !/^\/projects\/[a-z0-9-]+\/?$/.test(target.pathname)) return
+      if (fetched.has(target.pathname)) return
+      fetched.add(target.pathname)
+      router.prefetch(target.pathname)
+    }
+
     function onClick(event: MouseEvent) {
       if (!('startViewTransition' in document)) return
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -107,10 +117,9 @@ export function ViewTransitions() {
       if (!plan) return
       event.preventDefault()
 
-      const token = ++active
-      // A transition still waiting on its route is superseded: let it finish,
-      // and drop the names it set.
-      commit.current?.()
+      // A transition still waiting on its route is superseded: it is released
+      // at once, and the names it set are dropped.
+      const token = tracker.begin()
       clearNames()
 
       const named = plan.kind === 'project' ? sourceShot(anchor, plan.slug) : null
@@ -123,45 +132,53 @@ export function ViewTransitions() {
 
       // If the client navigation fails, the link still goes where it says.
       const fallback = () => window.location.assign(plan.href)
+      let landed = false
 
       const transition = document.startViewTransition(async () => {
-        await Promise.race([
-          new Promise<void>((resolve) => {
-            commit.current = resolve
-            try {
-              startTransition(() => router.push(plan.href, { scroll: false }))
-            } catch {
-              resolve()
-              fallback()
-            }
-          }),
-          sleep(COMMIT_TIMEOUT),
-        ])
-        if (plan.kind !== 'project' || token !== active) return
-        // Land at the very top (the root's smooth scrolling would stop short).
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        // A newer click has taken over: do not navigate here after all.
+        if (!tracker.isLatest(token)) return
+        // Past COMMIT_WAIT the frozen frame lets go and the route lands on its
+        // own; a case study then gets its scroll and focus once it is there.
+        const late = plan.kind === 'project' ? landOnCaseStudy : undefined
+        const committed = tracker.wait(token, routeKey(plan.href), COMMIT_WAIT, late)
+        try {
+          startTransition(() => router.push(plan.href, { scroll: false }))
+        } catch {
+          fallback()
+          return
+        }
+        landed = await committed
+        if (!landed || plan.kind !== 'project' || !tracker.isLatest(token)) return
         // Morph only into a header shot the visitor can see; on a phone it sits
         // below the cover, so the page simply cross-fades.
         const target = targetShot(slug)
         if (target && wellInViewport(target)) await shotReady(target)
         else target?.style.removeProperty('view-transition-name')
-        // Focus follows the navigation to the new page's heading.
-        document.querySelector<HTMLElement>('main h1[tabindex="-1"]')?.focus({ preventScroll: true })
+        landOnCaseStudy()
       })
 
-      transition.updateCallbackDone.catch(fallback)
+      // No commit in time: the frame would only fade the old page into itself.
+      transition.updateCallbackDone.then(() => {
+        if (!landed) transition.skipTransition?.()
+      }, fallback)
       transition.ready.catch(() => undefined)
       transition.finished
         .catch(() => undefined)
         .finally(() => {
-          if (token !== active) return
+          if (!tracker.isLatest(token)) return
           clearNames()
         })
     }
 
     window.addEventListener('click', onClick, true)
-    return () => window.removeEventListener('click', onClick, true)
-  }, [router])
+    window.addEventListener('pointerover', onIntent, { passive: true })
+    window.addEventListener('focusin', onIntent)
+    return () => {
+      window.removeEventListener('click', onClick, true)
+      window.removeEventListener('pointerover', onIntent)
+      window.removeEventListener('focusin', onIntent)
+    }
+  }, [router, tracker])
 
   return null
 }

@@ -76,16 +76,6 @@ export function parseBandParam(value: string | string[] | undefined): ProjectBan
 }
 
 /**
- * Every project in the order the homepage shows it: Products first, then the
- * rack's tiers. (Edge codes count in catalogOrder, not this.)
- */
-export function homepageOrder(projects: Project[], hasPreview?: HasPreview): Project[] {
-  const products = projects.filter((p) => p.band === 'Products')
-  const rest = groupForHomepage(projects.filter((p) => p.band !== 'Products'), hasPreview)
-  return [...products, ...rest.flatMap((group) => group.projects)]
-}
-
-/**
  * The one order every edge code counts in: the /projects index, band by band
  * in BAND_ORDER. A project keeps its number on the homepage, on /projects
  * (filtered or not) and on a case study's next card. (The gate's critique
