@@ -75,7 +75,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
           <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-auto md:pt-8">
             <Link
               href="/#contact"
-              className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
+              className="press button-primary"
             >
               Start a project
               <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />

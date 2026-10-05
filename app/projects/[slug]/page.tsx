@@ -55,7 +55,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
           <Link
             href="/#contact"
-            className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
+            className="press button-primary"
           >
             Start a project
             <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />

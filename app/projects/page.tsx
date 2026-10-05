@@ -5,6 +5,7 @@ import { BoardFilter } from '@/components/ui/board-filter'
 import { RackTier } from '@/components/ui/rack-tier'
 import { groupByBand, parseBandParam } from '@/lib/board'
 import { projects, projectsPageContent } from '@/lib/data'
+import { hasFullShot } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
 
 interface ProjectsPageProps {
@@ -26,7 +27,7 @@ export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata 
 // strip, so a card keeps its number when a filter narrows the rack.
 export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const band = parseBandParam(searchParams.band)
-  const strip = groupByBand(projects).flatMap((g) => g.projects)
+  const strip = groupByBand(projects, hasFullShot).flatMap((g) => g.projects)
   const visible = band ? projects.filter((p) => p.band === band) : projects
   const count = band ? `${visible.length} of ${projects.length} projects` : `${projects.length} projects`
 
@@ -44,7 +45,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
       </div>
 
       <div className="grid gap-14 sm:gap-20">
-        {groupByBand(visible).map((group) => (
+        {groupByBand(visible, hasFullShot).map((group) => (
           <RackTier key={group.heading} heading={group.heading} projects={group.projects} order={strip} headingLevel="h2" />
         ))}
       </div>
@@ -52,7 +53,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
       <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
         <Link
           href="/#contact"
-          className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
+          className="press button-primary"
         >
           Start a project
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />

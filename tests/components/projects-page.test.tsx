@@ -101,9 +101,10 @@ describe('/projects filter', () => {
   it('marks the current tab with aria-current, as plain links', () => {
     const tag = (html: string, href: string) => html.match(new RegExp(`<a [^>]*href="${href.replace('?', '\\?')}"[^>]*>`))?.[0] ?? ''
     const sites = render('sites')
-    expect(tag(sites, '/projects?band=sites')).toContain('aria-current="page"')
+    // "true", not "page": every tab leads to the same page, filtered.
+    expect(tag(sites, '/projects?band=sites')).toContain('aria-current="true"')
     expect(tag(sites, '/projects')).not.toContain('aria-current')
-    expect(tag(render(), '/projects')).toContain('aria-current="page"')
+    expect(tag(render(), '/projects')).toContain('aria-current="true"')
   })
 
   it('ships no client code of its own', () => {

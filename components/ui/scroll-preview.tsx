@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
+import { ArrowDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface ScrollPreviewProps {
@@ -9,8 +10,20 @@ interface ScrollPreviewProps {
   /** Accessible name, e.g. "<Title>: scroll preview". With href, ", opens project page" is appended. */
   label: string
   className?: string
-  /** When given, the frame is the link; otherwise it is a focusable frame. */
+  /** When given, the frame is the link; otherwise it is a named image (not a tab stop). */
   href?: string
+  /**
+   * The link duplicates a visible, named link to the same page (a product's
+   * "Read more"): keep it clickable but take it out of the tab order and the
+   * accessibility tree, so keyboard and screen-reader users meet one link.
+   */
+  duplicateLink?: boolean
+  /**
+   * What scrolls the shot besides hover or focus, where scroll timelines exist:
+   * 'view' as the frame crosses the viewport (a product), 'page' with the
+   * page's own scroll (a project page's sticky rail). Default: hover only.
+   */
+  scroll?: 'hover' | 'view' | 'page'
   /** 3:4 (product, project page) or 9:16 (rack). */
   ratio?: 'portrait' | 'tall'
   /** The shot's pixel height; scales the scroll duration (see .scroll-preview in globals.css). */
@@ -28,9 +41,11 @@ interface ScrollPreviewProps {
 /**
  * A fixed-aspect frame over a full-page screenshot. On hover or keyboard focus
  * the shot scrolls from top to bottom (object-position, CSS only) while a thin
- * rule on the right edge fills to show how far through the page it is. It stops
- * at the bottom and never loops; under reduced motion it stays at the top.
- * All motion lives in app/globals.css (.scroll-preview).
+ * rule on the right edge fills its track to show how far through the page it
+ * is; with `scroll`, it also follows the page's scroll, so it moves on touch
+ * and without hover. A printed "scroll" cue says it moves. It stops at the
+ * bottom and never loops; under reduced motion it stays at the top, cue and
+ * rule hidden. All motion lives in app/globals.css (.scroll-preview).
  */
 export function ScrollPreview({
   src,
@@ -41,11 +56,15 @@ export function ScrollPreview({
   shotHeight,
   sizes = '(min-width: 1024px) 480px, 100vw',
   decorative = false,
+  duplicateLink = false,
+  scroll = 'hover',
 }: ScrollPreviewProps) {
   const style = shotHeight ? ({ '--shot-h': shotHeight } as CSSProperties) : undefined
   const classes = cn(
     'scroll-preview relative block overflow-hidden rounded border border-line bg-panel',
     ratio === 'tall' ? 'aspect-[9/16]' : 'aspect-[3/4]',
+    scroll === 'view' && 'scroll-preview--view',
+    scroll === 'page' && 'scroll-preview--page',
     className,
   )
 
@@ -55,7 +74,12 @@ export function ScrollPreview({
   const inner = (
     <>
       <Image src={src} alt="" fill sizes={sizes} quality={50} className="scroll-preview__shot" />
+      <span className="scroll-preview__track" aria-hidden="true" />
       <span className="scroll-preview__progress" aria-hidden="true" />
+      <span className="scroll-preview__cue edge-code" aria-hidden="true">
+        <ArrowDown className="h-3 w-3" />
+        scroll
+      </span>
     </>
   )
 
@@ -64,6 +88,14 @@ export function ScrollPreview({
       <span aria-hidden="true" className={classes} style={style}>
         {inner}
       </span>
+    )
+  }
+
+  if (href && duplicateLink) {
+    return (
+      <Link href={href} tabIndex={-1} aria-hidden="true" className={classes} style={style}>
+        {inner}
+      </Link>
     )
   }
 
@@ -76,7 +108,7 @@ export function ScrollPreview({
   }
 
   return (
-    <div role="img" tabIndex={0} aria-label={label} className={classes} style={style}>
+    <div role="img" aria-label={label} className={classes} style={style}>
       {inner}
     </div>
   )

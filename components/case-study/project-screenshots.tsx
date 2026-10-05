@@ -12,7 +12,7 @@ const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_22rem)_*
 
 /**
  * The preview rail of a project page: the whole site scrolling in a 3:4
- * ScrollPreview (hover or focus scrolls it; a tap focuses it on touch), with
+ * ScrollPreview (it follows the page's scroll, and hover scrolls it too), with
  * the phone shot beside or below it in a lightbox. A project with no full-page
  * shot falls back to its desktop screenshot; one with no public screen at all
  * keeps the slot with a printed tag saying why.
@@ -33,6 +33,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
         <ScrollPreview
           src={full}
           label={`Scroll preview of ${name}`}
+          scroll="page"
           shotHeight={fullShotHeight(full)}
           sizes="(min-width: 1024px) 420px, (min-width: 640px) 352px, calc(100vw - 40px)"
           className={FRAME}

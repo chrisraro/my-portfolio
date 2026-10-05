@@ -39,6 +39,11 @@ export function fullShotFor(project: Project): string | undefined {
   return existsSync(join(process.cwd(), 'public', path)) ? path : undefined
 }
 
+/** For lib/board.ts: a card with a full shot lifts out to show the site; lead with those. */
+export function hasFullShot(project: Project): boolean {
+  return fullShotFor(project) !== undefined
+}
+
 // The full shot's pixel height, read from its WebP header, so ScrollPreview can
 // scale its scroll duration to the page's length. Handles the extended (VP8X)
 // header the capture script writes; anything else returns undefined and the

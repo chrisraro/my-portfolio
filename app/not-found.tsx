@@ -25,7 +25,7 @@ export default function NotFound() {
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
               href="/projects"
-              className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent"
+              className="press button-primary"
             >
               All projects
               <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />

@@ -129,3 +129,50 @@ describe('edgeCode', () => {
     expect(edgeCode(3, 6, 'Case study')).toBe('3 / 6 · Case study')
   })
 })
+
+// Critique P1-3: the rack must not open on cards with nothing to show. With a
+// preview test, cards that have a preview lead each tier (stable otherwise),
+// and on the homepage a tier whose cards have previews leads one that has none.
+describe('preview first', () => {
+  const shown = new Set(['azalea-boracay', 'elnido', 'graceland', 'aman-webapp', 'latag'])
+  const hasPreview = (p: { id: string }) => shown.has(p.id)
+  const rest = projects.filter((p) => p.band !== 'Products')
+
+  it('puts cards with a preview first within each tier, keeping sector order otherwise', () => {
+    const clientWork = groupForHomepage(rest, hasPreview).find((g) => g.heading === 'Client work')!
+    expect(clientWork.projects.map((p) => p.id)).toEqual([
+      'azalea-boracay',
+      'elnido',
+      'graceland',
+      'aman-webapp',
+      'downtown-district-hotel',
+      'azalea-baguio',
+      'eastwind-beach-villas',
+      'beachbus',
+      'upcat-review-plus',
+      'acad1',
+      'naga-city-guide',
+      'aralabroad',
+    ])
+  })
+
+  it('leads the homepage rack with a tier that has something to show', () => {
+    expect(groupForHomepage(rest, hasPreview).map((g) => g.heading)).toEqual(['Client work', 'Custom systems'])
+  })
+
+  it('orders /projects bands the same way inside each band, keeping BAND_ORDER', () => {
+    const groups = groupByBand(projects, hasPreview)
+    expect(groups.map((g) => g.heading)).toEqual([...BAND_ORDER])
+    expect(groups.find((g) => g.heading === 'Products')!.projects[0].id).toBe('latag')
+  })
+
+  it('numbers the homepage strip in the order the cards appear', () => {
+    const order = homepageOrder(projects, hasPreview)
+    const shownRest = groupForHomepage(rest, hasPreview).flatMap((g) => g.projects)
+    expect(order.filter((p) => p.band !== 'Products')).toEqual(shownRest)
+  })
+
+  it('changes nothing without a preview test', () => {
+    expect(groupForHomepage(rest).map((g) => g.heading)).toEqual(['Custom systems', 'Client work'])
+  })
+})

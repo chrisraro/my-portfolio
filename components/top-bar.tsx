@@ -26,6 +26,50 @@ export function TopBar() {
   // two frames the swap takes. This replaces next-themes'
   // disableTransitionOnChange, which also ran on every page load and cost two
   // full-page style recalculations and a forced one.
+  // Far sections skip rendering (content-visibility: auto, .defer-render) and
+  // stand in at an estimated height, so a jump to #contact measured against
+  // the estimates lands far short of it. Before an in-page jump, render them
+  // for real (.render-all) and lay out once; a jump that arrives with the URL
+  // (a hash load, or "/#contact" from another page) is re-aimed the same way.
+  useEffect(() => {
+    const root = document.documentElement
+    let timer: number | undefined
+    const renderAll = () => {
+      root.classList.add('render-all')
+      void root.offsetHeight
+      window.clearTimeout(timer)
+      timer = window.setTimeout(() => root.classList.remove('render-all'), 1500)
+    }
+    const onClick = (e: MouseEvent) => {
+      const link = e.target instanceof Element ? e.target.closest('a') : null
+      if (link && link.hash && link.pathname === window.location.pathname) renderAll()
+    }
+    document.addEventListener('click', onClick, true)
+    return () => {
+      document.removeEventListener('click', onClick, true)
+      window.clearTimeout(timer)
+      root.classList.remove('render-all')
+    }
+  }, [])
+
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1))
+    const target = id ? document.getElementById(id) : null
+    if (!target) return
+    const root = document.documentElement
+    root.classList.add('render-all')
+    let timer: number | undefined
+    const frame = requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'auto' })
+      timer = window.setTimeout(() => root.classList.remove('render-all'), 1500)
+    })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.clearTimeout(timer)
+      root.classList.remove('render-all')
+    }
+  }, [pathname])
+
   const switchTheme = (next: 'light' | 'dark') => {
     const root = document.documentElement
     root.classList.add('theme-switching')

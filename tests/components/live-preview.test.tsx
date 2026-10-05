@@ -62,10 +62,16 @@ describe('LivePreview source', () => {
     expect(source).toContain("aria-hidden={load === 'loaded' ? undefined : 'true'}")
   })
 
+  it('never cycles to a frame that is out of the tab order', () => {
+    expect(source).toContain(`const FOCUSABLE = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), iframe:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'`)
+  })
+
   it('keeps one always-mounted polite status region whose text changes', () => {
     expect(source.match(/role="status"/g)).toHaveLength(1)
     expect(source).toContain('<p role="status" className="sr-only">')
-    expect(source).toContain('{STATUS_TEXT[load]}')
+    // Mounted empty, filled a tick later, so the first message is announced.
+    expect(source).toContain('{announced}')
+    expect(source).toMatch(/setAnnounced\(STATUS_TEXT\[load\]\)/)
     expect(source).toContain("loading: 'Loading preview…'")
     expect(source).toContain("loaded: 'Preview loaded'")
   })

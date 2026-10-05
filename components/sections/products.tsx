@@ -8,7 +8,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { edgeCode, homepageOrder } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
-import { canLinkLive, fullShotFor, fullShotHeight, isEmbeddable, projectHref } from '@/lib/project-page'
+import { canLinkLive, fullShotFor, fullShotHeight, hasFullShot, isEmbeddable, projectHref } from '@/lib/project-page'
 import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -28,10 +28,10 @@ function Spread({ project, index, position, total }: { project: Project; index: 
 
   const flapStyle = {
     '--hinge': flapRight ? 'left' : 'right',
-    '--flap-from': flapRight ? '-14deg' : '14deg',
+    '--flap-from': flapRight ? '-22deg' : '22deg',
     '--tilt-to': flapRight ? '4deg' : '-4deg',
   } as CSSProperties
-  const leafStyle = { '--slide-from': flapRight ? '-24px' : '24px' } as CSSProperties
+  const leafStyle = { '--slide-from': flapRight ? '-40px' : '40px' } as CSSProperties
 
   return (
     <article
@@ -103,6 +103,8 @@ function Spread({ project, index, position, total }: { project: Project; index: 
             src={shot}
             label={`Scroll preview of ${domain ?? project.title}`}
             href={projectHref(project)}
+            duplicateLink
+            scroll="view"
             shotHeight={fullShotHeight(shot)}
             sizes="(min-width: 1024px) 272px, (min-width: 640px) 240px, calc(100vw - 40px)"
             className="w-full max-w-[17rem] sm:max-w-none"
@@ -116,7 +118,7 @@ function Spread({ project, index, position, total }: { project: Project; index: 
 }
 
 export function Products() {
-  const order = homepageOrder(projects)
+  const order = homepageOrder(projects, hasFullShot)
   const products = order.filter((p) => p.band === 'Products')
 
   return (

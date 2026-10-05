@@ -44,10 +44,35 @@ const CHIP =
 const DOT_READY = 'bg-accent'
 const DOT_OFFLINE = 'bg-muted'
 
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 /**
- * A non-modal dialog: the page stays usable behind it, so there is no focus
- * trap and no aria-modal. Focus moves into the input on open and back to the
- * launcher on close, and Escape closes it (WCAG 2.4.3, 2.1.1).
+ * Make everything outside `el` inert, level by level up to <body>, skipping
+ * what is already inert and anything marked data-keep-active (the toasts).
+ * Returns what it changed, so the caller restores exactly that.
+ */
+function inertOutside(el: HTMLElement): Element[] {
+  const made: Element[] = []
+  for (let node: HTMLElement | null = el; node && node !== document.body; node = node.parentElement) {
+    const parent: HTMLElement | null = node.parentElement
+    if (!parent) break
+    const siblings: Element[] = Array.from(parent.children)
+    for (const sibling of siblings) {
+      if (sibling === node || sibling.hasAttribute('inert') || sibling.hasAttribute('data-keep-active')) continue
+      sibling.setAttribute('inert', '')
+      made.push(sibling)
+    }
+  }
+  return made
+}
+
+/**
+ * From sm up, a non-modal dialog: it sits in a corner and the page stays
+ * usable beside it, so there is no focus trap and no aria-modal. Below sm it
+ * covers nearly the whole viewport, so there it is modal: the page behind is
+ * inert, Tab cycles inside it, and aria-modal says so (WCAG 2.4.11, 2.4.3).
+ * Either way focus moves into the input on open and back to the launcher on
+ * close, and Escape closes it (WCAG 2.1.1).
  */
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -60,6 +85,9 @@ export function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const launcherRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const [isNarrow, setIsNarrow] = useState(false)
+  const isModal = isOpen && isNarrow
   const wasOpen = useRef(false)
   const reduce = useReducedMotion()
 
@@ -78,6 +106,21 @@ export function ChatWidget() {
       clearTimeout(hideTimer)
     }
   }, [])
+
+  // Phone widths: below sm the open chat is modal.
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 639px)')
+    const update = () => setIsNarrow(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    if (!isModal || !dialogRef.current) return
+    const made = inertOutside(dialogRef.current)
+    return () => made.forEach((el) => el.removeAttribute('inert'))
+  }, [isModal])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' })
@@ -170,6 +213,21 @@ export function ChatWidget() {
     if (e.key === 'Escape') {
       e.stopPropagation()
       setIsOpen(false)
+      return
+    }
+    // Modal (below sm): Tab and Shift+Tab cycle inside the dialog.
+    if (e.key === 'Tab' && isModal && dialogRef.current) {
+      const items = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE))
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
   }
 
@@ -233,7 +291,9 @@ export function ChatWidget() {
             exit={{ opacity: 0, y: reduce ? 0 : 8 }}
             transition={fade}
             className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-overlay sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
+            ref={dialogRef}
             role="dialog"
+            aria-modal={isModal ? 'true' : undefined}
             aria-labelledby="chat-title"
             onKeyDown={handleDialogKeyDown}
           >
@@ -337,7 +397,7 @@ export function ChatWidget() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ask about projects, skills, experience"
-                  className="min-h-[40px] flex-1 rounded border border-line-strong bg-canvas px-3 text-sm text-ink placeholder:text-muted focus-visible:border-accent"
+                  className="min-h-[40px] flex-1 rounded border border-field-border bg-canvas px-3 text-sm text-ink placeholder:text-muted focus-visible:border-accent"
                 />
                 <button
                   type="button"

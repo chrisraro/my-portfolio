@@ -19,26 +19,47 @@ export function bySector(projects: Project[]): Project[] {
     .map(({ project }) => project)
 }
 
+/** Does a project have a picture to show (a full-page shot)? Answered by lib/project-page.ts on the server. */
+export type HasPreview = (project: Project) => boolean
+
+/**
+ * Cards with a preview first, stable otherwise: a tier should open on a card
+ * that lifts out to show a real site, not on a printed "no preview" tag.
+ * Without a test, the order is unchanged.
+ */
+export function previewFirst(projects: Project[], hasPreview?: HasPreview): Project[] {
+  if (!hasPreview) return projects
+  return [...projects.filter((p) => hasPreview(p)), ...projects.filter((p) => !hasPreview(p))]
+}
+
 /** One group per band, in the canonical BAND_ORDER, with empty groups dropped. */
-export function groupByBand(projects: Project[]): BoardGroup[] {
+export function groupByBand(projects: Project[], hasPreview?: HasPreview): BoardGroup[] {
   return BAND_ORDER.map((band) => ({
     heading: band,
-    projects: bySector(projects.filter((p) => p.band === band)),
+    projects: previewFirst(bySector(projects.filter((p) => p.band === band)), hasPreview),
   })).filter((group) => group.projects.length > 0)
 }
 
 /**
  * The homepage shows Applications and Sites together as "Client work" — that is
  * the distinction a visiting client cares about. /projects keeps every band.
+ * With a preview test, a tier whose lead card has a preview comes before one
+ * with nothing to show (stable otherwise).
  */
-export function groupForHomepage(projects: Project[]): BoardGroup[] {
-  return [
-    { heading: 'Custom systems', projects: bySector(projects.filter((p) => p.band === 'Custom systems')) },
+export function groupForHomepage(projects: Project[], hasPreview?: HasPreview): BoardGroup[] {
+  const groups = [
+    { heading: 'Custom systems', projects: previewFirst(bySector(projects.filter((p) => p.band === 'Custom systems')), hasPreview) },
     {
       heading: 'Client work',
-      projects: bySector(projects.filter((p) => p.band === 'Applications' || p.band === 'Sites')),
+      projects: previewFirst(
+        bySector(projects.filter((p) => p.band === 'Applications' || p.band === 'Sites')),
+        hasPreview,
+      ),
     },
   ].filter((group) => group.projects.length > 0)
+  if (!hasPreview) return groups
+  const leads = (g: BoardGroup) => hasPreview(g.projects[0])
+  return [...groups.filter(leads), ...groups.filter((g) => !leads(g))]
 }
 
 export function bandSlug(band: ProjectBand): string {
@@ -58,9 +79,9 @@ export function parseBandParam(value: string | string[] | undefined): ProjectBan
  * Every project in the order the homepage shows it: Products first, then the
  * rack's tiers. The running index on each card's edge code counts in this order.
  */
-export function homepageOrder(projects: Project[]): Project[] {
+export function homepageOrder(projects: Project[], hasPreview?: HasPreview): Project[] {
   const products = projects.filter((p) => p.band === 'Products')
-  const rest = groupForHomepage(projects.filter((p) => p.band !== 'Products'))
+  const rest = groupForHomepage(projects.filter((p) => p.band !== 'Products'), hasPreview)
   return [...products, ...rest.flatMap((group) => group.projects)]
 }
 

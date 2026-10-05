@@ -23,7 +23,8 @@ export function BoardFilter({ active }: { active: ProjectBand | null }) {
           <li key={item.label}>
             <Link
               href={item.href}
-              aria-current={item.current ? 'page' : undefined}
+              // "true", not "page": every tab is the same page, filtered.
+              aria-current={item.current ? 'true' : undefined}
               className={cn(
                 'button-label inline-flex min-h-[44px] items-center rounded-b-none rounded-t px-4 text-sm transition-colors',
                 item.current

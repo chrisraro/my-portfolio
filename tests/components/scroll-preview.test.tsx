@@ -7,15 +7,37 @@ const src = '/assets/images/projects/latag-full.webp'
 const label = 'Scroll preview of latag.ph'
 
 describe('ScrollPreview', () => {
-  it('frames the full shot, focusable and named, when there is no link', () => {
+  it('frames the full shot, named but not a tab stop, when there is no link', () => {
     const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} />)
     expect(html).toContain('scroll-preview')
     expect(html).toContain('scroll-preview__shot')
     expect(html).toContain('scroll-preview__progress')
     expect(html).toContain(encodeURIComponent(src))
-    expect(html).toMatch(/tabindex="0"/i)
+    expect(html).toMatch(/^<div role="img"/)
+    expect(html).not.toMatch(/tabindex/i)
     expect(html).toContain(`aria-label="${label}"`)
     expect(html).not.toContain('<a ')
+  })
+
+  it('drops out of the tab order and the tree when a visible link already goes there', () => {
+    const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} href="/projects/latag" duplicateLink />)
+    expect(html).toMatch(/<a [^>]*href="\/projects\/latag"/)
+    expect(html).toMatch(/<a [^>]*tabindex="-1"/i)
+    expect(html).toMatch(/<a [^>]*aria-hidden="true"/)
+    expect(html).not.toContain('aria-label')
+  })
+
+  it('scrolls with the page when asked: its own view timeline, or the page’s', () => {
+    expect(renderToStaticMarkup(<ScrollPreview src={src} label={label} scroll="view" />)).toContain('scroll-preview--view')
+    expect(renderToStaticMarkup(<ScrollPreview src={src} label={label} scroll="page" />)).toContain('scroll-preview--page')
+    expect(renderToStaticMarkup(<ScrollPreview src={src} label={label} />)).not.toMatch(/scroll-preview--(view|page)/)
+  })
+
+  it('shows a progress track and a printed "scroll" cue, both decorative', () => {
+    const html = renderToStaticMarkup(<ScrollPreview src={src} label={label} />)
+    expect(html).toMatch(/<span class="scroll-preview__track" aria-hidden="true">/)
+    expect(html).toMatch(/<span class="scroll-preview__cue[^"]*" aria-hidden="true">/)
+    expect(html).toContain('scroll')
   })
 
   it('becomes the link when an href is given, named by the label', () => {

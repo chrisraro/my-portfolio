@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, ReactNode } from 'react'
 import * as m from 'motion/react-m'
 import { LazyMotion, AnimatePresence, useReducedMotion, type Transition } from 'motion/react'
 import { loadMotionFeatures } from '@/lib/motion-features'
@@ -34,6 +34,10 @@ interface ToastProviderProps {
 
 const isUrgent = (type: Toast['type']) => type === 'error' || type === 'warning'
 
+/** A confirmation stays at least this long (WCAG 2.2.1), and the clock stops while it is hovered or focused. */
+const TOAST_MS = 8000
+const MIN_TOAST_MS = 6000
+
 // Tokens only, and no green: green means a live system and nothing else. Each
 // type has its own glyph shape, so the kind of message is never colour alone.
 function ToastIcon({ type }: { type: Toast['type'] }) {
@@ -50,23 +54,78 @@ function ToastIcon({ type }: { type: Toast['type'] }) {
   }
 }
 
+interface ToastItemProps {
+  toast: Toast
+  onDismiss: (id: string) => void
+  transition: Transition
+  reduce: boolean | null
+}
+
+/**
+ * One toast. A confirmation counts down from max(duration, 6 s); hovering it
+ * or moving focus into it (its Dismiss button) stops the clock, and leaving
+ * restarts it with the time that was left.
+ */
+function ToastItem({ toast, onDismiss, transition, reduce }: ToastItemProps) {
+  const [paused, setPaused] = useState(false)
+  const remaining = useRef(Math.max(toast.duration ?? TOAST_MS, MIN_TOAST_MS))
+  const urgent = isUrgent(toast.type)
+
+  useEffect(() => {
+    if (urgent || paused) return
+    const started = Date.now()
+    const timer = window.setTimeout(() => onDismiss(toast.id), remaining.current)
+    return () => {
+      window.clearTimeout(timer)
+      remaining.current -= Date.now() - started
+    }
+  }, [urgent, paused, onDismiss, toast.id])
+
+  return (
+    <m.div
+      initial={{ opacity: 0, y: reduce ? 0 : -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={transition}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      className={`flex max-w-sm items-start gap-3 rounded-lg border bg-panel p-4 shadow-overlay ${
+        urgent ? 'border-ink' : 'border-line-strong'
+      }`}
+    >
+      <span className="mt-0.5">
+        <ToastIcon type={toast.type} />
+      </span>
+      <p className="flex-1 text-sm text-ink">{toast.message}</p>
+      <button
+        type="button"
+        onClick={() => onDismiss(toast.id)}
+        aria-label="Dismiss notification"
+        className="inline-flex h-6 w-6 items-center justify-center rounded text-muted transition-colors hover:text-ink"
+      >
+        <X aria-hidden="true" className="h-4 w-4" />
+      </button>
+    </m.div>
+  )
+}
+
 export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([])
   const reduce = useReducedMotion()
 
-  const removeToast = (id: string) => {
+  // Stable, so a toast's countdown is not restarted by an unrelated render.
+  const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
-  }
+  }, [])
 
+  // Errors and warnings stay until dismissed: they carry the recovery (an
+  // email address), and a timer would take it away mid-read. Confirmations
+  // time out in ToastItem, which pauses while the toast is hovered or focused.
   const showToast = (toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).slice(2, 11)
     setToasts((prev) => [...prev, { ...toast, id }])
-
-    // Errors and warnings stay until dismissed: they carry the recovery (an
-    // email address), and a timer would take it away mid-read.
-    if (!isUrgent(toast.type)) {
-      setTimeout(() => removeToast(id), toast.duration || 5000)
-    }
   }
 
   const transition: Transition = reduce ? { duration: 0 } : { duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }
@@ -74,29 +133,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const renderList = (list: Toast[]) => (
     <AnimatePresence>
       {list.map((toast) => (
-        <m.div
-          key={toast.id}
-          initial={{ opacity: 0, y: reduce ? 0 : -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={transition}
-          className={`flex max-w-sm items-start gap-3 rounded-lg border bg-panel p-4 shadow-overlay ${
-            isUrgent(toast.type) ? 'border-ink' : 'border-line-strong'
-          }`}
-        >
-          <span className="mt-0.5">
-            <ToastIcon type={toast.type} />
-          </span>
-          <p className="flex-1 text-sm text-ink">{toast.message}</p>
-          <button
-            type="button"
-            onClick={() => removeToast(toast.id)}
-            aria-label="Dismiss notification"
-            className="inline-flex h-6 w-6 items-center justify-center rounded text-muted transition-colors hover:text-ink"
-          >
-            <X aria-hidden="true" className="h-4 w-4" />
-          </button>
-        </m.div>
+        <ToastItem key={toast.id} toast={toast} onDismiss={removeToast} transition={transition} reduce={reduce} />
       ))}
     </AnimatePresence>
   )
@@ -109,7 +146,9 @@ export function ToastProvider({ children }: ToastProviderProps) {
         already watching them: confirmations are polite, errors interrupt.
       */}
       <LazyMotion features={loadMotionFeatures} strict>
-        <div className="fixed right-4 top-4 z-50 space-y-2">
+        {/* Below the sticky top bar (two rows below md, 64px from md), never over it.
+            data-keep-active: the chat's phone-width modal leaves this region live. */}
+        <div data-keep-active="" className="fixed right-4 top-28 z-50 space-y-2 md:top-20">
           <div role="alert" className="space-y-2">
             {renderList(toasts.filter((t) => isUrgent(t.type)))}
           </div>

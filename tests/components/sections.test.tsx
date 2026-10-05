@@ -109,7 +109,9 @@ describe('Products', () => {
     products.forEach((project, i) => {
       if (fullShotFor(project)) {
         expect(spreads[i]).toContain('scroll-preview__shot')
-        expect(spreads[i]).toMatch(/aria-label="Scroll preview of [^"]+, opens project page"/)
+        expect(spreads[i]).toContain('scroll-preview--view')
+        // "Read more" is the named link to the same page: the preview is not a second tab stop.
+        expect(spreads[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="scroll-preview /)
       } else {
         expect(spreads[i]).not.toContain('scroll-preview__shot')
         expect(spreads[i]).toContain(escape(noPreviewCopy(project)))

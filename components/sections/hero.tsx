@@ -50,7 +50,7 @@ export function Hero() {
             <div className="mt-7 flex flex-wrap gap-3">
               <a
                 href="#contact"
-                className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-canvas px-5 text-accent"
+                className="press button-primary"
               >
                 Start a project
                 <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
@@ -67,7 +67,12 @@ export function Hero() {
 
         {/* Middle panel: the portrait, full bleed. 4:3 band when stacked. */}
         <div className="hero-unfold-mid relative aspect-[4/3] md:aspect-auto">
-          <ImageLightbox src={PORTRAIT} alt={heroContent.name} className="absolute inset-0 h-full w-full">
+          {/* The ring is drawn inside the photo: outside, the front plane (z-10) and the hero's edges would cover it. */}
+          <ImageLightbox
+            src={PORTRAIT}
+            alt={heroContent.name}
+            className="absolute inset-0 h-full w-full focus-visible:outline-offset-[-6px]"
+          >
             {/* alt="" because the button around it is labelled with the same name. */}
             <Image
               src={PORTRAIT}

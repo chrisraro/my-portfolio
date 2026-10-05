@@ -24,6 +24,7 @@ module.exports = {
         'status-early': token('status-early'),
         'status-private': token('status-private'),
         'status-internal': token('status-internal'),
+        'field-border': token('field-border'),
       },
       fontFamily: {
         // Figtree reads; Anybody (variable, with a width axis) shouts. There is

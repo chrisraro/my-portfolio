@@ -4,16 +4,18 @@ import { RackTier } from '@/components/ui/rack-tier'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { groupForHomepage, homepageOrder } from '@/lib/board'
 import { projects, sectionContent } from '@/lib/data'
+import { hasFullShot } from '@/lib/project-page'
 
 /**
- * The lobby rack: every project that is not a product, in tiers ("Custom
- * systems", then "Client work", hospitality first). Each tier is a row of
+ * The lobby rack: every project that is not a product, in tiers ("Client
+ * work", hospitality first, then "Custom systems"); within a tier, cards with a
+ * preview lead, so the first card lifted shows a real site. Each tier is a row of
  * pockets on a lip. Proof: no entrance hides it; the cards only drop the last
  * few pixels into their pockets as they scroll in (transform only).
  */
 export function Rack() {
-  const order = homepageOrder(projects)
-  const groups = groupForHomepage(projects.filter((p) => p.band !== 'Products'))
+  const order = homepageOrder(projects, hasFullShot)
+  const groups = groupForHomepage(projects.filter((p) => p.band !== 'Products'), hasFullShot)
 
   return (
     <section id="systems" aria-labelledby="systems-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">

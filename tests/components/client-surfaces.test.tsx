@@ -20,6 +20,17 @@ describe('ToastProvider', () => {
     expect(html).toContain('role="alert"')
   })
 
+  it('gives a confirmation at least 6 s, paused while hovered or focused, below the sticky bar', () => {
+    const source = readFileSync('components/ui/toaster.tsx', 'utf8')
+    const ms = Number(source.match(/const TOAST_MS = (\d+)/)?.[1])
+    expect(ms).toBeGreaterThanOrEqual(6000)
+    expect(source).toContain('Math.max(')
+    for (const handler of ['onMouseEnter', 'onMouseLeave', 'onFocus', 'onBlur']) expect(source).toContain(handler)
+    // Below the two-row bar on phones (about 101px) and the 64px bar from md.
+    expect(source).toMatch(/top-28[^"]*md:top-20/)
+    expect(source).toContain('data-keep-active')
+  })
+
   it('uses tokens only, and no green: green means live', () => {
     const source = readFileSync('components/ui/toaster.tsx', 'utf8')
     expect(source).not.toMatch(/(?:text|bg|border)-(?:green|red|yellow)-\d/)
@@ -107,8 +118,16 @@ describe('ChatWidget', () => {
     expect(source).toContain('inputRef.current?.focus()')
   })
 
-  it('stays non-modal: no aria-modal, by decision', () => {
-    expect(source).not.toMatch(/aria-modal=/)
+  // Desktop: non-modal, by decision (the page stays usable beside it). Below
+  // sm the open chat covers nearly the whole viewport, so Shift+Tab used to
+  // land on page controls hidden behind it (a11y gate P1-3): there it is modal.
+  it('is non-modal from sm up, and modal below it: inert page, Tab trap, focus returned', () => {
+    expect(source).toContain("matchMedia('(max-width: 639px)')")
+    expect(source).toMatch(/aria-modal=\{isModal \? 'true' : undefined\}/)
+    expect(source).toContain("setAttribute('inert', '')")
+    expect(source).toContain("removeAttribute('inert')")
+    expect(source).toContain("e.key === 'Tab'")
+    expect(source).toContain('launcherRef.current?.focus()')
   })
 
   it('names its input and keeps the global focus outline', () => {

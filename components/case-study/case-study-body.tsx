@@ -5,7 +5,7 @@ import { RackCard } from '@/components/ui/rack-card'
 import { edgeCode, homepageOrder } from '@/lib/board'
 import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
 import { caseStudyContent, projects } from '@/lib/data'
-import { nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
+import { hasFullShot, nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
 import type { CaseStudy, Project } from '@/types'
 
 // Section headings sit at the Title tier; prose reads in Figtree.
@@ -42,7 +42,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
   const related = (study.related ?? [])
     .map((slug) => projects.find((p) => p.slug === slug))
     .filter((p): p is Project => Boolean(p))
-  const strip = homepageOrder(projects)
+  const strip = homepageOrder(projects, hasFullShot)
 
   return (
     <>
@@ -146,10 +146,10 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
       </ReadSpread>
 
       {next && (
-        <nav aria-label={h.next} className="mx-auto max-w-6xl px-5 sm:px-8">
+        <nav aria-label={h.next} className="rack-shelf mx-auto max-w-6xl px-5 sm:px-8">
           <p className="edge-code mb-5 text-sm text-ink sm:mb-8">{h.next}</p>
           {/* One pocket of the rack: the card's link reads its label first, since the nav's name is not part of it. */}
-          <ul className="flex sm:grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+          <ul className="rack-row flex sm:grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
             <RackCard
               project={next}
               code={edgeCode(strip.indexOf(next) + 1, strip.length, next.band)}

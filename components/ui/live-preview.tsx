@@ -34,7 +34,8 @@ const STATUS_TEXT: Record<LoadState, string> = {
   failed: "This site can't be previewed here. Open it in a new tab.",
 }
 
-const FOCUSABLE = 'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
+// A frame that has not loaded is tabIndex -1 (and hidden): the Tab cycle skips it.
+const FOCUSABLE = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), iframe:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
 
 /**
  * A "Live preview" button that opens the real site in a sandboxed iframe.
@@ -54,6 +55,9 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
   const [device, setDevice] = useState<Device>('desktop')
   const [pressed, setPressed] = useState<Device>('desktop')
   const [load, setLoad] = useState<LoadState>('loading')
+  // The status region mounts empty with the dialog and is filled a tick
+  // later: text present at mount is not announced by every screen reader.
+  const [announced, setAnnounced] = useState('')
   const triggerRef = useRef<HTMLButtonElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -73,6 +77,15 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
       setLoad('loading')
     }
   }, [open, url])
+
+  useEffect(() => {
+    if (!open) {
+      setAnnounced('')
+      return
+    }
+    const timer = window.setTimeout(() => setAnnounced(STATUS_TEXT[load]), 100)
+    return () => window.clearTimeout(timer)
+  }, [open, load])
 
   // A frame that never fires load (blocked, offline) is reported as failed.
   useEffect(() => {
@@ -289,7 +302,7 @@ export function LivePreview({ url, title, staging = false }: LivePreviewProps) {
                 </div>
               </div>
               <p role="status" className="sr-only">
-                {STATUS_TEXT[load]}
+                {announced}
               </p>
               </div>
             </m.div>

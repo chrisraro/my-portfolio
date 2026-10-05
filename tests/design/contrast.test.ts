@@ -11,6 +11,7 @@ const CSS = readFileSync('app/globals.css', 'utf8')
 const TOKENS = [
   'bg', 'panel', 'ink', 'muted', 'muted-strong', 'line', 'line-strong',
   'accent', 'on-accent', 'live', 'status-early', 'status-private', 'status-internal',
+  'field-border',
 ] as const
 type Token = (typeof TOKENS)[number]
 type Triplet = [number, number, number]
@@ -70,7 +71,23 @@ const UI_PAIRS: [Token, Token][] = [
   ['status-private', 'bg'], ['status-private', 'panel'],
   ['status-internal', 'bg'], ['status-internal', 'panel'],
   ['accent', 'bg'], ['accent', 'panel'],
+  // Form fields and the chat input sit on canvas inside a panel leaf: their
+  // border must be found against both (WCAG 1.4.11, the a11y gate's P1-2).
+  ['field-border', 'bg'], ['field-border', 'panel'],
 ]
+
+describe('form field borders', () => {
+  it('every text field draws its border in --field-border, not a hairline token', () => {
+    const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
+    const field = contact.match(/const FIELD =\s*'([^']*)'/)?.[1] ?? ''
+    expect(field).toContain('border-field-border')
+    expect(field).not.toMatch(/border-line(-strong)?/)
+    const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
+    const input = chat.match(/id="chat-input"[\s\S]*?className="([^"]*)"/)?.[1] ?? ''
+    expect(input).toContain('border-field-border')
+    expect(input).not.toMatch(/border-line(-strong)?/)
+  })
+})
 
 describe('focus on magenta planes', () => {
   it('draws the ring in --on-accent inside an .on-plane container', () => {

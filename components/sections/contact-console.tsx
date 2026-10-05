@@ -6,7 +6,7 @@ import { useToast } from '@/components/ui/toaster'
 import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data'
 
 const FIELD =
-  'w-full rounded border border-line-strong bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
+  'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
 
 // On the magenta plane: on-accent text only; the drawn underline marks hover.
 const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-on-accent sm:min-h-[32px]'
@@ -205,7 +205,7 @@ export function ContactConsole() {
             type="submit"
             disabled={isSubmitting}
             aria-describedby={error && !error.field ? ERROR_ID : undefined}
-            className="press button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-6 text-on-accent disabled:opacity-60"
+            className="press button-primary disabled:opacity-60"
           >
             {isSubmitting ? (
               <>

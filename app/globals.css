@@ -34,6 +34,8 @@
 	--status-early: 0.6000 0.1300 75;
 	--status-private: 0.5600 0.0300 235;
 	--status-internal: 0.5600 0.0300 235;
+	/* Text-field borders: 3:1 against canvas and panel (WCAG 1.4.11). */
+	--field-border: 0.6000 0.0350 232;
 	/* Paper is square-ish: cards, panels and buttons 6px (Tailwind sm 2px for
 	 * postcards, xl 10px for the dialog derive from this). */
 	--radius: 0.375rem;
@@ -56,6 +58,7 @@
 	--status-early: 0.8600 0.1300 95;
 	--status-private: 0.6400 0.0300 226;
 	--status-internal: 0.6400 0.0300 226;
+	--field-border: 0.6000 0.0350 228;
 }
 
 @layer base {
@@ -63,6 +66,19 @@
 		scroll-behavior: smooth;
 		scrollbar-color: oklch(var(--line-strong)) oklch(var(--bg));
 		accent-color: oklch(var(--accent));
+		/* The sticky top bar (components/top-bar.tsx) is two rows, about 101px,
+		 * below md: focus and anchor targets scroll in below it (WCAG 2.4.11). */
+		scroll-padding-top: 7rem;
+	}
+	@media (min-width: 768px) {
+		html {
+			scroll-padding-top: 4.75rem;
+		}
+	}
+	/* An anchor section (#work, #changelog, #contact) keeps a little air above
+	 * its eyebrow once it lands under the bar. */
+	section[id] {
+		scroll-margin-top: 0.5rem;
 	}
 	body {
 		@apply bg-canvas text-ink;
@@ -182,6 +198,18 @@
 		font-weight: 650;
 		line-height: 1;
 	}
+	/*
+	 * The one primary button, on every page. On paper it is a magenta fill; on
+	 * a magenta plane (.on-plane: the hero's front panel) it inverts to a lagoon
+	 * fill with magenta text, since a magenta button would vanish there. Pair
+	 * it with .press for the hover lift.
+	 */
+	.button-primary {
+		@apply button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent px-5 py-2.5 text-on-accent;
+	}
+	.on-plane .button-primary {
+		@apply bg-canvas text-accent;
+	}
 
 	/*
 	 * Hover and press grammar (transform and opacity only).
@@ -259,13 +287,13 @@
 	@media (prefers-reduced-motion: no-preference) {
 		/* Transform only: text is never painted (or measured for contrast) faded. */
 		@keyframes reveal-rise {
-			from { transform: translateY(16px); }
+			from { transform: translateY(24px); }
 			to { transform: none; }
 		}
 		.reveal {
 			animation: reveal-rise var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 	}
 }
@@ -360,7 +388,7 @@
 	content-visibility: auto;
 	contain-intrinsic-size: auto 600px;
 }
-/* A rack tier: a lifted card rises up to 38% of its height (and its shadow)
+/* A rack tier: a lifted card rises up to 26% of its height (and its shadow)
  * above the tier's box, so the tier lets paint run 16rem out. Where
  * overflow-clip-margin is unsupported the tier simply renders as usual. */
 @supports (overflow-clip-margin: 1px) {
@@ -369,6 +397,14 @@
 		contain-intrinsic-size: auto 900px;
 		overflow-clip-margin: 16rem;
 	}
+}
+
+/* For the length of an in-page jump (components/top-bar.tsx) every deferred
+ * section renders for real, so the jump is measured against real heights, not
+ * the estimates; `auto` then remembers them. */
+.render-all .defer-render,
+.render-all .defer-render-lift {
+	content-visibility: visible;
 }
 
 /* Hero tri-fold: the whole load timeline in one place (1.9s, runs once). */
@@ -395,6 +431,26 @@
 		transform var(--dur-normal) var(--ease-smooth),
 		box-shadow var(--dur-normal) var(--ease-smooth);
 }
+/*
+ * A rack shelf (a tier, or the "Next in the rack" pocket) measures itself so
+ * its rows can leave room for a lifted card: --lift is 26% of a 9:16 card's
+ * height, from the card width at 3 columns (sm) and 4 (lg), 24px gaps. The
+ * first row is padded by it, so a lifted card never covers the tier heading,
+ * and rows sit that far apart, so it never covers the printed top of the row
+ * above (only its lip).
+ */
+.rack-shelf { container-type: inline-size; }
+@media (min-width: 640px) {
+	.rack-shelf { --slot-w: calc((100cqi - 48px) / 3); }
+	.rack-row {
+		--lift: calc(var(--slot-w) * 16 / 9 * 0.26);
+		padding-top: calc(var(--lift) - 1.5rem);
+		row-gap: max(3.5rem, calc(var(--lift) - 14px));
+	}
+}
+@media (min-width: 1024px) {
+	.rack-shelf { --slot-w: calc((100cqi - 72px) / 4); }
+}
 @media (min-width: 640px) {
 	.rack-pocket {
 		/* 9:16 card, 44% of it visible: width / (16/9 x 0.44). */
@@ -405,23 +461,23 @@
 		clip-path: inset(-100vh -24px 0 -24px);
 	}
 	.rack-slot:is(:hover, :focus-within) { z-index: 10; }
-	/* Lifted 38%, a card's lower edge still sits under the pocket's clip, which
+	/* Lifted 26%, a card's lower edge still sits under the pocket's clip, which
 	 * cut the bottom of its focus ring. Keyboard focus takes the whole card out
 	 * of the pocket, so the ring is drawn on all four sides. */
 	.rack-pocket:has(:focus-visible) { clip-path: none; }
 	/* Focus lifts it even under reduced motion: a state change without travel. */
 	.rack-card:focus-visible {
-		transform: translateY(-38%);
+		transform: translateY(-26%);
 		box-shadow: var(--shadow-lift);
 	}
 }
 @media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
 	.rack-pocket:hover .rack-card {
-		transform: translateY(-38%);
+		transform: translateY(-26%);
 		box-shadow: var(--shadow-lift);
 	}
 	.rack-pocket .rack-card:active {
-		transform: translateY(-34%);
+		transform: translateY(-22%);
 		transition-duration: var(--dur-fast);
 	}
 	/* The sunk preview starts scrolling once the card has lifted. */
@@ -468,12 +524,15 @@
 		from { transform: translateY(var(--rise, 16px)); }
 		to { transform: none; }
 	}
+	/* The free edge recedes (positive Y, negative X), so an inner panel opens
+	 * from behind the front one like paper and never swings toward the viewer
+	 * past the hero's edges. */
 	@keyframes hero-unfold-y {
-		from { transform: rotateY(-88deg); }
+		from { transform: rotateY(88deg); }
 		to { transform: none; }
 	}
 	@keyframes hero-unfold-x {
-		from { transform: rotateX(88deg); }
+		from { transform: rotateX(-88deg); }
 		to { transform: none; }
 	}
 	@keyframes hero-draw-y {
@@ -526,23 +585,25 @@
 
 /*
  * Scroll choreography. Proof (products, the rack) moves by transform only,
- * never opacity, so the server HTML is the finished page. Ranges end at
- * `entry 100%`, which the last section on the page can always reach. Rows
- * stagger by starting later in the range (--i), since a time delay means
- * nothing on a scroll timeline.
+ * never opacity, so the server HTML is the finished page. Ranges are the
+ * contract's `entry 10% cover 30%`: the motion plays while the element is in
+ * view, not as it crosses the bottom edge (the gate's critique found reveals
+ * finished before anyone saw them), and distances use the larger tokens (lg
+ * 24px, xl 40px). Rows stagger by starting later in the range (--i), since a
+ * time delay means nothing on a scroll timeline.
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
 		@keyframes reveal-flap {
-			from { transform: rotateY(var(--flap-from, 14deg)); }
+			from { transform: rotateY(var(--flap-from, 22deg)); }
 			to { transform: none; }
 		}
 		@keyframes reveal-slide {
-			from { transform: translateX(var(--slide-from, 24px)); }
+			from { transform: translateX(var(--slide-from, 40px)); }
 			to { transform: none; }
 		}
 		@keyframes reveal-drop {
-			from { transform: translateY(-24px); }
+			from { transform: translateY(-40px); }
 			to { transform: none; }
 		}
 		@keyframes reveal-draw-x {
@@ -555,15 +616,15 @@
 		}
 		/* Transform only, like reveal-rise: a case study is never read faded. */
 		@keyframes reveal-cover {
-			from { transform: translateY(16px); }
-			to { transform: none; }
-		}
-		@keyframes reveal-lift {
 			from { transform: translateY(24px); }
 			to { transform: none; }
 		}
+		@keyframes reveal-lift {
+			from { transform: translateY(40px); }
+			to { transform: none; }
+		}
 		@keyframes reveal-fold {
-			from { transform: rotateX(-14deg); }
+			from { transform: rotateX(-22deg); }
 			to { transform: none; }
 		}
 		@keyframes reveal-pop {
@@ -574,48 +635,48 @@
 			transform-origin: var(--hinge, right) center;
 			animation: reveal-flap var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 		.reveal-leaf,
 		.reveal-postcard {
 			animation: reveal-slide var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 		.reveal-postcard { --slide-from: 40px; }
 		.reveal-drop {
 			animation: reveal-drop var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry calc(var(--i, 0) * 8%) entry 100%;
+			animation-range: entry calc(10% + var(--i, 0) * 8%) cover 30%;
 		}
 		.reveal-lip {
 			transform-origin: left center;
 			animation: reveal-draw-x var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry calc(var(--i, 0) * 8%) entry 100%;
+			animation-range: entry calc(10% + var(--i, 0) * 8%) cover 30%;
 		}
 		.reveal-cover {
 			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry calc(var(--i, 0) * 10%) entry 100%;
+			animation-range: entry calc(10% + var(--i, 0) * 10%) cover 30%;
 		}
 		/* A case study's decisions: each fold panel opens down from its crease. */
 		.reveal-fold {
 			transform-origin: center top;
 			animation: reveal-fold var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 		.reveal-reply {
 			animation: reveal-lift var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 		.reveal-perf {
 			transform-origin: center top;
 			animation: reveal-draw-y var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
-			animation-range: entry 0% entry 100%;
+			animation-range: entry 10% cover 30%;
 		}
 		/* The route line draws across its own section; stops pop as it passes. */
 		.route { view-timeline-name: --route; }
@@ -648,9 +709,16 @@
  * frame. Hover or keyboard focus on the frame (or on a .scroll-preview-host card
  * around it) scrolls it top to bottom over --scroll-dur, scaled from the shot's
  * height (--shot-h, set inline) and clamped to crawl..crawl x 3.75, sharp easing;
- * a 3px accent rule on the right edge grows with it. Leaving returns it over
- * slow/smooth. It stops at the bottom and never loops. Touch gets no auto-scroll
- * (hover: hover), and reduced motion pins it to the top (block below). */
+ * a 3px accent rule on the right edge grows with it over a visible track.
+ * Leaving returns it over slow/smooth. It stops at the bottom and never loops.
+ *
+ * Where scroll timelines exist, the frames a visitor is meant to see move
+ * without hover, on any input: a product's frame (.scroll-preview--view) scrolls
+ * the site as the frame crosses the viewport, a project page's sticky rail
+ * (.scroll-preview--page) follows the page's own scroll, and the rack's unsunk
+ * cards on touch widths follow their tier. Scroll-bound, not auto-playing, so
+ * WCAG 2.2.2 does not apply. Reduced motion pins every frame to the top and
+ * hides the rule, the track and the cue (block below). */
 .scroll-preview {
 	--scroll-dur: clamp(var(--dur-crawl), calc(var(--shot-h, 4500) * 1s / 1500), calc(var(--dur-crawl) * 3.75));
 	/* A frame away from the viewport (below the fold, or scrolled out of a rack
@@ -686,6 +754,86 @@
 		transition: transform var(--scroll-dur) var(--ease-sharp);
 	}
 }
+/* The rule's track: visible at rest, so a frame reads as "there is more below". */
+.scroll-preview__track {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 3px;
+	background: oklch(var(--line-strong));
+}
+/* A printed cue in the frame's corner: an edge code on a paper tab. Shown only
+ * where the frame can move (hover, or a scroll timeline), never under reduce. */
+.scroll-preview__cue {
+	position: absolute;
+	left: 0.5rem;
+	bottom: 0.5rem;
+	display: none;
+	align-items: center;
+	gap: 0.25rem;
+	border-radius: calc(var(--radius) - 4px);
+	border: 1px solid oklch(var(--line));
+	background: oklch(var(--panel));
+	padding: 0.125rem 0.375rem;
+	color: oklch(var(--ink));
+	font-size: 0.75rem;
+	line-height: 1.2;
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+	.scroll-preview__cue { display: inline-flex; }
+}
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes preview-scroll {
+			from { object-position: 50% 0%; }
+			to { object-position: 50% 100%; }
+		}
+		@keyframes preview-progress {
+			from { transform: scaleY(0); }
+			to { transform: none; }
+		}
+		.scroll-preview--view .scroll-preview__cue,
+		.scroll-preview--page .scroll-preview__cue { display: inline-flex; }
+		/* The frame clips (overflow: hidden makes it a scroll container), so the
+		 * timeline is named on the frame itself, whose scroller is the page. */
+		.scroll-preview--view { view-timeline: --preview block; }
+		.scroll-preview--view .scroll-preview__shot {
+			animation: preview-scroll var(--dur-normal) linear both;
+			animation-timeline: --preview;
+			animation-range: cover 15% cover 85%;
+		}
+		.scroll-preview--view .scroll-preview__progress {
+			animation: preview-progress var(--dur-normal) linear both;
+			animation-timeline: --preview;
+			animation-range: cover 15% cover 85%;
+		}
+		.scroll-preview--page .scroll-preview__shot {
+			animation: preview-scroll var(--dur-normal) linear both;
+			animation-timeline: scroll(root block);
+		}
+		.scroll-preview--page .scroll-preview__progress {
+			animation: preview-progress var(--dur-normal) linear both;
+			animation-timeline: scroll(root block);
+		}
+		/* Touch widths: rack cards sit unsunk in a sideways strip (itself a
+		 * scroller), so they follow a timeline named on the tier. */
+		@media (max-width: 639px) {
+			.rack-shelf { view-timeline: --rack block; }
+			.rack-card .scroll-preview__shot {
+				animation: preview-scroll var(--dur-normal) linear both;
+				animation-timeline: --rack;
+				animation-range: cover 10% cover 90%;
+			}
+			.rack-card .scroll-preview__progress {
+				animation: preview-progress var(--dur-normal) linear both;
+				animation-timeline: --rack;
+				animation-range: cover 10% cover 90%;
+			}
+			.rack-card .scroll-preview__cue { display: inline-flex; }
+		}
+	}
+}
 @media (prefers-reduced-motion: no-preference) {
 	:is(.scroll-preview:focus-visible, .scroll-preview:focus-within, .scroll-preview-host:focus-within) .scroll-preview__shot {
 		object-position: 50% 100%;
@@ -712,7 +860,7 @@
 	}
 	.rack-card, .flap-tilt, .postcard, .arrow-nudge { transition: none; }
 	.scroll-preview__shot { object-position: 50% 0% !important; transition: none !important; }
-	.scroll-preview__progress { display: none; }
+	.scroll-preview__progress, .scroll-preview__track, .scroll-preview__cue { display: none; }
 	.live-pulse::after { display: none; }
 	/* State changes without travel: the underline and colours still change. */
 	.press:hover, .press:active { transform: none; }

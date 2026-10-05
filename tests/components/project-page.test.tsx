@@ -74,9 +74,10 @@ describe('/projects/[slug]', () => {
       if (fullShotFor(p)) expect(rail, p.slug).toContain('aria-label="Scroll preview of ')
       else if (p.image) expect(rail, p.slug).toContain('Desktop screenshot of ')
     }
-    // Connecta has no full-page shot: its desktop screenshot stands in.
-    expect(fullShotFor(projects.find((p) => p.slug === 'connecta-ph')!)).toBeUndefined()
-    expect(render('connecta-ph')).toContain('View larger image: Desktop screenshot of ')
+    // Connecta's full shot was recaptured under reduced motion (its scroll
+    // reveals had captured blank), so it scrolls like every other product.
+    expect(fullShotFor(projects.find((p) => p.slug === 'connecta-ph')!)).toBeDefined()
+    expect(render('connecta-ph')).toContain('aria-label="Scroll preview of ')
   })
 
   it('offers a live preview exactly where the site can be framed', () => {
@@ -147,8 +148,8 @@ describe('/projects/[slug]', () => {
 
   it('pads the footer "Start a project" button, not only its min-height', () => {
     const cls = render('latag').match(/<a [^>]*class="([^"]*)"[^>]*>Start a project/)?.[1] ?? ''
-    expect(cls).toContain('bg-accent')
-    expect(cls).toContain('py-2.5')
+    // .button-primary (globals.css) carries the fill and the py-2.5 padding.
+    expect(cls).toContain('button-primary')
   })
 
   it('shows the mobile screenshot only from the sm breakpoint up', () => {

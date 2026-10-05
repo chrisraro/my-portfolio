@@ -220,7 +220,9 @@ New section copy (case-study strip heading, rack tier labels) goes to
 8. **Contact** `#contact` (`sectionContent.contact`, `contactInfo`,
    `socialLinks`). A business reply card: a magenta plane (left, 5 cols:
    heading, availability, email, socials, all on-accent) perforated to a
-   `panel` form leaf (7 cols). Primary "Send message" = lagoon fill on the leaf.
+   `panel` form leaf (7 cols). "Send message" is the one primary button
+   (`.button-primary`): a magenta fill on paper; only on a magenta plane does
+   it invert to a lagoon fill with magenta text (the hero's "Start a project").
 Footer: hairline, name, year, socials, small edge code "Printed in Naga City".
 
 **`/projects`**: `projectsPageContent` heading, filter chips as rack-tier tabs
@@ -278,10 +280,10 @@ Below 768px: panels unfold `rotateX(88deg) → 0` from their top edge instead.
 `@media (prefers-reduced-motion: no-preference)`; outside both, nothing is
 hidden or offset). Proof sections (Products, rack) animate transform only, never
 opacity, so server HTML stays visible:
-- Products: each flap unfolds against its leaf, `rotateY(±14deg) → 0` (hinge at
-  the crease), leaf slides lg → 0 toward the crease.
+- Products: each flap unfolds against its leaf, `rotateY(±22deg) → 0` (hinge at
+  the crease), leaf slides xl → 0 toward the crease.
 - Rack: the lip draws `scaleX(0 → 1)` from the left; cards drop into pockets
-  `translateY(-lg) → 0`, staggered by `--i` × 40ms via `animation-delay`.
+  `translateY(-xl) → 0`, staggered by `--i` × 40ms via `animation-delay`.
 - Case studies: covers rise md → 0, opacity 0.2 → 1, staggered.
 - Field log: postcards slide in from xl at their resting rotation; quotes rise md.
 - Route line: the SVG path draws with `animation-timeline: view()` across the
@@ -294,9 +296,13 @@ opacity, so server HTML stays visible:
 - Buttons: hover lifts `translateY(-2px)`, press `translateY(1px) scale(0.98)`,
   fast/sharp; primary's arrow slides sm right on hover.
 - Rack card: hover / `:focus-visible` / `:focus-within` lifts it out of the
-  pocket `translateY(-38%)` (the sunk preview rises above the lip), normal/smooth,
+  pocket `translateY(-26%)` (the sunk preview rises above the lip), normal/smooth,
   lifted shadow; the ScrollPreview inside starts scrolling after the lift
-  (delay = normal). Press: `translateY(-34%)`, fast. Leave: back down, normal.
+  (delay = normal). Press: `translateY(-22%)`, fast. Leave: back down, normal.
+  Each shelf reserves the lift (`.rack-shelf` / `.rack-row`): the first row is
+  padded and rows sit apart by it, so a lifted card never covers the tier
+  heading or the printed top of the row above. Within a tier, cards with a
+  preview lead; on the homepage a tier with previews leads one without.
 - Product flap: hover tilts the flap `rotateY(-4deg)`, normal/smooth, inviting the open.
 - Postcard: straightens to 0° and lifts sm, normal/smooth.
 - Focus is the brightest thing on the page: 2px accent outline, 3px offset,
@@ -308,9 +314,15 @@ On hover / `:focus-visible` of the frame (or its card): to `50% 100%` over
 `--scroll-dur = clamp(1.2s, shotHeight / 1500 × 1s, 4.5s)` (set inline as a CSS
 variable from the image's height), sharp easing; a 3px accent progress rule on
 the frame's right edge grows `scaleY(0 → 1)` with the same duration and easing,
-showing how far through the page you are. On leave: back to top over slow/smooth,
-rule shrinks. It stops at the bottom; it never loops. Touch: no auto-scroll; the
-card links to the project page where the preview is a focusable button.
+showing how far through the page you are, over a `line-strong` track that is
+visible at rest, with a printed "scroll" cue in the frame's corner. On leave:
+back to top over slow/smooth, rule shrinks. It stops at the bottom; it never
+loops. Where scroll timelines exist, the previews a visitor is meant to see
+also move without hover, scroll-bound (not auto-playing): a product frame
+scrolls the site as it crosses the viewport (`view()`, cover 15%–85%), a
+project page's sticky rail follows the page's scroll (`scroll(root)`), and the
+rack's unsunk cards below 640px follow their tier. The desktop rack keeps
+hover / focus.
 LivePreview dialog: scrim fades normal; dialog rises md with opacity, normal/smooth;
 the desktop↔mobile toggle resizes the iframe frame via `transform: scaleX` of a
 wrapper plus width swap at the end (layout once, not animated per frame);
