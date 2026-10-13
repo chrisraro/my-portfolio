@@ -55,7 +55,7 @@ describe('positioning', () => {
       'eastwind-beach-villas: hotel',
     ])
     expect(heroContent.specialism).toBe(`${liveSites.length} live sites · hotels, tours, restaurants, review centres`)
-    expect(heroContent.specialism).toBe('10 live sites · hotels, tours, restaurants, review centres')
+    expect(heroContent.specialism).toBe('11 live sites · hotels, tours, restaurants, review centres')
   })
 
   it('only names stack chips that exist in the skills list', () => {

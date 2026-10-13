@@ -79,7 +79,7 @@ describe('project counts', () => {
     const claim = heroContent.proofPoints.find((p) => p.endsWith('projects shipped'))!
     expect(Number(splitProofPoint(claim).value)).toBe(shipped)
     const html = renderProjects()
-    expect(html).toContain(`${projects.length} projects · ${shipped} shipped, ${staging} in staging`)
+    expect(html).toContain(`${projects.length} projects · ${shipped} shipped${staging ? `, ${staging} in staging` : ''}`)
   })
 
   it('counts a filtered view against the whole inventory', () => {

@@ -50,11 +50,12 @@ describe('/projects/[slug]', () => {
     expect(render('beachbus-nfc-card-system')).not.toContain('Open live site')
   })
 
-  it('calls Eastwind a staging site, in words, and labels its link that way', () => {
+  it('shows Eastwind as live now that it has its own domain', () => {
     const html = render('eastwind-beach-villas')
-    expect(html).toContain('Open staging site')
-    expect(html).toContain('>Staging<')
-    expect(html).not.toContain('Open live site')
+    expect(html).toContain('Open live site')
+    expect(html).toContain('https://eastwindbeachvillas.com')
+    expect(html).not.toContain('Open staging site')
+    expect(html).not.toContain('>Staging<')
   })
 
   it('explains a missing preview instead of showing an empty frame', () => {

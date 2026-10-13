@@ -62,7 +62,7 @@ export const heroContent = {
   stack: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
   proofPoints: [
     'Four products of my own',
-    'Seventeen projects shipped',
+    'Nineteen projects shipped',
   ],
 }
 
@@ -174,6 +174,21 @@ export const projects: Project[] = [
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
     status: 'live',
     dates: 'March – April 2025',
+    featured: false,
+  },
+  {
+    id: 'skimcare',
+    slug: 'skimcare',
+    title: 'SkimCare',
+    description: "Team ESG's entry to the AppBuildersPH Hackathon 2026 (theme: Local AI), built with Glenn Viola. An Android and web app that reads an agreement you are about to sign, explains its key terms in plain English or Filipino, and links each one to the sentence it came from. Text recognition and a small language model run on the device, so nothing is uploaded.",
+    summary: 'Filipino signers · on-device agreement reader',
+    band: 'Applications',
+    sector: 'product',
+    image: '/assets/images/projects/skimcare.png',
+    technologies: ['React Native', 'Expo', 'TypeScript', 'llama.cpp', 'ML Kit'],
+    links: { live: 'https://skimcare-app.vercel.app', github: 'https://github.com/chrisraro/SkimCare' },
+    status: 'live',
+    dates: 'October 2026',
     featured: false,
   },
 
@@ -332,8 +347,8 @@ export const projects: Project[] = [
     sector: 'hotel',
     image: '/assets/images/projects/eastwind-beach-villas.png',
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'Fluent Forms', 'Rank Math', 'Cloudbeds'],
-    links: { live: 'https://onlinecreativesolutions.com/eastwind/' },
-    status: 'staging',
+    links: { live: 'https://eastwindbeachvillas.com' },
+    status: 'live',
     featured: false,
   },
 ]

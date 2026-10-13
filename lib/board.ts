@@ -44,18 +44,20 @@ export function groupByBand(projects: Project[], hasPreview?: HasPreview): Board
  * The homepage shows Applications and Sites together as "Client work" — that is
  * the distinction a visiting client cares about. /projects keeps every band.
  * With a preview test, a tier whose lead card has a preview comes before one
- * with nothing to show (stable otherwise).
+ * with nothing to show (stable otherwise). An Applications or Sites project in
+ * the `product` sector is Christian's own work, never a client's (the hackathon
+ * entry), so it gets its own tier.
  */
 export function groupForHomepage(projects: Project[], hasPreview?: HasPreview): BoardGroup[] {
+  const clientBand = (p: Project) => (p.band === 'Applications' || p.band === 'Sites') && p.sector !== 'product'
+  const ownBand = (p: Project) => (p.band === 'Applications' || p.band === 'Sites') && p.sector === 'product'
   const groups = [
     { heading: 'Custom systems', projects: previewFirst(bySector(projects.filter((p) => p.band === 'Custom systems')), hasPreview) },
     {
       heading: 'Client work',
-      projects: previewFirst(
-        bySector(projects.filter((p) => p.band === 'Applications' || p.band === 'Sites')),
-        hasPreview,
-      ),
+      projects: previewFirst(bySector(projects.filter(clientBand)), hasPreview),
     },
+    { heading: 'Hackathon', projects: previewFirst(bySector(projects.filter(ownBand)), hasPreview) },
   ].filter((group) => group.projects.length > 0)
   if (!hasPreview) return groups
   const leads = (g: BoardGroup) => hasPreview(g.projects[0])

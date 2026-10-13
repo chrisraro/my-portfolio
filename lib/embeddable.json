@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-05T06:59:58.496Z",
+  "checkedAt": "2026-10-13T17:29:13.750Z",
   "projects": {
     "iskotify": true,
     "giya": true,
@@ -7,6 +7,7 @@
     "connecta-ph": false,
     "ocs-wp-control-panel": true,
     "aman-group-web-app": true,
+    "skimcare": true,
     "graceland-bicolano-dining": false,
     "el-nido-guide-ph": false,
     "beachbus-palawan": false,
@@ -17,6 +18,6 @@
     "azalea-boracay": false,
     "aralabroad": false,
     "naga-city-guide": true,
-    "eastwind-beach-villas": false
+    "eastwind-beach-villas": true
   }
 }

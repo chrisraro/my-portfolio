@@ -45,11 +45,13 @@ describe('groupByBand', () => {
 })
 
 describe('groupForHomepage', () => {
-  it('shows custom systems, then applications and sites together as client work', () => {
+  it('shows custom systems, then applications and sites together as client work, then the hackathon entry', () => {
     const rest = projects.filter((p) => p.band !== 'Products')
     const groups = groupForHomepage(rest)
-    expect(groups.map((g) => g.heading)).toEqual(['Custom systems', 'Client work'])
+    expect(groups.map((g) => g.heading)).toEqual(['Custom systems', 'Client work', 'Hackathon'])
     expect(groups[1].projects.every((p) => p.band === 'Applications' || p.band === 'Sites')).toBe(true)
+    expect(groups[1].projects.every((p) => p.sector !== 'product')).toBe(true)
+    expect(groups[2].projects.map((p) => p.id)).toEqual(['skimcare'])
     expect(groups.flatMap((g) => g.projects)).toHaveLength(rest.length)
   })
 
@@ -147,7 +149,7 @@ describe('preview first', () => {
   })
 
   it('leads the homepage rack with a tier that has something to show', () => {
-    expect(groupForHomepage(rest, hasPreview).map((g) => g.heading)).toEqual(['Client work', 'Custom systems'])
+    expect(groupForHomepage(rest, hasPreview).map((g) => g.heading)).toEqual(['Client work', 'Custom systems', 'Hackathon'])
   })
 
   it('orders /projects bands the same way inside each band, keeping BAND_ORDER', () => {
@@ -157,6 +159,6 @@ describe('preview first', () => {
   })
 
   it('changes nothing without a preview test', () => {
-    expect(groupForHomepage(rest).map((g) => g.heading)).toEqual(['Custom systems', 'Client work'])
+    expect(groupForHomepage(rest).map((g) => g.heading)).toEqual(['Custom systems', 'Client work', 'Hackathon'])
   })
 })

@@ -95,15 +95,15 @@ describe('project summaries', () => {
 })
 
 describe('project inventory', () => {
-  it('holds exactly eighteen projects', () => {
-    expect(projects).toHaveLength(18)
+  it('holds exactly nineteen projects', () => {
+    expect(projects).toHaveLength(19)
   })
 
   it('distributes them across the four bands as designed', () => {
     const count = (band: string) => projects.filter((p) => p.band === band).length
     expect(count('Products')).toBe(4)
     expect(count('Custom systems')).toBe(2)
-    expect(count('Applications')).toBe(1)
+    expect(count('Applications')).toBe(2)
     expect(count('Sites')).toBe(11)
   })
 
@@ -116,6 +116,7 @@ describe('project inventory', () => {
       'beachbus-nfc-card-system',
       'ocs-wp-control-panel',
       'aman-group-web-app',
+      'skimcare',
       'graceland-bicolano-dining',
       'el-nido-guide-ph',
       'beachbus-palawan',
