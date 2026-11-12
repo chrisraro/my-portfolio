@@ -30,7 +30,13 @@ const sectorLabels: Record<ProjectSector, string> = {
 // payment websites": Graceland has neither, and the lede must not overclaim.
 export const heroContent = {
   name: 'Christian Raro',
+  // The job title: page metadata, the social card and the hero's eyebrow.
   title: 'Full-stack developer',
+  // The H1: what a client gets, not what the developer is called.
+  headline: 'Booking sites and custom systems, built end to end',
+  // The site shown in the hero's middle panel; a test checks it has a screenshot.
+  featuredSlug: 'el-nido-guide-ph',
+  featuredCta: 'See the project',
   location: 'Naga City',
   // Plain text under the title; the tools match the AI & automation skills.
   aiLine: 'AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n',
@@ -44,7 +50,8 @@ export const heroContent = {
       { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
     ] as { label: string; href?: string }[],
   },
-  // The hero photo, described for the portrait's labelled button.
+  // The portrait beside the contact card's name, and its description.
+  portrait: '/assets/images/about/profile-hiking.jpg',
   portraitAlt: 'Portrait of Christian Raro hiking',
   lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
@@ -127,68 +134,6 @@ export const projects: Project[] = [
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend', 'Vercel', 'NFC'],
     links: { live: 'https://connectaph.vercel.app' },
     status: 'live',
-    featured: false,
-  },
-
-  // --- Custom systems --------------------------------------------------------
-  {
-    id: 'beachbus-nfc',
-    slug: 'beachbus-nfc-card-system',
-    title: 'BeachBus NFC Card System',
-    description: 'Internal NFC card system built for BeachBus Palawan, the Palawan shuttle operator whose website I also built.',
-    summary: 'Shuttle operator · internal NFC card system',
-    band: 'Custom systems',
-    sector: 'internal-tool',
-    image: '',
-    technologies: ['NFC'],
-    links: {},
-    status: 'internal',
-    featured: false,
-  },
-  {
-    id: 'ocs-wp-control',
-    slug: 'ocs-wp-control-panel',
-    title: 'OCS WP Control Panel',
-    description: 'Internal tool for Online Creative Solutions to manage, secure, and report on client WordPress sites from one dashboard.',
-    summary: 'Internal · manage, secure and report on client sites',
-    band: 'Custom systems',
-    sector: 'internal-tool',
-    image: '',
-    technologies: ['Next.js', 'WordPress'],
-    links: { live: 'https://ocs-wp-control.vercel.app' },
-    status: 'auth-gated',
-    featured: false,
-  },
-
-  // --- Applications --------------------------------------------------------
-  {
-    id: 'aman-webapp',
-    slug: 'aman-group-web-app',
-    title: 'Aman Group Web App',
-    description: 'Full-stack Next.js app for a real estate company: a projects and properties showcase, and a loan calculator comparing Pag-IBIG, bank and in-house financing.',
-    summary: 'Real estate · property showcase, loan calculator',
-    band: 'Applications',
-    sector: 'real-estate',
-    image: '/assets/images/projects/aman-webapp.png',
-    technologies: ['Next.js', 'React', 'Vercel', 'Upstash'],
-    links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
-    status: 'live',
-    dates: 'March – April 2025',
-    featured: false,
-  },
-  {
-    id: 'skimcare',
-    slug: 'skimcare',
-    title: 'SkimCare',
-    description: "Team ESG's entry to the AppBuildersPH Hackathon 2026 (theme: Local AI), built with Glenn Viola. An Android and web app that reads an agreement you are about to sign, explains its key terms in plain English or Filipino, and links each one to the sentence it came from. Text recognition and a small language model run on the device, so nothing is uploaded.",
-    summary: 'Filipino signers · on-device agreement reader',
-    band: 'Applications',
-    sector: 'product',
-    image: '/assets/images/projects/skimcare.png',
-    technologies: ['React Native', 'Expo', 'TypeScript', 'llama.cpp', 'ML Kit'],
-    links: { live: 'https://skimcare-app.vercel.app', github: 'https://github.com/chrisraro/SkimCare' },
-    status: 'live',
-    dates: 'October 2026',
     featured: false,
   },
 
@@ -351,6 +296,69 @@ export const projects: Project[] = [
     status: 'live',
     featured: false,
   },
+
+  // --- Applications --------------------------------------------------------
+  {
+    id: 'aman-webapp',
+    slug: 'aman-group-web-app',
+    title: 'Aman Group Web App',
+    description: 'Full-stack Next.js app for a real estate company: a projects and properties showcase, and a loan calculator comparing Pag-IBIG, bank and in-house financing.',
+    summary: 'Real estate · property showcase, loan calculator',
+    band: 'Applications',
+    sector: 'real-estate',
+    image: '/assets/images/projects/aman-webapp.png',
+    technologies: ['Next.js', 'React', 'Vercel', 'Upstash'],
+    links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
+    status: 'live',
+    dates: 'March – April 2025',
+    featured: false,
+  },
+  {
+    id: 'skimcare',
+    slug: 'skimcare',
+    title: 'SkimCare',
+    description: "Team ESG's entry to the AppBuildersPH Hackathon 2026 (theme: Local AI), built with Glenn Viola. An Android and web app that reads an agreement you are about to sign, explains its key terms in plain English or Filipino, and links each one to the sentence it came from. Text recognition and a small language model run on the device, so nothing is uploaded.",
+    summary: 'Filipino signers · on-device agreement reader',
+    band: 'Applications',
+    sector: 'product',
+    image: '/assets/images/projects/skimcare.png',
+    technologies: ['React Native', 'Expo', 'TypeScript', 'llama.cpp', 'ML Kit'],
+    links: { live: 'https://skimcare-app.vercel.app', github: 'https://github.com/chrisraro/SkimCare' },
+    status: 'live',
+    dates: 'October 2026',
+    featured: false,
+  },
+
+  // --- Custom systems --------------------------------------------------------
+  {
+    id: 'beachbus-nfc',
+    slug: 'beachbus-nfc-card-system',
+    title: 'BeachBus NFC Card System',
+    description: 'Internal NFC card system built for BeachBus Palawan, the Palawan shuttle operator whose website I also built.',
+    summary: 'Shuttle operator · internal NFC card system',
+    band: 'Custom systems',
+    sector: 'internal-tool',
+    image: '',
+    technologies: ['NFC'],
+    links: {},
+    status: 'internal',
+    featured: false,
+  },
+  {
+    id: 'ocs-wp-control',
+    slug: 'ocs-wp-control-panel',
+    title: 'OCS WP Control Panel',
+    description: 'Internal tool for Online Creative Solutions to manage, secure, and report on client WordPress sites from one dashboard.',
+    summary: 'Internal · manage, secure and report on client sites',
+    band: 'Custom systems',
+    sector: 'internal-tool',
+    image: '',
+    technologies: ['Next.js', 'WordPress'],
+    links: { live: 'https://ocs-wp-control.vercel.app' },
+    status: 'auth-gated',
+    featured: false,
+  },
+
 ]
 
 export const experience: ExperienceItem[] = [

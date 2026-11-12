@@ -124,7 +124,7 @@ reintroduce hand-written portfolio prose into `app/api/chat/route.ts` — that
 duplicate existed once and drifted out of date.
 
 Projects carry a `band` from a closed four-value vocabulary — `Products`,
-`Custom systems`, `Applications`, `Sites` — and a `status` that decides how they
+`Sites`, `Applications`, `Custom systems` (that order, `BAND_ORDER`, is the order edge codes count in, so numbers ascend down the homepage) — and a `status` that decides how they
 preview (`live`, `ua-gated`, `early-access`, `auth-gated`, `internal`,
 `staging`). The hero's proof band in `heroContent` makes factual claims that
 `tests/content/proof-band.test.ts` checks against the data; if you change the
@@ -179,7 +179,7 @@ Every project gets a slot in the rack. What fills it:
   the homepage's direction contract and motion choreography in
   `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
 - The world: a lagoon-night ground, paper panels, and signal amber laid down
-  only as whole flat planes (hero front panel, product flaps, the contact reply
+  only as whole flat planes (hero front panel, the contact reply
   card, the current filter tab). No gradients, glows, tints or outlines on
   planes. Paper is square-ish (`--radius` 6px; postcards 2px, dialog 10px).
 - Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
@@ -275,10 +275,13 @@ direction contract.
   Proof (Products, the rack) must be visible in the server HTML;
   `tests/components/sections.test.tsx` forbids `opacity:0` there.
 - **Hero sequence:** CSS keyframes on load, no JS, 1.9 s, once (H1 words rise,
-  the inner panels unfold from behind the front one, creases draw, proof rises).
+  the featured site and the proof strip unfold from the hinge, the crease draws, proof rises).
+  The H1 is `heroContent.headline`; `heroContent.title` is the job title (eyebrow, metadata).
+  The middle of the hero is a real site (`heroContent.featuredSlug`), not a portrait; the
+  portrait sits on the contact card.
   It must stay under two seconds (`motion-tokens` test).
-- **Catalog hover (`.lift-card`)**: rack cards, a product's screenshot and
-  case-study covers. On a fine pointer with motion allowed: lift 2px, border to
+- **Catalog hover (`.lift-card`)**: rack cards, a product card's screenshot and
+  case-study covers (each cover carries a still of its site and leads with the outcome). On a fine pointer with motion allowed: lift 2px, border to
   `accent`, screenshot scale 1.02 inside a clipping frame, fast/smooth, shadow
   faded in on a pseudo-element. Keyboard focus gets the accent border with no
   travel in every mode.

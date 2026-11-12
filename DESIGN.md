@@ -182,6 +182,28 @@ components:
     rounded: "{rounded.xl}"
 ---
 
+## 5.0 changes (2026-11-12, branch preview, awaiting sign-off)
+
+These supersede the sections below wherever they disagree:
+
+- **Hero:** two leaves, not a tri-fold. The amber front panel carries the job
+  title as an eyebrow, an outcome headline as the H1 (`heroContent.headline`,
+  sized by `.hero-title`), the lede, the specialism line and the CTAs, with the
+  AI line below a hairline. Beside it, a real site (`heroContent.featuredSlug`)
+  at a readable size, over one strip of proof and the stack chips. No portrait
+  in the hero.
+- **Products:** a two-by-two grid of paper cards, each with a 16:10 still across
+  the top. No amber flaps: amber planes are now the hero front panel, the
+  contact card and the current filter tab only.
+- **Case-study covers:** a 16:10 still, then the outcome's first sentence and
+  the role.
+- **Edge codes:** `BAND_ORDER` is Products, Sites, Applications, Custom systems,
+  so the numbers ascend down the homepage and on `/projects`.
+- **Stack:** a ledger, one row per category. No dotted leaders.
+- **Contact card:** the portrait beside the name, and every public profile.
+- **GitHub:** a year of activity between the route and the stack, amber cells,
+  rendered only when `GITHUB_TOKEN` is set.
+
 # Design System: Christian Raro, Portfolio 4.0
 
 This file describes the system as built on the `v4.1` branch (the Lobby Rack, refined). Tokens live in

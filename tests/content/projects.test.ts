@@ -113,10 +113,6 @@ describe('project inventory', () => {
       'giya',
       'latag',
       'connecta-ph',
-      'beachbus-nfc-card-system',
-      'ocs-wp-control-panel',
-      'aman-group-web-app',
-      'skimcare',
       'graceland-bicolano-dining',
       'el-nido-guide-ph',
       'beachbus-palawan',
@@ -128,6 +124,10 @@ describe('project inventory', () => {
       'aralabroad',
       'naga-city-guide',
       'eastwind-beach-villas',
+      'aman-group-web-app',
+      'skimcare',
+      'beachbus-nfc-card-system',
+      'ocs-wp-control-panel',
     ])
   })
 
