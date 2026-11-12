@@ -8,7 +8,7 @@ a page per project, two API routes, no database — all content is static data.
 Next.js 14 (App Router) · React 18 · TypeScript 5 (strict) · Tailwind CSS 3 ·
 `motion` (imported as `motion/react`; replaced framer-motion) · next-themes ·
 lucide-react · Anybody + Figtree via `next/font/google` · Groq (chat) ·
-Resend (email)
+Resend (email) · GitHub GraphQL (activity section)
 
 ## Build & Run
 
@@ -65,7 +65,7 @@ app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page (the whole rack, filtered by ?band=)
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
 components/          top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
-components/sections/ Homepage sections, in page order: hero, products, rack, case-studies, field-log, route-line, stack, contact-console
+components/sections/ Homepage sections, in page order: hero, products, rack, case-studies, field-log, route-line, github-activity, stack, contact-console
 components/ui/       Primitives: status-badge, section-heading, proof-band, rack-tier, rack-card, project-shot, live-preview, no-preview-tag, board-filter, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body, arrow-link-text — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
@@ -80,6 +80,7 @@ lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts an
 lib/structured-data.ts Builds JSON-LD (Person, ProfessionalService, WebSite, BreadcrumbList, CreativeWork) from lib/data.ts and lib/case-studies.ts
 lib/llms.ts           Builds /llms.txt and /llms-full.txt from the same content modules
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
+lib/github.ts        Reads the contribution calendar and recent public repos from GitHub's GraphQL API (server only, hourly revalidate); null without GITHUB_TOKEN
 lib/board.ts         Rack grouping and ordering (groupByBand, groupForHomepage, homepageOrder, previewFirst), edge codes, the /projects ?band= parameter
 lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
 lib/utils.ts         cn(), extractDomain
@@ -96,7 +97,7 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
 `availability`, `resumeUrl`, `sectionContent`, `footerContent`,
 `projectsPageContent`, `paymentGateways`, `galleryContent`, `caseStudyContent`,
-`notFoundContent`, `sectorNames`, `services`) and add the matching interface in
+`notFoundContent`, `sectorNames`, `services`, `githubContent`) and add the matching interface in
 `types/index.ts` if it's new.
 
 `lib/structured-data.ts` (JSON-LD), `app/sitemap.ts` and `lib/llms.ts`
@@ -329,6 +330,10 @@ degraded-but-honest response when it's missing rather than throwing or pretendin
 the action succeeded.
 
 - `/api/chat` — no `GROQ_API_KEY` → canned offline reply.
+- The GitHub section (`components/sections/github-activity.tsx`, `lib/github.ts`) follows
+  the same rule: no `GITHUB_TOKEN` → nothing is fetched and the section is not rendered.
+  Its numbers and repositories come from GitHub, never from `lib/data.ts`; only its
+  labels (`githubContent`) do. The chart is amber, never green.
 - `/api/contact` — no `RESEND_API_KEY` → `{ delivered: false, fallback: 'mailto' }`,
   and the client opens the visitor's mail app instead.
 
@@ -336,7 +341,8 @@ the action succeeded.
 
 All optional; see `.env.example`. Real keys live in `.env.local` (gitignored).
 `GROQ_API_KEY`, `GROQ_MODEL`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `NEXT_PUBLIC_SITE_URL`,
-`GOOGLE_SITE_VERIFICATION` (optional; adds the Google Search Console verification meta tag).
+`GOOGLE_SITE_VERIFICATION` (optional; adds the Google Search Console verification meta tag),
+`GITHUB_TOKEN` (optional, server-only; turns on the homepage's GitHub section).
 
 Things that have already bitten:
 

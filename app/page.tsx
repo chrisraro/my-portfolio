@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { ContactConsole } from '@/components/sections/contact-console'
 import { FieldLog } from '@/components/sections/field-log'
+import { GithubActivity } from '@/components/sections/github-activity'
 import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
@@ -14,8 +15,8 @@ export const metadata: Metadata = { alternates: { canonical: '/' } }
 
 // Section order: the Lobby Rack contract (.impeccable/surfaces/app-page-tsx.md).
 // The brochure opens (hero), his own products lead the work, then the rack of
-// client work, the case studies, people and places, the route, the stack, and
-// the reply card.
+// client work, the case studies, people and places, the route, a year of
+// GitHub activity (only when GITHUB_TOKEN is set), the stack, and the reply card.
 export default function HomePage() {
   return (
     <>
@@ -25,6 +26,7 @@ export default function HomePage() {
       <CaseStudies />
       <FieldLog />
       <RouteLine />
+      <GithubActivity />
       <Stack />
       <ContactConsole />
     </>

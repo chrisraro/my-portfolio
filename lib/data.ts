@@ -450,8 +450,22 @@ export const sectionContent = {
     title: 'From the brief to launch',
   },
   changelog: { eyebrow: 'Changelog', title: "Where I've worked" },
+  github: { eyebrow: 'GitHub', title: 'A year on GitHub' },
   stack: { eyebrow: 'Stack', title: 'What I ship with' },
   contact: { eyebrow: 'Contact', title: 'Start a project' },
+}
+
+// Labels for the GitHub section. The numbers and repositories come from
+// GitHub itself (lib/github.ts), never from this file.
+export const githubContent = {
+  totalLabel: 'contributions in the last year',
+  activeDaysLabel: 'active days',
+  streakLabel: 'longest streak, in days',
+  reposLabel: 'Recently pushed',
+  // Under the phone's shorter chart.
+  phoneRange: 'Chart shows the latest 26 weeks',
+  less: 'Less',
+  more: 'More',
 }
 
 // The footer's colophon, set as a small edge code.
