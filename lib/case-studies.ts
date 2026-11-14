@@ -285,10 +285,3 @@ export function briefLead(s: CaseStudy): string {
   const match = text.match(/^.+?[.!?](?=\s|$)/)
   return match ? match[0] : text
 }
-
-/** The outcome's opening sentence: what changed, in one line. */
-export function outcomeLead(s: CaseStudy): string {
-  const text = s.outcome[0] ?? ''
-  const match = text.match(/^.+?[.!?](?=\s|$)/)
-  return match ? match[0] : text
-}

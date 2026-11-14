@@ -435,9 +435,9 @@
  * Anybody and would break "Full-stack" at its hyphen into a third line, which
  * then collapses when the font arrives: a layout shift under the whole hero). */
 .hero-word { display: inline-block; white-space: nowrap; }
-/* The H1 is sized to its panel, so the headline holds three or four lines at every width. */
+/* The H1 is sized to its panel, so "Full-stack" never breaks out of the plane. */
 .hero-front { container-type: inline-size; }
-.hero-title { font-size: clamp(2.5rem, 13cqi, 4.25rem); }
+.hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
 
 /*
  * Catalog card hover (.lift-card): rack cards, a product's screenshot and the

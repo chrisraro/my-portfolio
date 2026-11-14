@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { AlertOctagon, ArrowRight, Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/toaster'
-import Image from 'next/image'
-import { availability, contactInfo, heroContent, resumeUrl, sectionContent } from '@/lib/data'
+import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data'
 
 const FIELD =
   'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
@@ -33,8 +32,7 @@ export function ContactConsole() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<FormError | null>(null)
   const { showToast } = useToast()
-  // Every public profile; the email has its own line above.
-  const profiles = contactInfo.socialLinks.filter((link) => link.icon !== 'mail')
+  const facebook = contactInfo.socialLinks.find((link) => link.icon === 'facebook')
 
   // The toast announces an error; this inline copy stays beside the form and is
   // tied to the field it concerns, so it survives the toast being dismissed.
@@ -114,20 +112,6 @@ export function ContactConsole() {
             {sectionContent.contact.title}
           </h2>
           <p className="edge-code mt-5 text-sm">{availability}</p>
-          {/* Who replies: the portrait, small, beside his name. */}
-          <p className="mt-8 flex items-center gap-4">
-            <Image
-              src={heroContent.portrait}
-              alt={heroContent.portraitAlt}
-              width={72}
-              height={72}
-              className="h-[72px] w-[72px] rounded object-cover"
-            />
-            <span>
-              <span className="text-title block">{heroContent.name}</span>
-              <span className="edge-code text-sm">{heroContent.title}</span>
-            </span>
-          </p>
           <ul className="mt-8 space-y-1 md:mt-auto md:pt-10">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
@@ -140,14 +124,14 @@ export function ContactConsole() {
                 <span className="sr-only">(PDF, opens in a new tab)</span>
               </a>
             </li>
-            {profiles.map((profile) => (
-              <li key={profile.name}>
-                <a href={profile.url} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
-                  <span className="link-draw">{profile.name}</span>
+            {facebook && (
+              <li>
+                <a href={facebook.url} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
+                  <span className="link-draw">{facebook.name}</span>
                   <span className="sr-only">(opens in a new tab)</span>
                 </a>
               </li>
-            ))}
+            )}
             <li className="edge-code pt-2 text-sm">{contactInfo.location}</li>
           </ul>
         </div>

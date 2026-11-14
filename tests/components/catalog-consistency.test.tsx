@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import ProjectsPage from '@/app/projects/page'
@@ -141,14 +141,9 @@ describe('hero AI proof', () => {
     expect(skills.some((s) => s.name.includes('Groq'))).toBe(true)
   })
 
-  // The portrait left the hero for the contact card, beside his name.
-  it('describes the portrait, from data, on the contact card', () => {
+  it('describes the portrait, from data', () => {
     expect(heroContent.portraitAlt).toMatch(/^Portrait of Christian Raro/)
-    expect(existsSync(`public${heroContent.portrait}`)).toBe(true)
-    const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
-    expect(contact).toContain('src={heroContent.portrait}')
-    expect(contact).toContain('alt={heroContent.portraitAlt}')
-    expect(html).not.toContain(heroContent.portraitAlt)
+    expect(html).toContain(`aria-label="View larger image: ${heroContent.portraitAlt}"`)
   })
 })
 

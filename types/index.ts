@@ -5,9 +5,9 @@ export type ProjectBand = 'Products' | 'Custom systems' | 'Applications' | 'Site
 // distinction is what a visitor is browsing by.
 export const BAND_ORDER: readonly ProjectBand[] = [
   'Products',
-  'Sites',
-  'Applications',
   'Custom systems',
+  'Applications',
+  'Sites',
 ]
 
 // Who a project was built for. Closed vocabulary; the hero's specialism line

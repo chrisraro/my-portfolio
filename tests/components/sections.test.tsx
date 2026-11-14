@@ -13,7 +13,7 @@ import { RouteLine } from '@/components/sections/route-line'
 import { Stack } from '@/components/sections/stack'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { groupForHomepage } from '@/lib/board'
-import { FLAGSHIP_SLUGS, getCaseStudy, outcomeLead } from '@/lib/case-studies'
+import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
 import {
   availability,
   contactInfo,
@@ -48,16 +48,21 @@ describe('Hero', () => {
     expect(html.indexOf('</h1>')).toBeLessThan(html.indexOf(heroContent.aiLine))
   })
 
-  // The proof sits in one strip under the featured site: two points side by
-  // side at every width, stacked from the top, plain numerals.
-  it('sets the proof in one strip under the featured site, and keeps the hero short', () => {
+  // Confirm critique: the proof panel spread its two groups apart (a ~234px
+  // void), and at 1440x900 the fold cut the Products heading in half.
+  // R5 critique: at 1440 the panel's bottom third stood empty. The proof grid
+  // now grows to fill it (its rows share the height), still from the top.
+  it('stacks the proof panel from the top, fills it, and leaves the next heading inside the first viewport', () => {
     const panel = html.match(/<div class="hero-unfold-right[^"]*"/)?.[0] ?? ''
     expect(panel).toContain('justify-start')
     expect(panel).not.toContain('justify-between')
     const grid = html.match(/<ul class="([^"]*grid-cols-2[^"]*)"/)?.[1] ?? ''
-    expect(grid).not.toContain('md:grid-cols-1')
-    expect(html.match(/class="text-numeral text-ink/g)).toHaveLength(heroContent.proofPoints.length)
-    expect(html.indexOf('hero-unfold-mid')).toBeLessThan(html.indexOf('hero-unfold-right'))
+    expect(grid).toContain('md:flex-1')
+    expect(grid).toContain('md:auto-rows-fr')
+    // Two proof points: side by side when stacked, one above the other in the
+    // narrow back panel from 768px, each owning half its height, numerals large.
+    expect(grid).toContain('md:grid-cols-1')
+    expect(html.match(/class="text-numeral text-numeral-lg/g)).toHaveLength(heroContent.proofPoints.length)
     const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
     expect(section).toContain('md:pb-[72px]')
   })
@@ -68,12 +73,9 @@ describe('Hero', () => {
     expect(line?.[1]).toContain('sm:hidden')
   })
 
-  it('sets the headline as the H1, word by word, with the job title, lede and specialism', () => {
+  it('sets the title as the H1, word by word, with the lede and specialism', () => {
     const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ''
-    // Spaces sit between the word spans, so the headline reads as written.
-    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.headline)
-    expect(h1.match(/class="hero-word"/g)).toHaveLength(heroContent.headline.split(' ').length)
-    expect(html.slice(0, html.indexOf('<h1'))).toContain(heroContent.title)
+    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.title)
     expect(html).toContain(escape(heroContent.lede))
     expect(html).toContain(heroContent.specialism)
   })
@@ -88,15 +90,9 @@ describe('Hero', () => {
     expect(html).not.toMatch(/aria-hidden="true" class="text-numeral[^"]*">0\d</)
   })
 
-  it('shows a real site beside the headline, linked to its project page', () => {
-    const featured = projects.find((p) => p.slug === heroContent.featuredSlug)
-    expect(featured && fullShotFor(featured), 'the featured project needs a full-page shot').toBeTruthy()
-    const link = html.match(/<a [^>]*aria-label="[^"]*opens project page"[^>]*>/)?.[0] ?? ''
-    expect(link).toContain(`href="/projects/${heroContent.featuredSlug}"`)
-    expect(link).toContain(escape(featured!.title))
-    expect(html).toContain(heroContent.featuredCta)
-    // The link is named; its picture is decorative.
-    expect(html).toMatch(/<img[^>]*alt=""/)
+  it('does not repeat the portrait’s name inside its labelled button', () => {
+    expect(html).toContain(`aria-label="View larger image: ${heroContent.portraitAlt}"`)
+    expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
   })
 
   it('keeps amber off the stack chips: colour arrives only as whole planes', () => {
@@ -245,7 +241,7 @@ describe('Case studies', () => {
     expect(html).toMatch(new RegExp(`<h2 id="case-studies-title"[^>]*>${sectionContent.caseStudies.title}<`))
   })
 
-  it('shows a cover for every flagship, in reading order, with role and outcome', () => {
+  it('shows a cover for every flagship, in reading order, with role and brief', () => {
     let last = -1
     for (const slug of FLAGSHIP_SLUGS) {
       const study = getCaseStudy(slug)!
@@ -253,9 +249,7 @@ describe('Case studies', () => {
       expect(at, slug).toBeGreaterThan(last)
       last = at
       expect(html).toContain(escape(study.role))
-      expect(html).toContain(escape(outcomeLead(study)))
-      const project = projects.find((p) => p.slug === slug)!
-      if (fullShotFor(project)) expect(html).toContain(`data-vt-shot="${slug}"`)
+      expect(html).toContain(escape(briefLead(study)))
     }
   })
 })
