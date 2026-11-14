@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildPortfolioContext } from '@/lib/chat-context'
 import {
+  heroPortraits,
   availability,
   heroContent,
   navigationItems,
@@ -10,7 +11,7 @@ import {
   skills,
 } from '@/lib/data'
 import { displayStatus } from '@/lib/display-status'
-import { buildSiteMetadata } from '@/lib/site-metadata'
+import { OG_IMAGE, buildSiteMetadata } from '@/lib/site-metadata'
 import { existsSync } from 'node:fs'
 
 const sites = projects.filter((p) => p.band === 'Sites')
@@ -102,8 +103,12 @@ describe('site metadata', () => {
     expect(serialized).not.toMatch(/frontend developer/i)
   })
 
-  it('leaves the preview image to app/opengraph-image.tsx, not the retired PNG', () => {
+  // The designed social card went with the old design; until a new one
+  // exists the preview image is the chosen portrait.
+  it('names a preview image that exists, not the retired PNG', () => {
     expect(serialized).not.toContain('og-image.png')
-    expect(existsSync('app/opengraph-image.tsx')).toBe(true)
+    expect(existsSync(`public${OG_IMAGE.url}`)).toBe(true)
+    expect(OG_IMAGE.url).toBe(heroPortraits[heroContent.portrait].full)
+    expect(heroContent.portrait).toBe('stairs')
   })
 })
