@@ -2,4 +2,247 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Clean slate: no design system yet. Tokens, type and layout arrive with the next direction. */
+/*
+ * The system: an editorial storefront in monochrome, with iOS-style parts.
+ * Ghost white ground, snow cards, four grays, black ink. Two typefaces:
+ * Instrument Serif speaks (headings, names, numerals), Inter works (everything
+ * else). tests/design/system.test.ts holds the palette and the font count.
+ */
+:root {
+	--ghost: #f8f8ff;
+	--snow: #fffafa;
+	--ink: #0a0a0a;
+	/* Secondary text: 5.4:1 on ghost. */
+	--gray-text: #636366;
+	/* Glyphs and large numerals only: 3.1:1. */
+	--gray-mid: #8e8e93;
+	--gray-line: #e5e5ea;
+	--gray-fill: #efeff4;
+	/* The primary button, hovered. */
+	--ink-soft: #2c2c2e;
+
+	--dur-fast: 0.2s;
+	--dur: 0.45s;
+	--dur-slow: 0.8s;
+	/* iOS-like: quick out, long settle. */
+	--ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--stagger: 70ms;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		scroll-padding-top: 5.5rem;
+		background: var(--ghost);
+	}
+	body {
+		@apply bg-ghost font-sans text-ink antialiased;
+		font-size: 1rem;
+		line-height: 1.6;
+		font-feature-settings: 'cv11', 'ss01';
+	}
+	::selection {
+		background: var(--ink);
+		color: var(--ghost);
+	}
+	:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 3px;
+		border-radius: 0.375rem;
+	}
+	h1, h2, h3 {
+		text-wrap: balance;
+	}
+}
+
+@layer components {
+	/* Display: Instrument Serif has one weight; size and tracking do the work. */
+	.display-xl {
+		@apply font-display;
+		font-size: clamp(3.5rem, 1.6rem + 8.6vw, 9.5rem);
+		line-height: 0.9;
+		letter-spacing: -0.035em;
+	}
+	.display-lg {
+		@apply font-display;
+		font-size: clamp(2.5rem, 1.7rem + 3.4vw, 5rem);
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+	.display-md {
+		@apply font-display;
+		font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+	}
+	.display-num {
+		@apply font-display tabular-nums;
+		font-size: clamp(2.75rem, 2rem + 2.6vw, 4.5rem);
+		line-height: 0.9;
+		letter-spacing: -0.03em;
+	}
+	/* The small label above a heading, and on cards: sentence case, never tracked caps. */
+	.label {
+		@apply text-[0.8125rem] font-medium leading-tight text-gray-text;
+	}
+	.lede {
+		@apply text-[1.1875rem] leading-relaxed;
+	}
+
+	/* Buttons are pills that sink a little when pressed, like iOS. */
+	.btn {
+		@apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 text-[0.9375rem] font-medium;
+		transition: transform var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+	}
+	.btn:active { transform: scale(0.96); }
+	.btn-primary { @apply bg-ink text-ghost; }
+	.btn-primary:hover { background: var(--ink-soft); }
+	.btn-secondary { @apply bg-gray-fill text-ink; }
+	.btn-secondary:hover { background: var(--gray-line); }
+	.btn-quiet { @apply border border-gray-line bg-snow text-ink; }
+	.btn-quiet:hover { border-color: var(--ink); }
+	.btn:disabled { @apply opacity-60; }
+
+	/* A small capsule: status, counts, tags. */
+	.capsule {
+		@apply inline-flex items-center gap-1.5 rounded-full bg-gray-fill px-2.5 py-1 text-xs font-medium text-ink;
+	}
+
+	/* Cards: snow on ghost, large radius, a hairline, and a shadow only on hover. */
+	.card {
+		@apply rounded-card border border-gray-line bg-snow;
+	}
+
+	/* An arrow that leans the way the link goes. */
+	.nudge { transition: transform var(--dur-fast) var(--ease); }
+	:is(a, button):hover .nudge { transform: translateX(3px); }
+	:is(a, button):hover .nudge-up { transform: translate(2px, -2px); }
+
+	/* A product: the image breathes in, the card lifts. */
+	.product { transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+	.product__image { transition: transform var(--dur-slow) var(--ease); }
+	.product__cue {
+		opacity: 0;
+		transform: translateY(6px) scale(0.96);
+		transition: opacity var(--dur-fast) var(--ease), transform var(--dur) var(--ease);
+	}
+	.product:focus-visible .product__cue { opacity: 1; transform: none; }
+
+	/* An underline that draws in from the left. */
+	.underline-draw {
+		background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+		transition: background-size var(--dur) var(--ease);
+	}
+	:is(a, button):hover .underline-draw,
+	:is(a, button):focus-visible .underline-draw { background-size: 100% 1px; }
+
+	/* The frosted bar: iOS material. */
+	.material {
+		background: rgb(248 248 255 / 0.72);
+		-webkit-backdrop-filter: saturate(180%) blur(20px);
+		backdrop-filter: saturate(180%) blur(20px);
+	}
+
+	/* A row of cards that pages sideways under the thumb. */
+	.shelf {
+		@apply flex snap-x snap-mandatory gap-4 overflow-x-auto;
+		scrollbar-width: none;
+	}
+	.shelf::-webkit-scrollbar { display: none; }
+
+	/* iOS grouped list: one rounded group, hairlines inset between rows. */
+	.group-list { @apply card overflow-hidden; }
+	.group-list > * + * { border-top: 1px solid var(--gray-line); }
+}
+
+/*
+ * Motion. Everything below is progressive: outside these gates nothing is
+ * hidden or offset, so the server HTML is the finished page.
+ */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+	.product:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 2px 6px rgb(0 0 0 / 0.06), 0 24px 48px -20px rgb(0 0 0 / 0.22);
+		border-color: transparent;
+	}
+	.product:hover .product__image { transform: scale(1.04); }
+	.product:hover .product__cue { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	/* On load: lines rise out of a mask, one after another (--i). Under 1.5s in all. */
+	@keyframes rise {
+		from { transform: translateY(105%); }
+		to { transform: none; }
+	}
+	@keyframes fade-up {
+		from { opacity: 0; transform: translateY(16px); }
+		to { opacity: 1; transform: none; }
+	}
+	@keyframes pop {
+		from { opacity: 0; transform: scale(0.9) translateY(10px); }
+		to { opacity: 1; transform: none; }
+	}
+	@keyframes step-in {
+		from { opacity: 0; transform: translateY(40px); }
+		to { opacity: 1; transform: none; }
+	}
+	.mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+	.mask > span {
+		display: inline-block;
+		animation: rise var(--dur-slow) var(--ease) both;
+		animation-delay: calc(var(--i, 0) * var(--stagger));
+	}
+	.enter {
+		animation: fade-up var(--dur-slow) var(--ease) both;
+		animation-delay: calc(240ms + var(--i, 0) * var(--stagger));
+	}
+	.enter-figure { animation: step-in 1s var(--ease) 200ms both; }
+	.enter-pop {
+		animation: pop var(--dur) var(--ease) both;
+		animation-delay: calc(700ms + var(--i, 0) * 110ms);
+	}
+
+	/* On scroll: sections and cards settle as they enter the viewport. */
+	@supports (animation-timeline: view()) {
+		@keyframes settle {
+			from { opacity: 0; transform: translateY(28px); }
+			to { opacity: 1; transform: none; }
+		}
+		@keyframes drift {
+			from { transform: translateY(0); }
+			to { transform: translateY(-48px); }
+		}
+		@keyframes bar-line {
+			from { border-color: transparent; }
+			to { border-color: var(--gray-line); }
+		}
+		.reveal {
+			animation: settle linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 38%;
+		}
+		/* The portrait drifts a little slower than the page: depth, not parallax theatre. */
+		.drift {
+			animation: drift linear both;
+			animation-timeline: scroll(root);
+			animation-range: 0 100vh;
+		}
+		/* The bar's hairline appears once the page has moved. */
+		.bar-line {
+			animation: bar-line linear both;
+			animation-timeline: scroll(root);
+			animation-range: 0 80px;
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+	.btn:active { transform: none; }
+}

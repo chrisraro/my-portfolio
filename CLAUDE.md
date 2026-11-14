@@ -1,20 +1,20 @@
 # Project Instructions
 
-Personal portfolio site for Christian Raro. **The front end is a clean slate
-(since 2026-11-14):** every page, component, style, the logo and the design
-system were removed so the site can be redesigned from scratch. What remains is
-the content, the SEO plumbing, the back end and a bare, unstyled skeleton of
-pages that keeps the site building.
+Personal portfolio site for Christian Raro: a homepage, a `/projects` catalogue
+and a page per project, two API routes, no database. All content is static data.
+
+The design (since 2026-11-14) is an **editorial storefront in monochrome with
+iOS-style parts**: projects are presented as products. Earlier designs (Lobby
+Rack and others) were removed; do not bring anything back from them.
 
 ## Tech Stack
 
-Next.js 14 (App Router) · React 18 · TypeScript 5 (strict) · Tailwind CSS 3
-(defaults only, no tokens yet) · Groq (chat) · Resend (email) · GitHub GraphQL
-(activity data)
+Next.js 14 (App Router) · React 18 · TypeScript 5 (strict) · Tailwind CSS 3 ·
+`motion` (`motion/react`, client components only) · lucide-react ·
+Instrument Serif + Inter via `next/font/google` · Groq (chat) · Resend (email) ·
+GitHub GraphQL (activity section)
 
-`motion`, `next-themes`, `lucide-react`, `clsx` and `tailwind-merge` are still in
-`package.json` from the old front end. Nothing imports the first three now; keep
-or drop them when the new design is chosen.
+`next-themes` is still in `package.json` and unused: there is one light theme.
 
 ## Build & Run
 
@@ -22,7 +22,7 @@ or drop them when the new design is chosen.
 - Build: `npm run build`
 - Types: `npm run type-check`
 - Lint: `npm run lint`
-- Tests: `npm test` (Vitest: content tests and the JSON-LD component test)
+- Tests: `npm test` (Vitest: content tests, `tests/design/system.test.ts`, and markup tests in `tests/components/`)
 - URL liveness: `npm run verify:urls` (manual; hits the live internet, never in CI)
 - Thumbnails: `npm run capture [id ...]`; full-page shots: `npm run capture -- --full [id ...]`
 - Embeddability: `npm run check:embeds` (manual; hits the live internet, never in CI)
@@ -34,36 +34,84 @@ CI (`.github/workflows/ci.yml`) runs type-check, lint, test, and build on push a
 PR to `main`. Run all four locally before committing; they must pass with no
 environment variables set.
 
-## What exists
+## Project Structure
 
 ```
-app/layout.tsx       Bare layout: site metadata and JSON-LD only. No fonts, theme, header, footer or chat widget.
-app/page.tsx         Bare homepage: name, title, lede and a plain list of every project
-app/projects/        Bare /projects (plain lists per band, ?band= filters) and /projects/[slug] (plain project and case-study text, JSON-LD)
-app/globals.css      Tailwind directives only
+app/layout.tsx       Fonts, metadata, JSON-LD, the bar, the footer and the phone tab bar
+app/page.tsx         Homepage: hero, featured, client-work, editorials, field-notes, experience, github-activity, stack, contact
+app/projects/        /projects (the whole catalogue; ?band= opens a segment) and /projects/[slug] (a product page; flagships continue into their case study)
+app/not-found.tsx    The 404
+app/globals.css      Tokens, type scale, component classes (.btn, .card, .capsule, .group-list, .shelf, .product) and all CSS motion
 app/robots.ts, app/sitemap.ts, app/llms.txt/, app/llms-full.txt/   SEO and AI-readable files, built from the content
 app/api/chat/        Groq-backed chat endpoint (no widget calls it yet)
-app/api/contact/     Resend-backed contact endpoint (no form calls it yet)
-components/json-ld.tsx  Renders a JSON-LD <script> from lib/structured-data.ts
+app/api/contact/     Resend-backed contact endpoint, called by components/sections/contact.tsx
+components/site-nav.tsx, tab-bar.tsx, site-footer.tsx, json-ld.tsx
+components/sections/ The homepage sections named above
+components/ui/       product-card, catalogue (client: segmented filter over a grid), status-pill, section-header
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/case-studies.ts  Flagship case studies, keyed by project slug
-lib/project-page.ts  Server-only helpers: projectHref, canLinkLive, fullShotFor, isEmbeddable, … (reads the filesystem; never import from a client component)
-lib/embeddable.json  Which live sites allow framing, written by `npm run check:embeds`
-lib/chat-context.ts  Builds the AI assistant's system prompt from the content
-lib/structured-data.ts, lib/llms.ts, lib/site-metadata.ts   JSON-LD, llms files and page metadata, built from the content
-lib/github.ts        Reads the contribution calendar and recent public repos from GitHub's GraphQL API (server only, hourly revalidate); null without GITHUB_TOKEN. Nothing renders it yet.
+lib/catalog.ts       toCardItem(): a project as the plain props a card needs (server only)
+lib/project-page.ts  Server-only helpers: projectHref, canLinkLive, screenshotsFor, fullShotFor, … (reads the filesystem; never import from a client component)
+lib/chat-context.ts, lib/structured-data.ts, lib/llms.ts, lib/site-metadata.ts   Built from the content
+lib/github.ts        Contribution calendar and recent public repos from GitHub's GraphQL API (server only, hourly revalidate); null without GITHUB_TOKEN
 lib/board.ts, lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts   Pure content helpers, all tested
-lib/utils.ts         cn(), extractDomain
-types/index.ts       Every shared interface
-tests/content/       Facts the content claims; tests/components/json-ld.test.tsx; tests/helpers/ (privacy guard, GitHub fixture)
+tests/               content/, design/system.test.ts, components/, helpers/
 scripts/             capture-screenshots, check-embeds, verify-urls, build-resume
 public/assets/       images/{about,gallery,projects}, resume/
 PRODUCT.md           Audience, positioning and evidence. Read it before design work.
 ```
 
-There is no design system, no `DESIGN.md`, no logo, no icons, no fonts and no
-social card. Do not reintroduce anything from the old designs (Lobby Rack, the
-editorial hero) unless Christian asks for it.
+There is no logo (the wordmark is the name set in the serif), no favicon and no
+designed social card yet. The chat endpoint has no widget yet.
+
+## Design system
+
+`tests/design/system.test.ts` enforces the palette, the font count and the
+motion gates.
+
+- **Palette: ghost white, snow, grays, black. Nothing else**, including for
+  status. Tokens are CSS variables in `app/globals.css`, exposed to Tailwind as
+  `ghost` (page), `snow` (cards), `ink` (text, primary buttons, the dark panels),
+  `gray-text` (secondary text, AA on every ground), `gray-mid` (glyphs, large
+  numerals, secondary text on `ink`), `gray-line` (hairlines), `gray-fill` (fills,
+  image wells). Never write a hex in a component.
+- **Two typefaces only.** Instrument Serif (`font-display`) for headings, card
+  names, quotes and numerals; it has one weight, so size and tracking do the
+  work, and italic is the only emphasis. Inter (`font-sans`) for everything
+  else. Use the scale classes: `.display-xl`, `.display-lg`, `.display-md`,
+  `.display-num`, `.label`, `.lede`. Labels are sentence case, never tracked caps.
+- **iOS-style parts:** pill buttons that sink when pressed (`.btn` with
+  `.btn-primary`, `.btn-secondary` or `.btn-quiet`), capsules (`.capsule`),
+  large-radius cards (`.card`), grouped lists with inset hairlines
+  (`.group-list`), a segmented control (`components/ui/catalogue.tsx`), a frosted
+  sticky bar (`.material`), a floating tab bar on phones, and shelves that page
+  sideways (`.shelf`).
+- **Status is never colour:** render it with `StatusPill`, a glyph shape beside
+  its label.
+- One grid: `mx-auto max-w-6xl px-5 sm:px-8`. Sections open with `SectionHeader`.
+- Projects are shown with `ProductCard` from a `CardItem` (`toCardItem`). Never
+  fake a screenshot for an auth-gated or internal project; the card prints why
+  there is none.
+
+## Motion
+
+- **CSS first, and progressive.** Load entrances (`.mask`, `.enter`,
+  `.enter-figure`, `.enter-pop`, staggered by `--i`) and scroll reveals
+  (`.reveal`, `animation-timeline: view()`) live inside
+  `prefers-reduced-motion: no-preference` (and `@supports` for the scroll
+  ones). Outside the gates nothing is hidden, so the server HTML is the
+  finished page. Timing comes from `--dur-*`, `--ease` and `--stagger`.
+- **Hover and press:** `.product` lifts and its image breathes in, a round cue
+  appears; `.nudge` arrows lean; `.underline-draw` draws; buttons sink.
+- **`motion/react` only in client components**, for what CSS cannot do: the
+  segmented control's sliding thumb and the catalogue's re-layout
+  (`catalogue.tsx`), and the contact form's status (`contact.tsx`). Always pass
+  `initial={false}` to `AnimatePresence` or guard with `useReducedMotion`, so
+  nothing renders hidden on the server.
+- Nothing loops or runs for more than a moment. No marquees, count-ups or
+  autoplay.
+- Client components today: `components/ui/catalogue.tsx` and
+  `components/sections/contact.tsx`. Keep everything else on the server.
 
 ## Hero portrait
 
