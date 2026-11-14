@@ -7,7 +7,7 @@ a page per project, two API routes, no database — all content is static data.
 
 Next.js 14 (App Router) · React 18 · TypeScript 5 (strict) · Tailwind CSS 3 ·
 `motion` (imported as `motion/react`; replaced framer-motion) · next-themes ·
-lucide-react · Anybody + Figtree via `next/font/google` · Groq (chat) ·
+lucide-react · Fraunces + Figtree via `next/font/google` · Groq (chat) ·
 Resend (email) · GitHub GraphQL (activity section)
 
 ## Build & Run
@@ -175,33 +175,40 @@ Every project gets a slot in the rack. What fills it:
 
 ## Styling
 
-- Visual authority is `DESIGN.md` (Lobby Rack, written from the built site), with
-  the homepage's direction contract and motion choreography in
-  `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
-- The world: a lagoon-night ground, paper panels, and signal amber laid down
-  only as whole flat planes (hero front panel, product flaps, the contact reply
-  card, the current filter tab). No gradients, glows, tints or outlines on
-  planes. Paper is square-ish (`--radius` 6px; postcards 2px, dialog 10px).
-- Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
-  `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
+- **Direction in progress: Editorial Store (5.0)**, an editorial e-commerce look
+  that replaces Lobby Rack. Done so far: the palette, the type and the hero
+  (a cover: masthead rule, serif title, a cut-out portrait on the clay plane,
+  proof set like product details). Every section below the hero still has its
+  Lobby Rack structure (spreads, rack, creases) in the new palette and type and
+  is to be rebuilt. `DESIGN.md` and `.impeccable/surfaces/app-page-tsx.md`
+  describe Lobby Rack; where they disagree with this file, this file wins.
+- The world: ivory paper, warm black ink, and one clay plane
+  (`accent-plane`), flat, with no gradients, glows or tints. Corners are nearly
+  square (`--radius` 2px).
+- **Hero portrait:** `heroPortraits` in `lib/data.ts` lists the candidates
+  (a background-removed `cutout` in `public/assets/images/about/cutouts/` and the
+  original `full` photo); `heroContent.portrait` picks one. The cut-outs were made
+  with rembg (`isnet-general-use`); remake one when its source photo changes.
+- Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light
+  and the default, `.dark` is the alternative — one per line. `tests/design/contrast.test.ts` parses
   them and checks WCAG contrast in both themes; keep the format exact.
 - Tailwind colour keys: `canvas` (page, CSS `--bg`), `panel`, `ink`, `muted`,
   `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `accent-plane`, `on-accent`,
   `live`, `status-early`, `status-private`, `status-internal`. Never raw hex,
   never `dark:` colour pairs. Text fields draw their border in `field-border`
   (3:1, WCAG 1.4.11), never a hairline token.
-- **Two ambers.** `accent-plane` fills planes and the primary button, bright in
-  both themes. `accent` is amber as ink and line (focus ring, hover border,
-  links, small glyphs); in the light theme it is a deeper amber so it holds AA
-  on paper. Never fill a plane with `accent` or set text on one in `ink`; the
+- **Two clays.** `accent-plane` fills planes and the primary button, the same
+  light clay in both themes. `accent` is clay as ink and line (focus ring, hover
+  border, links, small glyphs); in the light theme it is a deeper clay so it
+  holds AA on paper. Never fill a plane with `accent` or set text on one in `ink`; the
   contrast test greps for it.
-- **On an amber plane, text is `on-accent`** (dark ink in both themes). A plane
+- **On a clay plane, text is `on-accent`** (dark ink in both themes). A plane
   that holds focusable controls carries `.on-plane`, which draws the focus ring
-  in `on-accent` (the accent ring vanishes on amber) and inverts the primary
+  in `on-accent` (the accent ring vanishes on clay) and inverts the primary
   button.
 - **One primary button:** `.button-primary` (with `.press` for the hover lift),
-  defined once in `globals.css`: an `accent-plane` fill on paper, a lagoon fill
-  with amber text inside `.on-plane`. Never compose a primary from a fill and
+  defined once in `globals.css`: an `accent-plane` fill on paper, a canvas fill
+  with accent text inside `.on-plane`. Never compose a primary from a fill and
   padding; `tests/design/primary-button.test.ts` enforces it.
 - **Green (`live`) means a live system and nothing else.** Brand and availability
   use `accent`, and so does the chat assistant's status dot. `live` and
@@ -209,16 +216,17 @@ Every project gets a slot in the rack. What fills it:
   enforces it.
 - **Status is never colour alone.** Render it only through `StatusBadge`, which
   pairs a glyph shape with a text label: live dot, early-access ring (violet,
-  `status-early`, kept well away from amber), private
+  `status-early`, kept well away from clay), private
   lock, internal filled square, staging outlined square.
-- Type: two variable families via `next/font`, nothing else. **Anybody**
-  (`font-display`, `--font-display`, loaded with its `wdth` axis) shouts:
-  headings condensed at wdth 75, titles at 85, labels and buttons at 100.
-  **Figtree** (`font-sans`, `--font-sans`) reads: body, ledes, forms, chat. Both
-  fall back to plain Arial (`adjustFontFallback: false`). There is no mono
-  family: dates, domains, counts and running indexes use `.edge-code`. Numerals
-  use `tabular-nums` and are plain ("4", not "04"). Utilities: `.eyebrow`,
-  `.edge-code`, `.button-label`, `.text-fluid-h1`, `.text-page-h1`,
+- Type: two variable families via `next/font`, nothing else. **Fraunces**
+  (`font-display`, `--font-display`, a serif with its optical-size axis) sets
+  every heading, card name and numeral at weight 400 to 450 with tight tracking.
+  **Figtree** (`font-sans`, `--font-sans`) reads and labels: body, ledes, forms,
+  chat, eyebrows, edge codes and buttons. Fallbacks are plain Georgia and Arial
+  (`adjustFontFallback: false`). There is no mono family: dates, domains, counts
+  and running indexes use `.edge-code`. Numerals use `tabular-nums` and are plain
+  ("4", not "04"). Labels are sentence case, never caps with tracking. Utilities:
+  `.eyebrow`, `.edge-code`, `.button-label`, `.text-fluid-h1`, `.text-page-h1`,
   `.text-fluid-h2`, `.text-title`, `.text-numeral`, `.text-lede`.
 - One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
 - Section headings: `SectionHeading` (`components/ui/section-heading.tsx`), an
@@ -274,8 +282,8 @@ direction contract.
   HTML is the finished page and nothing is measured for contrast while faded.
   Proof (Products, the rack) must be visible in the server HTML;
   `tests/components/sections.test.tsx` forbids `opacity:0` there.
-- **Hero sequence:** CSS keyframes on load, no JS, 1.9 s, once (H1 words rise,
-  the inner panels unfold from behind the front one, creases draw, proof rises).
+- **Hero sequence:** CSS keyframes on load, no JS, once (H1 words rise, the clay
+  plane grows from the floor, the figure steps onto it, proof rises).
   It must stay under two seconds (`motion-tokens` test).
 - **Catalog hover (`.lift-card`)**: rack cards, a product's screenshot and
   case-study covers. On a fine pointer with motion allowed: lift 2px, border to

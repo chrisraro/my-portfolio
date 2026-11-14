@@ -81,13 +81,14 @@ describe('first layout', () => {
 })
 
 describe('display font', () => {
-  // R6: Anybody, instanced to the axis ranges in use, is a third smaller than
-  // Google's full variable file, and it sits on every page's critical path.
-  it('is the self-hosted instance, preloaded, no larger than 40 KB', () => {
+  // Fraunces comes from next/font/google (self-hosted at build, latin subset),
+  // with only the optical-size axis beside weight.
+  it('is Fraunces through next/font, with a plain Georgia fallback', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout).toMatch(/localFont\(\{\s*src: '\.\/fonts\/anybody-latin-wght400-800-wdth75-100\.woff2'/)
-    expect(layout).not.toMatch(/import \{[^}]*Anybody[^}]*\} from 'next\/font\/google'/)
-    expect(statSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2').size).toBeLessThanOrEqual(40 * 1024)
+    expect(layout).toMatch(/import \{[^}]*Fraunces[^}]*\} from 'next\/font\/google'/)
+    expect(layout).toMatch(/Fraunces\(\{[^}]*subsets: \['latin'\][^}]*variable: '--font-display'[^}]*axes: \['opsz'\]/)
+    expect(layout).toMatch(/fallback: \['Georgia', 'serif'\]/)
+    expect(layout).not.toContain('localFont')
   })
 })
 

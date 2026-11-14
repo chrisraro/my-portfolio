@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 /*
- * Design tokens: Lobby Rack. See .impeccable/surfaces/app-page-tsx.md.
+ * Design tokens: Editorial Store (the 5.0 direction; it replaces Lobby Rack).
  *
  * Each colour is a raw oklch "L C H" triplet, one per line, so Tailwind can wrap
  * it as oklch(var(--x) / <alpha-value>) and opacity modifiers keep working.
  * tests/design/contrast.test.ts parses these lines; keep the format exact.
  *
- * :root is the light theme. .dark is the default: next-themes adds the class.
- * Lagoon ground, paper panels, signal amber as flat planes (--accent-plane,
- * bright in both themes, with dark lagoon text on it). --accent is the amber
- * for links, rings and small glyphs: in the light theme a deeper amber, so it
- * holds AA as text on paper.
+ * :root is the light theme and the default; .dark is the evening edition.
+ * Ivory paper, warm black ink, and one clay plane (--accent-plane, the same in
+ * both themes, with dark ink on it). --accent is the clay for links, rings and
+ * small glyphs: in the light theme a deeper clay, so it holds AA as text on
+ * paper.
  * Green (--live) means a live system and nothing else; violet
  * (--status-early) is only the early-access ring, kept well away from amber.
  * Text on an amber plane is --on-accent only.
@@ -27,46 +27,46 @@
 	--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
 	/* A rack row's once-only entrance: each column starts this much later. */
 	--stagger-card: 60ms;
-	--bg: 0.9780 0.0060 220;
-	--panel: 1.0000 0.0000 0;
-	--ink: 0.2500 0.0450 240;
-	--muted: 0.4900 0.0350 235;
-	--muted-strong: 0.3700 0.0400 238;
-	--line: 0.9000 0.0120 225;
-	--line-strong: 0.8200 0.0180 228;
-	--accent: 0.5300 0.1150 68;
-	--accent-plane: 0.8000 0.1500 80;
-	--on-accent: 0.2500 0.0450 240;
-	--live: 0.5500 0.1400 152;
-	--status-early: 0.5200 0.1600 285;
-	--status-private: 0.5600 0.0300 235;
-	--status-internal: 0.5600 0.0300 235;
+	--bg: 0.9650 0.0120 85;
+	--panel: 0.9900 0.0050 85;
+	--ink: 0.2100 0.0100 60;
+	--muted: 0.4900 0.0150 70;
+	--muted-strong: 0.3700 0.0150 65;
+	--line: 0.8900 0.0120 85;
+	--line-strong: 0.8000 0.0150 80;
+	--accent: 0.4600 0.1200 40;
+	--accent-plane: 0.7600 0.1000 55;
+	--on-accent: 0.2100 0.0100 60;
+	--live: 0.5000 0.1400 152;
+	--status-early: 0.5000 0.1600 285;
+	--status-private: 0.5200 0.0150 70;
+	--status-internal: 0.5200 0.0150 70;
 	/* Text-field borders: 3:1 against canvas and panel (WCAG 1.4.11). */
-	--field-border: 0.6000 0.0350 232;
+	--field-border: 0.5800 0.0200 70;
 	/* Paper is square-ish: cards, panels and buttons 6px (Tailwind sm 2px for
 	 * postcards, xl 10px for the dialog derive from this). */
-	--radius: 0.375rem;
+	--radius: 0.125rem;
 	/* The one in-flow shadow, only while a card is lifted; overlays share its hue. */
-	--shadow-lift: 0 18px 30px -18px oklch(0.12 0.03 232 / 0.55);
-	--shadow-overlay: 0 24px 48px -12px oklch(0.12 0.03 232 / 0.5);
+	--shadow-lift: 0 18px 30px -18px oklch(0.15 0.02 60 / 0.35);
+	--shadow-overlay: 0 24px 48px -12px oklch(0.15 0.02 60 / 0.4);
 }
 
 .dark {
-	--bg: 0.2350 0.0420 232;
-	--panel: 0.2750 0.0460 232;
-	--ink: 0.9640 0.0110 100;
-	--muted: 0.6900 0.0320 226;
-	--muted-strong: 0.8500 0.0220 220;
-	--line: 0.3450 0.0420 232;
-	--line-strong: 0.4300 0.0420 232;
-	--accent: 0.8200 0.1500 85;
-	--accent-plane: 0.8200 0.1500 85;
-	--on-accent: 0.2350 0.0420 232;
+	--bg: 0.1900 0.0080 60;
+	--panel: 0.2300 0.0100 60;
+	--ink: 0.9500 0.0120 85;
+	--muted: 0.6800 0.0150 75;
+	--muted-strong: 0.8400 0.0120 80;
+	--line: 0.3000 0.0100 60;
+	--line-strong: 0.4000 0.0120 60;
+	--accent: 0.8000 0.1000 60;
+	--accent-plane: 0.7600 0.1000 55;
+	--on-accent: 0.1900 0.0080 60;
 	--live: 0.8200 0.1500 152;
 	--status-early: 0.7600 0.1200 285;
-	--status-private: 0.6400 0.0300 226;
-	--status-internal: 0.6400 0.0300 226;
-	--field-border: 0.6000 0.0350 228;
+	--status-private: 0.6400 0.0120 70;
+	--status-internal: 0.6400 0.0120 70;
+	--field-border: 0.6000 0.0150 70;
 }
 
 @layer base {
@@ -100,15 +100,13 @@
 		background: oklch(var(--accent-plane));
 		color: oklch(var(--on-accent));
 	}
-	/* Anybody does the shouting: headings condensed at wdth 75, titles at 85. */
+	/* The serif (Fraunces) sets every heading; the sans sets everything small. */
 	h1, h2 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-family: var(--font-display), Georgia, serif;
 		text-wrap: balance;
 	}
 	h3, h4 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 85;
+		font-family: var(--font-display), Georgia, serif;
 		text-wrap: balance;
 	}
 	a { text-underline-offset: 0.2em; }
@@ -131,46 +129,43 @@
 }
 
 @layer components {
-	/* H1: 56px at a 360px viewport rising to 112px. Anybody 800, condensed. */
+	/* H1: 52px at a 360px viewport rising to 112px. Fraunces 400, tight. */
 	.text-fluid-h1 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
-		font-size: clamp(3.5rem, 2.2rem + 5.6vw, 7rem);
-		line-height: 0.9;
-		letter-spacing: -0.02em;
-		font-weight: 800;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: clamp(3.25rem, 2rem + 5.6vw, 7rem);
+		line-height: 0.95;
+		letter-spacing: -0.03em;
+		font-weight: 400;
 	}
 	.text-fluid-h2 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
-		font-size: clamp(2rem, 1.5rem + 2.2vw, 3.5rem);
-		line-height: 0.95;
-		letter-spacing: -0.015em;
-		font-weight: 750;
+		font-family: var(--font-display), Georgia, serif;
+		font-size: clamp(2.125rem, 1.5rem + 2.4vw, 3.75rem);
+		line-height: 1;
+		letter-spacing: -0.025em;
+		font-weight: 400;
 	}
 	/* Read pages (/projects, a project, the 404): the H1 at the smaller end. */
 	.text-page-h1 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-family: var(--font-display), Georgia, serif;
 		font-size: clamp(2.75rem, 2rem + 3.5vw, 5rem);
-		line-height: 0.92;
-		letter-spacing: -0.02em;
-		font-weight: 800;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+		font-weight: 400;
 	}
 	/* Card names and h3s. */
 	.text-title {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 85;
+		font-family: var(--font-display), Georgia, serif;
 		font-size: 1.5rem;
-		line-height: 1.05;
-		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.015em;
+		font-weight: 450;
 	}
 	.text-numeral {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-family: var(--font-display), Georgia, serif;
 		font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
 		line-height: 0.9;
-		font-weight: 800;
+		letter-spacing: -0.03em;
+		font-weight: 400;
 		font-variant-numeric: tabular-nums;
 	}
 	/* The hero's two-point band: each figure owns half the back panel, so it is set larger. */
@@ -187,27 +182,24 @@
 	 * the job. Eyebrows are edge-code labels in sentence case.
 	 */
 	.edge-code {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 100;
+		font-family: var(--font-sans), system-ui, sans-serif;
 		font-weight: 500;
 		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.04em;
+		letter-spacing: 0.01em;
 	}
 	.eyebrow {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 100;
+		font-family: var(--font-sans), system-ui, sans-serif;
 		font-size: 0.8125rem;
 		font-weight: 600;
 		line-height: 1.2;
-		letter-spacing: 0.04em;
+		letter-spacing: 0.02em;
 		font-variant-numeric: tabular-nums;
 		color: oklch(var(--muted));
 	}
 	.button-label {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 100;
+		font-family: var(--font-sans), system-ui, sans-serif;
 		font-size: 1rem;
-		font-weight: 650;
+		font-weight: 600;
 		line-height: 1;
 	}
 	/*
@@ -435,9 +427,9 @@
  * Anybody and would break "Full-stack" at its hyphen into a third line, which
  * then collapses when the font arrives: a layout shift under the whole hero). */
 .hero-word { display: inline-block; white-space: nowrap; }
-/* The H1 is sized to its panel, so "Full-stack" never breaks out of the plane. */
+/* The H1 is sized to its column, so "Full-stack" never breaks out of it. */
 .hero-front { container-type: inline-size; }
-.hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
+.hero-title { font-size: clamp(2.75rem, 19cqi, 6.5rem); }
 
 /*
  * Catalog card hover (.lift-card): rack cards, a product's screenshot and the
@@ -554,6 +546,15 @@
 		animation: hero-draw-y var(--dur-crawl) var(--ease-smooth) var(--t-crease-1) both;
 	}
 	.hero-crease-2 { animation-delay: var(--t-crease-2); }
+	/* The cover: the clay plane grows from the floor, then the figure steps up onto it. */
+	.hero-plane {
+		transform-origin: center bottom;
+		animation: hero-draw-y var(--dur-slow) var(--ease-smooth) var(--t-mid) both;
+	}
+	.hero-figure {
+		--rise: 24px;
+		animation: hero-rise var(--dur-slow) var(--ease-smooth) var(--t-right) both;
+	}
 	.hero-proof-item {
 		--rise: 8px;
 		animation: hero-lift var(--dur-normal) var(--ease-smooth) both;
@@ -799,7 +800,7 @@
 		transform: none;
 	}
 	/* Hero: every piece in its final state at first paint, creases drawn. */
-	:is(.hero-word, .hero-rise, .hero-unfold-mid, .hero-unfold-right, .hero-crease-1, .hero-crease-2, .hero-proof-item) {
+	:is(.hero-word, .hero-rise, .hero-plane, .hero-figure, .hero-unfold-mid, .hero-unfold-right, .hero-crease-1, .hero-crease-2, .hero-proof-item) {
 		animation: none !important;
 		transform: none;
 	}

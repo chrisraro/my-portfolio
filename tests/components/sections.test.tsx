@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
@@ -23,6 +23,7 @@ import {
   galleryContent,
   galleryImages,
   heroContent,
+  heroPortraits,
   projects,
   recommendations,
   sectionContent,
@@ -48,23 +49,37 @@ describe('Hero', () => {
     expect(html.indexOf('</h1>')).toBeLessThan(html.indexOf(heroContent.aiLine))
   })
 
-  // Confirm critique: the proof panel spread its two groups apart (a ~234px
-  // void), and at 1440x900 the fold cut the Products heading in half.
-  // R5 critique: at 1440 the panel's bottom third stood empty. The proof grid
-  // now grows to fill it (its rows share the height), still from the top.
-  it('stacks the proof panel from the top, fills it, and leaves the next heading inside the first viewport', () => {
-    const panel = html.match(/<div class="hero-unfold-right[^"]*"/)?.[0] ?? ''
-    expect(panel).toContain('justify-start')
-    expect(panel).not.toContain('justify-between')
+  // The proof is the cover's third column, set like a product's details: it
+  // starts at the top and its rows share the column's height.
+  it('sets the proof as the third column, from the top, and keeps the next heading in the first viewport', () => {
     const grid = html.match(/<ul class="([^"]*grid-cols-2[^"]*)"/)?.[1] ?? ''
     expect(grid).toContain('md:flex-1')
     expect(grid).toContain('md:auto-rows-fr')
     // Two proof points: side by side when stacked, one above the other in the
-    // narrow back panel from 768px, each owning half its height, numerals large.
+    // narrow column from 768px, each owning half its height, numerals large.
     expect(grid).toContain('md:grid-cols-1')
     expect(html.match(/class="text-numeral text-numeral-lg/g)).toHaveLength(heroContent.proofPoints.length)
+    const column = html.slice(0, html.indexOf(grid)).match(/<div class="([^"]*)">(?:(?!<div)[\s\S])*$/)?.[1] ?? ''
+    expect(column).toContain('justify-start')
+    expect(column).toContain('md:col-span-3')
     const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
     expect(section).toContain('md:pb-[72px]')
+  })
+
+  it('stands the cut-out portrait on the one plane, which carries no text', () => {
+    const portrait = heroPortraits[heroContent.portrait]
+    expect(html).toContain(encodeURIComponent(portrait.cutout))
+    expect(html.match(/bg-accent-plane/g)).toHaveLength(1)
+    expect(html).toMatch(/<span aria-hidden="true" class="hero-plane [^"]*bg-accent-plane[^"]*"><\/span>/)
+    expect(html).not.toContain('text-on-accent')
+  })
+
+  it('offers only portraits whose files exist, each described', () => {
+    for (const p of Object.values(heroPortraits)) {
+      expect(existsSync(`public${p.cutout}`), p.cutout).toBe(true)
+      expect(existsSync(`public${p.full}`), p.full).toBe(true)
+      expect(p.alt).toMatch(/^Portrait of Christian Raro/)
+    }
   })
 
   it('states availability in the first mobile viewport, where the top bar hides it', () => {

@@ -28,6 +28,42 @@ const sectorLabels: Record<ProjectSector, string> = {
 // figure is claimed; the dated timeline carries that. The lede says "with
 // online booking and payments where they need them" rather than "booking and
 // payment websites": Graceland has neither, and the lede must not overclaim.
+// The hero's portrait candidates. `cutout` is the figure with its background
+// removed (it stands on the hero's plane); `full` is the original photo, shown
+// in the lightbox.
+export const heroPortraits = {
+  highlands: {
+    cutout: '/assets/images/about/cutouts/profile-highlands-cutout.webp',
+    full: '/assets/images/about/profile-highlands.webp',
+    alt: 'Portrait of Christian Raro above a mountain village',
+    width: 764,
+    height: 1441,
+  },
+  'city-night': {
+    cutout: '/assets/images/about/cutouts/profile-city-night-cutout.webp',
+    full: '/assets/images/about/profile-city-night.webp',
+    alt: 'Portrait of Christian Raro in the city at night, holding a motorcycle helmet',
+    width: 1032,
+    height: 1488,
+  },
+  stairs: {
+    cutout: '/assets/images/about/cutouts/profile-stairs-cutout.webp',
+    full: '/assets/images/about/profile-stairs.webp',
+    alt: 'Portrait of Christian Raro standing by a staircase',
+    width: 338,
+    height: 897,
+  },
+  hiking: {
+    cutout: '/assets/images/about/cutouts/profile-hiking-cutout.webp',
+    full: '/assets/images/about/profile-hiking.jpg',
+    alt: 'Portrait of Christian Raro hiking',
+    width: 873,
+    height: 1269,
+  },
+} as const
+
+export type HeroPortraitId = keyof typeof heroPortraits
+
 export const heroContent = {
   name: 'Christian Raro',
   title: 'Full-stack developer',
@@ -44,8 +80,17 @@ export const heroContent = {
       { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
     ] as { label: string; href?: string }[],
   },
+  // Which of `heroPortraits` stands on the hero's plane. Change this one word
+  // to swap the photo; tests/content/positioning.test.ts checks the files exist.
+  portrait: 'highlands' as HeroPortraitId,
   // The hero photo, described for the portrait's labelled button.
-  portraitAlt: 'Portrait of Christian Raro hiking',
+  get portraitAlt(): string {
+    return heroPortraits[this.portrait].alt
+  },
+  // The line across the top of the cover, opposite the name.
+  get coverLine(): string {
+    return `Portfolio ${new Date().getFullYear()} · ${projects.filter((p) => p.status !== 'staging').length} projects`
+  },
   lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
   // reading it eagerly here would hit the temporal dead zone at module load.

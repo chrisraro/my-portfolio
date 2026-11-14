@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { Figtree } from 'next/font/google'
-import localFont from 'next/font/local'
+import { Figtree, Fraunces } from 'next/font/google'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -13,33 +12,23 @@ import { ViewTransitions } from '@/components/ui/view-transitions'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
 import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structured-data'
 
-// Two families (see .impeccable/surfaces/app-page-tsx.md). Anybody is the
-// display voice: headings condensed on its width axis, edge codes and numerals
-// at normal width with tabular figures. Figtree reads: body, ledes, forms, chat.
-// Both are variable; weight comes with the variable file, and Anybody also
-// loads its wdth axis.
+// Two families. Fraunces is the display voice: every heading, card name and
+// numeral. Figtree reads and labels: body, ledes, forms, chat, eyebrows, edge
+// codes, buttons. Both are variable.
 //
-// The fallback is plain Arial, not next/font's metric-adjusted
-// `local("Arial")` face. Until the woff2 files arrive the page is laid out in
-// the fallback, and a local() face is instantiated afresh for every weight,
-// width and size on the page: on the first layout that cost ~200ms of main
-// thread (traced). The adjustment matched ascent and size only, never
-// Anybody's condensed width, so it saved little shift for what it cost.
-//
-// Anybody is self-hosted, instanced to the axis ranges the site uses (wght
-// 400-800, wdth 75-100) from Google's latin subset: 38 KB instead of 57 KB for
-// the full 100-900 / 50-150 font, on the critical path of every page (R6 perf).
-// Regenerate with fontTools:
-//   python -m fontTools.varLib.instancer <anybody-latin>.woff2 wght=400:800 wdth=75:100 -o out.ttf
-// then save as woff2. Content outside Latin-1 and General Punctuation falls back to Arial.
-const anybody = localFont({
-  src: './fonts/anybody-latin-wght400-800-wdth75-100.woff2',
+// The fallbacks are plain system faces (Georgia, Arial), not next/font's
+// metric-adjusted local() faces: a local() face is instantiated afresh for
+// every weight and size on the page, which cost ~200ms of main thread on the
+// first layout (traced).
+// The display serif: Fraunces, variable (weight and optical size), from
+// Google's latin subset. Georgia stands in until it arrives.
+const fraunces = Fraunces({
+  subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  weight: '400 800',
-  declarations: [{ prop: 'font-stretch', value: '75% 100%' }],
+  axes: ['opsz'],
   adjustFontFallback: false,
-  fallback: ['Arial', 'sans-serif'],
+  fallback: ['Georgia', 'serif'],
 })
 
 const figtree = Figtree({
@@ -58,10 +47,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${anybody.variable} ${figtree.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${figtree.variable}`}>
       <body>
         <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <ToastProvider>
             <a
               href="#main"

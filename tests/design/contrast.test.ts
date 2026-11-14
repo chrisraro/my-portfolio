@@ -113,23 +113,22 @@ describe('focus on amber planes', () => {
   })
 })
 
-// Critique R5 P2: the light theme's AA-safe link amber (L 0.53) read as brown
-// when it filled whole planes. Planes take their own token: a bright signal
-// amber in both themes, with dark lagoon ink on it; links and small text keep
-// --accent.
-describe('amber planes', () => {
+// The plane takes its own token: one clay in both themes, light enough to
+// carry dark ink and warm enough not to read as brown or as amber. Links and
+// small text keep --accent.
+describe('clay planes', () => {
   it.each([
     ['light', ':root'],
     ['dark', '.dark'],
-  ])('%s: the plane is a bright amber, not brown', (_name, selector) => {
+  ])('%s: the plane is a light clay, not brown', (_name, selector) => {
     const [L, C, H] = readTheme(selector)['accent-plane']
-    expect(L).toBeGreaterThanOrEqual(0.75)
-    expect(C).toBeGreaterThanOrEqual(0.12)
-    expect(H).toBeGreaterThanOrEqual(70)
-    expect(H).toBeLessThanOrEqual(95)
+    expect(L).toBeGreaterThanOrEqual(0.7)
+    expect(C).toBeGreaterThanOrEqual(0.08)
+    expect(H).toBeGreaterThanOrEqual(40)
+    expect(H).toBeLessThanOrEqual(70)
   })
 
-  it('light: text on a plane is dark ink, and links keep the deeper amber', () => {
+  it('light: text on a plane is dark ink, and links keep the deeper clay', () => {
     const light = readTheme(':root')
     expect(light['on-accent'][0]).toBeLessThan(0.4)
     expect(light.accent[0]).toBeLessThan(light['accent-plane'][0])
