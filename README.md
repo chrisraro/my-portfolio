@@ -1,212 +1,52 @@
-# Christian Raro — Portfolio
+# Christian Raro: portfolio
 
-The portfolio of Christian Raro, a full-stack developer in Naga City,
-Philippines. A homepage and a `/projects` index of 15 projects, two API routes,
-and no database: every fact on the site is static data in
-[`lib/data.ts`](lib/data.ts), and tests check the claims against it.
+The source for Christian Raro's personal portfolio site.
 
-The design is **B3 Signal**: the work shown as an operations board of running
-systems, each with an honest status, on warm graphite with sodium amber as the
-only brand colour. [`DESIGN.md`](DESIGN.md) documents the system as built.
-[`CLAUDE.md`](CLAUDE.md) holds the working rules for editing the codebase.
+**The front end is a clean slate.** The previous designs were removed so the
+site can be redesigned from scratch. The repository currently holds:
 
-## Tech Stack
+- **Content:** every project, case study, testimonial, role and photo, in
+  `lib/data.ts`, `lib/case-studies.ts` and `public/assets/`.
+- **SEO plumbing:** sitemap, robots.txt, JSON-LD, `/llms.txt` and page metadata,
+  all generated from the content.
+- **Back end:** a Groq-backed chat endpoint (`/api/chat`), a Resend-backed
+  contact endpoint (`/api/contact`) and a GitHub activity fetcher
+  (`lib/github.ts`). Each works, in a degraded but honest way, with no
+  environment variables set.
+- **A bare skeleton:** unstyled pages that list the content, so the site builds
+  and every project page stays reachable while the new design is made.
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript 5 (`strict`) |
-| UI | React 18, server components by default |
-| Styling | Tailwind CSS 3 over oklch colour tokens |
-| Typeface | Recursive (one variable family, via `next/font`; its MONO axis is the monospace voice) |
-| Theming | next-themes (dark by default, plus a light theme) |
-| Motion | framer-motion 10 (chat, lightbox and toast fades only) |
-| Icons | lucide-react |
-| Chat | Groq via `groq-sdk` (model from `GROQ_MODEL`, default `openai/gpt-oss-120b`) |
-| Email | Resend (REST API, no SDK) |
-| Tests | Vitest |
-| Scripts | puppeteer-core |
-
-## Getting Started
-
-Requires Node.js 20+.
+## Run it
 
 ```bash
 npm install
-cp .env.example .env.local   # optional; see Environment below
+```
+
+```bash
 npm run dev
 ```
 
-Open <http://localhost:3000>.
+Before committing, all four must pass:
 
-## Scripts
-
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Start the dev server |
-| `npm run build` | Production build |
-| `npm start` | Serve the production build |
-| `npm run type-check` | `tsc --noEmit` |
-| `npm run lint` | ESLint (`next/core-web-vitals`) |
-| `npm test` | Run the Vitest suite |
-| `npm run test:watch` | Run the Vitest suite in watch mode |
-| `npm run verify:urls` | Check every project's live URL still resolves. It hits the live internet, so it is manual-only and never runs in CI |
-| `npm run capture [id...]` | Recapture project screenshots from the live sites |
-| `npm run resume` | Rebuild the résumé PDF |
-
-`capture` and `resume` drive a local Chrome/Edge install through
-`puppeteer-core`, and resolve the browser from hardcoded Windows paths (see the
-top of each script in [`scripts/`](scripts/)).
-
-## Environment
-
-Every variable is optional. The site builds and runs on a bare checkout, and
-each feature degrades honestly instead of erroring. See
-[`.env.example`](.env.example).
-
-| Variable | Effect when unset |
-|----------|-------------------|
-| `GROQ_API_KEY` | The chat assistant replies with a canned offline message, and says it is offline |
-| `GROQ_MODEL` | Defaults to `openai/gpt-oss-120b` |
-| `RESEND_API_KEY` | The contact form opens the visitor's mail app (`mailto:`) instead |
-| `CONTACT_FROM_EMAIL` | Defaults to Resend's shared test sender |
-| `NEXT_PUBLIC_SITE_URL` | Defaults to `https://christian-digital-portfolio.vercel.app` for metadata |
-| `GOOGLE_SITE_VERIFICATION` | Google Search Console verification meta tag is omitted |
-
-## Project Structure
-
-```
-app/
-  layout.tsx          Recursive, theme and toast providers, page chrome
-  page.tsx            Homepage: hero, products, systems board, field log,
-                      changelog, stack, contact
-  projects/           /projects: every project, filterable by band (?band=)
-  projects/[slug]/    One page per project: a case study for five flagships,
-                      a short page for the rest
-  api/chat/           Groq-backed chat endpoint
-  api/contact/        Resend-backed contact endpoint
-  globals.css         Colour tokens (oklch) and shared utilities
-  opengraph-image.tsx Link-preview card, rendered from heroContent by next/og
-  fonts/              Recursive instances for the preview card
-  robots.ts, sitemap.ts  sitemap.ts lists the homepage, /projects and every project page
-  llms.txt/, llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
-components/
-  top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
-  sections/           One file per homepage section
-  ui/                 Primitives: status-badge, board-row, systems-board,
-                      board-filter, product-panel, proof-band, chat-widget,
-                      toaster, image-lightbox
-lib/
-  data.ts             Single source of truth for all content, including headings
-  chat-context.ts     Builds the chat assistant's system prompt from data.ts
-  structured-data.ts  Builds JSON-LD from data.ts and case-studies.ts
-  llms.ts             Builds /llms.txt and /llms-full.txt from the same content
-  site-metadata.ts    Builds page metadata from heroContent
-  board.ts, display-status.ts, proof.ts, field-log.ts, dates.ts, timeline.ts
-                      Pure helpers, all tested
-  utils.ts            cn(), extractDomain
-types/index.ts        Shared interfaces
-tests/                content/, design/, components/, helpers/ (shared test helpers)
-scripts/              Screenshot capture, résumé PDF, URL check
-public/assets/        images/{about,gallery,projects}, resume/
+```bash
+npm run type-check
 ```
 
-## Editing Content
+```bash
+npm run lint
+```
 
-All content lives in [`lib/data.ts`](lib/data.ts): `heroContent`,
-`availability`, `resumeUrl`, `projects`, `paymentGateways`, `skills`,
-`experience`, `education`, `recommendations`, `galleryContent`, `galleryImages`,
-`sectionContent`, `projectsPageContent`, `socialLinks`, `contactInfo`,
-`navigationItems` and `services`. Components never hardcode facts, headings or
-eyebrows. New shapes get an interface in [`types/index.ts`](types/index.ts).
+```bash
+npm test
+```
 
-The JSON-LD ([`lib/structured-data.ts`](lib/structured-data.ts)), the sitemap
-and the AI files ([`lib/llms.ts`](lib/llms.ts), served at `/llms.txt` and
-`/llms-full.txt`) are all built from `lib/data.ts` and `lib/case-studies.ts`,
-so a new project reaches them the same way it reaches the chat assistant: no
-hand-editing needed. Only public email and social links appear in any of
-them, and the address is the public locality, never a street or a phone
-number.
+```bash
+npm run build
+```
 
-Each project carries a `band` (`Products`, `Custom systems`, `Applications` or
-`Sites`) and a `status`. Several lines on the page are derived from the data
-rather than typed: the hero's specialism line counts the Sites band and names
-its sectors, and the proof band's claims are checked against the inventory. Change
-the inventory and those lines change with it, or a test fails.
+Environment variables are optional; see `.env.example`.
 
-The chat assistant builds its whole system prompt from `lib/data.ts` through
-[`lib/chat-context.ts`](lib/chat-context.ts), so a new project reaches it
-automatically. Don't reintroduce hand-written portfolio prose in
-`app/api/chat/route.ts`.
+## Where things are
 
-## Styling
-
-Read [`DESIGN.md`](DESIGN.md) before UI work. The essentials:
-
-- Colours are oklch tokens in [`app/globals.css`](app/globals.css) (`.dark` is
-  the default theme, `:root` the light one), exposed as Tailwind keys in
-  [`tailwind.config.js`](tailwind.config.js): `canvas`, `panel`, `ink`, `muted`,
-  `muted-strong`, `line`, `line-strong`, `accent`, `on-accent`, `live`,
-  `status-early`, `status-private`, `status-internal`. No raw hex, no `dark:`
-  colour pairs.
-- Amber (`accent`) is the only brand colour. Green (`live`) means a live system
-  and nothing else.
-- Status always renders through `StatusBadge`: a glyph shape plus a text label,
-  never colour alone.
-- One typeface, Recursive. `font-mono` is the same family with its MONO axis on,
-  and every numeral is tabular.
-- One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
-
-## Motion
-
-Almost nothing moves. The live status dot pulses twice and stops, the chat's
-typing dots run only while a reply loads, and the chat, lightbox and toasts fade
-in and out. Reduced motion removes the pulse and the offsets. Content renders
-visible from the server, with no entrance animation.
-
-## Testing
-
-`npm test` runs Vitest over three folders:
-
-- [`tests/content/`](tests/content/) checks the facts the site claims against
-  `lib/data.ts`: inventory, bands, the proof band, positioning, testimonials,
-  dates and ordering.
-- [`tests/design/`](tests/design/) checks design invariants: WCAG contrast of
-  the tokens in both themes, no legacy tokens, green only on the live status,
-  the social card's palette, the client-component count and nav anchors.
-- [`tests/components/`](tests/components/) renders components with
-  `react-dom/server` and checks their markup.
-
-[`tests/helpers/`](tests/helpers/) holds helpers shared across those folders,
-such as the phone-number guard the JSON-LD and AI-file tests reuse.
-
-There are no end-to-end tests. CI
-([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs type-check, lint,
-tests and build on every push and pull request to `main`, with no environment
-variables set.
-
-## Deployment
-
-Deployed on Vercel: <https://christian-digital-portfolio.vercel.app>
-
-Pushes to `main` deploy automatically. The two API routes need a Node runtime, so
-a fully static export would disable the chat and the contact form.
-
-Environment variables are set in the Vercel project settings, not in the repo. At
-minimum set `NEXT_PUBLIC_SITE_URL` to the production origin so link previews
-resolve against the right host, plus `GROQ_API_KEY` and `RESEND_API_KEY` to enable
-the chat and the contact form.
-
-Two things to know before the first deploy:
-
-- `CONTACT_FROM_EMAIL` is the **sender** and must sit on a domain verified at
-  <https://resend.com/domains>. A gmail.com address is rejected with a 403. Until a
-  domain is verified, Resend's shared `onboarding@resend.dev` sender only delivers
-  to the address that owns the Resend account, so messages from real visitors will
-  not arrive.
-- Groq retires models periodically, and a retired id fails at request time with a
-  404. `GROQ_MODEL` overrides the default without a code change.
-
-## License
-
-MIT
+`CLAUDE.md` lists every module and the rules for changing content. `PRODUCT.md`
+describes the audience and positioning.

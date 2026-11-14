@@ -80,9 +80,9 @@ export const heroContent = {
       { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
     ] as { label: string; href?: string }[],
   },
-  // Which of `heroPortraits` stands on the hero's plane. Change this one word
-  // to swap the photo; tests/content/positioning.test.ts checks the files exist.
-  portrait: 'highlands' as HeroPortraitId,
+  // Which of `heroPortraits` the hero uses: the leather-jacket photo, Christian's
+  // choice on 2026-11-14. Change this one word to swap it.
+  portrait: 'stairs' as HeroPortraitId,
   // The hero photo, described for the portrait's labelled button.
   get portraitAlt(): string {
     return heroPortraits[this.portrait].alt

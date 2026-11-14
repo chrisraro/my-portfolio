@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { BoardFilter } from '@/components/ui/board-filter'
-import { RackTier } from '@/components/ui/rack-tier'
-import { catalogOrder, groupByBand, parseBandParam, projectCount } from '@/lib/board'
+import { groupByBand, parseBandParam } from '@/lib/board'
 import { projects, projectsPageContent } from '@/lib/data'
-import { hasFullShot } from '@/lib/project-page'
+import { projectHref } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
 
 interface ProjectsPageProps {
@@ -13,63 +10,33 @@ interface ProjectsPageProps {
 }
 
 export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata {
-  // Every filtered view (?band=...) is the same page to a search engine, so
-  // they all canonicalise to the unfiltered /projects.
   return buildProjectsMetadata(parseBandParam(searchParams.band))
 }
 
-// Filters on the server from ?band=, so this page ships no JavaScript of its
-// own. Reading search params makes it render dynamically rather than at build
-// time; for eighteen cards of static data that costs nothing a visitor notices.
-//
-// The whole inventory as the lobby rack: one tier per band, in BAND_ORDER, of
-// the same pocket cards the homepage uses. Edge codes count in catalogOrder,
-// so a card keeps its number when a filter narrows the rack, and matches the
-// homepage. A filtered view names its band in the eyebrow.
+// Clean slate: the whole inventory as plain lists, one per band (?band= filters).
 export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const band = parseBandParam(searchParams.band)
-  const strip = catalogOrder(projects, hasFullShot)
-  const visible = band ? projects.filter((p) => p.band === band) : projects
-  const count = projectCount(visible, projects, band !== null)
-  const eyebrow = band ? projectsPageContent.bandEyebrow.replace('{band}', band) : projectsPageContent.eyebrow
+  const groups = groupByBand(band ? projects.filter((p) => p.band === band) : projects)
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 md:pb-24 md:pt-16">
-      <p className="eyebrow mb-3">{eyebrow}</p>
-      <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
-      <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>
-
-      <div className="mb-12 mt-12 sm:mb-16">
-        <BoardFilter active={band} />
-        <p className="edge-code mt-3 text-xs text-muted" aria-live="polite">
-          {count}
-        </p>
-      </div>
-
-      <div className="grid gap-14 sm:gap-20">
-        {groupByBand(visible, hasFullShot).map((group) => (
-          <RackTier
-            key={group.heading}
-            heading={group.heading}
-            projects={group.projects}
-            order={strip}
-            headingLevel="h2"
-          />
-        ))}
-      </div>
-
-      <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
-        <Link
-          href="/#contact"
-          className="press button-primary"
-        >
-          Start a project
-          <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-        </Link>
-        <Link href="/" className="button-label inline-flex min-h-[44px] items-center text-ink hover:text-accent">
-          <span className="link-draw">Back to the homepage</span>
-        </Link>
-      </div>
-    </div>
+    <>
+      <p>
+        <Link href="/">Home</Link>
+      </p>
+      <h1>{projectsPageContent.title}</h1>
+      <p>{projectsPageContent.description}</p>
+      {groups.map((group) => (
+        <section key={group.heading}>
+          <h2>{group.heading}</h2>
+          <ul>
+            {group.projects.map((project) => (
+              <li key={project.slug}>
+                <Link href={projectHref(project)}>{project.title}</Link>: {project.summary}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </>
   )
 }
