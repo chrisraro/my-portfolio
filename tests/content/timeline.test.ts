@@ -11,7 +11,7 @@ describe('buildTimeline', () => {
     const timeline = buildTimeline()
 
     expect(timeline.map((entry) => entry.title)).toEqual([
-      'Web Developer',
+      'Web Developer / AI Automation Specialist',
       'IT Staff / Web Developer',
       'B.S. in Computer Science',
     ])

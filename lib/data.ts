@@ -30,7 +30,7 @@ const sectorLabels: Record<ProjectSector, string> = {
 // payment websites": Graceland has neither, and the lede must not overclaim.
 export const heroContent = {
   name: 'Christian Raro',
-  title: 'Full-stack developer',
+  title: 'Mid-level full-stack developer',
   location: 'Naga City',
   // Plain text under the title; the tools match the AI & automation skills.
   aiLine: 'AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n',
@@ -192,6 +192,21 @@ export const projects: Project[] = [
     featured: false,
   },
 
+  {
+    id: 'lunad',
+    slug: 'lunad',
+    title: 'Lunad',
+    description: 'Mobile-first commuter web app (PWA) for Naga City: a jeepney trip planner with step-by-step guidance, saved trips, community tips and corrections, private driver reports and an admin review console. Unknown fares and routes are shown as unknown, never guessed. Pre-launch while reviewers check the route data.',
+    summary: 'Naga commuters · jeepney trip planner',
+    band: 'Applications',
+    sector: 'product',
+    image: '/assets/images/projects/lunad.png',
+    technologies: ['Next.js', 'React', 'TypeScript', 'Neon Postgres', 'PostGIS', 'PWA', 'Playwright'],
+    links: { live: 'https://para-naga.vercel.app', github: 'https://github.com/chrisraro/ParaNaga' },
+    status: 'staging',
+    dates: 'October 2026',
+    featured: false,
+  },
   // --- Sites ---------------------------------------------------------------
   {
     id: 'graceland',
@@ -356,15 +371,16 @@ export const projects: Project[] = [
 export const experience: ExperienceItem[] = [
   {
     id: 'ocs-webdev',
-    title: 'Web Developer',
+    title: 'Web Developer / AI Automation Specialist',
     company: 'Online Creative Solutions',
     dates: 'November 2024 – Present',
     location: 'Naga City, Camarines Sur',
     responsibilities: [
-      'Developed full‑stack web applications',
-      'Built WordPress sites with custom themes',
-      'Maintained backend workflows and API integrations',
-      'Contributed to UI/UX design',
+      'Build and maintain WordPress and WooCommerce sites for agency clients, including Azalea Baguio, Azalea Boracay, Graceland and Review Masters Bicol',
+      'Built the OCS WP Control Panel, a Next.js and Supabase dashboard that manages client WordPress sites over MCP',
+      'Built the Azalea e-Helpdesk, a hotel service-request desk shipped as a WordPress plugin with a PHP REST API and a React front end',
+      'Set up and run the team’s self-hosted n8n automation stack for Google Workspace and LLM workflows',
+      'Apply technical SEO and measurement briefs: redirect maps, JSON-LD schema, GA4 and Meta Pixel',
     ],
   },
   {
@@ -400,6 +416,7 @@ export const skills: Skill[] = [
   { id: 'react', name: 'React', icon: 'react', category: 'Frontend' },
   { id: 'nextjs', name: 'Next.js', icon: 'nextjs', category: 'Frontend' },
   { id: 'tailwindcss', name: 'Tailwind CSS', icon: 'tailwindcss', category: 'Frontend' },
+  { id: 'react-native', name: 'React Native / Expo', icon: 'react-native', category: 'Frontend' },
   { id: 'nodejs', name: 'Node.js', icon: 'nodejs', category: 'Backend' },
   { id: 'php', name: 'PHP', icon: 'php', category: 'Backend' },
   { id: 'postgresql', name: 'PostgreSQL', icon: 'postgresql', category: 'Backend' },
@@ -413,6 +430,7 @@ export const skills: Skill[] = [
   { id: 'vercel', name: 'Vercel', icon: 'vercel', category: 'Tools & DevOps' },
   { id: 'render', name: 'Render', icon: 'render', category: 'Tools & DevOps' },
   { id: 'git', name: 'Git', icon: 'git', category: 'Tools & DevOps' },
+  { id: 'vitest-playwright', name: 'Vitest / Playwright', icon: 'vitest-playwright', category: 'Tools & DevOps' },
 ]
 
 export const socialLinks: SocialLink[] = [
@@ -596,4 +614,6 @@ export const services: string[] = [
   'E-commerce with WooCommerce and Philippine payment gateways',
   'Custom internal tools and hardware integrations',
   'API integrations',
+  'AI automation with n8n, LLM APIs and retrieval (RAG)',
+  'Mobile apps with React Native and Expo',
 ]

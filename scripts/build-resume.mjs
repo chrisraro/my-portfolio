@@ -14,10 +14,11 @@ import path from 'path'
 import puppeteer from 'puppeteer-core'
 
 const CHROME = [
+  process.env.CHROME_PATH,
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-].find((p) => fs.existsSync(p))
+].find((p) => p && fs.existsSync(p))
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,9 +56,8 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
   .nda { font-style: italic; color: #555; }
 </style></head>
 <body>
-
   <div class="name">CHRISTIAN F. RARO</div>
-  <div class="title">Software Engineer &middot; Full-Stack Developer</div>
+  <div class="title">Mid-level Full-Stack Developer &middot; Next.js &middot; TypeScript &middot; WordPress</div>
   <div class="contact">
     <span>09631751535</span> &nbsp;|&nbsp; <span>rarochristian029@gmail.com</span> &nbsp;|&nbsp;
     <span>linkedin.com/in/christian-raro</span> &nbsp;|&nbsp; <span>github.com/chrisraro</span>
@@ -68,93 +68,79 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 
   <h2>Professional Summary</h2>
   <p class="summary">
-    Software Engineer and Full-Stack Developer with 2+ years building production web and mobile
-    applications. Specialized in Next.js, React, and TypeScript, plus client-ready
-    WordPress/WooCommerce sites with custom themes and payment integrations. Experienced across the
-    full lifecycle &mdash; UI/UX, backend workflows, REST API integration, and deployment on
-    Vercel and Supabase. Ships quickly using modern AI-assisted development workflows.
+    Full-stack developer with two years of professional experience (since November 2024) shipping production
+    web apps and WordPress/WooCommerce sites for hospitality, tourism, education and real-estate clients.
+    Builds with Next.js, React and strict TypeScript on PostgreSQL (Supabase, Neon), and with custom WordPress
+    themes and plugins wired to Philippine payment gateways. Writes tested code (Vitest, Playwright, CI on every
+    push), builds AI automations with n8n and LLM APIs, and uses AI coding tools with review and tests behind them.
   </p>
 
   <h2>Experience</h2>
-  <div class="row"><span class="role">Web Developer</span><span class="date">Nov 2024 &ndash; Present</span></div>
+  <div class="row"><span class="role">Web Developer / AI Automation Specialist</span><span class="date">Nov 2024 &ndash; Present</span></div>
   <div class="row"><span class="org">Online Creative Solutions</span><span class="date">Naga City, Camarines Sur</span></div>
   <ul>
-    <li>Build full-stack web applications and client-ready WordPress/WooCommerce websites end to end.</li>
-    <li>Implement custom child themes (GeneratePress Premium, GenerateBlocks Pro) and integrate payment gateways.</li>
-    <li>Maintain backend workflows and third-party API integrations.</li>
-    <li>Contribute UI/UX design from concept through production.</li>
+    <li>Build and maintain WordPress/WooCommerce sites for agency clients, including Azalea Baguio, Azalea Boracay, Graceland and Review Masters Bicol, on GeneratePress/GenerateBlocks child themes.</li>
+    <li>Built the OCS WP Control Panel: a Next.js + Supabase dashboard that manages client WordPress sites over MCP, with encrypted credentials and pg_cron background jobs.</li>
+    <li>Built the Azalea e-Helpdesk: a hotel service-request and maintenance desk shipped as a WordPress plugin (PHP REST API) with a React front end, covered by Vitest and PHP tests.</li>
+    <li>Set up and run the team&rsquo;s self-hosted n8n automation stack (Docker on Render) for Google Workspace and LLM workflows.</li>
+    <li>Apply technical SEO and measurement briefs: 301 redirect maps, JSON-LD schema, GA4 and Meta Pixel.</li>
   </ul>
 
   <div class="row"><span class="role">IT Staff / Web Developer</span><span class="date">Mar 2025 &ndash; Aug 2025</span></div>
-  <div class="row"><span class="org">Enjoy Realty and Development Corporation</span><span class="date">Naga City, Camarines Sur</span></div>
+  <div class="row"><span class="org">Enjoy Realty and Development Corporation (concurrent)</span><span class="date">Naga City, Camarines Sur</span></div>
   <ul>
-    <li>Developed and maintained full-stack web applications and WordPress sites.</li>
-    <li>Managed backend workflows and API integrations.</li>
-    <li>Provided graphic design support and IT maintenance (hardware, networks, software).</li>
+    <li>Built the Aman Group web app (Next.js, Upstash): property showcase, loan calculator comparing Pag-IBIG, bank and in-house financing, broker referral links and an admin panel; presented it at the company&rsquo;s brokers&rsquo; meeting.</li>
+    <li>Maintained the company&rsquo;s WordPress sites and provided IT and graphic design support.</li>
   </ul>
+
+  <h2>Selected Projects</h2>
+  <div class="proj">
+    <div class="row"><span><b>BeachBus Palawan</b> <span class="stack">| WordPress, WooCommerce, PayPal, PayMongo, Maya &middot; Next.js, NFC</span></span><span class="date">Jun 2025 &ndash; Present</span></div>
+    <ul>
+      <li>Built the website and WooCommerce storefront for an El Nido shuttle operator, with three payment gateways.</li>
+      <li class="nda">Also built and maintain a confidential NFC card system now in production for the client (details under NDA).</li>
+    </ul>
+  </div>
+  <div class="proj">
+    <div class="row"><span><b>El Nido Guide PH</b> <span class="stack">| WordPress, WooCommerce, Dokan, PayPal, Maya</span></span><span class="date">May &ndash; Jul 2025</span></div>
+    <ul><li>Multi-operator tour booking marketplace where each operator runs its own store; custom child theme for product add-ons and bookings.</li></ul>
+  </div>
+  <div class="proj">
+    <div class="row"><span><b>Lunad</b> <span class="stack">| Next.js, React, TypeScript, Neon Postgres + PostGIS, Playwright</span></span><span class="date">Oct 2026 &ndash; pre-launch</span></div>
+    <ul><li>Commuter PWA for Naga City: jeepney trip planner, step-by-step guidance, community corrections and an admin review console; row-level security on every table and E2E tests.</li></ul>
+  </div>
+  <div class="proj">
+    <div class="row"><span><b>SkimCare</b> <span class="stack">| React Native, Expo, TypeScript, llama.cpp, ML Kit</span></span><span class="date">Oct 2026</span></div>
+    <ul><li>AppBuildersPH Hackathon 2026 entry (Local AI theme, with Glenn Viola): reads an agreement on-device and explains key terms in English or Filipino, linked to the source sentence. Web and Android.</li></ul>
+  </div>
+  <div class="proj">
+    <div class="row"><span><b>Connecta PH</b> <span class="stack">| Next.js, TypeScript, Supabase, Resend, NFC</span></span><span class="date">Sep 2026</span></div>
+    <ul><li>NFC/QR digital business card platform: tap-to-open profiles, lead capture into a dashboard, and an admin console.</li></ul>
+  </div>
+  <div class="proj">
+    <div class="row"><span><b>BUCS PolicyPulse</b> <span class="stack">| Next.js, Vercel AI SDK, LlamaIndex.TS, Supabase pgvector</span></span><span class="date">Jul 2026</span></div>
+    <ul><li>Retrieval-augmented policy assistant that answers from uploaded documents with verifiable citations, plus an admin console for ingestion, retrieval tuning and escalations.</li></ul>
+  </div>
 
   <h2>Skills</h2>
   <ul class="skills">
-    <li><b>Languages:</b> JavaScript, TypeScript, PHP, Java, HTML/CSS, Python</li>
-    <li><b>Frameworks &amp; Libraries:</b> Next.js, React, Node.js, Laravel, Flutter, Tailwind CSS, shadcn/ui, Material UI, Bootstrap</li>
-    <li><b>CMS &amp; E-commerce:</b> WordPress (GeneratePress, GenerateBlocks Pro), WooCommerce</li>
-    <li><b>Databases:</b> PostgreSQL, MySQL, SQL, Supabase, Firebase</li>
-    <li><b>Cloud &amp; DevOps:</b> Vercel, Upstash, Docker, Render, Coolify, Git/GitHub</li>
-    <li><b>Payments:</b> PayPal, PayMongo, Maya, Xendit</li>
-    <li><b>Tools &amp; AI:</b> VS Code, Cursor, Figma, Claude Code, v0.dev, AI-assisted development</li>
-    <li><b>Also:</b> Networking &amp; system administration fundamentals (TCP/IP, VLANs, Active Directory)</li>
-    <li><b>Soft Skills:</b> Problem-solving, Communication, Documentation, Teamwork, Time Management, Customer Service</li>
+    <li><b>Languages:</b> TypeScript, JavaScript, PHP, SQL, Python, HTML/CSS</li>
+    <li><b>Frontend &amp; mobile:</b> React, Next.js (App Router), Tailwind CSS, shadcn/ui, React Native / Expo, PWA</li>
+    <li><b>Backend &amp; data:</b> Node.js, REST APIs, PostgreSQL (Supabase, Neon, PostGIS, pgvector), Upstash Redis</li>
+    <li><b>WordPress &amp; e-commerce:</b> custom themes and plugins, WooCommerce, Dokan, GeneratePress/GenerateBlocks; PayPal, PayMongo, Maya, Xendit</li>
+    <li><b>AI &amp; automation:</b> n8n, LLM APIs (Groq, Gemini, OpenRouter), RAG (LlamaIndex), MCP, Claude Code, Codex</li>
+    <li><b>Testing &amp; DevOps:</b> Vitest, Playwright, GitHub Actions CI, Vercel, Docker, Render, Git</li>
   </ul>
-
-  <h2>Projects</h2>
-
-  <div class="proj">
-    <div class="row"><span><b>Iskotify</b> <span class="stack">| Next.js, React, Supabase, AI, PWA</span></span><span class="date">Jun 2026</span></div>
-    <ul>
-      <li>Built a scholarship and exam-prep platform for Filipino students with scholarship tracking and deadline reminders.</li>
-      <li>Implemented AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT and an AI study companion.</li>
-      <li>Full-stack on Next.js with Supabase as an installable PWA; shipping to production with early-access student registration. (iskotify.ph)</li>
-    </ul>
-  </div>
-
-  <div class="proj">
-    <div class="row"><span><b>Aman Group of Companies Web App</b> <span class="stack">| Next.js, React, Vercel, Supabase, Upstash</span></span><span class="date">Mar &ndash; Apr 2025</span></div>
-    <ul>
-      <li>Developed a full-stack real-estate platform showcasing projects and properties.</li>
-      <li>Added property-visit scheduling, a loan calculator, and broker referral links.</li>
-      <li>Deployed on Vercel with Supabase and Upstash for a responsive, performant experience. (amangroup-webapp.enjoyrealty.com)</li>
-    </ul>
-  </div>
-
-  <div class="proj">
-    <div class="row"><span><b>BeachBus Palawan</b> <span class="stack">| WordPress, GeneratePress, GenerateBlocks Pro, WooCommerce</span></span><span class="date">Jun &ndash; Aug 2025</span></div>
-    <ul>
-      <li>Designed and built the website with a GeneratePress Premium child theme and GenerateBlocks Pro.</li>
-      <li>Set up a WooCommerce storefront for digital products with payment integration.</li>
-      <li class="nda">Also delivered a confidential internal NFC card management system and ERP for the client (details withheld under NDA). (beachbus.ph)</li>
-    </ul>
-  </div>
-
-  <div class="proj">
-    <div class="row"><span><b>Graceland Bicolano Dining</b> <span class="stack">| WordPress, GeneratePress, GenerateBlocks Pro</span></span><span class="date">May 2026</span></div>
-    <ul>
-      <li>Built the website for a heritage Bicolano restaurant chain: menu showcase, branch locations, and brand story.</li>
-      <li>Developed with a GeneratePress Premium child theme and GenerateBlocks Pro, with SEO and responsive design.</li>
-    </ul>
-  </div>
 
   <h2>Education</h2>
   <div class="edu">
     <div class="row"><span class="role">Bicol University &ndash; Polangui Campus</span><span class="date">Aug 2020 &ndash; Jul 2024</span></div>
     <div class="sub">Bachelor of Science in Computer Science &middot; Polangui, Albay</div>
-    <div class="row"><span class="role">Camarines Sur National High School</span><span class="date">Jun 2018 &ndash; Jul 2020</span></div>
-    <div class="sub">TVL &ndash; Information and Communications Technology (Computer Programming) &middot; With Honors</div>
   </div>
-
 </body></html>`
 
 const outPath = path.resolve('public/assets/resume/Raro, Christian F - Resume (DEV).pdf')
-const b = await puppeteer.launch({ executablePath: CHROME, headless: true })
+const b = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ['--no-sandbox'] })
 const page = await b.newPage()
 await page.setContent(html, { waitUntil: 'networkidle0' })
 await page.evaluate(async () => {

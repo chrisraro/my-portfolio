@@ -18,6 +18,7 @@ const targets = readProjects()
   .map((p) => ({ id: p.id, url: p.live }))
 
 const CHROME_CANDIDATES = [
+  process.env.CHROME_PATH,
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -25,7 +26,7 @@ const CHROME_CANDIDATES = [
 
 function findBrowser() {
   for (const p of CHROME_CANDIDATES) {
-    if (fs.existsSync(p)) return p
+    if (p && fs.existsSync(p)) return p
   }
   throw new Error('No Chrome/Edge executable found. Edit CHROME_CANDIDATES.')
 }

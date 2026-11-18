@@ -51,7 +51,7 @@ describe('groupForHomepage', () => {
     expect(groups.map((g) => g.heading)).toEqual(['Custom systems', 'Client work', 'Hackathon'])
     expect(groups[1].projects.every((p) => p.band === 'Applications' || p.band === 'Sites')).toBe(true)
     expect(groups[1].projects.every((p) => p.sector !== 'product')).toBe(true)
-    expect(groups[2].projects.map((p) => p.id)).toEqual(['skimcare'])
+    expect(groups[2].projects.map((p) => p.id)).toEqual(['skimcare', 'lunad'])
     expect(groups.flatMap((g) => g.projects)).toHaveLength(rest.length)
   })
 

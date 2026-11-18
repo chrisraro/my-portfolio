@@ -17,8 +17,8 @@ const sites = projects.filter((p) => p.band === 'Sites')
 const liveSites = sites.filter((p) => p.status !== 'staging')
 
 describe('positioning', () => {
-  it('leads with the full-stack title', () => {
-    expect(heroContent.title).toBe('Full-stack developer')
+  it('leads with the mid-level full-stack title', () => {
+    expect(heroContent.title).toBe('Mid-level full-stack developer')
   })
 
   it('names the verticals in the lede and keeps the products, with no em-dash', () => {
