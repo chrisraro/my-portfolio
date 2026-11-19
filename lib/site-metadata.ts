@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { heroContent } from '@/lib/data'
+import { heroContent, heroPortraits } from '@/lib/data'
 import type { Project, ProjectBand } from '@/types'
 
 /** Strips a trailing slash so URLs built by concatenation never double one. */
@@ -14,19 +14,22 @@ export const SITE_URL = normaliseSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || 'ht
 // these ride along with every one.
 const OPEN_GRAPH_BASE = { locale: 'en_US', siteName: heroContent.name }
 
-/** The social card app/opengraph-image.tsx renders, and the route it serves at. */
+/**
+ * The link-preview image. The designed social card went with the old design,
+ * so until a new one exists this is the chosen portrait, as a square summary
+ * image.
+ */
+const portrait = heroPortraits[heroContent.portrait]
 export const OG_IMAGE = {
-  url: '/opengraph-image',
-  width: 1200,
-  height: 630,
-  alt: `${heroContent.name} · ${heroContent.title}. ${heroContent.specialism}.`,
+  url: portrait.full,
+  width: 959,
+  height: 960,
+  alt: portrait.alt,
 }
 
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
-// The link-preview image comes from app/opengraph-image.tsx through Next's file
-// convention, which fills in openGraph.images and twitter.images itself.
 export function buildSiteMetadata(
   siteUrl: string,
   googleVerification: string | undefined = process.env.GOOGLE_SITE_VERIFICATION,
@@ -56,11 +59,13 @@ export function buildSiteMetadata(
       url: siteUrl,
       title,
       description,
+      images: [OG_IMAGE],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title,
       description,
+      images: [OG_IMAGE],
     },
     robots: {
       index: true,
@@ -104,8 +109,8 @@ export function buildProjectPageTitle(project: Project): string {
 /**
  * A project page's own link preview: an article card with its title and
  * description, and its own canonical URL. `path` is relative; the layout's
- * metadataBase resolves it. Setting openGraph here drops the layout's
- * file-convention image, so the same card (app/opengraph-image.tsx) is named.
+ * metadataBase resolves it. Setting openGraph here drops the layout's image,
+ * so the same one is named.
  */
 export function buildProjectPageMetadata(project: Project, description: string, path: string): Metadata {
   const title = buildProjectPageTitle(project)
@@ -114,6 +119,6 @@ export function buildProjectPageMetadata(project: Project, description: string, 
     description,
     alternates: { canonical: path },
     openGraph: { ...OPEN_GRAPH_BASE, type: 'article', title, description, url: path, images: [OG_IMAGE] },
-    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
+    twitter: { card: 'summary', title, description, images: [OG_IMAGE] },
   }
 }

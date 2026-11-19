@@ -1,51 +1,34 @@
 /** @type {import('tailwindcss').Config} */
-const token = (name) => `oklch(var(--${name}) / <alpha-value>)`
-
+// Monochrome: ghost white, snow, four grays and black. Nothing else.
+// The same values are CSS variables in app/globals.css.
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  darkMode: 'class',
+  content: ['./components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      ghost: 'var(--ghost)',
+      snow: 'var(--snow)',
+      ink: 'var(--ink)',
+      gray: {
+        text: 'var(--gray-text)',
+        mid: 'var(--gray-mid)',
+        line: 'var(--gray-line)',
+        fill: 'var(--gray-fill)',
+      },
+    },
     extend: {
-      colors: {
-        canvas: token('bg'),
-        panel: token('panel'),
-        ink: token('ink'),
-        muted: token('muted'),
-        'muted-strong': token('muted-strong'),
-        line: token('line'),
-        'line-strong': token('line-strong'),
-        accent: token('accent'),
-        // Amber planes and the primary fill: bright in both themes (globals.css).
-        'accent-plane': token('accent-plane'),
-        'on-accent': token('on-accent'),
-        live: token('live'),
-        'status-early': token('status-early'),
-        'status-private': token('status-private'),
-        'status-internal': token('status-internal'),
-        'field-border': token('field-border'),
-      },
       fontFamily: {
-        // Figtree reads; Anybody (variable, with a width axis) shouts. There is
-        // no mono family: edge codes use .edge-code (Anybody, tabular numerals).
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
       },
-      // --radius is 6px: sm 2px (postcards), md 4px, DEFAULT/lg 6px (cards,
-      // panels, buttons), xl 10px (dialog). Chips use rounded-full.
       borderRadius: {
-        DEFAULT: 'var(--radius)',
-        sm: 'calc(var(--radius) - 4px)',
-        md: 'calc(var(--radius) - 2px)',
-        lg: 'var(--radius)',
-        xl: 'calc(var(--radius) + 4px)',
+        card: '1.75rem',
+        field: '0.875rem',
       },
       boxShadow: {
-        lift: 'var(--shadow-lift)',
-        overlay: 'var(--shadow-overlay)',
+        card: '0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -16px rgb(0 0 0 / 0.12)',
+        float: '0 2px 6px rgb(0 0 0 / 0.06), 0 24px 48px -20px rgb(0 0 0 / 0.22)',
       },
     },
   },

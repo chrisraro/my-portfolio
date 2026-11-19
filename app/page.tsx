@@ -1,32 +1,33 @@
 import type { Metadata } from 'next'
-import { CaseStudies } from '@/components/sections/case-studies'
-import { ContactConsole } from '@/components/sections/contact-console'
-import { FieldLog } from '@/components/sections/field-log'
+import { ClientWork } from '@/components/sections/client-work'
+import { Contact } from '@/components/sections/contact'
+import { Editorials } from '@/components/sections/editorials'
+import { Experience } from '@/components/sections/experience'
+import { Featured } from '@/components/sections/featured'
+import { FieldNotes } from '@/components/sections/field-notes'
+import { GithubActivity } from '@/components/sections/github-activity'
 import { Hero } from '@/components/sections/hero'
-import { Products } from '@/components/sections/products'
-import { Rack } from '@/components/sections/rack'
-import { RouteLine } from '@/components/sections/route-line'
 import { Stack } from '@/components/sections/stack'
 
 // The layout's metadata has no canonical (it would leak to the 404 page), so
 // the homepage sets its own.
 export const metadata: Metadata = { alternates: { canonical: '/' } }
 
-// Section order: the Lobby Rack contract (.impeccable/surfaces/app-page-tsx.md).
-// The brochure opens (hero), his own products lead the work, then the rack of
-// client work, the case studies, people and places, the route, the stack, and
-// the reply card.
+// The storefront, top to bottom: the cover, his own products, the client
+// catalogue, the case studies, people and places, where he has worked, a year
+// of GitHub (only with GITHUB_TOKEN), the stack, and the way in.
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Products />
-      <Rack />
-      <CaseStudies />
-      <FieldLog />
-      <RouteLine />
+      <Featured />
+      <ClientWork />
+      <Editorials />
+      <FieldNotes />
+      <Experience />
+      <GithubActivity />
       <Stack />
-      <ContactConsole />
+      <Contact />
     </>
   )
 }

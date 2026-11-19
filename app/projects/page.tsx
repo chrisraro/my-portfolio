@@ -1,75 +1,37 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { BoardFilter } from '@/components/ui/board-filter'
-import { RackTier } from '@/components/ui/rack-tier'
-import { catalogOrder, groupByBand, parseBandParam, projectCount } from '@/lib/board'
+import { Catalogue } from '@/components/ui/catalogue'
+import { groupByBand, parseBandParam, projectCount } from '@/lib/board'
+import { toCardItem } from '@/lib/catalog'
 import { projects, projectsPageContent } from '@/lib/data'
-import { hasFullShot } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
+import { BAND_ORDER } from '@/types'
 
 interface ProjectsPageProps {
   searchParams: { band?: string | string[] }
 }
 
 export function generateMetadata({ searchParams }: ProjectsPageProps): Metadata {
-  // Every filtered view (?band=...) is the same page to a search engine, so
-  // they all canonicalise to the unfiltered /projects.
   return buildProjectsMetadata(parseBandParam(searchParams.band))
 }
 
-// Filters on the server from ?band=, so this page ships no JavaScript of its
-// own. Reading search params makes it render dynamically rather than at build
-// time; for eighteen cards of static data that costs nothing a visitor notices.
-//
-// The whole inventory as the lobby rack: one tier per band, in BAND_ORDER, of
-// the same pocket cards the homepage uses. Edge codes count in catalogOrder,
-// so a card keeps its number when a filter narrows the rack, and matches the
-// homepage. A filtered view names its band in the eyebrow.
+// The whole catalogue. ?band= opens it on one segment; the control filters from there.
 export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const band = parseBandParam(searchParams.band)
-  const strip = catalogOrder(projects, hasFullShot)
-  const visible = band ? projects.filter((p) => p.band === band) : projects
-  const count = projectCount(visible, projects, band !== null)
-  const eyebrow = band ? projectsPageContent.bandEyebrow.replace('{band}', band) : projectsPageContent.eyebrow
+  const items = groupByBand(projects).flatMap((group) => group.projects).map(toCardItem)
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 md:pb-24 md:pt-16">
-      <p className="eyebrow mb-3">{eyebrow}</p>
-      <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
-      <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>
-
-      <div className="mb-12 mt-12 sm:mb-16">
-        <BoardFilter active={band} />
-        <p className="edge-code mt-3 text-xs text-muted" aria-live="polite">
-          {count}
-        </p>
-      </div>
-
-      <div className="grid gap-14 sm:gap-20">
-        {groupByBand(visible, hasFullShot).map((group) => (
-          <RackTier
-            key={group.heading}
-            heading={group.heading}
-            projects={group.projects}
-            order={strip}
-            headingLevel="h2"
-          />
-        ))}
-      </div>
-
-      <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
-        <Link
-          href="/#contact"
-          className="press button-primary"
-        >
-          Start a project
-          <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-        </Link>
-        <Link href="/" className="button-label inline-flex min-h-[44px] items-center text-ink hover:text-accent">
-          <span className="link-draw">Back to the homepage</span>
-        </Link>
-      </div>
+    <div className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:px-8 md:pb-32 md:pt-16">
+      <header className="mb-10 md:mb-14">
+        <p className="enter label mb-3">{projectsPageContent.eyebrow}</p>
+        <h1 className="display-lg max-w-[16ch]">
+          <span className="mask">
+            <span>{projectsPageContent.title}</span>
+          </span>
+        </h1>
+        <p className="enter lede mt-5 max-w-[36rem] text-gray-text">{projectsPageContent.description}</p>
+        <p className="enter mt-4 text-sm tabular-nums text-gray-text">{projectCount(projects, projects, false)}</p>
+      </header>
+      <Catalogue key={band ?? 'all'} items={items} bands={[...BAND_ORDER]} initial={band} label="Filter projects by type" />
     </div>
   )
 }
