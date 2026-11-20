@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GET, runtime } from '@/app/og/[[...path]]/route'
-import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TITLE_WORD_GAP, TRAIL } from '@/lib/og-linework'
+import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
 import { OG_SIZE, ogImage } from '@/lib/site-metadata'
 import { siteRoutes } from '@/lib/site-routes'
 
@@ -71,10 +71,9 @@ describe('the card’s layout', () => {
   it('sets the name and the URL inside that column, and the title word by word', () => {
     const source = readFileSync(SOURCE, 'utf8')
     expect(source.match(/maxWidth: TEXT_WIDTH/g)).toHaveLength(3)
-    expect(source).toContain("card.title.split(' ').map(")
-    expect(source).toContain('columnGap: TITLE_WORD_GAP')
-    expect(source).not.toContain('columnGap: 18')
-    expect(source).toMatch(/import \{[^}]*TITLE_WORD_GAP[^}]*\} from '@\/lib\/og-linework'/)
-    expect(TITLE_WORD_GAP).toBe(9)
+    expect(source).toContain('{card.title}')
+    expect(source).not.toMatch(/card\.title\.split/)
+    expect(source).not.toContain('TITLE_WORD_GAP')
+    expect(source).not.toContain('columnGap')
   })
 })

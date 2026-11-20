@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { heroContent } from '@/lib/data'
-import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TITLE_WORD_GAP, TRAIL } from '@/lib/og-linework'
+import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
 import { ogPalette as c } from '@/lib/og-palette'
 import { OG_SIZE, SITE_URL } from '@/lib/site-metadata'
 import { findRoute } from '@/lib/site-routes'
@@ -81,12 +81,9 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
             {card.eyebrow}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', maxWidth: TEXT_WIDTH }}>
-            {/* Word by word with an explicit gap: the face's own space read wide in capitals. */}
             <div
               style={{
                 display: 'flex',
-                flexWrap: 'wrap',
-                columnGap: TITLE_WORD_GAP,
                 fontSize: 68,
                 fontWeight: 600,
                 lineHeight: 1.04,
@@ -94,9 +91,7 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
                 textTransform: 'uppercase',
               }}
             >
-              {card.title.split(' ').map((word, i) => (
-                <span key={`${word}-${i}`}>{word}</span>
-              ))}
+              {card.title}
             </div>
             <div style={{ display: 'flex', marginTop: 24, fontSize: 28, lineHeight: 1.3, color: c.muted }}>
               {card.detail}
