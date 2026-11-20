@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { heroContent } from '@/lib/data'
-import { buildProjectPageTitle, buildProjectsTitle } from '@/lib/site-routes'
+import { buildProjectPageTitle, buildProjectsTitle, routeFor } from '@/lib/site-routes'
 import type { Project, ProjectBand } from '@/types'
 
 /** Strips a trailing slash so URLs built by concatenation never double one. */
@@ -20,19 +20,27 @@ export function absoluteUrl(path: string): string {
 // these ride along with every one.
 const OPEN_GRAPH_BASE = { locale: 'en_US', siteName: heroContent.name }
 
-/** The social card app/opengraph-image.tsx renders, and the route it serves at. */
-export const OG_IMAGE = {
-  url: '/opengraph-image',
-  width: 1200,
-  height: 630,
-  alt: `${heroContent.name} · ${heroContent.title}. ${heroContent.specialism}.`,
+export const OG_SIZE = { width: 1200, height: 630 } as const
+
+export interface OgImage {
+  url: string
+  width: number
+  height: number
+  alt: string
 }
+
+/** A route's link-preview card (app/og/[[...path]]/route.tsx), at the route's own path under /og. */
+export function ogImage(path: string): OgImage {
+  return { url: path === '/' ? '/og' : `/og${path}`, ...OG_SIZE, alt: routeFor(path).title }
+}
+
+/** The homepage's card. Every page names it until Task 5 gives each its own. */
+export const OG_IMAGE = ogImage('/')
 
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
-// The link-preview image comes from app/opengraph-image.tsx through Next's file
-// convention, which fills in openGraph.images and twitter.images itself.
+// The link-preview card is app/og's homepage card, named here because there is no file-convention image any more.
 export function buildSiteMetadata(
   siteUrl: string,
   googleVerification: string | undefined = process.env.GOOGLE_SITE_VERIFICATION,
@@ -62,11 +70,13 @@ export function buildSiteMetadata(
       url: siteUrl,
       title,
       description,
+      images: [OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [OG_IMAGE],
     },
     robots: {
       index: true,

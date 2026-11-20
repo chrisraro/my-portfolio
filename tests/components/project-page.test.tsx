@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { alt, size } from '@/app/opengraph-image'
+import { OG_IMAGE } from '@/lib/site-metadata'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
@@ -116,13 +116,10 @@ describe('/projects/[slug]', () => {
     expect(md.twitter).toMatchObject({ card: 'summary_large_image', title: md.title, description })
   })
 
-  // A page that sets its own openGraph loses the layout's file-convention image,
-  // so it names the same card, app/opengraph-image.tsx, itself.
-  it('keeps the site social card as the preview image', () => {
+  it('names a link-preview card from app/og', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
-    const card = { url: '/opengraph-image', width: size.width, height: size.height, alt }
-    expect(md.openGraph).toMatchObject({ images: [card] })
-    expect(md.twitter).toMatchObject({ images: [card] })
+    expect(md.openGraph).toMatchObject({ images: [OG_IMAGE] })
+    expect(md.twitter).toMatchObject({ images: [OG_IMAGE] })
   })
 
   it('describes a short page by its description, not the summary fragment', () => {

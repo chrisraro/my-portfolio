@@ -9,7 +9,7 @@ import {
   sectionContent,
 } from '@/lib/data'
 import { displayStatus } from '@/lib/display-status'
-import { buildSiteMetadata } from '@/lib/site-metadata'
+import { buildSiteMetadata, ogImage } from '@/lib/site-metadata'
 import { existsSync } from 'node:fs'
 
 const sites = projects.filter((p) => p.band === 'Sites')
@@ -93,8 +93,11 @@ describe('site metadata', () => {
     expect(serialized).not.toMatch(/frontend developer/i)
   })
 
-  it('leaves the preview image to app/opengraph-image.tsx, not the retired PNG', () => {
+  it('names the homepage card from app/og, not the retired PNG or file-convention card', () => {
     expect(serialized).not.toContain('og-image.png')
-    expect(existsSync('app/opengraph-image.tsx')).toBe(true)
+    expect(metadata.openGraph?.images).toEqual([ogImage('/')])
+    expect(metadata.twitter?.images).toEqual([ogImage('/')])
+    expect(existsSync('app/og/[[...path]]/route.tsx')).toBe(true)
+    expect(existsSync('app/opengraph-image.tsx')).toBe(false)
   })
 })

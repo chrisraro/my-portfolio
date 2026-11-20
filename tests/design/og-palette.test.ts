@@ -2,16 +2,17 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ogPalette, type OgToken } from '@/lib/og-palette'
 
-// The social card cannot read CSS variables, so it carries hex copies of the
-// dark theme. Convert each `.dark` oklch triplet in globals.css to sRGB hex and
-// hold the copies to it, so a palette change cannot leave the card behind.
-function darkTriplet(token: OgToken): [number, number, number] {
+// The cards cannot read CSS variables, so they carry hex copies of the day
+// theme, the site's default. Convert each `:root` oklch triplet in
+// globals.css to sRGB hex and hold the copies to it, so a palette change
+// cannot leave the cards behind.
+function dayTriplet(token: OgToken): [number, number, number] {
   const css = readFileSync('app/globals.css', 'utf8')
-  const start = css.indexOf('.dark {')
-  const dark = css.slice(start, css.indexOf('}', start))
-  const line = dark.split('\n').find((l) => l.trim().startsWith(`--${token}:`))
+  const start = css.indexOf(':root {')
+  const day = css.slice(start, css.indexOf('}', start))
+  const line = day.split('\n').find((l) => l.trim().startsWith(`--${token}:`))
   const match = line?.match(/:\s*([\d.]+)\s+([\d.]+)\s+([\d.]+);/)
-  if (!match) throw new Error(`--${token} not found in .dark`)
+  if (!match) throw new Error(`--${token} not found in :root`)
   return [Number(match[1]), Number(match[2]), Number(match[3])]
 }
 
@@ -34,9 +35,8 @@ function oklchToHex([L, C, H]: [number, number, number]): string {
   return `#${hex.toUpperCase()}`
 }
 
-// Re-enabled in S5 when the OG card moves to the trail palette.
-describe.skip('social card palette', () => {
-  it.each(Object.keys(ogPalette) as OgToken[])('%s matches the dark theme token', (token) => {
-    expect(ogPalette[token]).toBe(oklchToHex(darkTriplet(token)))
+describe('link-preview card palette', () => {
+  it.each(Object.keys(ogPalette) as OgToken[])('%s matches the day theme token', (token) => {
+    expect(ogPalette[token]).toBe(oklchToHex(dayTriplet(token)))
   })
 })
