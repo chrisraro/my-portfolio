@@ -1,10 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { caseStudies } from '@/lib/case-studies'
-import { contactInfo, experience, projects, services } from '@/lib/data'
+import { aboutPageContent, experience, hirePageContent, projects, servicePages } from '@/lib/data'
 import { buildLlmsFullTxt, buildLlmsTxt } from '@/lib/llms'
-import { SITE_URL } from '@/lib/site-metadata'
-import { hasPhone } from '@/tests/helpers/privacy'
+import { SITE_URL, absoluteUrl } from '@/lib/site-metadata'
+import { siteRoutes } from '@/lib/site-routes'
+import { privacyIssues } from '@/tests/helpers/privacy'
 
 const count = (text: string, part: string) => text.split(part).length - 1
 
@@ -17,13 +18,17 @@ describe('llms.txt', () => {
     expect(lines.some((l) => l.startsWith('> '))).toBe(true)
   })
 
-  it('links every project page exactly once, and the full text', () => {
-    for (const p of projects) expect(count(text, `(${SITE_URL}/projects/${p.slug})`)).toBe(1)
+  it('opens with the citable answer about Christian as its summary', () => {
+    expect(text.split('\n')[2]).toBe(`> ${aboutPageContent.answer}`)
+  })
+
+  it('links every page on the site exactly once, and the full text', () => {
+    for (const r of siteRoutes()) expect(count(text, `(${absoluteUrl(r.path)})`), r.path).toBe(1)
     expect(text).toContain(`(${SITE_URL}/llms-full.txt)`)
   })
 
-  it('lists every service', () => {
-    for (const s of services) expect(text).toContain(`- ${s}`)
+  it('lists every service page with its summary', () => {
+    for (const s of servicePages) expect(text).toContain(`- [${s.name}](${SITE_URL}/services/${s.slug}): ${s.summary}`)
   })
 })
 
@@ -38,6 +43,27 @@ describe('llms-full.txt', () => {
     }
   })
 
+  it('carries every service page in full: answer, questions, proof', () => {
+    for (const s of servicePages) {
+      expect(text).toContain(`Page: ${SITE_URL}/services/${s.slug}`)
+      expect(text).toContain(s.answer)
+      for (const q of s.sections) {
+        expect(text).toContain(`#### ${q.question}`)
+        for (const a of q.answer) expect(text).toContain(a)
+      }
+      for (const id of s.projectIds) expect(text).toContain(projects.find((p) => p.id === id)!.title)
+    }
+  })
+
+  it('carries /about and /hire', () => {
+    expect(text).toContain(`Page: ${SITE_URL}/about`)
+    expect(text).toContain(aboutPageContent.answer)
+    for (const p of aboutPageContent.story.paragraphs) expect(text).toContain(p)
+    expect(text).toContain(`Page: ${SITE_URL}/hire`)
+    expect(text).toContain(hirePageContent.answer)
+    for (const n of hirePageContent.howIWork.notes) expect(text).toContain(`- ${n.title}: ${n.body}`)
+  })
+
   it('carries every project description', () => {
     for (const p of projects) expect(text).toContain(p.description)
   })
@@ -48,10 +74,9 @@ describe('llms-full.txt', () => {
 })
 
 describe('both AI files', () => {
-  it('carry no phone, no private email and no em-dash', () => {
+  it('carry nothing private and no em-dash', () => {
     for (const text of [buildLlmsTxt(), buildLlmsFullTxt()]) {
-      expect(hasPhone(text)).toBe(false)
-      for (const email of text.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) ?? []) expect(email).toBe(contactInfo.email)
+      expect(privacyIssues(text)).toEqual([])
       expect(text).not.toContain('—')
     }
   })

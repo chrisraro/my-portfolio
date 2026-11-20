@@ -8,10 +8,13 @@ import {
   paymentGateways,
   projects,
   recommendations,
+  servicePages,
   services,
   skills,
 } from '@/lib/data'
 import { elevationFigures } from '@/lib/elevation'
+import { absoluteUrl } from '@/lib/site-metadata'
+import { siteRoutes } from '@/lib/site-routes'
 import { BAND_ORDER, type CaseStudy } from '@/types'
 
 // The portfolio facts in this file derive from lib/data.ts. The route used to
@@ -87,6 +90,20 @@ export function buildPortfolioContext(): string {
     .map((link) => `${link.name} (${link.url.replace(/^https?:\/\//, '')})`)
     .join(', ')
 
+  // The service pages and the site's other pages, from lib/data.ts and
+  // lib/site-routes.ts, so Chunks can send a visitor to the right page.
+  const servicePagesList = servicePages
+    .map(
+      (s) =>
+        `- ${s.name} (${absoluteUrl(`/services/${s.slug}`)}): ${s.answer}\n    Questions it answers: ${s.sections.map((q) => q.question).join(' ')}`,
+    )
+    .join('\n')
+
+  const pagesList = siteRoutes()
+    .filter((r) => r.kind !== 'service' && r.kind !== 'project')
+    .map((r) => `- ${r.title} (${absoluteUrl(r.path)}): ${r.description}`)
+    .join('\n')
+
   return `
 OWNER INFORMATION:
 - Name: Christian Raro
@@ -116,6 +133,12 @@ ${recommendationsList}
 
 SERVICES OFFERED:
 ${services.map((s) => `- ${s}`).join('\n')}
+
+SERVICE PAGES:
+${servicePagesList}
+
+PAGES ON THIS SITE:
+${pagesList}
 
 CONTACT:
 - Email: ${contactInfo.email}

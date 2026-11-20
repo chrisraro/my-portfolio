@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { OFFLINE_REPLY, SYSTEM_PROMPT, buildCaseStudyContext, buildPortfolioContext, numberToWords } from '@/lib/chat-context'
-import { experience, projects, services, skills } from '@/lib/data'
+import { experience, projects, servicePages, services, skills } from '@/lib/data'
+import { SITE_URL } from '@/lib/site-metadata'
 import type { CaseStudy } from '@/types'
 
 // Third-party names that appeared in the hand-written prose this task removed
@@ -19,6 +20,14 @@ describe('chat portfolio context', () => {
   const projectsBlock = context.split('PROJECTS')[1].split('TECHNICAL SKILLS')[0]
   const skillsBlock = context.split('TECHNICAL SKILLS:')[1].split('WORK EXPERIENCE:')[0]
   const experienceBlock = context.split('WORK EXPERIENCE:')[1].split('EDUCATION:')[0]
+
+  it('sends visitors to the service pages and the site’s other pages', () => {
+    for (const s of servicePages) {
+      expect(context).toContain(`${SITE_URL}/services/${s.slug}`)
+      expect(context).toContain(s.answer)
+    }
+    for (const path of ['/services', '/hire', '/about', '/projects']) expect(context).toContain(`${SITE_URL}${path}`)
+  })
 
   it('names every project in the inventory', () => {
     for (const project of projects) {
