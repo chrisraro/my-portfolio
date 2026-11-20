@@ -21,6 +21,7 @@ Resend (email)
 - Thumbnails: `npm run capture [id ...]`; full-page preview shots: `npm run capture -- --full [id ...]`
 - Embeddability: `npm run check:embeds` (manual; hits the live internet, never in CI)
 - Resume PDF: `npm run resume`
+- Map outline: `node scripts/build-ph-outline.mjs` (one-off; Node 22.18+; rewrites `lib/ph-outline.ts` from Natural Earth via the `world-atlas` and `topojson-client` devDependencies; commit the result)
 
 `capture` and `resume` drive system Chrome/Edge via hardcoded Windows paths (`puppeteer-core`).
 
