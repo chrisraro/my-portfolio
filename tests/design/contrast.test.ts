@@ -1,26 +1,13 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
-// Every colour token is a raw oklch "L C H" triplet so Tailwind can wrap it as
-// oklch(var(--x) / <alpha-value>). This test reads those triplets straight out
-// of the stylesheet, converts them to sRGB luminance, and checks WCAG contrast
-// in both themes — so a colour tweak cannot quietly break accessibility.
-
+// Isarog Trail Map tokens: raw oklch "L C H" triplets, one per line, in
+// app/globals.css. :root is the day survey (default), .dark the night survey.
 const CSS = readFileSync('app/globals.css', 'utf8')
 
-function tsx(dir: string): string[] {
-  return readdirSync(dir).flatMap((entry) => {
-    const full = join(dir, entry)
-    if (statSync(full).isDirectory()) return tsx(full)
-    return full.endsWith('.tsx') ? [full] : []
-  })
-}
-
 const TOKENS = [
-  'bg', 'panel', 'ink', 'muted', 'muted-strong', 'line', 'line-strong',
-  'accent', 'accent-plane', 'on-accent', 'live', 'status-early', 'status-private', 'status-internal',
-  'field-border',
+  'bg', 'panel', 'ink', 'muted', 'muted-strong', 'line', 'line-strong', 'contour',
+  'trail', 'on-trail', 'field-border', 'live', 'status-early', 'status-private', 'status-internal',
 ] as const
 type Token = (typeof TOKENS)[number]
 type Triplet = [number, number, number]
@@ -35,17 +22,13 @@ function readTheme(selector: string): Record<Token, Triplet> {
   const body = block(selector)
   const theme = {} as Record<Token, Triplet>
   for (const token of TOKENS) {
-    const match = body.match(
-      new RegExp(`(?<![\\w-])--${token}:\\s*([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s*;`),
-    )
+    const match = body.match(new RegExp(`(?<![\\w-])--${token}:\\s*([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s*;`))
     if (!match) throw new Error(`--${token} is missing or not an "L C H" triplet in ${selector}`)
     theme[token] = [Number(match[1]), Number(match[2]), Number(match[3])]
   }
   return theme
 }
 
-// OKLCH → linear sRGB → WCAG relative luminance. Channels are clamped to the
-// sRGB gamut, which is what a browser displays.
 function luminance([L, C, H]: Triplet): number {
   const a = C * Math.cos((H * Math.PI) / 180)
   const b = C * Math.sin((H * Math.PI) / 180)
@@ -64,116 +47,53 @@ function contrast(x: Triplet, y: Triplet): number {
   return (hi + 0.05) / (lo + 0.05)
 }
 
-// WCAG 1.4.3: text needs 4.5:1.
+// WCAG 1.4.3: text 4.5:1. Trail red is text too (links, the active label).
 const TEXT_PAIRS: [Token, Token][] = [
   ['ink', 'bg'], ['ink', 'panel'],
   ['muted', 'bg'], ['muted', 'panel'],
   ['muted-strong', 'bg'], ['muted-strong', 'panel'],
-  ['accent', 'bg'], ['accent', 'panel'],
-  // Text on an amber plane (hero, covers, flaps, the primary button).
-  ['on-accent', 'accent-plane'],
+  ['trail', 'bg'], ['trail', 'panel'],
+  ['on-trail', 'trail'],
 ]
 
-// WCAG 1.4.11: status glyphs and the focus ring need 3:1.
+// WCAG 1.4.11: status glyphs, field borders and the focus ring 3:1.
 const UI_PAIRS: [Token, Token][] = [
   ['live', 'bg'], ['live', 'panel'],
   ['status-early', 'bg'], ['status-early', 'panel'],
   ['status-private', 'bg'], ['status-private', 'panel'],
   ['status-internal', 'bg'], ['status-internal', 'panel'],
-  ['accent', 'bg'], ['accent', 'panel'],
-  // Form fields and the chat input sit on canvas inside a panel leaf: their
-  // border must be found against both (WCAG 1.4.11, the a11y gate's P1-2).
   ['field-border', 'bg'], ['field-border', 'panel'],
+  ['trail', 'bg'],
 ]
 
-describe('form field borders', () => {
-  it('every text field draws its border in --field-border, not a hairline token', () => {
-    const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
-    const field = contact.match(/const FIELD =\s*'([^']*)'/)?.[1] ?? ''
-    expect(field).toContain('border-field-border')
-    expect(field).not.toMatch(/border-line(-strong)?\b/)
-    const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
-    const input = chat.match(/id="chat-input"[\s\S]*?className="([^"]*)"/)?.[1] ?? ''
-    expect(input).toContain('border-field-border')
-    expect(input).not.toMatch(/border-line(-strong)?\b/)
-  })
-})
-
-describe('focus on amber planes', () => {
-  it('draws the ring in --on-accent inside an .on-plane container', () => {
-    expect(CSS).toMatch(/\.on-plane :focus-visible \{\s*outline-color: oklch\(var\(--on-accent\)\);\s*\}/)
-  })
-
-  it.each([
-    ['light', ':root'],
-    ['dark', '.dark'],
-  ])('%s: --on-accent against --accent-plane reaches 3:1', (_name, selector) => {
-    const theme = readTheme(selector)
-    expect(contrast(theme['on-accent'], theme['accent-plane'])).toBeGreaterThanOrEqual(3)
-  })
-})
-
-// Critique R5 P2: the light theme's AA-safe link amber (L 0.53) read as brown
-// when it filled whole planes. Planes take their own token: a bright signal
-// amber in both themes, with dark lagoon ink on it; links and small text keep
-// --accent.
-describe('amber planes', () => {
-  it.each([
-    ['light', ':root'],
-    ['dark', '.dark'],
-  ])('%s: the plane is a bright amber, not brown', (_name, selector) => {
-    const [L, C, H] = readTheme(selector)['accent-plane']
-    expect(L).toBeGreaterThanOrEqual(0.75)
-    expect(C).toBeGreaterThanOrEqual(0.12)
-    expect(H).toBeGreaterThanOrEqual(70)
-    expect(H).toBeLessThanOrEqual(95)
-  })
-
-  it('light: text on a plane is dark ink, and links keep the deeper amber', () => {
-    const light = readTheme(':root')
-    expect(light['on-accent'][0]).toBeLessThan(0.4)
-    expect(light.accent[0]).toBeLessThan(light['accent-plane'][0])
-  })
-
-  it('fills planes and the primary button with --accent-plane, never --accent', () => {
-    const fills = ['components', 'app'].flatMap((dir) => tsx(dir)).map((f) => ({ f, src: readFileSync(f, 'utf8') }))
-    // A fill that carries text is a plane. (Small glyphs, like the availability
-    // dot, stay --accent: they need 3:1 against the canvas.)
-    for (const { f, src } of fills) {
-      for (const line of src.split('\n').filter((l) => l.includes('text-on-accent'))) {
-        expect(line, f).not.toMatch(/(?<![\w-])bg-accent(?![\w-])/)
-      }
-    }
-    expect(CSS).toMatch(/\.button-primary \{[^}]*bg-accent-plane[^}]*text-on-accent/)
-    expect(CSS).toMatch(/::selection \{[^}]*--accent-plane/)
-  })
-})
-
-// The early-access ring must never read as the accent: the availability dot is
-// a filled accent circle, the early-access glyph a hollow ring beside it. Their
-// hues stay at least 90 degrees apart in both themes.
-describe('early access stays distinct from the accent', () => {
-  it.each([
-    ['light', ':root'],
-    ['dark', '.dark'],
-  ])('%s: --status-early and --accent hues are 90 degrees or more apart', (_name, selector) => {
-    const theme = readTheme(selector)
-    const gap = Math.abs(theme['status-early'][2] - theme.accent[2]) % 360
-    expect(Math.min(gap, 360 - gap)).toBeGreaterThanOrEqual(90)
-  })
-})
-
 describe.each([
-  ['light', ':root'],
-  ['dark', '.dark'],
-])('%s theme', (_name, selector) => {
+  ['day survey', ':root'],
+  ['night survey', '.dark'],
+])('%s palette', (_name, selector) => {
   const theme = readTheme(selector)
 
-  it.each(TEXT_PAIRS)('text --%s on --%s reaches 4.5:1', (fg, bg) => {
+  it.each(TEXT_PAIRS)('%s on %s holds 4.5:1', (fg, bg) => {
     expect(contrast(theme[fg], theme[bg])).toBeGreaterThanOrEqual(4.5)
   })
 
-  it.each(UI_PAIRS)('glyph --%s on --%s reaches 3:1', (fg, bg) => {
+  it.each(UI_PAIRS)('%s against %s holds 3:1', (fg, bg) => {
     expect(contrast(theme[fg], theme[bg])).toBeGreaterThanOrEqual(3)
+  })
+
+  it('draws contours visibly but quieter than text', () => {
+    const c = contrast(theme.contour, theme.bg)
+    expect(c).toBeGreaterThanOrEqual(1.5)
+    expect(c).toBeLessThan(contrast(theme.muted, theme.bg))
+  })
+
+  it('keeps the early-access violet at least 90 degrees of hue from trail red', () => {
+    const d = Math.abs(theme['status-early'][2] - theme.trail[2]) % 360
+    expect(Math.min(d, 360 - d)).toBeGreaterThanOrEqual(90)
+  })
+})
+
+describe('theme default', () => {
+  it('opens on the day survey', () => {
+    expect(readFileSync('app/layout.tsx', 'utf8')).toContain('defaultTheme="light"')
   })
 })

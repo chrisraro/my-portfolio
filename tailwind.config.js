@@ -18,15 +18,19 @@ module.exports = {
         'muted-strong': token('muted-strong'),
         line: token('line'),
         'line-strong': token('line-strong'),
-        accent: token('accent'),
-        // Amber planes and the primary fill: bright in both themes (globals.css).
-        'accent-plane': token('accent-plane'),
-        'on-accent': token('on-accent'),
+        contour: token('contour'),
+        // Trail red: the primary action and the current position only.
+        trail: token('trail'),
+        'on-trail': token('on-trail'),
+        'field-border': token('field-border'),
         live: token('live'),
         'status-early': token('status-early'),
         'status-private': token('status-private'),
         'status-internal': token('status-internal'),
-        'field-border': token('field-border'),
+        // Transitional (Portfolio 4.0 sections); removed in S6.
+        accent: token('accent'),
+        'accent-plane': token('accent-plane'),
+        'on-accent': token('on-accent'),
       },
       fontFamily: {
         // Figtree reads; Anybody (variable, with a width axis) shouts. There is

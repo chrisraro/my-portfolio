@@ -61,7 +61,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${anybody.variable} ${figtree.variable}`}>
       <body>
         <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <ToastProvider>
             <a
               href="#main"
