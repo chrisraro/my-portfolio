@@ -2,19 +2,20 @@
 version: 1
 slug: "app-page-tsx"
 primary_target: "app/page.tsx"
-related_targets: ["app/projects/page.tsx", "app/projects/[slug]/page.tsx", "app/not-found.tsx"]
+related_targets: ["app/projects/page.tsx", "app/projects/[slug]/page.tsx", "app/services/page.tsx", "app/services/[slug]/page.tsx", "app/about/page.tsx", "app/hire/page.tsx", "app/not-found.tsx"]
 ---
 
 # Homepage surface brief
 
-Scope: `/` (Persuade). `/projects`, `/projects/[slug]`, the S4 pages and the
-404 inherit the world.
+Scope: `/` (Persuade). `/projects`, `/projects/[slug]` and the 404 inherit the
+world; `/services` and its three pages are Persuade, `/about` is Read, `/hire`
+is Persuade with Read sections, all in the same world.
 Audience and job: freelance clients (Philippine hotels, tour and shuttle
 operators, restaurants, review centres) and engineering hiring managers,
 equally; each decides within one screen whether this is their developer and
 which path is theirs.
 Action: Start a project (`#contact`). Second path: Hire me for a role
-(`#contact` until `/hire` exists in S4).
+(`/hire`); the fork's business path opens `/services`.
 Proof: 20 projects (four own products, six case studies), verified client
 places on a real map of the Philippines, a dated route from 2020 to now. Every
 claim derives from `lib/data.ts` / `lib/case-studies.ts`.

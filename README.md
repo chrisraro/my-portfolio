@@ -102,7 +102,7 @@ lib/
   structured-data.ts  Builds JSON-LD from data.ts and case-studies.ts
   llms.ts             Builds /llms.txt and /llms-full.txt from the same content
   site-metadata.ts    Builds page metadata from heroContent
-  board.ts, display-status.ts, proof.ts, field-log.ts, dates.ts, timeline.ts
+  board.ts, display-status.ts, proof.ts, dates.ts, timeline.ts
                       Pure helpers, all tested
   utils.ts            cn(), extractDomain
 types/index.ts        Shared interfaces

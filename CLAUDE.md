@@ -1,7 +1,7 @@
 # Project Instructions
 
 Personal portfolio site for Christian Raro: a homepage, a `/projects` index and
-a page per project, two API routes, no database — all content is static data.
+a page per project, `/services` with three service pages, `/about`, `/hire`, two API routes, no database — all content is static data.
 
 ## Tech Stack
 
@@ -29,7 +29,7 @@ Resend (email)
 
 Tests live in `tests/` and run under Vitest. `tests/content/` asserts the facts the
 site claims (inventory, bands, proof band, positioning, testimonials, ordering,
-structured data, the AI files, CTA labels, the map pan, embeddability parsing, visible copy, removed
+structured data, the AI files, CTA labels, the map pan, embeddability parsing, visible copy, the new pages' copy (`new-pages`: 40-60 word opening answers, keywords, every proving project held to its own data), removed
 routes and tooling). `tests/design/` asserts design invariants:
 
 - `contrast` (token contrast in both themes, field borders on `--field-border`, early-access violet at least 90 degrees of hue from amber)
@@ -37,14 +37,14 @@ routes and tooling). `tests/design/` asserts design invariants:
 - `green-means-live`, `client-boundary`, `nav-anchors`, `sticky-header` (scroll padding, in-page jumps)
 - `primary-button` (one `.button-primary`, used by every primary CTA)
 - `plate-motion` (screenshots are stills: nothing about a screenshot, a plate or the map follows scroll, no `scroll(root)`; `.lift-card` hover is 2px, 1.02, accent border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`), `retired-classes` (the rack, its stagger, the amber flap, the folds and `ArrowLinkText` stay gone, here and in this file)
-- `grid` (the one `SECTION` constant, never spelled out), `survey-plate` (every plate through `SurveyPlate`, every screenshot 3:4), `s3-surfaces` (the S3 files use no 4.0 amber, `edge-code` or creases)
+- `grid` (the one `SECTION` constant, never spelled out), `survey-plate` (every plate through `SurveyPlate`, every screenshot 3:4), `s3-surfaces` / `s4-surfaces` (the S3 and S4 files use no 4.0 amber, `edge-code` or creases; S4 pages write no trail red of their own)
 - `view-transitions` (click planning, transition names `shot-`/`plate-`/`band-`, the map pan, the island: feature detection, reduced motion, capture-phase interception, commit timeout, fallback, cleanup; the root cross-fade and the zeroed reduced-motion block)
 - `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the trailhead sequence behind their gates and off under reduce; trailhead under 2 s), `motion-visibility` (reveal ranges), `trail-motion` (the trail draws once on load; each trail segment draws on a named view timeline on its `<svg>`; the elevation marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll), `font-budget` (after a build: one preloaded Archivo file, at most 95 KB)
 - `no-framer-motion`, `no-inline-motion` (no numeric `duration`/`ease`/`delay` literals in `.tsx`)
 - `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, plain Arial font fallbacks, `content-visibility` deferral, transform-only reveals)
 
 `tests/components/` renders components with `react-dom/server` and checks their
-markup (sections, project page, `/projects`, 404, status badge, project shot,
+markup (sections, project page, `/projects`, the services pages, `/about`, `/hire`, page intro and work history, the 404, status badge, project shot,
 live preview, JSON-LD, client surfaces, OG image, catalog consistency: catalog numbers and counts; project plate, legend filter, trail link, survey plate, map pin; `homepage`: the seven trail-map sections and the page order), plus source guards for
 behaviour static markup cannot reach. `tests/helpers/` holds helpers shared
 across those folders — `privacy.ts` is the phone-number guard the JSON-LD and
@@ -57,7 +57,10 @@ environment variables set.
 ## Project Structure
 
 ```
-app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404, rebuilt in S4), robots.ts, sitemap.ts (lists the homepage, /projects and every project page)
+app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404, "Off the trail": an empty map square and the route home), robots.ts, sitemap.ts (the homepage, /services and its pages, /hire, /about, /projects and every project page)
+app/services/        /services (the three services, then the form) and services/[slug]/ (one page per service, statically generated: the answer, question-style sections, a comparison where the data holds one, the proving projects as plates, the form)
+app/about/           /about (a Read page): story, the dated route, the six field photos, the four attributed quotes, résumé
+app/hire/            /hire: résumé, email, stack by depth, at a glance, how I work, the full work history, the form
 app/globals.css      Every colour, motion and layout token, the reveal/trailhead/trail/card-hover/view-transition CSS and the reduced-motion block
 app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og, edge runtime); fonts in app/fonts/
 app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
@@ -68,7 +71,7 @@ app/projects/[slug]/ One page per project, statically generated (generateStaticP
 components/          site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
 components/sections/ Homepage sections, in page order: trailhead, elevation-strip, fork, field-map, own-products, trail-journals, plan-the-route
 components/map/      contour-field, trail-path (mode load or view), trail-segment, philippines-outline, pin (Pin, PlaceGlyph, LABELS), place-map: the survey-map SVG primitives
-components/ui/       Primitives: grid.ts (SECTION), status-badge, section-heading, survey-plate, trail-link, project-shot, project-plate, legend-filter, live-preview, no-preview-tag, view-transitions (client island), chat-widget, toaster, image-lightbox
+components/ui/       Primitives: grid.ts (SECTION), page-intro, work-history, status-badge, section-heading, survey-plate, trail-link, project-shot, project-plate, legend-filter, live-preview, no-preview-tag, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body (the trail journal) — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
@@ -84,8 +87,9 @@ lib/llms.ts           Builds /llms.txt and /llms-full.txt from the same content 
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Band grouping and ordering (groupByBand, previewFirst, catalogOrder), catalog numbers, the /projects ?band= parameter
 lib/map-pan.ts       The /projects map pan (panTo, panStyle): frames a band's pins, zoom 1-1.75, never past the map's edge
-lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts, lib/places.ts, lib/elevation.ts — pure helpers, all tested
+lib/display-status.ts, lib/proof.ts, lib/dates.ts, lib/timeline.ts, lib/places.ts, lib/elevation.ts — pure helpers, all tested
 lib/geo.ts           The field map's projection (project(lat, lng)), shared with scripts/build-ph-outline.mjs
+lib/contours.ts      Authored linework: the trailhead contours and trail, the segments between sections, the elevation ridge, the 404's square (offTrail)
 lib/ph-outline.ts    The Philippines outline, generated by scripts/build-ph-outline.mjs (do not edit)
 lib/utils.ts         cn(), extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
@@ -101,7 +105,7 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
 `availability`, `resumeUrl`, `sectionContent`, `footerContent`,
 `projectsPageContent`, `paymentGateways`, `galleryContent`, `caseStudyContent`,
-`notFoundContent`, `sectorNames`, `services`, `ctaLabels`) and add the matching interface in
+`notFoundContent`, `sectorNames`, `services`, `ctaLabels`, `servicePages`, `servicesPageContent`, `aboutPageContent`, `hirePageContent`, `pagesUpdated`) and add the matching interface in
 `types/index.ts` if it's new.
 
 `lib/structured-data.ts` (JSON-LD), `app/sitemap.ts` and `lib/llms.ts`
@@ -120,6 +124,13 @@ heading and eyebrow — those live in `lib/data.ts`. Control and group labels
 that belong to the interface itself ("Start a project", "View work", "All",
 "Work" / "Education", "Live preview", form field labels) are UI chrome and may
 live in the component.
+
+The S4 pages open with a self-contained 40-60 word answer in the third person
+("Christian Raro is a …"), then first-person copy; `PageIntro` prints it with
+the `pagesUpdated` date. Each service's `projectIds` are its proof: a project
+named in its copy must be in the list, and its own data must support the
+service (`tests/content/new-pages.test.ts`). Change a fact there only when the
+data behind it changes.
 
 Call-to-action labels live once in `ctaLabels` (`tests/content/cta-labels.test.ts`); section copy that repeats one references it.
 
@@ -226,6 +237,7 @@ Every project gets a plate on `/projects`. What fills it:
 - Section headings: `SectionHeading` (`components/ui/section-heading.tsx`), an
   `.eyebrow` then an `<h2 className="text-section">`, with copy from
   `sectionContent` in `lib/data.ts`.
+- Read pages (`/services`, a service page, `/about`, `/hire`) open with `PageIntro` (eyebrow, the h1, the answer in ink, the updated date, the actions) and end in `PlanTheRoute`, except `/about`, which ends in links. The 404's "You are here" dot is its only trail red.
 - Shadows: none in flow at rest. `shadow-lift` only while a card or postcard is
   lifted (on a card, a pseudo-element faded in by opacity: never animate `box-shadow`); `shadow-overlay` for the dialog, chat and toasts.
 - Off-screen work: far sections carry `.defer-render` (`content-visibility:
@@ -237,7 +249,7 @@ Every project gets a plate on `/projects`. What fills it:
 
 Components are server components by default. Only these eight are client
 components (`grep -rl "^'use client'" app components`):
-`components/site-legend.tsx` (theme toggle, in-page jump fix),
+`components/site-legend.tsx` (theme toggle, the phone menu below 1024px (a `<details>` disclosure it closes on a route change, Escape, a press outside or a followed link), in-page jump fix),
 `components/theme-provider.tsx`,
 `components/sections/plan-the-route.tsx` (form; its "Ask Chunks" opens the chat through `CHAT_OPEN_EVENT`),
 `components/ui/chat-widget.tsx`,
@@ -247,8 +259,8 @@ components (`grep -rl "^'use client'" app components`):
 `components/ui/view-transitions.tsx` (renders nothing: the catalog's view-transition
 island, mounted once in `app/layout.tsx` inside `Suspense`). A server component
 may render a client one as a child — `Trailhead` and `ProjectScreenshots`
-render `ImageLightbox`, and `OwnProducts` and `ProjectHeader` render `LivePreview`.
-`ProjectShot`, `ProjectPlate`, `LegendFilter`, `SurveyPlate`, `TrailLink` and `PlaceMap` are server components; their motion is
+render `ImageLightbox`, as does `/about` for its photos, and `OwnProducts` and `ProjectHeader` render `LivePreview`; the service pages and `/hire` render `PlanTheRoute`.
+`ProjectShot`, `ProjectPlate`, `LegendFilter`, `SurveyPlate`, `TrailLink`, `PlaceMap`, `PageIntro`, `WorkHistory` and every S4 page are server components; their motion is
 CSS. `tests/design/client-boundary.test.ts` keeps the count under 10 and the
 homepage and `/projects` on the server; do not raise it.
 

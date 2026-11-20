@@ -23,3 +23,29 @@ describe('S4 surfaces', () => {
     expect(src).not.toMatch(TRAIL)
   })
 })
+
+describe('the docs', () => {
+  it('describe the S4 pages, their content and the legend menu', () => {
+    const doc = readFileSync('CLAUDE.md', 'utf8')
+    for (const name of [
+      'app/services/',
+      'app/about/',
+      'app/hire/',
+      'page-intro',
+      'work-history',
+      'servicePages',
+      'servicesPageContent',
+      'aboutPageContent',
+      'hirePageContent',
+      'pagesUpdated',
+      'Off the trail',
+      'new-pages',
+      's4-surfaces',
+      'phone menu',
+    ]) {
+      expect(doc, name).toContain(name)
+    }
+    expect(doc).not.toContain('rebuilt in S4')
+    expect(doc).not.toContain('lib/field-log.ts')
+  })
+})
