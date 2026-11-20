@@ -49,3 +49,14 @@ export function endOfRange(dates: string, now: Date = new Date()): number {
 export function startOfRange(dates: string, now: Date = new Date()): number {
   return parseDateToken(rangeParts(dates)[0] ?? '', now)
 }
+
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+]
+
+/** '2026-11-20' → '20 November 2026': the "Updated" date the read pages print. No locale data needed. */
+export function formatIsoDate(iso: string): string {
+  const [year, month, day] = iso.split('-').map(Number)
+  return `${day} ${MONTH_NAMES[month - 1]} ${year}`
+}

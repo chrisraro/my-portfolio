@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { endOfRange, parseDateToken, startOfRange } from '@/lib/dates'
+import { endOfRange, formatIsoDate, parseDateToken, startOfRange } from '@/lib/dates'
 
 const NOW = new Date('2026-09-10T00:00:00Z')
 
@@ -64,5 +64,12 @@ describe('startOfRange', () => {
 
   it('handles a single date with no range', () => {
     expect(startOfRange('June 2026')).toBe(Date.UTC(2026, 5, 1))
+  })
+})
+
+describe('formatIsoDate', () => {
+  it('writes an ISO date the way the pages print it', () => {
+    expect(formatIsoDate('2026-11-20')).toBe('20 November 2026')
+    expect(formatIsoDate('2024-01-05')).toBe('5 January 2024')
   })
 })
