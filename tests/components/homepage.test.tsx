@@ -378,6 +378,21 @@ describe('HomePage', () => {
     expect(ids).toEqual(['top', 'timeline', 'fork', 'work', 'products', 'journals', 'contact'])
   })
 
+  it('sits every trail segment between two sections', () => {
+    const marks = Array.from(
+      html.matchAll(/<section id="|<div aria-hidden="true" class="relative mx-auto h-20 max-w-6xl md:h-28"/g),
+    ).map((m) => (m[0].startsWith('<section') ? 'section' : 'segment'))
+    expect(marks.filter((m) => m === 'segment').length).toBeGreaterThan(0)
+    expect(marks[0]).toBe('section')
+    expect(marks[marks.length - 1]).toBe('section')
+    marks.forEach((m, i) => {
+      if (m === 'segment') {
+        expect(marks[i - 1]).toBe('section')
+        expect(marks[i + 1]).toBe('section')
+      }
+    })
+  })
+
   it('threads the trail: drawn out of the plate on load, then a segment between each section below the strip', () => {
     expect(html.match(/class="trail-draw trail-draw--load"/g)).toHaveLength(1)
     expect(html.match(/class="trail-draw trail-draw--view"/g)).toHaveLength(5)

@@ -7,7 +7,7 @@ a page per project, two API routes, no database — all content is static data.
 
 Next.js 14 (App Router) · React 18 · TypeScript 5 (strict) · Tailwind CSS 3 ·
 `motion` (imported as `motion/react`; replaced framer-motion) · next-themes ·
-lucide-react · Anybody + Figtree via `next/font/google` · Groq (chat) ·
+lucide-react · Archivo (one variable family, `wdth` axis) via `next/font/google` · Groq (chat) ·
 Resend (email)
 
 ## Build & Run
@@ -190,8 +190,9 @@ Every project gets a slot in the rack. What fills it:
   `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
   them and checks WCAG contrast in both themes; keep the format exact.
 - Tailwind colour keys: `canvas` (page, CSS `--bg`), `panel`, `ink`, `muted`,
-  `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `accent-plane`, `on-accent`,
-  `live`, `status-early`, `status-private`, `status-internal`. Never raw hex,
+  `muted-strong`, `line`, `line-strong`, `contour`, `trail`, `on-trail`,
+  `field-border`, `live`, `status-early`, `status-private`, `status-internal`,
+  plus the transitional `accent`, `accent-plane`, `on-accent` (removed in S6). Never raw hex,
   never `dark:` colour pairs. Text fields draw their border in `field-border`
   (3:1, WCAG 1.4.11), never a hairline token.
 - **Two ambers.** `accent-plane` fills planes and the primary button, bright in
@@ -215,15 +216,15 @@ Every project gets a slot in the rack. What fills it:
   pairs a glyph shape with a text label: live dot, early-access ring (violet,
   `status-early`, kept well away from amber), private
   lock, internal filled square, staging outlined square.
-- Type: two variable families via `next/font`, nothing else. **Anybody**
-  (`font-display`, `--font-display`, loaded with its `wdth` axis) shouts:
-  headings condensed at wdth 75, titles at 85, labels and buttons at 100.
-  **Figtree** (`font-sans`, `--font-sans`) reads: body, ledes, forms, chat. Both
-  fall back to plain Arial (`adjustFontFallback: false`). There is no mono
-  family: dates, domains, counts and running indexes use `.edge-code`. Numerals
-  use `tabular-nums` and are plain ("4", not "04"). Utilities: `.eyebrow`,
-  `.edge-code`, `.button-label`, `.text-fluid-h1`, `.text-page-h1`,
-  `.text-fluid-h2`, `.text-title`, `.text-numeral`, `.text-lede`.
+- Type: one variable family via `next/font`, nothing else: **Archivo**, loaded
+  with its `wdth` axis as `--font-sans` (`font-sans`). `.text-display` and
+  `.text-section` set condensed uppercase display type through `--font-display`,
+  which `app/layout.tsx` sets inline on `<html>` to Archivo, then
+  `'Archivo Display Fallback'` (a size-adjusted Arial Narrow/Arial face in
+  `globals.css`, so the condensed headline does not overflow before Archivo
+  loads). Body text falls back to plain Arial (`adjustFontFallback: false`).
+  Utilities: `.map-label`, `.eyebrow`, `.tabular`. No serif, no mono. Numerals
+  use `tabular-nums` and are plain ("4", not "04").
 - One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
 - Section headings: `SectionHeading` (`components/ui/section-heading.tsx`), an
   `.eyebrow` then an `<h2 className="text-fluid-h2">`, with copy from
@@ -362,8 +363,8 @@ Things that have already bitten:
   Clear `.next` and re-run.
 - `next/og`'s Node build throws "Invalid URL" on Windows, which failed `next build`.
   `app/opengraph-image.tsx` runs on the edge runtime for that reason; keep it there.
-  It also needs static font files, so the card still renders in Recursive
-  (`app/fonts/`), not Anybody/Figtree.
+  It also needs static font files, so the card renders in Recursive from the
+  static files in `app/fonts/`, not Archivo.
 
 ## Git
 
