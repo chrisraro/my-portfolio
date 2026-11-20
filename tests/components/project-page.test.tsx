@@ -143,14 +143,33 @@ describe('/projects/[slug]', () => {
     expect(render('el-nido-guide-ph')).toContain('Built May – July 2025')
   })
 
-  // "Start a project" is the page's one amber primary; the exit is secondary.
-  it('offers the live site as a secondary button, never an amber fill', () => {
+  it('offers the live site as the outlined secondary, beside the page’s trail-red primaries', () => {
     for (const slug of ['latag', 'el-nido-guide-ph']) {
-      const cls = render(slug).match(/<a [^>]*class="([^"]*)"[^>]*>Open live site/)?.[1] ?? ''
-      expect(cls).toContain('border-line-strong')
-      expect(cls).toContain('hover:border-accent')
-      expect(cls).not.toContain('bg-accent')
-      expect(cls).toContain('py-2.5')
+      const html = render(slug)
+      const cls = html.match(/<a [^>]*class="([^"]*)"[^>]*>Open live site/)?.[1] ?? ''
+      expect(cls).toContain('button-secondary')
+      expect(cls).not.toMatch(/bg-(?:trail|accent)/)
+      // The header's Start a project and the page foot's.
+      expect(html.match(/class="press button-primary/g)).toHaveLength(2)
+    }
+  })
+
+  it('draws no amber flap: no plane, no fold', () => {
+    // (The LivePreview trigger inside the header loses its accent hover in Task 9.)
+    for (const p of projects) {
+      const html = render(p.slug)
+      const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'))
+      expect(header, p.slug).not.toMatch(/on-plane|accent-plane|on-accent|crease-/)
+    }
+  })
+
+  it('lists the facts in map labels, the place only where the data names one', () => {
+    for (const p of projects) {
+      const html = render(p.slug)
+      const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'))
+      if (p.place) expect(header, p.slug).toContain(`<li>Place: ${p.place.name}</li>`)
+      else expect(header, p.slug).not.toContain('Place: ')
+      expect(header, p.slug).toMatch(/<ul class="map-label /)
     }
   })
 

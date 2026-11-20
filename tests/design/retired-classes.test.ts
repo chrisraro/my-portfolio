@@ -21,6 +21,7 @@ const RETIRED: [string, RegExp][] = [
   ['the lifted tier deferral', /defer-render-lift/],
   ['the rack stagger', /reveal-stagger|timeline-trigger|animation-trigger|--stagger-card|--c3\b|--c4\b/],
   ['the rack transition names', /--vt-card|--vt-tier|cardTransitionName|tierTransitionName/],
+  ['the amber flap', /on-plane|crease-fold/],
 ]
 
 const GONE = [

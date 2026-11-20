@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { SECTION } from '@/components/ui/grid'
 import { LivePreview } from '@/components/ui/live-preview'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { TrailLink } from '@/components/ui/trail-link'
 import { caseStudyContent, ctaLabels, paymentGateways, sectorNames } from '@/lib/data'
 import { canLinkLive, liveLinkLabel, previewFor } from '@/lib/project-page'
 import { cn } from '@/lib/utils'
@@ -16,84 +17,55 @@ interface ProjectHeaderProps {
 }
 
 /**
- * The project's front cover: an amber flap (what it is, its name, what it
- * does, its status) joined at a fold crease to a paper leaf (the role, the
- * facts, and the ways in). "Start a project" is the page's one amber fill.
+ * A project page's header, in the trail map's world: the way back to every
+ * project, then on the left the eyebrow, the name, what it does and its
+ * status; on the right a legend card with the role (a flagship's), the facts
+ * in map labels (kind of work, the verified place, when it was built, how it
+ * takes payment) and the ways in. "Start a project" is the page's trail-red
+ * primary; the live site is the outlined secondary beside it.
  */
 export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHeaderProps) {
   const gateways = project.technologies.filter((t) => paymentGateways.indexOf(t) !== -1)
-  const meta = [
+  const facts = [
+    project.sector !== 'product' ? `${project.band} · ${sectorNames[project.sector]}` : project.band,
+    project.place ? `Place: ${project.place.name}` : undefined,
     project.dates ? `Built ${project.dates}` : undefined,
     gateways.length ? `Payments: ${gateways.join(', ')}` : undefined,
-  ].filter((m): m is string => Boolean(m))
+  ].filter((f): f is string => Boolean(f))
   const live = canLinkLive(project) ? project.links.live : undefined
   const preview = previewFor(project)
 
   return (
     <header className={cn(SECTION, 'pt-6 md:pt-8')}>
-      <Link
-        href="/projects"
-        className="edge-code inline-flex min-h-[44px] items-center gap-2 text-sm text-muted-strong transition-colors hover:text-accent"
-      >
-        <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-        <span className="link-draw">{ctaLabels.allProjects}</span>
-      </Link>
+      <TrailLink href="/projects" text={ctaLabels.allProjects} kind="label" className="text-muted-strong" />
 
-      <div className="mt-4 grid md:grid-cols-[7fr_auto_5fr]">
-        <div
-          className={cn(
-            'on-plane flex flex-col rounded-t bg-accent-plane p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10',
-            // A flagship's leaf carries the role and meta; a short page's cover stays compact.
-            role && 'md:min-h-[26rem]',
-          )}
-        >
-          <p className="eyebrow text-on-accent">
-            {isCaseStudy ? caseStudyContent.eyebrow.caseStudy : caseStudyContent.eyebrow.project}
-          </p>
-          {/* Focusable by script only: a card navigation moves focus here (components/ui/view-transitions.tsx). */}
-          <h1 tabIndex={-1} className="text-page-h1 mt-8 md:mt-auto md:pt-10">
+      <div className="mt-6 grid gap-8 md:grid-cols-[7fr_5fr] md:items-end md:gap-12">
+        <div className="min-w-0">
+          <p className="eyebrow">{isCaseStudy ? caseStudyContent.eyebrow.caseStudy : caseStudyContent.eyebrow.project}</p>
+          {/* Focusable by script only: a plate navigation moves focus here (components/ui/view-transitions.tsx). */}
+          <h1 tabIndex={-1} className="text-page-h1 mt-6 text-ink">
             {project.title}
           </h1>
-          <p className="text-lede mt-5 max-w-[34rem]">{project.summary}</p>
-          {/* Status sits on a paper chip: its glyph colours are tuned for paper, not amber. */}
-          <span className="mt-6 self-start rounded-full bg-panel px-3 py-1.5">
-            <StatusBadge status={project.status} />
-          </span>
+          <p className="text-lede mt-5 max-w-[34rem] text-muted-strong">{project.summary}</p>
+          <StatusBadge status={project.status} className="mt-6" />
         </div>
 
-        <span aria-hidden="true" className="crease-fold" />
-
-        <div className="flex flex-col rounded-b border border-line bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none md:border-l-0">
+        <div className="flex flex-col rounded-sm border border-line bg-panel p-6 sm:p-8">
           {/* The role is the fact a hiring reader came for: its own line, in readable type. */}
           {role && <p className="max-w-[30rem] text-base text-ink">{role}</p>}
-          <p className={role ? 'edge-code mt-4 text-xs text-muted' : 'edge-code text-xs text-muted'}>
-            {project.band}
-            {project.sector !== 'product' ? ` · ${sectorNames[project.sector]}` : ''}
-          </p>
-          {meta.length > 0 && (
-            <ul className="edge-code mt-2 grid gap-1 text-xs text-muted-strong">
-              {meta.map((m) => (
-                <li key={m}>{m}</li>
-              ))}
-            </ul>
-          )}
-          <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-auto md:pt-8">
-            <Link
-              href="/#contact"
-              className="press button-primary"
-            >
+          <ul className={cn('map-label grid gap-1.5 text-muted-strong', role && 'mt-5')}>
+            {facts.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link href="/#contact" className="press button-primary">
               {ctaLabels.startProject}
               <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
             </Link>
             {preview && <LivePreview {...preview} />}
             {live && (
-              <a
-                href={live}
-                target="_blank"
-                rel="noopener noreferrer"
-                // Secondary: it leaves the site, so it is outlined; "Start a project" beside it is the filled primary.
-                className="press inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink hover:border-accent hover:text-accent"
-              >
+              <a href={live} target="_blank" rel="noopener noreferrer" className="press button-secondary">
                 {liveLinkLabel(project)}
                 <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
                 <span className="sr-only">(opens in a new tab)</span>

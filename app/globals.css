@@ -135,12 +135,6 @@
 		outline: 2px solid oklch(var(--accent));
 		outline-offset: 3px;
 	}
-	/* Focus on a filled plane draws in the plane's own ink. The project header
-	 * (components/case-study/project-header.tsx) still uses it; the rule goes
-	 * when that is rebuilt. */
-	.on-plane :focus-visible {
-		outline-color: oklch(var(--on-accent));
-	}
 }
 
 @layer components {
@@ -382,22 +376,6 @@
 	color: oklch(var(--line-strong));
 	height: 1px;
 	background: linear-gradient(to right, currentColor 6px, transparent 6px) 0 0 / 11px 1px repeat-x;
-}
-
-/* A fold between two panels: across when they stack, upright from 768px. */
-.crease-fold {
-	pointer-events: none;
-	color: oklch(var(--line-strong));
-	align-self: stretch;
-	height: 1px;
-	background: linear-gradient(to right, currentColor 6px, transparent 6px) 0 0 / 11px 1px repeat-x;
-}
-@media (min-width: 768px) {
-	.crease-fold {
-		height: auto;
-		width: 1px;
-		background: linear-gradient(to bottom, currentColor 6px, transparent 6px) 0 0 / 1px 11px repeat-y;
-	}
 }
 
 /*
