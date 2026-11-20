@@ -34,7 +34,7 @@ export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) 
   return (
     <li
       id={id}
-      className="project-plate min-w-0 scroll-mt-28"
+      className="project-plate plate-rise min-w-0 scroll-mt-28"
       style={{ '--vt-plate': plateTransitionName(project.slug) } as CSSProperties}
     >
       <SurveyPlate href={projectHref(project)} className="lift-card flex h-full flex-col">

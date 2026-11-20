@@ -362,6 +362,16 @@
  * wider than Archivo), so the font swap never re-wraps the headline: no layout
  * shift under the first viewport. */
 .trailhead-line { display: block; white-space: nowrap; }
+/* Under a fine pointer the contours drift toward the half the pointer rests
+ * on (spec §4), 8px (motionTokens.distance.sm) by transform, on the crawl
+ * token. The trail stays put, so the land moves under a fixed route. Nothing
+ * on touch, nothing under reduced motion, and it moves only while the pointer
+ * moves between halves. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+	.trailhead-contours { transition: transform var(--dur-crawl) var(--ease-smooth); }
+	.trailhead:has(.trailhead-copy:hover) .trailhead-contours { transform: translate(-8px, -4px); }
+	.trailhead:has(.trailhead-plate:hover) .trailhead-contours { transform: translate(8px, 4px); }
+}
 
 /*
  * Catalog hover (.lift-card): /projects plates, a product's screenshot and the
@@ -456,6 +466,28 @@
  * it, so the hover shadow can paint outside the link. */
 .project-shot__frame { content-visibility: auto; }
 /* /ProjectShot */
+
+/*
+ * Screenshots appear once (spec §4): a plate rises its last 16px as it
+ * enters the viewport. A scroll trigger starts a time-based animation (not
+ * scrubbed; play-forwards never reverses); nothing is filled before it fires,
+ * so a plate already in view at load, or after a filter change, never moves.
+ * Without trigger support the plates simply sit at rest. Transform only.
+ */
+@supports (timeline-trigger: --plate view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes plate-rise {
+			from { transform: translateY(16px); }
+			to { transform: none; }
+		}
+		.plate-rise {
+			timeline-trigger: --plate view() entry 0% entry 100%;
+			animation: plate-rise var(--dur-normal) var(--ease-smooth);
+			animation-fill-mode: backwards;
+			animation-trigger: --plate play-forwards;
+		}
+	}
+}
 
 /*
  * The /projects map pan (spec §4, "pan"): a filter frames the band's pins.
@@ -567,6 +599,7 @@
 		opacity: 1;
 		transform: none;
 	}
+	.plate-rise { animation: none !important; transform: none; }
 	/* Trailhead: every line in place and the trail drawn at first paint. */
 	:is(.trailhead-line, .trailhead-rise, .trail-draw--load) {
 		animation: none !important;

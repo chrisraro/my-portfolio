@@ -19,8 +19,9 @@ const PORTRAIT = heroContent.portrait
  * the hiking portrait on a survey plate on the right, where the red trail
  * starts. On load the headline's lines rise in turn, the copy under them
  * rises and the trail draws out of the plate (CSS only, .trailhead-* and
- * .trail-draw--load in globals.css, 1.9s, once). Under reduced motion
- * everything is at rest from the first paint. Below 768px the plate stacks
+ * .trail-draw--load in globals.css, 1.9s, once). Under a fine pointer the
+ * contours drift toward the half the pointer rests on (.trailhead-contours).
+ * Under reduced motion everything is at rest from the first paint. Below 768px the plate stacks
  * under the buttons and the trail is not drawn: it would cross the text.
  */
 export function Trailhead() {
@@ -28,7 +29,7 @@ export function Trailhead() {
 
   return (
     <section id="top" aria-labelledby="trailhead-title" className="trailhead relative overflow-x-clip">
-      <ContourField paths={trailheadContours} viewBox={trailheadTrail.viewBox} />
+      <ContourField paths={trailheadContours} viewBox={trailheadTrail.viewBox} className="trailhead-contours" />
       <TrailPath mode="load" d={trailheadTrail.d} viewBox={trailheadTrail.viewBox} className="hidden md:block" />
       <div className={cn(SECTION, 'relative grid gap-10 pb-16 pt-28 md:min-h-[44rem] md:grid-cols-[7fr_5fr] md:items-start md:gap-12 md:pb-20 md:pt-36')}>
         <div className="trailhead-copy min-w-0">
@@ -54,7 +55,7 @@ export function Trailhead() {
           </div>
         </div>
 
-        <div className="w-full max-w-[22rem] md:justify-self-end md:pt-2">
+        <div className="trailhead-plate w-full max-w-[22rem] md:justify-self-end md:pt-2">
           {/* alt="" on the image: the lightbox button around it carries the name. */}
           <SurveyPlate>
             <ImageLightbox src={PORTRAIT} alt={heroContent.portraitAlt} className="w-full">

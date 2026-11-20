@@ -19,7 +19,8 @@ const RETIRED: [string, RegExp][] = [
   ['the rack', /\brack-(?:slot|shelf|card|tier|pocket)\b|\bRack(?:Card|Tier)\b/],
   ['the board filter', /\bBoardFilter\b|board-filter/],
   ['the lifted tier deferral', /defer-render-lift/],
-  ['the rack stagger', /reveal-stagger|timeline-trigger|animation-trigger|--stagger-card|--c3\b|--c4\b/],
+  // The trigger properties came back in S6 for .plate-rise; the rack's stagger stays gone by name.
+  ['the rack stagger', /reveal-stagger|--stagger-card|--c3\b|--c4\b|--card view\(\)/],
   ['the folds', /crease-(?:v|h)\b|reveal-fold/],
   ['the arrow-link text', /ArrowLinkText|arrow-link-text/],
   ['the rack transition names', /--vt-card|--vt-tier|cardTransitionName|tierTransitionName/],
