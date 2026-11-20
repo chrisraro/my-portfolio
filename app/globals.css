@@ -853,7 +853,7 @@
 		.trail-draw {
 			stroke-dashoffset: 1;
 			animation: trail-draw linear both;
-			animation-timeline: scroll();
+			animation-timeline: scroll(root);
 		}
 	}
 }
