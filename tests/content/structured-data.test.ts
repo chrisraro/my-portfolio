@@ -107,6 +107,10 @@ describe('the Person', () => {
     })
   })
 
+  it('carries no tracking query on any profile link', () => {
+    for (const url of person.sameAs as string[]) expect(url, url).not.toContain('?')
+  })
+
   it('links only the profiles socialLinks holds, and the public email', () => {
     expect(person.sameAs).toEqual(socialLinks.filter((l) => l.url.startsWith('https://')).map((l) => l.url))
     expect(person.email).toBe(contactInfo.email)
@@ -137,6 +141,7 @@ describe('page nodes', () => {
       expect(service).toMatchObject({
         '@id': `${SITE_URL}/services/${s.slug}#service`,
         name: s.name,
+        serviceType: s.name,
         description: s.answer,
         provider: { '@id': PERSON_ID },
         availableChannel: { '@type': 'ServiceChannel', name: 'Remote' },

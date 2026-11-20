@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { caseStudies } from '@/lib/case-studies'
-import { aboutPageContent, experience, hirePageContent, projects, servicePages } from '@/lib/data'
+import { aboutPageContent, availability, contactInfo, experience, hirePageContent, projects, servicePages } from '@/lib/data'
 import { buildLlmsFullTxt, buildLlmsTxt } from '@/lib/llms'
 import { SITE_URL, absoluteUrl } from '@/lib/site-metadata'
 import { siteRoutes } from '@/lib/site-routes'
@@ -20,6 +20,12 @@ describe('llms.txt', () => {
 
   it('opens with the citable answer about Christian as its summary', () => {
     expect(text.split('\n')[2]).toBe(`> ${aboutPageContent.answer}`)
+  })
+
+  it('states availability once, after the location, in one voice', () => {
+    const line = text.split(String.fromCharCode(10)).find((l) => l.startsWith('Based in'))
+    expect(line).toBe(`Based in ${contactInfo.location}. ${availability}.`)
+    expect(count(text, availability)).toBe(1)
   })
 
   it('links every page on the site exactly once, and the full text', () => {

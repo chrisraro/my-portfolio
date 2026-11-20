@@ -100,7 +100,7 @@ export function serviceSchema(service: ServicePage): JsonLdNode {
     '@type': 'Service',
     '@id': `${url}#service`,
     name: service.name,
-    serviceType: service.keyword,
+    serviceType: service.name,
     description: service.answer,
     url,
     provider: ref(PERSON_ID),

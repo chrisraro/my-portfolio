@@ -455,7 +455,7 @@ export const skills: Skill[] = [
 ]
 
 export const socialLinks: SocialLink[] = [
-  { name: 'Facebook', url: 'https://www.facebook.com/chrisrarss?mibextid=ZbWKwL', icon: 'facebook' },
+  { name: 'Facebook', url: 'https://www.facebook.com/chrisrarss', icon: 'facebook' },
   { name: 'GitHub', url: 'https://github.com/chrisraro', icon: 'github' },
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/christian-raro', icon: 'linkedin' },
   { name: 'Email', url: 'mailto:rarochristian029@gmail.com', icon: 'mail' },

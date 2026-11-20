@@ -34,7 +34,7 @@ function header(): string {
     '',
     `> ${aboutPageContent.answer}`,
     '',
-    `${heroContent.subheadline} Based in ${contactInfo.location}. ${availability}.`,
+    `Based in ${contactInfo.location}. ${availability}.`,
   ].join('\n')
 }
 
