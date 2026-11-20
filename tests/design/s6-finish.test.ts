@@ -117,7 +117,7 @@ describe('phone pacing', () => {
   // The field map section was 2,253px tall at 390 wide.
   it('sets the field map’s places two to a row on a phone, under a narrower map', () => {
     const src = readFileSync('components/sections/field-map.tsx', 'utf8')
-    expect(src).toContain('grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8')
+    expect(src).toContain('grid grid-cols-2 gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-6')
     expect(src).toContain('max-w-[18rem] sm:max-w-md')
   })
 })
@@ -190,5 +190,29 @@ describe('every route sits on the same grid and fills the window (F10)', () => {
 describe('the headline fits at 320px (14b)', () => {
   it('floors the trailhead title at 2.25rem, sized to its column up to 7.5rem', () => {
     expect(rule('.trailhead-title')).toMatch(/font-size:\s*clamp\(2\.25rem,\s*13cqi,\s*7\.5rem\)/)
+  })
+})
+
+describe('the leftovers (14b)', () => {
+  it('gives the chat labels the weight edge-code had', () => {
+    const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
+    expect(chat).toMatch(/\bfont-medium\b/)
+    for (const line of chat.split('\n').filter((l) => /\btabular\b/.test(l))) expect(line).toMatch(/\bfont-medium\b/)
+  })
+
+  it('says body text falls back to the size-adjusted Archivo face, not plain Arial', () => {
+    const layout = readFileSync('app/layout.tsx', 'utf8')
+    expect(layout).not.toMatch(/Body text falls back to Arial/i)
+    expect(layout).toMatch(/size-adjusted/)
+  })
+
+  it('describes the plate rise as filled backwards until its trigger fires', () => {
+    expect(css).not.toMatch(/nothing is filled before it fires/)
+    expect(css).toMatch(/held at its start until the trigger fires/)
+  })
+
+  it('keeps break-words on a case-study figure and no doubled parentheses in the shot doc', () => {
+    expect(readFileSync('components/case-study/case-study-body.tsx', 'utf8')).toMatch(/text-title tabular break-words text-ink/)
+    expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).not.toMatch(/\)\s*\(/)
   })
 })

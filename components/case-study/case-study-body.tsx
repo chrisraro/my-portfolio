@@ -21,8 +21,8 @@ interface EntryProps {
 }
 
 /**
- * One entry of the trail journal: a waypoint on a dashed route line, numbered
- * in reading order (an ink ring), then its heading and prose. Nothing defers
+ * One entry of the trail journal: a waypoint on the journal's dashed left
+ * rule, numbered in reading order (an ink ring), then its heading and prose. Nothing defers
  * or moves: the ring sits outside the entry's box, which containment would clip.
  */
 function Entry({ id, step, title, children }: EntryProps) {
@@ -134,7 +134,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
               {study.metrics.map((m) => (
                 <div key={m.label} className="flex items-baseline gap-2">
                   <dt className="order-last text-sm leading-snug text-muted-strong">{m.label}</dt>
-                  <dd className="flex items-baseline gap-2 text-title tabular text-ink">
+                  <dd className="flex items-baseline gap-2 text-title tabular break-words text-ink">
                     <SpotHeight />
                     {m.value}
                   </dd>

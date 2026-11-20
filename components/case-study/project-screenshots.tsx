@@ -10,8 +10,9 @@ import { shotTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
 // The plate is capped so the sticky rail (a 4:3 plate from 1024px, the gap,
-// the 180px phone shot under it) fits a laptop viewport under the 96px offset.
-const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_35rem)_*_1.33))]'
+// the 180px phone shot under it) fits a laptop viewport under the 96px offset,
+// and never narrower than 16rem on a short window (100vh - 35rem reaches 0 at 560px).
+const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]'
 
 /**
  * The screenshot rail of a project page, on a survey plate: the top of the

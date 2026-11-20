@@ -63,6 +63,11 @@ describe('/projects/[slug]', () => {
     expect(render('beachbus-nfc-card-system')).toContain(caseStudyContent.noPreview.internal)
   })
 
+  it('keeps the sticky rail plate at least 16rem wide on a short screen', () => {
+    // 100vh minus 35rem reaches 0 at a 560px-tall window; the floor holds the plate at 16rem.
+    expect(render('latag')).toContain('lg:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]')
+  })
+
   it('labels screenshots for what they show', () => {
     expect(render('latag')).toContain('aria-label="Screenshot of latag.vercel.app"')
     expect(render('latag')).toContain('aria-label="View larger image: Mobile screenshot of latag.vercel.app"')
@@ -390,7 +395,7 @@ describe('the trail journal', () => {
       const outcome = html.slice(html.indexOf('id="outcome"'))
       for (const m of study.metrics!) {
         expect(outcome, study.slug).toMatch(
-          new RegExp(`<dd class="flex items-baseline gap-2 text-title tabular text-ink"><svg[^>]*>.*?</svg>${m.value}</dd>`),
+          new RegExp(`<dd class="flex items-baseline gap-2 text-title tabular break-words text-ink"><svg[^>]*>.*?</svg>${m.value}</dd>`),
         )
       }
     }
