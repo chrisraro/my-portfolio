@@ -26,13 +26,6 @@ function gatedBlock(needle: string): string {
   }
 }
 
-describe('hero unfold', () => {
-  it('opens from behind the front panel, so no panel swings past the hero', () => {
-    expect(css).toMatch(/@keyframes hero-unfold-y \{\s*from \{ transform: rotateY\(88deg\); \}/)
-    expect(css).toMatch(/@keyframes hero-unfold-x \{\s*from \{ transform: rotateX\(-88deg\); \}/)
-  })
-})
-
 describe('scroll reveals', () => {
   const block = gatedBlock('reveal-cover')
 

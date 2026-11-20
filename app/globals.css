@@ -121,8 +121,9 @@
 		outline: 2px solid oklch(var(--accent));
 		outline-offset: 3px;
 	}
-	/* The accent ring vanishes on an amber plane: inside one, focus is drawn in
-	 * the plane's own ink. */
+	/* Focus on a filled plane draws in the plane's own ink. Only the project
+	 * header (components/case-study/project-header.tsx) still has one; S3
+	 * removes this rule with it. */
 	.on-plane :focus-visible {
 		outline-color: oklch(var(--on-accent));
 	}
@@ -140,15 +141,6 @@
 		.legend-glass {
 			background: oklch(var(--panel));
 		}
-	}
-	/* H1: 56px at a 360px viewport rising to 112px. Anybody 800, condensed. */
-	.text-fluid-h1 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
-		font-size: clamp(3.5rem, 2.2rem + 5.6vw, 7rem);
-		line-height: 0.9;
-		letter-spacing: -0.02em;
-		font-weight: 800;
 	}
 	.text-fluid-h2 {
 		font-family: var(--font-display), system-ui, sans-serif;
@@ -182,10 +174,6 @@
 		line-height: 0.9;
 		font-weight: 800;
 		font-variant-numeric: tabular-nums;
-	}
-	/* The hero's two-point band: each figure owns half the back panel, so it is set larger. */
-	.text-numeral-lg {
-		font-size: clamp(3rem, 0.5rem + 7vw, 8.5rem);
 	}
 	.text-lede {
 		font-size: 1.1875rem;
@@ -238,6 +226,14 @@
 	}
 	.tabular {
 		font-variant-numeric: tabular-nums;
+	}
+	/* A survey plate (spec §3): the pale frame every photo and screenshot sits
+	 * in. Panel paper, a line-strong hairline, an 8px margin. */
+	.survey-plate {
+		display: block;
+		background: oklch(var(--panel));
+		border: 1px solid oklch(var(--line-strong));
+		padding: 0.5rem;
 	}
 	.button-label {
 		font-family: var(--font-display), system-ui, sans-serif;
@@ -454,25 +450,21 @@
 	content-visibility: visible;
 }
 
-/* Hero tri-fold: the whole load timeline in one place (1.9s, runs once). */
-.hero-fold {
+/* Trailhead (components/sections/trailhead.tsx): the first viewport's load
+ * sequence in one place. The headline's lines rise in turn, the copy under
+ * them rises, and the trail draws out of the portrait plate
+ * (.trail-draw--load reads --t-trail), all once, ending by 1.9s. */
+.trailhead {
 	--t-lede: 250ms;
-	--t-mid: 400ms;
-	--t-right: 650ms;
-	--t-crease-1: 450ms;
-	--t-crease-2: 700ms;
-	--t-proof: 1100ms;
-	--stagger-word: 90ms;
-	--stagger-proof: 60ms;
-	perspective: 1600px;
+	--t-trail: 300ms;
 }
-/* A word never breaks inside itself (Arial, the fallback, is wider than
- * Anybody and would break "Full-stack" at its hyphen into a third line, which
- * then collapses when the font arrives: a layout shift under the whole hero). */
-.hero-word { display: inline-block; white-space: nowrap; }
-/* The H1 is sized to its panel, so "Full-stack" never breaks out of the plane. */
-.hero-front { container-type: inline-size; }
-.hero-title { font-size: clamp(2.75rem, 21cqi, 7rem); }
+/* The headline is sized to its column, never to the viewport. */
+.trailhead-copy { container-type: inline-size; }
+.trailhead-title { font-size: clamp(2.75rem, 13cqi, 7.5rem); }
+/* Each authored line stays one line in every font (Arial, the fallback, is
+ * wider than Archivo), so the font swap never re-wraps the headline: no layout
+ * shift under the first viewport. */
+.trailhead-line { display: block; white-space: nowrap; }
 
 /*
  * Catalog card hover (.lift-card): rack cards, a product's screenshot and the
@@ -537,75 +529,21 @@
 	}
 	:is(a, button):hover .arrow-nudge { transform: translateX(8px); }
 
-	@keyframes hero-word {
+	@keyframes trailhead-line {
 		from { transform: translateY(0.35em); }
 		to { transform: none; }
 	}
-	/* Transform only: the lede and buttons are painted from frame one. */
-	@keyframes hero-rise {
-		from { transform: translateY(var(--rise, 16px)); }
+	@keyframes trailhead-rise {
+		from { transform: translateY(16px); }
 		to { transform: none; }
 	}
-	@keyframes hero-lift {
-		from { transform: translateY(var(--rise, 16px)); }
-		to { transform: none; }
+	/* Lines are painted from frame one (transform only), so LCP is unaffected. */
+	.trailhead-line {
+		animation: trailhead-line var(--dur-slow) var(--ease-smooth) both;
+		animation-delay: calc(var(--i, 0) * var(--stagger-line));
 	}
-	/* The free edge recedes (positive Y, negative X), so an inner panel opens
-	 * from behind the front one like paper and never swings toward the viewer
-	 * past the hero's edges. */
-	@keyframes hero-unfold-y {
-		from { transform: rotateY(88deg); }
-		to { transform: none; }
-	}
-	@keyframes hero-unfold-x {
-		from { transform: rotateX(-88deg); }
-		to { transform: none; }
-	}
-	@keyframes hero-draw-y {
-		from { transform: scaleY(0); }
-		to { transform: none; }
-	}
-	@keyframes hero-draw-x {
-		from { transform: scaleX(0); }
-		to { transform: none; }
-	}
-	/* Words are painted from frame one (no opacity), so LCP is unaffected. */
-	.hero-word {
-		animation: hero-word var(--dur-slow) var(--ease-smooth) both;
-		animation-delay: calc(var(--i, 0) * var(--stagger-word));
-	}
-	.hero-rise {
-		animation: hero-rise var(--dur-normal) var(--ease-smooth) var(--t-lede) both;
-	}
-	.hero-unfold-mid,
-	.hero-unfold-right {
-		transform-origin: left center;
-		animation: hero-unfold-y var(--dur-slow) var(--ease-smooth) var(--t-mid) both;
-	}
-	.hero-unfold-right { animation-delay: var(--t-right); }
-	.hero-crease-1,
-	.hero-crease-2 {
-		transform-origin: center top;
-		animation: hero-draw-y var(--dur-crawl) var(--ease-smooth) var(--t-crease-1) both;
-	}
-	.hero-crease-2 { animation-delay: var(--t-crease-2); }
-	.hero-proof-item {
-		--rise: 8px;
-		animation: hero-lift var(--dur-normal) var(--ease-smooth) both;
-		animation-delay: calc(var(--t-proof) + var(--i, 0) * var(--stagger-proof));
-	}
-	/* Stacked below 768px: panels unfold from their top edge, creases run across. */
-	@media (max-width: 767px) {
-		.hero-unfold-mid,
-		.hero-unfold-right {
-			transform-origin: center top;
-			animation-name: hero-unfold-x;
-		}
-		.hero-crease-1,
-		.hero-crease-2 {
-			transform-origin: left center;
-			animation-name: hero-draw-x;
-		}
+	.trailhead-rise {
+		animation: trailhead-rise var(--dur-normal) var(--ease-smooth) var(--t-lede) both;
 	}
 }
 
@@ -833,8 +771,8 @@
 		opacity: 1;
 		transform: none;
 	}
-	/* Hero: every piece in its final state at first paint, creases drawn. */
-	:is(.hero-word, .hero-rise, .hero-unfold-mid, .hero-unfold-right, .hero-crease-1, .hero-crease-2, .hero-proof-item) {
+	/* Trailhead: every line in place and the trail drawn at first paint. */
+	:is(.trailhead-line, .trailhead-rise, .trail-draw--load) {
 		animation: none !important;
 		transform: none;
 	}

@@ -1,0 +1,73 @@
+import { readFileSync } from 'node:fs'
+import type { ReactElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { describe, expect, it } from 'vitest'
+import { Trailhead } from '@/components/sections/trailhead'
+import { heroContent } from '@/lib/data'
+import { parseCssRules } from '@/tests/helpers/css-rules'
+
+// The Isarog Trail Map homepage (spec §5): one describe per section, in page
+// order. Each S2 task adds its section here and to SECTIONS.
+const css = readFileSync('app/globals.css', 'utf8')
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
+
+// Every new section, for the checks that hold for all of them.
+const SECTIONS: [string, ReactElement][] = [
+  ['Trailhead', <Trailhead key="trailhead" />],
+]
+
+describe('Trailhead', () => {
+  const html = renderToStaticMarkup(<Trailhead />)
+  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ''
+
+  it('is the #top section, the eyebrow above the headline', () => {
+    expect(html).toMatch(/^<section id="top" aria-labelledby="trailhead-title"/)
+    expect(html).toContain(`>${heroContent.eyebrow}</p>`)
+    expect(html.indexOf(heroContent.eyebrow)).toBeLessThan(html.indexOf('<h1'))
+  })
+
+  it('sets the headline one authored line per span, read as one sentence', () => {
+    expect(h1.match(/class="trailhead-line"/g)).toHaveLength(heroContent.headlineLines.length)
+    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.headline)
+  })
+
+  it('says what he builds and for whom, from data', () => {
+    expect(html).toContain(`>${escape(heroContent.subheadline)}</p>`)
+  })
+
+  it('offers both paths: Start a project, then Hire me for a role, both to #contact until S4', () => {
+    const primary = html.search(/<a href="#contact" class="press button-primary">Start a project/)
+    const secondary = html.search(/<a href="#contact" class="press button-secondary">Hire me for a role/)
+    expect(primary).toBeGreaterThan(-1)
+    expect(secondary).toBeGreaterThan(primary)
+  })
+
+  it('sets the portrait on a survey plate inside the lightbox, named once', () => {
+    expect(html).toMatch(new RegExp(`<button type="button" aria-label="View larger image: ${heroContent.portraitAlt}" class="[^"]*survey-plate`))
+    expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
+  })
+
+  it('draws the trail out of the plate on load, over the contours', () => {
+    expect(html).toContain('class="trail-draw trail-draw--load"')
+    expect(html).toMatch(/<svg aria-hidden="true"[^>]*class="[^"]*text-contour/)
+  })
+})
+
+describe('proof renders visible without JavaScript', () => {
+  it.each(SECTIONS)('%s ships no opacity:0 entrance', (_name, node) => {
+    expect(renderToStaticMarkup(node)).not.toMatch(/opacity:\s*0/)
+  })
+
+  // Text is never painted (or measured for contrast) faded: every keyframe
+  // moves by transform or stroke, except the overlays' fades and the live pulse.
+  it('fades nothing on the page: keyframes move by transform or stroke only', () => {
+    const FADES = new Set(['live-pulse', 'typing-fade', 'vt-fade-out', 'vt-fade-in'])
+    const frames = parseCssRules(css).filter((r) => r.ancestors.some((a) => a.startsWith('@keyframes ')))
+    expect(frames.length).toBeGreaterThan(0)
+    for (const r of frames) {
+      const name = r.ancestors.find((a) => a.startsWith('@keyframes '))!.slice('@keyframes '.length)
+      if (FADES.has(name)) continue
+      expect(r.body, name).not.toMatch(/opacity/)
+    }
+  })
+})

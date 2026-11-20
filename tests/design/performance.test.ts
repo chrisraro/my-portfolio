@@ -21,7 +21,7 @@ describe('image priority', () => {
     const withPriority = sources
       .filter(({ src }) => /^\s*priority\b/m.test(src) || /fetchPriority=/.test(src))
       .map(({ f }) => f.replace(/\\/g, '/'))
-    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/hero.tsx'])
+    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/trailhead.tsx'])
   })
 
   it('never prioritises a full-page project shot', () => {
@@ -72,8 +72,8 @@ describe('first layout', () => {
     expect(css).toMatch(/@supports \(overflow-clip-margin: 1px\) \{\s*\.defer-render-lift \{[^}]*overflow-clip-margin/)
   })
 
-  it('never defers the hero, the work or the contact card (first viewport, or next to the footer)', () => {
-    for (const f of ['hero', 'products', 'rack', 'contact-console']) {
+  it('never defers the first viewport, the work or the contact form', () => {
+    for (const f of ['trailhead', 'products', 'rack', 'contact-console']) {
       const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
       expect(src, f).not.toMatch(/<section[^>]*defer-render/)
     }
@@ -93,11 +93,11 @@ describe('type family', () => {
 })
 
 describe('font swap', () => {
-  // R6: with the lede no longer faded in, the hero's font swap showed as CLS
-  // 0.23 on mobile: in Arial, "Full-stack" broke at its hyphen into a third
-  // line that collapsed when Anybody arrived.
-  it('never breaks a hero word, so the H1 keeps its line count across the swap', () => {
-    expect(css).toMatch(/\.hero-word \{[^}]*white-space:\s*nowrap/)
+  // R6: in Arial the old hero's "Full-stack" broke at its hyphen into a third
+  // line that collapsed when the web font arrived (CLS 0.23). The trailhead's
+  // headline is authored lines, each held on one line in every font.
+  it('never re-wraps a headline line, so the H1 keeps its line count across the swap', () => {
+    expect(css).toMatch(/\.trailhead-line \{[^}]*white-space:\s*nowrap/)
   })
 })
 

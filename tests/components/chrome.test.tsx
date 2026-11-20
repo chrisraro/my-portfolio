@@ -1,12 +1,16 @@
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ContourField } from '@/components/map/contour-field'
 import { TrailPath } from '@/components/map/trail-path'
 import { TrailSegment } from '@/components/map/trail-segment'
 import { Footer } from '@/components/footer'
-import { footerContent, navigationItems, resumeUrl } from '@/lib/data'
+import { SiteLegend } from '@/components/site-legend'
+import { contactInfo, footerContent, navigationItems, resumeUrl } from '@/lib/data'
 import { trailSegments, trailheadContours, trailheadTrail } from '@/lib/contours'
+
+// The legend reads the route; outside the App Router there is none.
+vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
 describe('map primitives', () => {
   it('renders contours as decorative SVG', () => {
@@ -79,5 +83,36 @@ describe('survey footer', () => {
 
   it('offers the résumé on every width', () => {
     expect(html).toContain(`href="${resumeUrl}"`)
+  })
+})
+
+describe('Site legend', () => {
+  it('scrolls the nav sideways when it must, padded so the focus ring is not clipped', () => {
+    const source = readFileSync('components/site-legend.tsx', 'utf8')
+    const ul = source.match(/<ul className="([^"]*)"/)?.[1] ?? ''
+    expect(ul).toContain('overflow-x-auto')
+    expect(ul).toMatch(/(^|\s)p-1\.5/)
+  })
+
+  it('names the theme toggle neutrally until mount, so hydration cannot leave a wrong label', () => {
+    const source = readFileSync('components/site-legend.tsx', 'utf8')
+    // The label is gated on mount, like the icon: the server cannot know the theme.
+    expect(source).toMatch(/aria-label=\{themeLabel\}/)
+    expect(source).toMatch(/const themeLabel = !mounted \? 'Toggle theme'/)
+    // The server render (mounted false) is the neutral name.
+    const html = renderToStaticMarkup(<SiteLegend />)
+    expect(html).toContain('aria-label="Toggle theme"')
+  })
+})
+
+describe('Footer', () => {
+  it('tells screen readers each social link opens a new tab', () => {
+    const html = renderToStaticMarkup(<Footer />)
+    const links = contactInfo.socialLinks.filter((l) => l.icon !== 'mail')
+    expect(html.match(/\(opens in a new tab\)/g)).toHaveLength(links.length)
+  })
+
+  it('signs off with the colophon from lib/data.ts', () => {
+    expect(renderToStaticMarkup(<Footer />)).toContain(footerContent.colophon)
   })
 })

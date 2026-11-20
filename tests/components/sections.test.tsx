@@ -1,12 +1,7 @@
-import { readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it, vi } from 'vitest'
-import { Footer } from '@/components/footer'
-import { SiteLegend } from '@/components/site-legend'
+import { describe, expect, it } from 'vitest'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { FieldLog } from '@/components/sections/field-log'
-import { Hero } from '@/components/sections/hero'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
 import { RouteLine } from '@/components/sections/route-line'
@@ -15,14 +10,10 @@ import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { groupForHomepage } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
 import {
-  availability,
-  contactInfo,
   education,
   experience,
-  footerContent,
   galleryContent,
   galleryImages,
-  heroContent,
   projects,
   recommendations,
   sectionContent,
@@ -32,74 +23,13 @@ import { buildFieldLog } from '@/lib/field-log'
 import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
 import type { Project } from '@/types'
 
-// The top bar reads the route; outside the App Router there is none.
-vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
+// The Portfolio 4.0 homepage sections, retired one per task in S2
+// (docs/superpowers/plans/2026-11-20-portfolio-v5-s2.md). The new sections are
+// tested in tests/components/homepage.test.tsx.
 
 const products = projects.filter((p) => p.band === 'Products')
 const racked = projects.filter((p) => p.band !== 'Products')
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
-
-describe('Hero', () => {
-  const html = renderToStaticMarkup(<Hero />)
-
-  it('renders the AI line from data, in plain text under the title', () => {
-    expect(heroContent.aiLine).toBe('AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n')
-    expect(html).toContain(`>${heroContent.aiLine}</p>`)
-    expect(html.indexOf('</h1>')).toBeLessThan(html.indexOf(heroContent.aiLine))
-  })
-
-  // Confirm critique: the proof panel spread its two groups apart (a ~234px
-  // void), and at 1440x900 the fold cut the Products heading in half.
-  // R5 critique: at 1440 the panel's bottom third stood empty. The proof grid
-  // now grows to fill it (its rows share the height), still from the top.
-  it('stacks the proof panel from the top, fills it, and leaves the next heading inside the first viewport', () => {
-    const panel = html.match(/<div class="hero-unfold-right[^"]*"/)?.[0] ?? ''
-    expect(panel).toContain('justify-start')
-    expect(panel).not.toContain('justify-between')
-    const grid = html.match(/<ul class="([^"]*grid-cols-2[^"]*)"/)?.[1] ?? ''
-    expect(grid).toContain('md:flex-1')
-    expect(grid).toContain('md:auto-rows-fr')
-    // Two proof points: side by side when stacked, one above the other in the
-    // narrow back panel from 768px, each owning half its height, numerals large.
-    expect(grid).toContain('md:grid-cols-1')
-    expect(html.match(/class="text-numeral text-numeral-lg/g)).toHaveLength(heroContent.proofPoints.length)
-    const section = html.match(/<section id="top"[^>]*class="([^"]*)"/)?.[1] ?? ''
-    expect(section).toContain('md:pb-[72px]')
-  })
-
-  it('states availability in the first mobile viewport, where the top bar hides it', () => {
-    const line = html.match(/<p class="([^"]*)">(?:(?!<\/p>).)*Open to freelance/)
-    expect(html).toContain(availability)
-    expect(line?.[1]).toContain('sm:hidden')
-  })
-
-  it('sets the title as the H1, word by word, with the lede and specialism', () => {
-    const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ''
-    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.title)
-    expect(html).toContain(escape(heroContent.lede))
-    expect(html).toContain(heroContent.specialism)
-  })
-
-  it('leads with Start a project and the résumé', () => {
-    expect(html).toMatch(/<a [^>]*href="#contact"[^>]*>Start a project/)
-    expect(html).toContain('Résumé')
-  })
-
-  it('reads each proof point as its sentence, with a plain numeral beside it', () => {
-    for (const point of heroContent.proofPoints) expect(html).toContain(`<span class="sr-only">${point}</span>`)
-    expect(html).not.toMatch(/aria-hidden="true" class="text-numeral[^"]*">0\d</)
-  })
-
-  it('does not repeat the portrait’s name inside its labelled button', () => {
-    expect(html).toContain(`aria-label="View larger image: ${heroContent.portraitAlt}"`)
-    expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
-  })
-
-  it('keeps amber off the stack chips: colour arrives only as whole planes', () => {
-    const chips = html.match(/<ul aria-label="Core stack"[\s\S]*?<\/ul>/)?.[0] ?? ''
-    expect(chips).not.toContain('accent')
-  })
-})
 
 describe('Products', () => {
   const html = renderToStaticMarkup(<Products />)
@@ -315,74 +245,5 @@ describe('Stack', () => {
   it('renders the AI & automation group', () => {
     expect(html).toContain('>AI &amp; automation<')
     for (const name of ['Claude Code', 'Codex', 'Qwen Code', 'n8n', 'Groq / LLM APIs']) expect(html).toContain(`>${name}<`)
-  })
-})
-
-describe('primary proof renders visible without JavaScript', () => {
-  it.each([
-    ['Hero', <Hero key="h" />],
-    ['Products', <Products key="p" />],
-    ['Rack', <Rack key="r" />],
-  ])('%s ships no opacity:0 entrance', (_name, node) => {
-    expect(renderToStaticMarkup(node)).not.toMatch(/opacity:\s*0/)
-  })
-
-  it('moves proof by transform only as it scrolls in, never by opacity', () => {
-    const css = readFileSync('app/globals.css', 'utf8')
-    for (const name of ['reveal-slide', 'reveal-stagger', 'reveal-draw-x']) {
-      const frames = css.match(new RegExp(`@keyframes ${name} \\{[\\s\\S]*?\\n\\t\\t\\}`))?.[0]
-      expect(frames, name).toBeDefined()
-      expect(frames).not.toContain('opacity')
-    }
-    // The lede block rises by transform only too (a11y gate R5, P2-7).
-    const rise = css.match(/@keyframes hero-rise \{[\s\S]*?\n\t\}/)?.[0]
-    expect(rise).toBeDefined()
-    expect(rise).not.toContain('opacity')
-    // The hero proof numerals rise on their own transform-only keyframes.
-    const lift = css.match(/@keyframes hero-lift \{[\s\S]*?\n\t+\}/)?.[0]
-    expect(lift).toBeDefined()
-    expect(lift).not.toContain('opacity')
-    expect(css).toMatch(/\.hero-proof-item \{[^}]*animation: hero-lift/)
-  })
-})
-
-describe('Lobby Rack type', () => {
-  it('sets no homepage label in the retired B3 caps-and-tracking style', () => {
-    const dir = 'components/sections'
-    for (const f of readdirSync(dir)) {
-      const source = readFileSync(join(dir, f), 'utf8')
-      expect(source, f).not.toMatch(/\buppercase\b|tracking-\[0\.1em\]/)
-    }
-  })
-})
-
-describe('Site legend', () => {
-  it('scrolls the nav sideways when it must, padded so the focus ring is not clipped', () => {
-    const source = readFileSync('components/site-legend.tsx', 'utf8')
-    const ul = source.match(/<ul className="([^"]*)"/)?.[1] ?? ''
-    expect(ul).toContain('overflow-x-auto')
-    expect(ul).toMatch(/(^|\s)p-1\.5/)
-  })
-
-  it('names the theme toggle neutrally until mount, so hydration cannot leave a wrong label', () => {
-    const source = readFileSync('components/site-legend.tsx', 'utf8')
-    // The label is gated on mount, like the icon: the server cannot know the theme.
-    expect(source).toMatch(/aria-label=\{themeLabel\}/)
-    expect(source).toMatch(/const themeLabel = !mounted \? 'Toggle theme'/)
-    // The server render (mounted false) is the neutral name.
-    const html = renderToStaticMarkup(<SiteLegend />)
-    expect(html).toContain('aria-label="Toggle theme"')
-  })
-})
-
-describe('Footer', () => {
-  it('tells screen readers each social link opens a new tab', () => {
-    const html = renderToStaticMarkup(<Footer />)
-    const links = contactInfo.socialLinks.filter((l) => l.icon !== 'mail')
-    expect(html.match(/\(opens in a new tab\)/g)).toHaveLength(links.length)
-  })
-
-  it('signs off with the colophon from lib/data.ts', () => {
-    expect(renderToStaticMarkup(<Footer />)).toContain(footerContent.colophon)
   })
 })

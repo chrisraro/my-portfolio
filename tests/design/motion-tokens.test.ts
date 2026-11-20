@@ -72,43 +72,40 @@ describe('motion tokens', () => {
     for (const v of Array.from(variants)) expect(off, `${v} is not switched off under reduce`).toMatch(new RegExp(`${v.replace('.', '\\.')}(?![\\w-])`))
   })
 
-  it('runs the hero load sequence only under no-preference, and switches it off under reduce', () => {
+  it('runs the trailhead sequence only under no-preference, and switches it off under reduce', () => {
     const rules = parseRules(css)
     const animated = rules.filter(
-      (r) => /\.hero-[\w-]+/.test(r.selector) && /animation(-name)?\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
+      (r) => /\.trailhead-[\w-]+|\.trail-draw--load/.test(r.selector) && /animation(-name)?\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
     )
-    expect(animated.length).toBeGreaterThan(0)
+    expect(animated.length).toBeGreaterThanOrEqual(3)
     for (const r of animated) {
       expect(r.ancestors, `${r.selector} needs no-preference`).toContain('@media (prefers-reduced-motion: no-preference)')
     }
     const off = rules.find(
-      (r) => r.selector.includes('.hero-word') && r.ancestors.includes('@media (prefers-reduced-motion: reduce)') && /animation\s*:\s*none/.test(r.body),
+      (r) =>
+        r.ancestors.includes('@media (prefers-reduced-motion: reduce)') &&
+        /animation\s*:\s*none/.test(r.body) &&
+        ['.trailhead-line', '.trailhead-rise', '.trail-draw--load'].every((s) => r.selector.includes(s)),
     )
     expect(off).toBeDefined()
   })
 
-  it('keeps the hero sequence under two seconds', () => {
+  it('keeps the trailhead sequence under two seconds', () => {
     const ms = (name: string) => {
       const m = css.match(new RegExp(String.raw`${name}:\s*(\d+)ms;`))
       if (!m) throw new Error(`missing ${name}`)
       return Number(m[1])
     }
     const dur = motionTokens.duration
-    const words = heroContent.title.split(' ').length
-    const proofs = heroContent.proofPoints.length
-    // Every part of the timeline ends by 2 s, not just the latest-starting one.
+    const lines = heroContent.headlineLines.length
+    // Every part of the sequence ends by 2 s, not just the latest-starting one.
     const ends = {
-      // H1 words: staggered, each over the slow duration.
-      words: (words - 1) * ms('--stagger-word') + dur.slow * 1000,
-      lede: ms('--t-lede') + dur.normal * 1000,
-      // Panels unfold over the slow duration; the right one starts later.
-      panelMid: ms('--t-mid') + dur.slow * 1000,
-      panelRight: ms('--t-right') + dur.slow * 1000,
-      // Creases draw over the crawl duration.
-      crease1: ms('--t-crease-1') + dur.crawl * 1000,
-      crease2: ms('--t-crease-2') + dur.crawl * 1000,
-      // Proof cells lift in turn after --t-proof.
-      proof: ms('--t-proof') + (proofs - 1) * ms('--stagger-proof') + dur.normal * 1000,
+      // Headline lines: staggered, each over the slow duration.
+      lines: (lines - 1) * ms('--stagger-line') + dur.slow * 1000,
+      // Subheadline and buttons.
+      rise: ms('--t-lede') + dur.normal * 1000,
+      // The trail draws out of the plate.
+      trail: ms('--t-trail') + dur.draw * 1000,
     }
     for (const [part, end] of Object.entries(ends)) {
       expect(end, part).toBeLessThan(2000)

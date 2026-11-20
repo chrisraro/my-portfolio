@@ -2,9 +2,9 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// One primary button across every page: .button-primary in globals.css. On
-// paper it is an amber fill; on an amber plane (.on-plane) it inverts to a
-// lagoon fill with amber text. Nothing composes its own primary.
+// One primary button across every page: .button-primary in globals.css, a
+// trail-red fill with on-trail text, beside an ink-outline .button-secondary.
+// Nothing composes its own primary.
 function tsxFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry)
@@ -31,7 +31,8 @@ describe('primary button', () => {
       const tag = Math.max(...['<Link', '<a\n', '<a\r', '<a ', '<button'].map((t) => src.lastIndexOf(t, i)))
       return src.slice(Math.max(0, tag), i)
     }
-    expect(uses('components/sections/hero.tsx', 'Start a project')).toContain('button-primary')
+    expect(uses('components/sections/trailhead.tsx', 'Start a project')).toContain('button-primary')
+    expect(uses('components/sections/trailhead.tsx', 'Hire me for a role')).toContain('button-secondary')
     expect(uses('components/case-study/project-header.tsx', 'Start a project')).toContain('button-primary')
     expect(uses('app/projects/page.tsx', 'Start a project')).toContain('button-primary')
     expect(uses('app/projects/[slug]/page.tsx', 'Start a project')).toContain('button-primary')
