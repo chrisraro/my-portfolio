@@ -36,14 +36,17 @@ interface StatusBadgeProps {
   /** Hide the label visually in dense layouts. It stays in the accessibility tree. */
   compact?: boolean
   className?: string
+  /** Lets a link name itself by its status (aria-labelledby). */
+  id?: string
 }
 
-export function StatusBadge({ status, compact = false, className }: StatusBadgeProps) {
+export function StatusBadge({ status, compact = false, className, id }: StatusBadgeProps) {
   const display = displayStatus(status)
   return (
     <span
       data-status={display}
       className={cn('inline-flex items-center gap-1.5 edge-code text-xs text-muted', className)}
+      id={id}
     >
       <StatusGlyph status={display} />
       <span className={compact ? 'sr-only' : undefined}>{DISPLAY_STATUS_LABEL[display]}</span>

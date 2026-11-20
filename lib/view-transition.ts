@@ -16,6 +16,16 @@ export function tierTransitionName(heading: string): string {
   return `tier-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
 }
 
+/** A /projects plate's name while a filter change re-lays the list out. */
+export function plateTransitionName(slug: string): string {
+  return `plate-${slug}`
+}
+
+/** A /projects band heading's name while a filter change re-lays the list out. */
+export function bandTransitionName(heading: string): string {
+  return `band-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
 /** The parts of a click that decide whether the browser should handle it. */
 export interface ClickLike {
   button: number
