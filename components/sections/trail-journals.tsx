@@ -36,18 +36,16 @@ export function TrailJournals() {
       <SectionHeading id="journals-title" eyebrow={sectionContent.journals.eyebrow} title={sectionContent.journals.title} />
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {journals.map(({ project, study }, i) => {
-          const titleId = `journal-${project.slug}`
           return (
             <li key={project.slug} className="reveal-cover" style={{ '--i': i % 3 } as CSSProperties}>
               <Link
                 href={projectHref(project)}
-                aria-labelledby={`${titleId} ${titleId}-cue`}
                 className="lift-card group relative flex h-full min-h-[20rem] flex-col rounded border border-line bg-panel p-6"
               >
                 <span aria-hidden="true" className="map-label tabular text-muted">
                   {edgeCode(i + 1, journals.length, caseStudyContent.eyebrow.caseStudy)}
                 </span>
-                <h3 id={titleId} className="text-title mt-8 text-ink">
+                <h3 className="text-title mt-8 text-ink">
                   {project.title}
                 </h3>
                 <span className="map-label mt-2 text-muted">
@@ -55,7 +53,7 @@ export function TrailJournals() {
                 </span>
                 <span className="mt-5 leading-relaxed text-muted-strong">{briefLead(study)}</span>
                 <span className="mt-auto pt-6 text-sm text-ink">{study.role}</span>
-                <span id={`${titleId}-cue`} className={cn(trailLinkClass('action'), 'mt-4 min-h-0')}>
+                <span className={cn(trailLinkClass('action'), 'mt-4 min-h-0')}>
                   <TrailLinkText text={ctaLabels.readCaseStudy} />
                 </span>
               </Link>

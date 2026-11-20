@@ -299,12 +299,14 @@ describe('TrailJournals', () => {
     expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
   })
 
-  it('names each cover by its h3 and its cue, not by every line on it', () => {
+  it('names each cover by its visible text (WCAG 2.5.3): the h3 sits inside a link with no aria-labelledby', () => {
     for (const slug of FLAGSHIP_SLUGS) {
       const project = projects.find((p) => p.slug === slug)!
-      expect(html, slug).toMatch(new RegExp(`<h3 id="journal-${slug}" class="[^"]*">${escape(project.title)}</h3>`))
-      expect(html, slug).toContain(`aria-labelledby="journal-${slug} journal-${slug}-cue"`)
-      expect(html, slug).toMatch(new RegExp(`<span id="journal-${slug}-cue" class="button-label`))
+      const start = html.indexOf(`href="/projects/${slug}"`)
+      expect(start, slug).toBeGreaterThan(-1)
+      const link = html.slice(html.lastIndexOf('<a ', start), html.indexOf('</a>', start))
+      expect(link, slug).not.toMatch(/aria-labelledby|aria-label=/)
+      expect(link, slug).toMatch(new RegExp(`<h3 class="[^"]*">${escape(project.title)}</h3>`))
     }
   })
 })

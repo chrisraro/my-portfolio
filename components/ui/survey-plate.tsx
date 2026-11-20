@@ -7,7 +7,6 @@ interface SurveyPlateProps {
   as?: 'div' | 'figure' | 'span'
   /** The plate is itself the link (a project plate). */
   href?: string
-  'aria-labelledby'?: string
   className?: string
   children: ReactNode
 }
@@ -18,17 +17,17 @@ interface SurveyPlateProps {
  * (.survey-plate in app/globals.css). The only place the class is written:
  * tests/design/survey-plate.test.ts holds every plate to this component.
  */
-export function SurveyPlate({ as: Tag = 'div', href, className, children, ...aria }: SurveyPlateProps) {
+export function SurveyPlate({ as: Tag = 'div', href, className, children }: SurveyPlateProps) {
   const classes = cn('survey-plate', className)
   if (href) {
     return (
-      <Link href={href} className={classes} {...aria}>
+      <Link href={href} className={classes}>
         {children}
       </Link>
     )
   }
   return (
-    <Tag className={classes} {...aria}>
+    <Tag className={classes}>
       {children}
     </Tag>
   )

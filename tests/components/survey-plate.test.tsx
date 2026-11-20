@@ -15,15 +15,15 @@ describe('SurveyPlate', () => {
     expect(renderToStaticMarkup(<SurveyPlate as="span">x</SurveyPlate>)).toBe('<span class="survey-plate">x</span>')
   })
 
-  it('can itself be the link, named by the ids it is given', () => {
+  it('can itself be the link, named by its own content', () => {
     const html = renderToStaticMarkup(
-      <SurveyPlate href="/projects/latag" aria-labelledby="t s" className="lift-card">
+      <SurveyPlate href="/projects/latag" className="lift-card">
         x
       </SurveyPlate>,
     )
     expect(html).toMatch(/^<a /)
     expect(html).toContain('href="/projects/latag"')
-    expect(html).toContain('aria-labelledby="t s"')
+    expect(html).not.toContain('aria-labelledby')
     expect(html).toContain('class="survey-plate lift-card"')
   })
 })

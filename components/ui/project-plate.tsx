@@ -22,15 +22,14 @@ interface ProjectPlateProps {
  * in the 3:4 frame every screenshot shares or, with no public screen, the
  * printed reason in the same 3:4 frame, so every plate stands at one scale on
  * one baseline. Under it the catalog number, name (h3), status, summary and
- * domain. The link is named by the name and the status, not by every line in
- * it. Hover lifts it like every catalog card (.lift-card). The li carries the
+ * domain. The link is named by its own visible text (WCAG 2.5.3): the sr-only
+ * prefix, name, status and summary; code and domain are aria-hidden. Hover lifts it like every catalog card (.lift-card). The li carries the
  * id a map pin jumps to and the name a filter change glides (.vt-filter).
  */
 export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) {
   const shot = fullShotFor(project)
   const domain = canLinkLive(project) && project.links.live ? extractDomain(project.links.live) : undefined
   const id = `plate-${project.slug}`
-  const named = [labelPrefix ? `${id}-prefix` : '', `${id}-title`, `${id}-status`].filter(Boolean).join(' ')
 
   return (
     <li
@@ -38,9 +37,9 @@ export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) 
       className="project-plate min-w-0 scroll-mt-28"
       style={{ '--vt-plate': plateTransitionName(project.slug) } as CSSProperties}
     >
-      <SurveyPlate href={projectHref(project)} aria-labelledby={named} className="lift-card flex h-full flex-col">
+      <SurveyPlate href={projectHref(project)} className="lift-card flex h-full flex-col">
         {labelPrefix && (
-          <span className="sr-only" id={`${id}-prefix`}>
+          <span className="sr-only">
             {`${labelPrefix}: `}
           </span>
         )}
@@ -60,10 +59,10 @@ export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) 
           <span aria-hidden="true" className="map-label tabular text-muted">
             {code}
           </span>
-          <h3 id={`${id}-title`} className="text-title text-ink">
+          <h3 className="text-title text-ink">
             {project.title}
           </h3>
-          <StatusBadge status={project.status} id={`${id}-status`} />
+          <StatusBadge status={project.status} />
           <span className="text-sm leading-snug text-muted-strong">{project.summary}</span>
           {/* Visual only: the plate opens the project page, not this domain. */}
           <span aria-hidden="true" className="map-label mt-auto truncate pt-2 text-muted">

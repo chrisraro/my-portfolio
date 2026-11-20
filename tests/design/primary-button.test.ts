@@ -43,8 +43,12 @@ describe('primary button', () => {
 
   it('is never composed by hand from a fill and padding', () => {
     for (const { f, src } of sources) {
-      expect(src, f).not.toMatch(/\bbg-trail\b[^"]*\bpx-\d/)
-      expect(src, f).not.toMatch(/rounded bg-accent(?:-plane)? px-\d/)
+      // Each quoted class string on its own, whichever order its classes come in.
+      for (const str of src.match(/"[^"]*"|`[^`]*`/g) ?? []) {
+        // Unprefixed utilities only: focus:bg-accent-plane (the skip link) is not a resting button.
+        const composed = /(?<![:\w-])bg-(?:trail|accent(?:-plane)?)(?![\w-])/.test(str) && /(?<![:\w-])px-\d/.test(str)
+        expect(composed, `${f}: ${str}`).toBe(false)
+      }
     }
   })
 })

@@ -159,6 +159,7 @@ describe('/projects/[slug]', () => {
     for (const p of projects) {
       const html = render(p.slug)
       const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'))
+      expect(header.length, p.slug).toBeGreaterThan(0)
       expect(header, p.slug).not.toMatch(/on-plane|accent-plane|on-accent|crease-/)
     }
   })
@@ -245,7 +246,7 @@ describe('flagship case studies', () => {
 
   it('names the next-case-study link on its own, out of its landmark', () => {
     for (const s of caseStudies) {
-      expect(render(s.slug)).toMatch(new RegExp(`<span class="sr-only" id="plate-[a-z0-9-]+-prefix">${h.next}: </span>`))
+      expect(render(s.slug)).toMatch(new RegExp(`<span class="sr-only">${h.next}: </span>`))
     }
   })
 

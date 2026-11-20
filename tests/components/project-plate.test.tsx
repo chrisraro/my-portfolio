@@ -35,19 +35,25 @@ describe('ProjectPlate', () => {
     }
   })
 
-  it('names the link by the title and the status, not by every line in it', () => {
-    const html = render(withShot)
-    const id = `plate-${withShot.slug}`
-    expect(html).toMatch(new RegExp(`<a [^>]*aria-labelledby="${id}-title ${id}-status"`))
-    expect(html).toMatch(new RegExp(`<h3 id="${id}-title" class="[^"]*">${escape(withShot.title)}</h3>`))
-    expect(html).toMatch(new RegExp(`<span data-status="[^"]+" class="[^"]*" id="${id}-status">`))
+  it('names the link by its visible text (WCAG 2.5.3): no aria-labelledby, title and summary inside it', () => {
+    for (const p of projects) {
+      const html = render(p)
+      const link = html.slice(html.indexOf('<a '), html.indexOf('</a>'))
+      expect(link, p.slug).not.toMatch(/aria-labelledby|aria-label=/)
+      expect(link, p.slug).toMatch(new RegExp(`<h3 class="[^"]*">${escape(p.title)}</h3>`))
+      expect(link, p.slug).toContain(escape(p.summary))
+      expect(link, p.slug).toMatch(/data-status=/)
+    }
   })
 
   it('reads a prefix first when the plate stands for more than itself', () => {
     const html = render(withShot, 'Next case study')
     const id = `plate-${withShot.slug}`
-    expect(html).toContain(`<span class="sr-only" id="${id}-prefix">Next case study: </span>`)
-    expect(html).toMatch(new RegExp(`aria-labelledby="${id}-prefix ${id}-title ${id}-status"`))
+    expect(html).toContain('<span class="sr-only">Next case study: </span>')
+    expect(html).not.toContain('aria-labelledby')
+    // The prefix is the link's first child, so the name starts with it and then the visible title.
+    expect(html).toMatch(/<a [^>]*><span class="sr-only">Next case study: <\/span>/)
+    expect(html.indexOf('Next case study: ')).toBeLessThan(html.indexOf('<h3'))
   })
 
   it('shows a still of the site at 3:4 on its survey plate, marked as a morph source', () => {
