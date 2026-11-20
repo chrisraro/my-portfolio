@@ -20,6 +20,8 @@ const RETIRED: [string, RegExp][] = [
   ['the board filter', /\bBoardFilter\b|board-filter/],
   ['the lifted tier deferral', /defer-render-lift/],
   ['the rack stagger', /reveal-stagger|timeline-trigger|animation-trigger|--stagger-card|--c3\b|--c4\b/],
+  ['the folds', /crease-(?:v|h)\b|reveal-fold/],
+  ['the arrow-link text', /ArrowLinkText|arrow-link-text/],
   ['the rack transition names', /--vt-card|--vt-tier|cardTransitionName|tierTransitionName/],
   ['the amber flap', /on-plane|crease-fold/],
 ]
@@ -28,6 +30,7 @@ const GONE = [
   'components/ui/rack-card.tsx',
   'components/ui/rack-tier.tsx',
   'components/ui/board-filter.tsx',
+  'components/case-study/arrow-link-text.tsx',
   'tests/design/catalog-motion.test.ts',
 ]
 

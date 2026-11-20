@@ -66,4 +66,13 @@ describe('the homepage link idiom', () => {
       expect(src, f).not.toMatch(/function (ProjectLink|Pin|PlaceGlyph)\b|const LABELS\b/)
     }
   })
+
+  it('goes through TrailLink on the project pages too', () => {
+    for (const f of ['case-study-body', 'project-summary', 'project-header']) {
+      const src = readFileSync(`components/case-study/${f}.tsx`, 'utf8')
+      expect(src, f).not.toContain('className="link-draw"')
+      expect(src, f).not.toContain('ArrowLinkText')
+    }
+    expect(readFileSync('app/projects/[slug]/page.tsx', 'utf8')).not.toContain('className="link-draw"')
+  })
 })

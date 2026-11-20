@@ -30,7 +30,7 @@ describe('scroll reveals', () => {
   const block = gatedBlock('reveal-cover')
 
   it('play while the element is in view (the contract’s range), not as it crosses the edge', () => {
-    for (const cls of ['reveal-cover', 'reveal-fold']) {
+    for (const cls of ['reveal-cover']) {
       const rule = block.match(new RegExp(String.raw`\.${cls}[^{]*\{[^}]*\}`))?.[0] ?? ''
       expect(rule, cls).toMatch(/animation-range:\s*entry (?:calc\()?10%[^;]*cover 30%/)
     }

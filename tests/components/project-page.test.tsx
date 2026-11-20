@@ -310,8 +310,8 @@ describe('related work', () => {
       const text = caseStudyContent.partOf.replace('{title}', title(s.slug))
       for (const slug of s.related!) {
         expect(linkText(render(slug), `/projects/${s.slug}`)).toBe(text)
-        // A wrapped label keeps its arrow beside the last word, not alone on a line.
-        expect(render(slug)).toContain(`<span class="whitespace-nowrap">${text.split(' ').pop()}<svg`)
+        // A trail link: the text in one drawn underline, the arrow beside it in an inline-flex link.
+        expect(render(slug)).toContain(`<span class="link-draw">${text}</span><svg`)
       }
     }
   })
@@ -334,5 +334,51 @@ describe('project page JSON-LD', () => {
 
   it('gives a short page only a breadcrumb', () => {
     expect(ldTypes('latag')).toEqual(['BreadcrumbList'])
+  })
+})
+
+describe('the trail journal', () => {
+  const h = caseStudyContent.headings
+  const steps = (html: string) =>
+    Array.from(html.matchAll(/<span aria-hidden="true" class="journal-step[^"]*">(\d+)<\/span>/g)).map((m) => Number(m[1]))
+
+  it('walks a flagship as numbered waypoints: brief, build, decisions, stack, outcome, then the client', () => {
+    for (const s of caseStudies) {
+      const project = projects.find((p) => p.slug === s.slug)!
+      const quoted = recommendations.some((r) => r.projectId === project.id)
+      const html = render(s.slug)
+      const n = quoted ? 6 : 5
+      expect(steps(html), s.slug).toEqual(Array.from({ length: n }, (_, i) => i + 1))
+      for (const [id, title] of [['brief', h.brief], ['built', h.built], ['decisions', h.decisions], ['stack', h.stack], ['outcome', h.outcome]]) {
+        expect(html, `${s.slug} ${id}`).toMatch(new RegExp(`<section aria-labelledby="${id}" class="journal-entry[^"]*"><span aria-hidden="true" class="journal-step[^"]*">\\d+</span><h2 id="${id}"[^>]*>${title}</h2>`))
+      }
+    }
+  })
+
+  it('leaves short pages without waypoints', () => {
+    expect(steps(render('latag'))).toEqual([])
+  })
+
+  it('sets the screenshot rail on a survey plate at the shared 3:4 scale', () => {
+    for (const p of projects) {
+      const html = render(p.slug)
+      const rail = html.slice(html.indexOf('</header>'))
+      expect(rail, p.slug).toContain('class="survey-plate')
+      if (fullShotFor(p) || !p.image) expect(rail, p.slug).toContain('aspect-[3/4]')
+    }
+  })
+
+  it('folds nothing and reads nothing in amber', () => {
+    for (const p of projects) {
+      const html = render(p.slug)
+      // (StatusBadge still carries edge-code until S6; the guard here is the page's own classes.
+      // A hover:text-accent on LivePreview's opener is amber as ink on interaction, not a reading colour.)
+      expect(html, p.slug).not.toMatch(/reveal-fold|crease-|(?<![:\w-])text-accent/)
+    }
+  })
+
+  it('sets a short page’s stack as map-label chips', () => {
+    const latag = projects.find((p) => p.slug === 'latag')!
+    for (const t of latag.technologies) expect(render('latag')).toMatch(new RegExp(`<li class="map-label [^"]*">${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</li>`))
   })
 })

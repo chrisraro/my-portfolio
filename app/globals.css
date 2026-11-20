@@ -355,28 +355,11 @@
 
 /*
  * Homepage (Isarog Trail Map, .impeccable/surfaces/app-page-tsx.md). Three
- * verbs: unfold, lift and slide.
+ * verbs: draw, rise and pan.
  * Layout pieces first (always on), then the Trailhead's load sequence and the
  * scroll reveals, each behind its gates. Outside the gates every piece sits at
  * rest, fully visible.
  */
-
-/* Fold creases: 1px dashes, 6 on 5 off, in line-strong. */
-/* An upright crease inside one sheet (a closed cover's flap edge). */
-.crease-v {
-	pointer-events: none;
-	color: oklch(var(--line-strong));
-	width: 1px;
-	background: linear-gradient(to bottom, currentColor 6px, transparent 6px) 0 0 / 1px 11px repeat-y;
-}
-
-/* A crease across one sheet, at every width (a decision panel's fold). */
-.crease-h {
-	pointer-events: none;
-	color: oklch(var(--line-strong));
-	height: 1px;
-	background: linear-gradient(to right, currentColor 6px, transparent 6px) 0 0 / 11px 1px repeat-x;
-}
 
 /*
  * Sections far below the fold skip style, layout and paint until they near the
@@ -488,21 +471,10 @@
 			from { transform: translateY(24px); }
 			to { transform: none; }
 		}
-		@keyframes reveal-fold {
-			from { transform: rotateX(-22deg); }
-			to { transform: none; }
-		}
 		.reveal-cover {
 			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
 			animation-range: entry calc(10% + var(--i, 0) * 10%) cover 30%;
-		}
-		/* A case study's decisions: each fold panel opens down from its crease. */
-		.reveal-fold {
-			transform-origin: center top;
-			animation: reveal-fold var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
 		}
 	}
 }
@@ -615,7 +587,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-cover, .reveal-fold) {
+	.reveal-cover {
 		animation: none !important;
 		opacity: 1;
 		transform: none;
