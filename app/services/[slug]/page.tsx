@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
+import { JsonLd } from '@/components/json-ld'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { SECTION } from '@/components/ui/grid'
 import { PageIntro } from '@/components/ui/page-intro'
@@ -11,6 +12,7 @@ import { catalogOrder, projectCode } from '@/lib/board'
 import { ctaLabels, pagesUpdated, projects, servicePages, servicesPageContent } from '@/lib/data'
 import { hasFullShot } from '@/lib/project-page'
 import { buildRouteMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 import type { Project, ServiceComparison } from '@/types'
 
@@ -86,6 +88,7 @@ export default function ServicePage({ params }: ServicePageProps) {
 
   return (
     <>
+      <JsonLd data={graphFor(`/services/${service.slug}`)} />
       <PageIntro eyebrow={servicesPageContent.eyebrow} title={service.name} answer={service.answer} updated={pagesUpdated}>
         <a href="#contact" className="press button-primary">
           {ctaLabels.startProject}

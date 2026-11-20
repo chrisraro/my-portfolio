@@ -326,12 +326,12 @@ const ldTypes = (slug: string): string[] => {
 }
 
 describe('project page JSON-LD', () => {
-  it('gives a flagship a breadcrumb and its CreativeWork', () => {
-    expect(ldTypes('el-nido-guide-ph')).toEqual(['BreadcrumbList', 'CreativeWork'])
+  it('gives a flagship site the Person, the WebSite, a breadcrumb and its CreativeWork', () => {
+    expect(ldTypes('el-nido-guide-ph')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'CreativeWork'])
   })
 
-  it('gives a short page only a breadcrumb', () => {
-    expect(ldTypes('latag')).toEqual(['BreadcrumbList'])
+  it('gives a product a SoftwareApplication, case study or not', () => {
+    expect(ldTypes('latag')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'SoftwareApplication'])
   })
 })
 

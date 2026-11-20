@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { JsonLd } from '@/components/json-ld'
 import { SECTION } from '@/components/ui/grid'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { PageIntro } from '@/components/ui/page-intro'
@@ -21,6 +22,7 @@ import {
 } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
 import { buildRouteMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = buildRouteMetadata('/about')
@@ -38,6 +40,7 @@ export default function AboutPage() {
 
   return (
     <>
+      <JsonLd data={graphFor('/about')} />
       <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <Link href="/#contact" className="press button-primary">
           {ctaLabels.startProject}

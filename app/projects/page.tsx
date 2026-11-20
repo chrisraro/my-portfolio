@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { JsonLd } from '@/components/json-ld'
 import { PlaceMap } from '@/components/map/place-map'
 import { SECTION } from '@/components/ui/grid'
 import { LegendFilter } from '@/components/ui/legend-filter'
@@ -15,6 +16,7 @@ import { IDENTITY_PAN, panStyle, panTo } from '@/lib/map-pan'
 import { placeGroups, unplacedProjects } from '@/lib/places'
 import { hasFullShot } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 import { bandTransitionName } from '@/lib/view-transition'
 
@@ -51,6 +53,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
 
   return (
     <div className={cn(SECTION, 'pb-16 pt-12 md:pb-24 md:pt-16')}>
+      <JsonLd data={graphFor('/projects')} />
       <p className="eyebrow mb-3">{eyebrow}</p>
       <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
       <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>

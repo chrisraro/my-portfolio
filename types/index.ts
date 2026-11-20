@@ -316,3 +316,12 @@ export interface HirePageContent {
   howIWork: SectionCopy & { readonly notes: HireNote[]; aiLead: string; aiInUse: HireLink[] }
   history: SectionCopy
 }
+
+/** Where the services are offered (spec §6): the Service nodes' areaServed and channel. */
+export interface ServiceArea {
+  city: string
+  region: string
+  country: string
+  /** How work beyond the region is done. */
+  remote: string
+}

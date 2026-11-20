@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
+import { JsonLd } from '@/components/json-ld'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { SECTION } from '@/components/ui/grid'
 import { PageIntro } from '@/components/ui/page-intro'
 import { TrailLink } from '@/components/ui/trail-link'
 import { ctaLabels, pagesUpdated, servicePages, servicesPageContent } from '@/lib/data'
 import { buildRouteMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = buildRouteMetadata('/services')
@@ -18,6 +20,7 @@ export default function ServicesPage() {
 
   return (
     <>
+      <JsonLd data={graphFor('/services')} />
       <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <a href="#contact" className="press button-primary">
           {ctaLabels.startProject}

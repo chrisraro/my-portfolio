@@ -14,7 +14,7 @@ import { getCaseStudy } from '@/lib/case-studies'
 import { ctaLabels, projects } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
 import { buildRouteMetadata } from '@/lib/site-metadata'
-import { breadcrumbSchema, caseStudySchema, graph } from '@/lib/structured-data'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 
 interface ProjectPageProps {
@@ -41,7 +41,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <article>
-      <JsonLd data={study ? graph(breadcrumbSchema(project), caseStudySchema(project, study)) : graph(breadcrumbSchema(project))} />
+      <JsonLd data={graphFor(projectHref(project))} />
       <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
       {/* A flagship walks its journal from the brief; below 1024px its screenshot rail follows the brief. */}
       {study ? (

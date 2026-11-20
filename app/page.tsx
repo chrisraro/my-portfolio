@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { JsonLd } from '@/components/json-ld'
 import { TrailSegment } from '@/components/map/trail-segment'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldMap } from '@/components/sections/field-map'
@@ -8,6 +9,7 @@ import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { TrailJournals } from '@/components/sections/trail-journals'
 import { Trailhead } from '@/components/sections/trailhead'
 import { buildRouteMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 
 // The layout's metadata has no canonical (it would leak to the 404 page), so
 // the homepage sets its own, with its title, description and card.
@@ -20,6 +22,7 @@ export const metadata: Metadata = buildRouteMetadata('/')
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={graphFor('/')} />
       <Trailhead />
       <ElevationStrip />
       <TrailSegment variant={0} />

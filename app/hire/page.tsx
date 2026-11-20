@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Download } from 'lucide-react'
+import { JsonLd } from '@/components/json-ld'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { SECTION } from '@/components/ui/grid'
 import { PageIntro } from '@/components/ui/page-intro'
@@ -8,6 +9,7 @@ import { TrailLink } from '@/components/ui/trail-link'
 import { WorkHistory } from '@/components/ui/work-history'
 import { availability, contactInfo, ctaLabels, hirePageContent, pagesUpdated, resumeUrl, skills, socialLinks } from '@/lib/data'
 import { buildRouteMetadata } from '@/lib/site-metadata'
+import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 import type { Skill } from '@/types'
 
@@ -33,6 +35,7 @@ export default function HirePage() {
 
   return (
     <>
+      <JsonLd data={graphFor('/hire')} />
       <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="press button-primary">
           {ctaLabels.downloadResume}

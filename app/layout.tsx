@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Suspense, type CSSProperties } from 'react'
 import { Archivo } from 'next/font/google'
 import './globals.css'
-import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SiteLegend } from '@/components/site-legend'
 import { Footer } from '@/components/footer'
@@ -10,7 +9,6 @@ import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
 import { ViewTransitions } from '@/components/ui/view-transitions'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
-import { graph, personSchema, serviceSchema, websiteSchema } from '@/lib/structured-data'
 
 // One variable family on its width axis (spec §3): condensed uppercase for
 // display and map labels, normal width for body, forms and chat. The fallback
@@ -46,7 +44,6 @@ export default function RootLayout({
       style={{ '--font-display': displayStack } as CSSProperties}
     >
       <body>
-        <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
         <ThemeProvider attribute="class" defaultTheme="light">
           <ToastProvider>
             <a

@@ -1,5 +1,5 @@
 import { Project, ProjectPlace, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
-import type { AboutPageContent, HirePageContent, ServicePage, ServicesPageContent } from '@/types'
+import type { AboutPageContent, HirePageContent, ServiceArea, ServicePage, ServicesPageContent } from '@/types'
 import { caseStudies } from '@/lib/case-studies'
 import { numberWord } from '@/lib/proof'
 
@@ -691,8 +691,8 @@ export const notFoundContent = {
   here: sectionContent.timeline.here,
 }
 
-// What Christian offers. The chat prompt, the ProfessionalService structured
-// data and /llms.txt all read this list, so it is stated once.
+// What Christian offers. The chat prompt and /llms.txt read this list, so it
+// is stated once.
 export const services: string[] = [
   'Full-stack web application development (Next.js, React, Node.js)',
   'WordPress website development and customisation',
@@ -702,6 +702,15 @@ export const services: string[] = [
   'AI automation with n8n, LLM APIs and retrieval (RAG)',
   'Mobile apps with React Native and Expo',
 ]
+
+// Spec §6: the services serve Naga City, Bicol and the Philippines, and
+// remote clients. Read by the Service nodes in lib/structured-data.ts.
+export const serviceArea: ServiceArea = {
+  city: 'Naga City',
+  region: 'Bicol',
+  country: 'Philippines',
+  remote: 'Remote',
+}
 
 // --- S4 pages: /services, /about, /hire ---------------------------------------
 // DRAFT COPY FOR CHRISTIAN'S REVIEW (S4 plan, Task 1). Every fact traces to
