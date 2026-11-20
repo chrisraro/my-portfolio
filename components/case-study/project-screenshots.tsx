@@ -9,9 +9,9 @@ import { extractDomain } from '@/lib/utils'
 import { shotTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
-// The plate is capped so the sticky rail (plate, gap, phone shot) fits a
-// laptop viewport under the 96px offset.
-const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_22rem)_*_0.75))]'
+// The plate is capped so the sticky rail (a 4:3 plate from 1024px, the gap,
+// the 180px phone shot under it) fits a laptop viewport under the 96px offset.
+const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_35rem)_*_1.33))]'
 
 /**
  * The screenshot rail of a project page, on a survey plate: the top of the
@@ -44,7 +44,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
             label={`Screenshot of ${name}`}
             slug={project.slug}
             morphTarget
-            sizes="(min-width: 1024px) 404px, (min-width: 640px) 336px, calc(100vw - 58px)"
+            sizes="(min-width: 1024px) 448px, (min-width: 640px) 336px, calc(100vw - 58px)"
             className="w-full"
           />
         </SurveyPlate>
@@ -65,7 +65,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
                   width={1440}
                   height={900}
                   priority
-                  sizes="(min-width: 1024px) 404px, (min-width: 640px) 336px, 100vw"
+                  sizes="(min-width: 1024px) 448px, (min-width: 640px) 336px, 100vw"
                   className="h-auto w-full"
                 />
               </span>
@@ -75,9 +75,10 @@ export function ProjectScreenshots({ project }: { project: Project }) {
       )}
       {shots.mobile && (
         // Below sm the plate already fills the screen; the phone shot would only repeat it.
-        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="plate-rise hidden w-32 shrink-0 sm:block lg:w-24">
+        // At plate scale (180px), beside the plate from 640px and under it from 1024px.
+        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="plate-rise hidden w-[11.25rem] shrink-0 sm:block">
           <SurveyPlate as="span">
-            <Image src={shots.mobile} alt="" width={390} height={844} sizes="128px" className="h-auto w-full" />
+            <Image src={shots.mobile} alt="" width={390} height={844} sizes="180px" className="h-auto w-full" />
           </SurveyPlate>
         </ImageLightbox>
       )}

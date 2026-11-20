@@ -41,10 +41,12 @@ interface ProjectShotProps {
 
 /**
  * Every screenshot frame (and the printed no-preview frame in its place): 4:3
- * on a phone, where one column of 3:4 shots made /projects 15,000px tall, and
- * 3:4 from 640px. One scale per width, every plate on one baseline.
+ * on a phone, where one column of 3:4 shots made /projects 15,000px tall; 3:4
+ * from 640px; and a 4:3 crop of the top of the page again from 1024px, where a
+ * 3:4 product plate stood about 680px tall (S6 finish F18). One scale per
+ * width, every plate on one baseline.
  */
-export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'
+export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]'
 
 /**
  * A still screenshot in the frame every screenshot shares (SHOT_ASPECT) (one scale, spec §3): the top of a project's full-page

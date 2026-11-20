@@ -404,4 +404,11 @@ describe('the trail journal', () => {
     expect(html.match(/>Start a project</g)).toHaveLength(2)
     expect(html).toMatch(/<\/a><\/div><\/div><\/div><\/div><\/article>$/)
   })
+
+  // F17: at 96px the phone shot was too small to read.
+  it('shows the phone shot at plate scale, at least 180px wide', () => {
+    const cls = render('latag').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1] ?? ''
+    expect(cls.split(' ')).toContain('w-[11.25rem]')
+    expect(cls).not.toMatch(/(?:^|\s)(?:lg:)?w-(?:24|32)(?:\s|$)/)
+  })
 })

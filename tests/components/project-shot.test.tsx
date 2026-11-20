@@ -24,6 +24,12 @@ describe('ProjectShot', () => {
     expect(html).not.toMatch(/>\s*scroll\s*</)
   })
 
+  // F18 (finish review): a 3:4 product plate stood ~680px tall at 1440.
+  it('crops the top of the page 4:3 from 1024px, as on a phone', () => {
+    const cls = renderToStaticMarkup(<ProjectShot src={src} label={label} />).match(/^<div [^>]*class="([^"]*)"/)?.[1] ?? ''
+    expect(cls.split(' ')).toEqual(expect.arrayContaining(['aspect-[4/3]', 'sm:aspect-[3/4]', 'lg:aspect-[4/3]']))
+  })
+
   it('does not take hover motion when it is not a link (nothing to invite)', () => {
     expect(renderToStaticMarkup(<ProjectShot src={src} label={label} />)).not.toContain('lift-card ')
   })

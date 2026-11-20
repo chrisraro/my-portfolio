@@ -43,10 +43,10 @@ describe('survey plates', () => {
 })
 
 describe('one screenshot scale', () => {
-  it('frames every ProjectShot at 3:4, with no ratio to choose', () => {
+  it('frames every ProjectShot at the one SHOT_ASPECT, with no ratio to choose', () => {
     const src = readFileSync('components/ui/project-shot.tsx', 'utf8')
     expect(src).not.toMatch(/\bratio\b/)
     expect(src).not.toContain('aspect-[9/16]')
-    expect(src).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'")
+    expect(src).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]'")
   })
 })

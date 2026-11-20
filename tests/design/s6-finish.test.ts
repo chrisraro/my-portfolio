@@ -98,9 +98,11 @@ describe('the chat launcher never covers a target', () => {
 
 describe('phone pacing', () => {
   // /projects was 15,094px tall at 390 wide: twenty 3:4 shots in one column.
-  it('frames every screenshot 4:3 below 640px and 3:4 from it: one scale per width', () => {
+  // F18 (finish review): at 1440 a 3:4 product plate stood about 680px tall,
+  // so from 1024px the frame is a 4:3 crop of the top of the page again.
+  it('frames every screenshot 4:3 on a phone, 3:4 from 640px and 4:3 again from 1024px: one scale per width', () => {
     const shot = readFileSync('components/ui/project-shot.tsx', 'utf8')
-    expect(shot).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'")
+    expect(shot).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]'")
     for (const f of [
       'components/ui/project-plate.tsx',
       'components/sections/own-products.tsx',
