@@ -87,12 +87,8 @@
 		/* The legend (components/site-legend.tsx) floats 12px down and is 56px
 		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
 		scroll-padding-top: 5rem;
-	}
-	/* Keeps focused controls clear of the fixed chat launcher on phones (WCAG 2.4.11). */
-	@media (max-width: 639px) {
-		html {
-			scroll-padding-bottom: 4.5rem;
-		}
+		/* Focused controls also stop clear of the fixed chat launcher (WCAG 2.4.11). */
+		scroll-padding-bottom: 6rem;
 	}
 	/* An anchor section (#work the field map, #timeline, #contact) keeps a
 	 * little air above its eyebrow once it lands under the bar. */

@@ -83,3 +83,13 @@ describe('the Portfolio 4.0 utilities and words are gone', () => {
     expect(tailwind).not.toMatch(OLD_WORDS)
   })
 })
+
+describe('the chat launcher never covers a target', () => {
+  // The launcher reaches 80px up from the bottom from 640px (24 + 56). From
+  // 1024px to about 1215px the footer's last link sat under it (S2 Lighthouse).
+  it('keeps the footer’s last row 96px above the bottom at every width', () => {
+    const footer = readFileSync('components/footer.tsx', 'utf8')
+    expect(footer).toMatch(/\bpb-24\b/)
+    expect(footer).not.toMatch(/\b(?:sm|md|lg|xl):pb-/)
+  })
+})

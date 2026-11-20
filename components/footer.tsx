@@ -9,8 +9,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-line">
-      {/* pb-24 below lg keeps the last row clear of the fixed chat launcher. */}
-      <div className={cn(SECTION, 'grid gap-8 pb-24 pt-12 sm:grid-cols-[1fr_auto] sm:items-end lg:pb-12')}>
+      {/* pb-24 at every width keeps the last row above the fixed chat launcher (80px tall from the bottom). */}
+      <div className={cn(SECTION, 'grid gap-8 pb-24 pt-12 sm:grid-cols-[1fr_auto] sm:items-end')}>
         <div>
           <p className="text-display text-[2.5rem]">{heroContent.name}</p>
           <p className="map-label mt-4 text-muted-strong">Base · {footerContent.base.place}</p>
