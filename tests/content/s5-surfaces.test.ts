@@ -151,7 +151,9 @@ describe('S5: the route registry matches the filesystem', () => {
         expect(registryPaths.has(p.path.replace('[slug]', slug)), `${p.path} with ${slug}`).toBe(true)
       }
     }
-  })
+    // Each dynamic page is imported cold, and under full-suite load that outran
+    // the default 5s once; the generous timeout makes the check load-insensitive.
+  }, 30_000)
 
   it('and every registry route comes from a page', () => {
     const covered = (path: string) =>
