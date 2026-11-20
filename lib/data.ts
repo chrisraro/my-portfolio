@@ -856,7 +856,7 @@ export const servicePages: ServicePage[] = [
         question: 'Where do I put LLMs in a product?',
         answer: [
           // iskotify description; Giya case study (AI reads the receipt, then the fraud review); Chunks on Groq.
-          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt, with a fraud review still being built to check it. Chunks, this site’s assistant, answers questions about my work through Groq.',
+          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt, then a fraud review, partly live, checks it. Chunks, this site’s assistant, answers questions about my work through Groq.',
         ],
       },
       {
