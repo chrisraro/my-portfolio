@@ -20,13 +20,10 @@ import {
   resumeUrl,
 } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
+import { buildPageMetadata } from '@/lib/site-metadata'
 import { cn } from '@/lib/utils'
 
-export const metadata: Metadata = {
-  title: aboutPageContent.title,
-  description: aboutPageContent.answer,
-  alternates: { canonical: '/about' },
-}
+export const metadata: Metadata = buildPageMetadata(aboutPageContent.title, aboutPageContent.answer, '/about')
 
 const BLOCK = 'pb-[72px] md:pb-[112px]'
 

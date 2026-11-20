@@ -117,3 +117,20 @@ export function buildProjectPageMetadata(project: Project, description: string, 
     twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
   }
 }
+
+/**
+ * An ordinary page's own link preview (/services, /about, /hire, the service
+ * pages): its title and description, its own canonical URL and og:url, and the
+ * shared card. `path` is relative; the layout's metadataBase resolves it.
+ * Without this a page inherits the layout's openGraph, whose url is the homepage.
+ */
+export function buildPageMetadata(title: string, description: string, path: string, keywords?: string[]): Metadata {
+  return {
+    title,
+    description,
+    ...(keywords ? { keywords } : {}),
+    alternates: { canonical: path },
+    openGraph: { ...OPEN_GRAPH_BASE, type: 'website', title, description, url: path, images: [OG_IMAGE] },
+    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
+  }
+}
