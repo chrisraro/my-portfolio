@@ -193,6 +193,20 @@ describe('FieldMap', () => {
     expect(svg.match(/<a /g)).toHaveLength(groups.length)
   })
 
+  it('fits its phone budget: tighter padding and gaps on a phone, min-w-0 on the place list, the way back out at 640px', () => {
+    // At a true 390px the section measured 1,786px (budget 1,700). Saved on a phone:
+    // bottom padding 72 to 32 (40), heading margin 40 to 32 (8), stacking gap 40 to 32 (8),
+    // two row gaps 24 to 16 (16), three row tops 12 to 8 (12), "No fixed point" 40 to 32 (8),
+    // the closing link 32 to 24 (8): 100px.
+    expect(html).toMatch(/^<section [^>]*class="[^"]* pb-8 md:pb-\[112px\]"/)
+    expect(html).toMatch(/<h2 id="work-title" class="[^"]* mb-8 md:mb-10"/)
+    expect(html).toMatch(/class="grid gap-8 [^"]*lg:gap-12"/)
+    expect(html).toMatch(/<ol class="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-6"/)
+    expect(html.match(/<li class="min-w-0 border-t border-line pt-2 sm:pt-3"/g)).toHaveLength(groups.length)
+    expect(html).toMatch(/<h3 class="map-label mt-8 text-ink sm:mt-10">/)
+    expect(html).toMatch(/class="[^"]* mt-6 sm:mt-8"/)
+  })
+
   it('lists each place with its projects as map-label links, the way in for keyboard and screen readers', () => {
     for (const g of groups) {
       expect(list).toContain(`>${g.name}</span>`)
