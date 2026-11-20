@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { BoardFilter } from '@/components/ui/board-filter'
+import { SECTION } from '@/components/ui/grid'
 import { RackTier } from '@/components/ui/rack-tier'
 import { catalogOrder, groupByBand, parseBandParam, projectCount } from '@/lib/board'
-import { projects, projectsPageContent } from '@/lib/data'
+import { ctaLabels, projects, projectsPageContent } from '@/lib/data'
 import { hasFullShot } from '@/lib/project-page'
 import { buildProjectsMetadata } from '@/lib/site-metadata'
+import { cn } from '@/lib/utils'
 
 interface ProjectsPageProps {
   searchParams: { band?: string | string[] }
@@ -34,7 +36,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const eyebrow = band ? projectsPageContent.bandEyebrow.replace('{band}', band) : projectsPageContent.eyebrow
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 md:pb-24 md:pt-16">
+    <div className={cn(SECTION, 'pb-16 pt-12 md:pb-24 md:pt-16')}>
       <p className="eyebrow mb-3">{eyebrow}</p>
       <h1 className="text-page-h1 max-w-[14ch] text-ink">{projectsPageContent.title}</h1>
       <p className="text-lede mt-5 max-w-2xl text-muted-strong">{projectsPageContent.description}</p>
@@ -63,11 +65,11 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
           href="/#contact"
           className="press button-primary"
         >
-          Start a project
+          {ctaLabels.startProject}
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
         </Link>
         <Link href="/" className="button-label inline-flex min-h-[44px] items-center text-ink hover:text-accent">
-          <span className="link-draw">Back to the homepage</span>
+          <span className="link-draw">{ctaLabels.backHome}</span>
         </Link>
       </div>
     </div>

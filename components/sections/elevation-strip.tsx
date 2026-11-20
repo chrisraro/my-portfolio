@@ -1,3 +1,4 @@
+import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { elevationProfile } from '@/lib/contours'
 import { sectionContent } from '@/lib/data'
@@ -44,7 +45,7 @@ export function ElevationStrip() {
   const { timeline } = sectionContent
 
   return (
-    <section id="timeline" aria-labelledby="timeline-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="timeline" aria-labelledby="timeline-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="timeline-title" eyebrow={timeline.eyebrow} title={timeline.title} />
       <ul className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
         {figures.map((f) => (

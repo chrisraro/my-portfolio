@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { SECTION } from '@/components/ui/grid'
+import { cn } from '@/lib/utils'
 
 interface ReadSpreadProps {
   /** Prose that comes before the rail when the page stacks (a flagship's brief). */
@@ -18,7 +20,7 @@ interface ReadSpreadProps {
  */
 export function ReadSpread({ lead, rail, children }: ReadSpreadProps) {
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16">
+    <div className={cn(SECTION, 'py-12 md:py-16')}>
       <div className="grid lg:grid-cols-[minmax(0,36rem)_1px_minmax(0,1fr)] lg:gap-x-12">
         {lead && <div className="max-w-[36rem] lg:col-start-1 lg:row-start-1">{lead}</div>}
         {rail && (

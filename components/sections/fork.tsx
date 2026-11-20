@@ -1,6 +1,8 @@
 import { ArrowRight } from 'lucide-react'
+import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { resumeUrl, sectionContent } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
 const CARD = 'flex flex-col rounded border border-line bg-panel p-6 sm:p-8'
 
@@ -14,7 +16,7 @@ export function Fork() {
   const { fork } = sectionContent
 
   return (
-    <section id="fork" aria-labelledby="fork-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="fork" aria-labelledby="fork-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="fork-title" eyebrow={fork.eyebrow} title={fork.title} />
       <ul className="grid gap-6 md:grid-cols-2">
         <li className={CARD}>

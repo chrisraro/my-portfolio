@@ -8,11 +8,13 @@ import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { ProjectSummary } from '@/components/case-study/project-summary'
 import { ReadSpread } from '@/components/case-study/read-spread'
 import { JsonLd } from '@/components/json-ld'
+import { SECTION } from '@/components/ui/grid'
 import { getCaseStudy } from '@/lib/case-studies'
-import { projects } from '@/lib/data'
+import { ctaLabels, projects } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
 import { buildProjectPageMetadata } from '@/lib/site-metadata'
 import { breadcrumbSchema, caseStudySchema, graph } from '@/lib/structured-data'
+import { cn } from '@/lib/utils'
 
 interface ProjectPageProps {
   params: { slug: string }
@@ -51,17 +53,17 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           <ProjectSummary project={project} />
         </ReadSpread>
       )}
-      <div className="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-8 md:pb-24">
+      <div className={cn(SECTION, 'pb-16 pt-14 md:pb-24')}>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t-2 border-line-strong pt-8">
           <Link
             href="/#contact"
             className="press button-primary"
           >
-            Start a project
+            {ctaLabels.startProject}
             <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
           </Link>
           <Link href="/projects" className="button-label inline-flex min-h-[44px] items-center text-ink hover:text-accent">
-            <span className="link-draw">All projects</span>
+            <span className="link-draw">{ctaLabels.allProjects}</span>
           </Link>
         </div>
       </div>

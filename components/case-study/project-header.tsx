@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { SECTION } from '@/components/ui/grid'
 import { LivePreview } from '@/components/ui/live-preview'
 import { StatusBadge } from '@/components/ui/status-badge'
-import { caseStudyContent, paymentGateways, sectorNames } from '@/lib/data'
+import { caseStudyContent, ctaLabels, paymentGateways, sectorNames } from '@/lib/data'
 import { canLinkLive, liveLinkLabel, previewFor } from '@/lib/project-page'
 import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
@@ -29,13 +30,13 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
   const preview = previewFor(project)
 
   return (
-    <header className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 md:pt-8">
+    <header className={cn(SECTION, 'pt-6 md:pt-8')}>
       <Link
         href="/projects"
         className="edge-code inline-flex min-h-[44px] items-center gap-2 text-sm text-muted-strong transition-colors hover:text-accent"
       >
         <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-        <span className="link-draw">All projects</span>
+        <span className="link-draw">{ctaLabels.allProjects}</span>
       </Link>
 
       <div className="mt-4 grid md:grid-cols-[7fr_auto_5fr]">
@@ -81,7 +82,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
               href="/#contact"
               className="press button-primary"
             >
-              Start a project
+              {ctaLabels.startProject}
               <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
             </Link>
             {preview && <LivePreview {...preview} />}

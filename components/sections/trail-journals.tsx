@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { edgeCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
-import { caseStudyContent, projects, sectionContent, sectorNames } from '@/lib/data'
+import { caseStudyContent, ctaLabels, projects, sectionContent, sectorNames } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
+import { cn } from '@/lib/utils'
 import type { CaseStudy, Project } from '@/types'
 
 interface Journal {
@@ -28,7 +30,7 @@ export function TrailJournals() {
   })
 
   return (
-    <section id="journals" aria-labelledby="journals-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="journals" aria-labelledby="journals-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="journals-title" eyebrow={sectionContent.journals.eyebrow} title={sectionContent.journals.title} />
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {journals.map(({ project, study }, i) => (
@@ -47,7 +49,7 @@ export function TrailJournals() {
               <span className="mt-5 leading-relaxed text-muted-strong">{briefLead(study)}</span>
               <span className="mt-auto pt-6 text-sm text-ink">{study.role}</span>
               <span className="button-label mt-4 inline-flex items-center gap-2 text-ink">
-                <span className="link-draw">Read the case study</span>
+                <span className="link-draw">{ctaLabels.readCaseStudy}</span>
                 <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
               </span>
             </Link>

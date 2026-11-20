@@ -1,4 +1,6 @@
+import { SECTION } from '@/components/ui/grid'
 import { contactInfo, footerContent, heroContent, resumeUrl } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
 export function Footer() {
   const links = contactInfo.socialLinks.filter((link) => link.icon !== 'mail')
@@ -8,7 +10,7 @@ export function Footer() {
   return (
     <footer className="border-t border-line">
       {/* pb-24 below lg keeps the last row clear of the fixed chat launcher. */}
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 pb-24 pt-12 sm:grid-cols-[1fr_auto] sm:items-end sm:px-8 lg:pb-12">
+      <div className={cn(SECTION, 'grid gap-8 pb-24 pt-12 sm:grid-cols-[1fr_auto] sm:items-end lg:pb-12')}>
         <div>
           <p className="text-display text-[2.5rem]">{heroContent.name}</p>
           <p className="map-label mt-4 text-muted-strong">Base · {footerContent.base.place}</p>

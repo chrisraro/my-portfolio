@@ -496,6 +496,19 @@ export const navigationItems: NavigationItem[] = [
 // The gateways as a sentence names them: "PayPal, PayMongo, Maya and Xendit".
 const gatewaySentence = `${paymentGateways.slice(0, -1).join(', ')} and ${paymentGateways[paymentGateways.length - 1]}`
 
+// Call-to-action labels, each stated once (tests/content/cta-labels.test.ts).
+// Every button, link and heading that says one reads it from here.
+export const ctaLabels = {
+  startProject: 'Start a project',
+  hireForRole: 'Hire me for a role',
+  allProjects: 'All projects',
+  browseProjects: 'Browse every project',
+  readCaseStudy: 'Read the case study',
+  readMore: 'Read more',
+  backHome: 'Back to the homepage',
+  downloadResume: 'Download résumé',
+} as const
+
 // Headings and copy for each homepage section. `galleryContent` waits for /about (S4).
 export const sectionContent = {
   ownProducts: { eyebrow: 'Own products', title: 'Products of my own' },
@@ -507,7 +520,7 @@ export const sectionContent = {
     regionNote: 'Pinned at the region’s centre',
     unplacedHeading: 'No fixed point',
     unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
-    cta: 'Browse every project',
+    cta: ctaLabels.browseProjects,
   },
   journals: { eyebrow: 'Trail journals', title: 'From the brief to launch' },
   timeline: {
@@ -531,18 +544,18 @@ export const sectionContent = {
     business: {
       title: 'For your business',
       body: `Booking and payment sites for hotels, tours and restaurants, WooCommerce stores with ${gatewaySentence}, and AI automation for the work your team repeats.`,
-      cta: 'Start a project',
+      cta: ctaLabels.startProject,
     },
     team: {
       title: 'For your team',
       body: 'A full-stack developer for a full-time remote role: Next.js, TypeScript, Supabase and WordPress, with tests, CI and AI coding tools in daily use.',
-      cta: 'Hire me for a role',
-      resume: 'Download résumé',
+      cta: ctaLabels.hireForRole,
+      resume: ctaLabels.downloadResume,
     },
   },
   contact: {
     eyebrow: 'Plan the route',
-    title: 'Start a project',
+    title: ctaLabels.startProject,
     lede: 'Tell me what you are building and when you need it. Hiring for a full-time role? Say so here too.',
     // The button that opens Chunks, the site's assistant.
     chunks: 'Ask Chunks, my site assistant',
@@ -558,7 +571,7 @@ export const footerContent = {
 }
 
 export const projectsPageContent = {
-  eyebrow: 'All projects',
+  eyebrow: ctaLabels.allProjects,
   // A filtered view (?band=) names its band instead.
   bandEyebrow: 'Projects · {band}',
   title: 'Everything I have shipped',

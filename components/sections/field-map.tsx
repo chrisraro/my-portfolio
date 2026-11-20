@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { PhilippinesOutline } from '@/components/map/philippines-outline'
+import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { projects, sectionContent } from '@/lib/data'
 import { MAP_HEIGHT, MAP_VIEWBOX, MAP_WIDTH, project as toMap } from '@/lib/geo'
 import { placeGroups, unplacedProjects, type PlaceGroup } from '@/lib/places'
 import { projectHref } from '@/lib/project-page'
+import { cn } from '@/lib/utils'
 import type { PlacePrecision, Project } from '@/types'
 
 // Where a place's label sits beside its pin, in map units (layout, not
@@ -75,7 +77,7 @@ export function FieldMap() {
   const { fieldMap } = sectionContent
 
   return (
-    <section id="work" aria-labelledby="work-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="work" aria-labelledby="work-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="work-title" eyebrow={fieldMap.eyebrow} title={fieldMap.title} />
       <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-12">
         <figure className="survey-plate mx-auto w-full max-w-md lg:max-w-none">

@@ -1,14 +1,15 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { SECTION } from '@/components/ui/grid'
 import { LivePreview } from '@/components/ui/live-preview'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
 import { ProjectShot } from '@/components/ui/project-shot'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { catalogOrder, projectCode } from '@/lib/board'
-import { projects, sectionContent } from '@/lib/data'
+import { ctaLabels, projects, sectionContent } from '@/lib/data'
 import { canLinkLive, fullShotFor, hasFullShot, previewFor, projectHref } from '@/lib/project-page'
-import { extractDomain } from '@/lib/utils'
+import { cn, extractDomain } from '@/lib/utils'
 import type { Project } from '@/types'
 
 /**
@@ -50,7 +51,7 @@ function Plate({ project, code }: { project: Project; code: string }) {
       <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
         {preview && <LivePreview {...preview} />}
         <Link href={projectHref(project)} className="button-label inline-flex min-h-[44px] items-center gap-2 text-ink">
-          <span className="link-draw">Read more</span>
+          <span className="link-draw">{ctaLabels.readMore}</span>
           <span className="sr-only">{` about ${project.title}`}</span>
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
         </Link>
@@ -75,7 +76,7 @@ export function OwnProducts() {
   const own = order.filter((p) => p.band === 'Products')
 
   return (
-    <section id="products" aria-labelledby="products-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="products" aria-labelledby="products-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="products-title" eyebrow={sectionContent.ownProducts.eyebrow} title={sectionContent.ownProducts.title} />
       <div className="grid items-start gap-x-8 gap-y-14 md:grid-cols-2">
         {own.map((project) => (

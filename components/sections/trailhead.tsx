@@ -3,9 +3,11 @@ import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ContourField } from '@/components/map/contour-field'
 import { TrailPath } from '@/components/map/trail-path'
+import { SECTION } from '@/components/ui/grid'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { trailheadContours, trailheadTrail } from '@/lib/contours'
-import { heroContent } from '@/lib/data'
+import { ctaLabels, heroContent } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
 const PORTRAIT = '/assets/images/about/profile-hiking.jpg'
 
@@ -26,7 +28,7 @@ export function Trailhead() {
     <section id="top" aria-labelledby="trailhead-title" className="trailhead relative overflow-x-clip">
       <ContourField paths={trailheadContours} viewBox={trailheadTrail.viewBox} />
       <TrailPath mode="load" d={trailheadTrail.d} viewBox={trailheadTrail.viewBox} className="hidden md:block" />
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-28 sm:px-8 md:min-h-[44rem] md:grid-cols-[7fr_5fr] md:items-start md:gap-12 md:pb-20 md:pt-36">
+      <div className={cn(SECTION, 'relative grid gap-10 pb-16 pt-28 md:min-h-[44rem] md:grid-cols-[7fr_5fr] md:items-start md:gap-12 md:pb-20 md:pt-36')}>
         <div className="trailhead-copy min-w-0">
           <p className="eyebrow">{heroContent.eyebrow}</p>
           <h1 id="trailhead-title" className="text-display trailhead-title mt-6 text-ink">
@@ -40,12 +42,12 @@ export function Trailhead() {
             <p className="text-lede mt-8 max-w-[34rem] text-muted-strong">{heroContent.subheadline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#contact" className="press button-primary">
-                Start a project
+                {ctaLabels.startProject}
                 <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
               </a>
               {/* S4 points this at /hire. */}
               <a href="#contact" className="press button-secondary">
-                Hire me for a role
+                {ctaLabels.hireForRole}
               </a>
             </div>
           </div>

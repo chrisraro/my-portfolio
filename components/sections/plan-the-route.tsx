@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { AlertOctagon, ArrowRight, Loader2 } from 'lucide-react'
+import { SECTION } from '@/components/ui/grid'
 import { useToast } from '@/components/ui/toaster'
 import { CHAT_OPEN_EVENT } from '@/lib/chat-events'
-import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data'
+import { availability, contactInfo, ctaLabels, resumeUrl, sectionContent } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
 const FIELD =
   'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
@@ -112,7 +114,7 @@ export function PlanTheRoute() {
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
+    <section id="contact" aria-labelledby="contact-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <div className="grid gap-10 md:grid-cols-[5fr_7fr] md:gap-12">
         <div className="flex flex-col">
           <p className="eyebrow mb-3">{sectionContent.contact.eyebrow}</p>
@@ -129,7 +131,7 @@ export function PlanTheRoute() {
             </li>
             <li>
               <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
-                <span className="link-draw">Download résumé</span>
+                <span className="link-draw">{ctaLabels.downloadResume}</span>
                 <span className="sr-only">(PDF, opens in a new tab)</span>
               </a>
             </li>

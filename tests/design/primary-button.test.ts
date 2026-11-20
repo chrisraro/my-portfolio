@@ -22,21 +22,22 @@ describe('primary button', () => {
   })
 
   it('is used by every primary call to action', () => {
+    const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const uses = (file: string, label: string) => {
       const src = readFileSync(file, 'utf8')
-      // The label as JSX text (after a tag's ">"), not a mention in a comment.
-      const i = src.search(new RegExp(String.raw`>\s*${label}`))
+      // The label as JSX (after a tag's ">"), not a mention in a comment.
+      const i = src.search(new RegExp(String.raw`>\s*` + esc(label)))
       expect(i, `${file}: ${label}`).toBeGreaterThan(-1)
       // From the opening tag of the control that holds the label.
       const tag = Math.max(...['<Link', '<a\n', '<a\r', '<a ', '<button'].map((t) => src.lastIndexOf(t, i)))
       return src.slice(Math.max(0, tag), i)
     }
-    expect(uses('components/sections/trailhead.tsx', 'Start a project')).toContain('button-primary')
-    expect(uses('components/sections/trailhead.tsx', 'Hire me for a role')).toContain('button-secondary')
-    expect(uses('components/case-study/project-header.tsx', 'Start a project')).toContain('button-primary')
-    expect(uses('app/projects/page.tsx', 'Start a project')).toContain('button-primary')
-    expect(uses('app/projects/[slug]/page.tsx', 'Start a project')).toContain('button-primary')
-    expect(uses('app/not-found.tsx', 'All projects')).toContain('button-primary')
+    expect(uses('components/sections/trailhead.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('components/sections/trailhead.tsx', '{ctaLabels.hireForRole}')).toContain('button-secondary')
+    expect(uses('components/case-study/project-header.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/projects/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/projects/[slug]/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/not-found.tsx', '{ctaLabels.allProjects}')).toContain('button-primary')
     expect(uses('components/sections/plan-the-route.tsx', 'Send message')).toContain('button-primary')
   })
 

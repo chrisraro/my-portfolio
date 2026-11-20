@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import { ArrowLinkText } from '@/components/case-study/arrow-link-text'
 import { ReadSpread } from '@/components/case-study/read-spread'
+import { SECTION } from '@/components/ui/grid'
 import { RackCard } from '@/components/ui/rack-card'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
 import { caseStudyContent, projects } from '@/lib/data'
 import { hasFullShot, nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
+import { cn } from '@/lib/utils'
 import type { CaseStudy, Project } from '@/types'
 
 // Section headings sit at the Title tier; prose reads in Figtree.
@@ -146,7 +148,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
       </ReadSpread>
 
       {next && (
-        <nav aria-label={h.next} className="rack-shelf mx-auto max-w-6xl px-5 sm:px-8">
+        <nav aria-label={h.next} className={cn('rack-shelf', SECTION)}>
           <p className="edge-code mb-5 text-sm text-ink sm:mb-8">{h.next}</p>
           {/* One card of the rack: its link reads its label first, since the nav's name is not part of it. */}
           <ul className="flex sm:grid sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
