@@ -303,13 +303,17 @@ describe('TrailJournals', () => {
   })
 
   it('opens one journal per flagship, so a missing study cannot silently drop a cover', () => {
-    expect(html.match(/<li class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+    expect(html.match(/<li class="reveal-cover[ "]/g)).toHaveLength(FLAGSHIP_SLUGS.length)
     expect(html.match(/href="\/projects\/[^"]+"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
   })
 
-  it('lifts like every catalog card and rises by transform only', () => {
-    expect(html.match(/class="lift-card /g)).toHaveLength(FLAGSHIP_SLUGS.length)
-    expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+  it('opens the first journal on the panel and shelves the other five as ruled rows', () => {
+    expect(html).toMatch(/^<section[^>]*>[\s\S]*?<ol class="[^"]*lg:grid-cols-\[7fr_5fr\]/)
+    expect(html.match(/class="lift-card /g)).toHaveLength(1)
+    expect(html.match(/<li class="reveal-cover border-t border-line"/g)).toHaveLength(FLAGSHIP_SLUGS.length - 1)
+    const lead = html.slice(html.indexOf('<li'), html.indexOf('</li>'))
+    expect(lead).toContain(`href="/projects/${FLAGSHIP_SLUGS[0]}"`)
+    expect(lead).toContain('bg-panel')
   })
 
   it('names each cover by its visible text (WCAG 2.5.3): the h3 sits inside a link with no aria-labelledby', () => {
