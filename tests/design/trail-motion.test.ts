@@ -58,10 +58,12 @@ describe('trail draw', () => {
 describe('elevation marker', () => {
   const marker = rules.filter((r) => r.selector === '.elevation-marker')
 
-  it('is the one element on the page scroll, inside both gates', () => {
+  it('travels to now on the strip\'s own view timeline, inside both gates', () => {
     expect(marker).toHaveLength(1)
-    expect(marker[0].ancestors).toEqual(['@supports (animation-timeline: scroll())', NO_PREF])
-    expect(marker[0].body).toMatch(/animation-timeline:\s*scroll\(root\)/)
+    expect(marker[0].ancestors).toEqual(['@supports (animation-timeline: view())', NO_PREF])
+    expect(marker[0].body).toMatch(/animation-timeline:\s*--elevation;/)
+    expect(marker[0].body).not.toMatch(/scroll\(/)
+    expect(rules.some((r) => /view-timeline:\s*--elevation block/.test(r.body))).toBe(true)
   })
 
   it('moves by transform only and rests at now', () => {

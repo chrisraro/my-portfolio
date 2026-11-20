@@ -34,9 +34,9 @@ function Lane({ entries, className }: { entries: StripEntry[]; className: string
  * route from 2020 to now as a ridge with each role (ink) and degree
  * (line-strong) as a span along it, and the "you are here" marker at now. The
  * drawn strip is decorative; the dated list under it carries the facts. The
- * marker is the one thing on the page that follows the page's scroll
- * (.elevation-marker in globals.css); at rest, and without support, it sits
- * at now.
+ * marker travels to now as the strip enters view and rests there
+ * (.elevation-marker on the .elevation-track view timeline in globals.css);
+ * at rest, and without support, it sits at now.
  */
 export function ElevationStrip() {
   const strip = buildElevationStrip()
@@ -57,7 +57,7 @@ export function ElevationStrip() {
           </li>
         ))}
       </ul>
-      <div aria-hidden="true" className="relative mt-12 h-28 overflow-x-clip">
+      <div aria-hidden="true" className="elevation-track relative mt-12 h-28 overflow-x-clip">
         <svg
           viewBox={elevationProfile.viewBox}
           preserveAspectRatio="none"

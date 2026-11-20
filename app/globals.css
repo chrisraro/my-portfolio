@@ -825,16 +825,21 @@
 
 /*
  * The elevation strip's "you are here" marker
- * (components/sections/elevation-strip.tsx) is the one element that follows
- * the page's scroll. At rest it sits at now; where scroll timelines exist and
- * motion is allowed it travels from the strip's start to now as the page is
- * read. Transform only.
+ * (components/sections/elevation-strip.tsx) rests at now. Where view
+ * timelines exist and motion is allowed it travels from the strip's start to
+ * now as the drawn strip comes into view, then stays. Nothing follows the
+ * whole-page scroll. Transform only.
  */
-@supports (animation-timeline: scroll()) {
+.elevation-track {
+	view-timeline: --elevation block;
+}
+
+@supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
 		.elevation-marker {
 			animation: elevation-marker linear both;
-			animation-timeline: scroll(root);
+			animation-timeline: --elevation;
+			animation-range: entry 20% cover 50%;
 		}
 	}
 }

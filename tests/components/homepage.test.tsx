@@ -64,7 +64,7 @@ describe('Trailhead', () => {
 
 describe('ElevationStrip', () => {
   const html = renderToStaticMarkup(<ElevationStrip />)
-  const strip = html.match(/<div aria-hidden="true" class="relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
+  const strip = html.match(/<div aria-hidden="true" class="elevation-track relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
 
   it('is the #timeline section the legend’s Experience link lands on, its heading from data', () => {
     expect(html).toMatch(/^<section id="timeline" aria-labelledby="timeline-title"/)
