@@ -380,6 +380,25 @@ describe('PlanTheRoute', () => {
     expect(source).toContain('window.dispatchEvent(new Event(CHAT_OPEN_EVENT))')
     expect(readFileSync('components/ui/chat-widget.tsx', 'utf8')).toContain('window.addEventListener(CHAT_OPEN_EVENT, open)')
   })
+
+  // F8 (finish review): ink, unadorned links read as the text around them (WCAG 1.4.1).
+  it('underlines the email, résumé and Facebook links, the rule turning ink on hover and focus', () => {
+    const links = Array.from(html.matchAll(/<a href="([^"]*)"[^>]*class="([^"]*)"/g)).filter(([, href]) =>
+      /^mailto:|\.pdf$|facebook\.com/.test(href),
+    )
+    expect(links).toHaveLength(3)
+    for (const [, href, cls] of links) {
+      for (const c of ['underline', 'decoration-line-strong', 'hover:decoration-ink', 'focus-visible:decoration-ink']) {
+        expect(cls.split(' '), href).toContain(c)
+      }
+    }
+    expect(html).not.toMatch(/<a href="mailto:[^>]*><span class="link-draw"/)
+  })
+
+  // F9: stretched to the left column, the form plate left ~150px of empty panel.
+  it('sizes the form plate to the form, not to the left column', () => {
+    expect(html).toMatch(/<div class="survey-plate [^"]*\bmd:self-start\b[^"]*"><form/)
+  })
 })
 
 describe('proof renders visible without JavaScript', () => {

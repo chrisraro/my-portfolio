@@ -15,8 +15,10 @@ const FIELD =
 
 const LABEL = 'map-label mb-1.5 block text-muted-strong'
 
-// On paper: ink text; the drawn underline marks hover.
-const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-ink sm:min-h-[32px]'
+// On paper: ink text over a line-strong underline (more than colour, WCAG 1.4.1)
+// that turns ink on hover and focus. The offset is the base rule's (a, 0.2em).
+const CONTACT_LINK =
+  'inline-flex min-h-[44px] items-center text-ink underline decoration-line-strong hover:decoration-ink focus-visible:decoration-ink sm:min-h-[32px]'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -125,19 +127,19 @@ export function PlanTheRoute() {
           <ul className="mt-8 space-y-1">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
-                <span className="link-draw">{contactInfo.email}</span>
+                {contactInfo.email}
               </a>
             </li>
             <li>
               <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
-                <span className="link-draw">{ctaLabels.downloadResume}</span>
+                {ctaLabels.downloadResume}
                 <span className="sr-only">(PDF, opens in a new tab)</span>
               </a>
             </li>
             {facebook && (
               <li>
                 <a href={facebook.url} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
-                  <span className="link-draw">{facebook.name}</span>
+                  {facebook.name}
                   <span className="sr-only">(opens in a new tab)</span>
                 </a>
               </li>
@@ -149,7 +151,8 @@ export function PlanTheRoute() {
           </button>
         </div>
 
-        <SurveyPlate className="p-6 sm:p-8 lg:p-10">
+        {/* Sized to the form, not stretched to the left column. */}
+        <SurveyPlate className="p-6 sm:p-8 md:self-start lg:p-10">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
