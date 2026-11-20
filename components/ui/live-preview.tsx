@@ -220,8 +220,8 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
 
   const toggleClass = (active: boolean) =>
     cn(
-      'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors',
-      active ? 'border-accent text-accent' : 'border-line-strong text-muted-strong hover:border-accent hover:text-accent',
+      'inline-flex min-h-[44px] items-center gap-2 rounded-sm border px-3 text-sm transition-colors',
+      active ? 'border-ink bg-ink text-canvas' : 'border-line-strong text-muted-strong hover:border-ink hover:text-ink',
     )
 
   const dialog = (
@@ -245,19 +245,19 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
               animate={{ opacity: 1, y: 0, transition: scrim }}
               exit={{ opacity: 0, y: rise, transition: exit }}
               onClick={(e) => e.stopPropagation()}
-              className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-line-strong bg-panel shadow-overlay"
+              className="flex h-full max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-[10px] border border-line-strong bg-panel shadow-overlay"
             >
               <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
               <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
                 <h2 id={titleId} className="mr-auto text-base font-semibold text-ink">
                   Live preview: {title}
                   {capture && (
-                    <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
+                    <span className="map-label ml-3 rounded-sm border border-line-strong px-2 py-0.5 text-muted-strong">
                       Capture
                     </span>
                   )}
                   {staging && (
-                    <span className="ml-3 rounded border border-line-strong px-2 py-0.5 edge-code text-xs font-normal text-muted-strong">
+                    <span className="map-label ml-3 rounded-sm border border-line-strong px-2 py-0.5 text-muted-strong">
                       Staging site
                     </span>
                   )}
@@ -288,10 +288,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    'inline-flex min-h-[44px] items-center gap-2 rounded border px-3 text-sm transition-colors hover:border-accent hover:text-accent',
-                    load === 'failed' ? 'border-accent-plane bg-accent-plane font-medium text-on-accent hover:text-on-accent' : 'border-line-strong text-ink',
-                  )}
+                  className={cn('press', load === 'failed' ? 'button-primary' : 'button-secondary')}
                 >
                   Open site in a new tab
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -303,7 +300,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close"
-                  className="inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-ink transition-colors hover:border-accent hover:text-accent"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-line-strong text-ink transition-colors hover:border-ink"
                 >
                   <X className="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -316,7 +313,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-[44px] items-center gap-1 font-medium text-accent hover:underline sm:min-h-0"
+                    className="inline-flex min-h-[44px] items-center gap-1 font-medium text-ink underline underline-offset-4 sm:min-h-0"
                   >
                     Open the live site
                     <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -338,7 +335,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
                       {load === 'failed' && (
                         <p
                           aria-hidden="true"
-                          className="absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm text-ink"
+                          className="map-label absolute inset-0 flex items-center justify-center px-6 text-center text-ink"
                         >
                           {CAPTURE_TEXT.failed}
                         </p>
@@ -364,7 +361,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
                         <p
                           aria-hidden="true"
                           className={cn(
-                            'absolute inset-0 flex items-center justify-center px-6 text-center edge-code text-sm',
+                            'map-label absolute inset-0 flex items-center justify-center px-6 text-center',
                             load === 'failed' ? 'text-ink' : 'text-muted',
                           )}
                         >
@@ -405,7 +402,7 @@ export function LivePreview({ url, title, staging = false, capture }: LivePrevie
         aria-haspopup="dialog"
         data-preview={capture ? 'capture' : 'live'}
         onClick={openPreview}
-        className="inline-flex min-h-[44px] items-center gap-2 rounded border border-line-strong px-5 py-2.5 font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+        className="press button-secondary"
       >
         <Monitor className="h-4 w-4" aria-hidden="true" />
         Live preview<span className="sr-only">{` of ${title}`}</span>

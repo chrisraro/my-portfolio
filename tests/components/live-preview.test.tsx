@@ -33,6 +33,13 @@ describe('LivePreview markup', () => {
 describe('LivePreview source', () => {
   const source = readFileSync('components/ui/live-preview.tsx', 'utf8')
 
+  it('wears the trail map: an outlined trigger, ink toggles, trail red only on the way out of a failed frame', () => {
+    expect(source).toContain('className="press button-secondary"')
+    expect(source).toContain("load === 'failed' ? 'button-primary' : 'button-secondary'")
+    expect(source).toContain("active ? 'border-ink bg-ink text-canvas'")
+    expect(source).not.toMatch(/\baccent\b|edge-code|rounded-xl/)
+  })
+
   it('is a client component on motion/react', () => {
     expect(source.trimStart()).toMatch(/^'use client'/)
     expect(source).toMatch(/from 'motion\/react'/)
