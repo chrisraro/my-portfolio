@@ -102,7 +102,7 @@ describe('card hover', () => {
   it('is the same hover on rack cards, product screenshots and case-study covers', () => {
     expect(readFileSync('components/ui/rack-card.tsx', 'utf8')).toMatch(/'rack-card lift-card/)
     expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).toContain('lift-card')
-    const covers = readFileSync('components/sections/case-studies.tsx', 'utf8')
+    const covers = readFileSync('components/sections/trail-journals.tsx', 'utf8')
     expect(covers).toContain('lift-card')
     expect(covers).not.toMatch(/className="press /)
   })

@@ -509,10 +509,7 @@ export const sectionContent = {
     unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
     cta: 'Browse every project',
   },
-  caseStudies: {
-    eyebrow: 'Case studies',
-    title: 'From the brief to launch',
-  },
+  journals: { eyebrow: 'Trail journals', title: 'From the brief to launch' },
   timeline: {
     eyebrow: 'Elevation · the route so far',
     title: "Where I've worked",

@@ -6,9 +6,11 @@ import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldMap } from '@/components/sections/field-map'
 import { Fork } from '@/components/sections/fork'
 import { OwnProducts } from '@/components/sections/own-products'
+import { TrailJournals } from '@/components/sections/trail-journals'
 import { Trailhead } from '@/components/sections/trailhead'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { catalogOrder, projectCode } from '@/lib/board'
+import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
 import { heroContent, navigationItems, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
 import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
 import { MAP_VIEWBOX, project as toMap } from '@/lib/geo'
@@ -29,6 +31,7 @@ const SECTIONS: [string, ReactElement][] = [
   ['Fork', <Fork key="fork" />],
   ['FieldMap', <FieldMap key="field-map" />],
   ['OwnProducts', <OwnProducts key="own-products" />],
+  ['TrailJournals', <TrailJournals key="journals" />],
 ]
 
 describe('Trailhead', () => {
@@ -256,6 +259,35 @@ describe('OwnProducts', () => {
       expect(plates[i].includes('aria-haspopup="dialog"'), p.slug).toBe(canLinkLive(p))
       if (canLinkLive(p)) expect(plates[i], p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
     })
+  })
+})
+
+describe('TrailJournals', () => {
+  const html = renderToStaticMarkup(<TrailJournals />)
+
+  it('is the #journals section with its heading from data', () => {
+    expect(html).toMatch(/^<section id="journals" aria-labelledby="journals-title"/)
+    expect(html).toContain(`>${sectionContent.journals.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="journals-title"[^>]*>${escape(sectionContent.journals.title)}</h2>`))
+  })
+
+  it('opens a journal for every flagship, in reading order, with its role, brief and place', () => {
+    let last = -1
+    for (const slug of FLAGSHIP_SLUGS) {
+      const study = getCaseStudy(slug)!
+      const project = projects.find((p) => p.slug === slug)!
+      const at = html.indexOf(`href="/projects/${slug}"`)
+      expect(at, slug).toBeGreaterThan(last)
+      last = at
+      expect(html).toContain(escape(study.role))
+      expect(html).toContain(escape(briefLead(study)))
+      if (project.place) expect(html, slug).toContain(`>${project.place.name} · `)
+    }
+  })
+
+  it('lifts like every catalog card and rises by transform only', () => {
+    expect(html.match(/class="lift-card /g)).toHaveLength(FLAGSHIP_SLUGS.length)
+    expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
   })
 })
 
