@@ -65,7 +65,7 @@ describe('/about', () => {
 
   it('is titled and canonical', () => {
     expect(metadata.title).toBe(aboutPageContent.title)
-    expect(metadata.description).toBe(aboutPageContent.answer)
+    expect(metadata.description).toBe(aboutPageContent.metaDescription)
     expect(metadata.alternates?.canonical).toBe('/about')
   })
 

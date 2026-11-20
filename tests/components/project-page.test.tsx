@@ -107,9 +107,9 @@ describe('/projects/[slug]', () => {
     expect(String(md.title)).toMatch(/^Latag · /)
   })
 
-  it('gives a flagship its own link preview and canonical URL, described by its brief', () => {
+  it('gives a flagship its own link preview and canonical URL, described by its short line', () => {
     const md = generateMetadata({ params: { slug: 'el-nido-guide-ph' } })
-    const description = getCaseStudy('el-nido-guide-ph')!.brief[0]
+    const description = projects.find((p) => p.slug === 'el-nido-guide-ph')!.metaDescription
     expect(md.description).toBe(description)
     expect(md.alternates?.canonical).toBe('/projects/el-nido-guide-ph')
     expect(md.openGraph).toMatchObject({ type: 'article', title: md.title, description, url: '/projects/el-nido-guide-ph' })
@@ -122,13 +122,13 @@ describe('/projects/[slug]', () => {
     expect(md.twitter).toMatchObject({ images: [ogImage('/projects/latag')] })
   })
 
-  it('describes a short page by its description, not the summary fragment', () => {
+  it('describes a short page by its short line, not the summary fragment', () => {
     const latag = projects.find((p) => p.slug === 'latag')!
     const md = generateMetadata({ params: { slug: 'latag' } })
-    expect(md.description).toBe(latag.description)
+    expect(md.description).toBe(latag.metaDescription)
     expect(md.alternates?.canonical).toBe('/projects/latag')
-    expect(md.openGraph).toMatchObject({ type: 'article', description: latag.description, url: '/projects/latag' })
-    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: latag.description })
+    expect(md.openGraph).toMatchObject({ type: 'article', description: latag.metaDescription, url: '/projects/latag' })
+    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: latag.metaDescription })
   })
 
   it('omits the sector from the header meta when it just repeats the band', () => {

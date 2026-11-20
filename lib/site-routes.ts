@@ -41,6 +41,8 @@ export interface SiteRoute {
   title: string
   /** The meta description: the page's own opening answer or description. */
   description: string
+  /** The <meta name="description">: a short line that fits a search snippet (≤ 160, held by a test). */
+  metaDescription: string
   keywords?: string[]
   card: OgCard
   /** Home first, the page itself last. */
@@ -79,6 +81,7 @@ export function siteRoutes(): SiteRoute[] {
       title: buildProjectPageTitle(p),
       // The summary is a dot-separated fragment; the description reads as a sentence.
       description: study ? study.brief[0] : p.description,
+      metaDescription: p.metaDescription ?? (study ? study.brief[0] : p.description),
       card: { eyebrow: p.band, title: p.title, detail: p.summary },
       crumbs: [HOME, PROJECTS, { name: p.title, path: projectHref(p) }],
       priority: FLAGSHIP_SLUGS.indexOf(p.slug) === -1 ? 0.5 : 0.7,
@@ -91,6 +94,7 @@ export function siteRoutes(): SiteRoute[] {
       path: '/',
       title: heroContent.pageTitle,
       description: heroContent.subheadline,
+      metaDescription: heroContent.subheadline,
       card: { eyebrow: heroContent.eyebrow, title: heroContent.headline, detail: availability },
       crumbs: [HOME],
       priority: 1,
@@ -100,6 +104,7 @@ export function siteRoutes(): SiteRoute[] {
       path: '/services',
       title: servicesPageContent.title,
       description: servicesPageContent.answer,
+      metaDescription: servicesPageContent.metaDescription,
       card: {
         eyebrow: servicesPageContent.eyebrow,
         title: servicesPageContent.heading,
@@ -115,6 +120,7 @@ export function siteRoutes(): SiteRoute[] {
         slug: s.slug,
         title: s.title,
         description: s.answer,
+        metaDescription: s.metaDescription,
         keywords: [s.keyword],
         card: { eyebrow: servicesPageContent.eyebrow, title: s.name, detail: s.summary },
         crumbs: [HOME, services, { name: s.name, path: `/services/${s.slug}` }],
@@ -126,6 +132,7 @@ export function siteRoutes(): SiteRoute[] {
       path: '/hire',
       title: hirePageContent.title,
       description: hirePageContent.answer,
+      metaDescription: hirePageContent.metaDescription,
       keywords: [hirePageContent.keyword],
       card: { eyebrow: hirePageContent.eyebrow, title: hirePageContent.heading, detail: availability },
       crumbs: [HOME, { name: hirePageContent.eyebrow, path: '/hire' }],
@@ -136,6 +143,7 @@ export function siteRoutes(): SiteRoute[] {
       path: '/about',
       title: aboutPageContent.title,
       description: aboutPageContent.answer,
+      metaDescription: aboutPageContent.metaDescription,
       keywords: [aboutPageContent.keyword],
       card: { eyebrow: aboutPageContent.eyebrow, title: aboutPageContent.heading, detail: contactInfo.location },
       crumbs: [HOME, { name: aboutPageContent.eyebrow, path: '/about' }],
@@ -146,6 +154,7 @@ export function siteRoutes(): SiteRoute[] {
       path: '/projects',
       title: buildProjectsTitle(null),
       description: projectsPageContent.description,
+      metaDescription: projectsPageContent.description,
       card: {
         eyebrow: projectsPageContent.eyebrow,
         title: projectsPageContent.title,

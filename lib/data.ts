@@ -86,6 +86,7 @@ export const projects: Project[] = [
     slug: 'iskotify',
     title: 'Iskotify',
     description: 'Scholarship and exam-prep platform for Filipino students: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw."',
+    metaDescription: 'Scholarship and exam-prep platform for Filipino students: deadline reminders, AI flashcards for UPCAT, ACET and DCAT, and an AI study companion.',
     summary: 'Filipino students · scholarships, AI exam prep',
     band: 'Products',
     sector: 'product',
@@ -101,6 +102,7 @@ export const projects: Project[] = [
     slug: 'giya',
     title: 'Giya',
     description: 'Receipt-scanning rewards app for Philippine food and retail: customers scan the receipts they already get, earn points at partner venues and redeem real rewards, with business and admin modules behind it.',
+    metaDescription: 'Receipt-scanning rewards app for Philippine food and retail: customers scan the receipts they already get, earn points at partner venues, redeem rewards.',
     summary: 'Food and retail · receipt-scanning rewards',
     band: 'Products',
     sector: 'product',
@@ -115,6 +117,7 @@ export const projects: Project[] = [
     slug: 'latag',
     title: 'Latag',
     description: 'Offline-first inventory and storefront tool for Philippine ukay-ukay resellers: catalogue every piece once, then share a single link buyers can browse. Free tier with a paid Pro storefront.',
+    metaDescription: 'Offline-first inventory and storefront tool for Philippine ukay-ukay resellers: catalogue every piece once, then share one link buyers can browse.',
     summary: 'Ukay-ukay resellers · inventory and storefront link',
     band: 'Products',
     sector: 'product',
@@ -177,6 +180,7 @@ export const projects: Project[] = [
     slug: 'aman-group-web-app',
     title: 'Aman Group Web App',
     description: 'Full-stack Next.js app for a real estate company: a projects and properties showcase, and a loan calculator comparing Pag-IBIG, bank and in-house financing.',
+    metaDescription: 'Next.js app for Aman Group, a Naga City residential developer: a property showcase and a loan calculator for Pag-IBIG, bank and in-house financing.',
     summary: 'Real estate · property showcase, loan calculator',
     band: 'Applications',
     sector: 'real-estate',
@@ -192,6 +196,7 @@ export const projects: Project[] = [
     slug: 'skimcare',
     title: 'SkimCare',
     description: "Team ESG's entry to the AppBuildersPH Hackathon 2026 (theme: Local AI), built with Glenn Viola. An Android and web app that reads an agreement you are about to sign, explains its key terms in plain English or Filipino, and links each one to the sentence it came from. Text recognition and a small language model run on the device, so nothing is uploaded.",
+    metaDescription: 'Android and web app that explains an agreement’s key terms in plain English or Filipino. Text recognition and a small language model run on the device.',
     summary: 'Filipino signers · on-device agreement reader',
     band: 'Applications',
     sector: 'product',
@@ -208,6 +213,7 @@ export const projects: Project[] = [
     slug: 'lunad',
     title: 'Lunad',
     description: 'Mobile-first commuter web app (PWA) for Naga City: a jeepney trip planner with step-by-step guidance, saved trips, community tips and corrections, private driver reports and an admin review console. Unknown fares and routes are shown as unknown, never guessed. Pre-launch while reviewers check the route data.',
+    metaDescription: 'Jeepney trip planner for Naga City commuters, with step-by-step guidance and saved trips. Unknown fares and routes are shown as unknown. Pre-launch.',
     summary: 'Naga commuters · jeepney trip planner',
     band: 'Applications',
     sector: 'product',
@@ -241,6 +247,7 @@ export const projects: Project[] = [
     slug: 'el-nido-guide-ph',
     title: 'El Nido Guide PH',
     description: 'Multi-operator booking marketplace for El Nido tours and activities, built on WooCommerce and Dokan so each operator runs its own store, with a custom child theme covering product add-ons, printable booking invoices, and PayPal and Maya payments.',
+    metaDescription: 'Multi-operator booking marketplace for El Nido tours and activities on WooCommerce and Dokan, with PayPal and Maya payments and printable invoices.',
     summary: 'Tour operators · booking marketplace · PayPal, Maya',
     band: 'Sites',
     sector: 'tours',
@@ -257,6 +264,7 @@ export const projects: Project[] = [
     slug: 'beachbus-palawan',
     title: 'BeachBus Palawan',
     description: 'Website and WooCommerce storefront for a Palawan shuttle operator, selling digital products with integrated payments.',
+    metaDescription: 'Website and WooCommerce storefront for BeachBus, a hop-on, hop-off shuttle between the beaches of El Nido, Palawan: routes, timetable and passes.',
     summary: 'Shuttle operator · storefront · PayPal, PayMongo, Maya',
     band: 'Sites',
     sector: 'tours',
@@ -288,6 +296,7 @@ export const projects: Project[] = [
     slug: 'acad1-review-center',
     title: 'ACAD1 Review Center',
     description: 'Entrance-test review centre with nine branches across Luzon: programme tiers and class schedules per branch, plus online reservation with a downpayment through WooCommerce and Xendit.',
+    metaDescription: 'Entrance-test review centre with nine branches across Luzon: programme tiers and schedules per branch, and online reservation with a Xendit downpayment.',
     summary: 'Review centre · reservation with downpayment · Xendit',
     band: 'Sites',
     sector: 'review-centre',
@@ -347,6 +356,7 @@ export const projects: Project[] = [
     slug: 'aralabroad',
     title: 'AralAbroad',
     description: 'Independent study-abroad guidance for Filipino students: visa steps, real costs in pesos, scholarships, and reviews of the agencies themselves. Built for a site that deliberately is not an agency.',
+    metaDescription: 'Independent study-abroad guidance for Filipino students: visa steps, real costs in pesos, scholarships, and reviews of the agencies themselves.',
     summary: 'Filipino students · study-abroad guidance',
     band: 'Sites',
     sector: 'education',
@@ -361,6 +371,7 @@ export const projects: Project[] = [
     slug: 'naga-city-guide',
     title: 'Naga City Guide',
     description: 'A WordPress directory and blog for Naga City and Camarines Sur, with ten listing categories including hotels, restaurants, events and jobs, built on a custom theme and plug-in. Businesses can submit listings for free.',
+    metaDescription: 'WordPress directory and blog for Naga City and Camarines Sur: ten listing categories, a custom theme and plug-in, and free listings for businesses.',
     summary: 'Naga visitors and locals · city directory and blog',
     sector: 'directory',
     band: 'Sites',
@@ -735,6 +746,7 @@ export const servicePages: ServicePage[] = [
   {
     slug: 'full-stack-development',
     title: 'Full-Stack Web Developer (Next.js, React) · Philippines, remote',
+    metaDescription: 'Full-stack developer in Naga City, Philippines, building web apps in Next.js, React, TypeScript and Supabase, for clients and for full-time remote roles.',
     name: 'Full-stack development',
     summary: 'Web apps in Next.js, React, TypeScript and Supabase, from the first screen to the database.',
     keyword: 'full-stack developer Philippines',
@@ -792,6 +804,7 @@ export const servicePages: ServicePage[] = [
   {
     slug: 'wordpress-woocommerce',
     title: 'WordPress & WooCommerce Developer · PayMongo, Maya, Xendit, PayPal',
+    metaDescription: 'WordPress and WooCommerce developer in Naga City, Philippines: sites for hotels, tours and review centres, with PayPal, PayMongo, Maya and Xendit checkout.',
     name: 'WordPress and WooCommerce',
     summary: `WordPress sites for hotels, tours and review centres, and WooCommerce checkout through ${gatewaySentence}.`,
     keyword: 'WordPress and WooCommerce developer',
@@ -839,6 +852,7 @@ export const servicePages: ServicePage[] = [
   {
     slug: 'ai-automation',
     title: 'AI Automation Engineer · n8n, LLM workflows, MCP',
+    metaDescription: 'AI automation engineer in Naga City, Philippines: a self-hosted n8n stack for Google Workspace and LLM workflows, and client WordPress sites run over MCP.',
     name: 'AI automation',
     summary: 'n8n workflows, LLM features inside products, and tooling over MCP.',
     keyword: 'AI automation engineer',
@@ -879,8 +893,10 @@ export const servicePages: ServicePage[] = [
   },
 ]
 
+// Short lines for search snippets (draft copy for Christian's review, S6); the answer stays the page's opening and the AI files' text.
 export const servicesPageContent: ServicesPageContent = {
   title: 'Services · Christian Raro',
+  metaDescription: 'Full-stack web apps in Next.js and React, WordPress and WooCommerce sites with PayPal and Philippine gateways, and AI automation with n8n, LLMs and MCP.',
   eyebrow: 'Services',
   heading: 'What I build',
   get answer(): string {
@@ -891,6 +907,7 @@ export const servicesPageContent: ServicesPageContent = {
 
 export const aboutPageContent: AboutPageContent = {
   title: 'About Christian Raro · Web Developer in Naga City, Bicol',
+  metaDescription: 'Web developer in Naga City, Bicol, who builds booking and payment sites for travel businesses and AI automation for teams. Studied at Bicol University.',
   eyebrow: 'About',
   heading: 'Based in Naga City',
   keyword: 'web developer Naga City Bicol',
@@ -917,6 +934,7 @@ export const aboutPageContent: AboutPageContent = {
 
 export const hirePageContent: HirePageContent = {
   title: 'Hire a Mid-Level Full-Stack Developer · Remote, Philippines',
+  metaDescription: 'Mid-level full-stack developer in Naga City, Philippines, open to full-time remote roles: Next.js, TypeScript, Supabase and WordPress, with tests and CI.',
   eyebrow: 'Hire',
   heading: ctaLabels.hireForRole,
   keyword: 'mid-level full-stack developer remote',

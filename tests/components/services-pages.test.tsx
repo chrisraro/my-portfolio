@@ -37,7 +37,7 @@ describe('/services', () => {
 
   it('is titled and canonical', () => {
     expect(metadata.title).toBe(servicesPageContent.title)
-    expect(metadata.description).toBe(servicesPageContent.answer)
+    expect(metadata.description).toBe(servicesPageContent.metaDescription)
     expect(metadata.alternates?.canonical).toBe('/services')
   })
 })
@@ -48,10 +48,10 @@ describe('/services/[slug]', () => {
     expect(dynamicParams).toBe(false)
   })
 
-  it.each(servicePages)('$slug carries the spec title, its answer as description, and its canonical', (s) => {
+  it.each(servicePages)('$slug carries the spec title, its short line as description, and its canonical', (s) => {
     const m = generateMetadata({ params: { slug: s.slug } })
     expect(m.title).toBe(s.title)
-    expect(m.description).toBe(s.answer)
+    expect(m.description).toBe(s.metaDescription)
     expect(m.alternates?.canonical).toBe(`/services/${s.slug}`)
   })
 

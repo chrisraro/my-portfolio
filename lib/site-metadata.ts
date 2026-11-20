@@ -49,7 +49,7 @@ export function buildSiteMetadata(
     metadataBase: new URL(siteUrl),
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
     title: home.title,
-    description: home.description,
+    description: home.metaDescription,
     keywords: [
       heroContent.name,
       heroContent.title,
@@ -68,13 +68,13 @@ export function buildSiteMetadata(
       type: 'website',
       url: siteUrl,
       title: home.title,
-      description: home.description,
+      description: home.metaDescription,
       images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title: home.title,
-      description: home.description,
+      description: home.metaDescription,
       images: [image],
     },
     robots: {
@@ -96,7 +96,7 @@ export function buildSiteMetadata(
 // Without this a page inherits the layout's openGraph, whose url is the homepage.
 function routeMetadata(route: SiteRoute, title: string): Metadata {
   const image = ogImage(route.path)
-  const { description, path } = route
+  const { metaDescription: description, path } = route
   return {
     title,
     description,

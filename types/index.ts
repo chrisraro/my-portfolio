@@ -75,6 +75,8 @@ export interface Project {
   slug: string;
   title: string;
   description: string;
+  /** The meta description when `description` runs past a search snippet (≤ 155 characters). */
+  metaDescription?: string;
   /**
    * What it does, at most 56 characters: "Who it's for · what it does ·
    * gateways". Written only from `description` and `technologies`; a gateway
@@ -257,6 +259,8 @@ export interface ServicePage {
   slug: ServiceSlug
   /** The page's <title>, from the spec's titles table. */
   title: string
+  /** The meta description (≤ 155 characters); the answer stays for the AI files. */
+  metaDescription: string
   /** The h1, and the service's name on /services. */
   name: string
   /** One line for the /services list. */
@@ -274,6 +278,8 @@ export interface ServicePage {
 export interface ServicesPageContent {
   /** The page's <title>. */
   title: string
+  /** The meta description (≤ 155 characters); the answer stays for the AI files. */
+  metaDescription: string
   eyebrow: string
   /** The h1. */
   heading: string
@@ -284,6 +290,8 @@ export interface ServicesPageContent {
 
 export interface AboutPageContent {
   title: string
+  /** The meta description (≤ 155 characters); the answer stays for the AI files. */
+  metaDescription: string
   eyebrow: string
   heading: string
   keyword: string
@@ -305,6 +313,8 @@ export interface HireLink {
 
 export interface HirePageContent {
   title: string
+  /** The meta description (≤ 155 characters); the answer stays for the AI files. */
+  metaDescription: string
   eyebrow: string
   heading: string
   keyword: string

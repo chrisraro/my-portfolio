@@ -75,7 +75,7 @@ describe('/hire', () => {
 
   it('is titled and canonical', () => {
     expect(metadata.title).toBe(c.title)
-    expect(metadata.description).toBe(c.answer)
+    expect(metadata.description).toBe(c.metaDescription)
     expect(metadata.alternates?.canonical).toBe('/hire')
   })
 })

@@ -35,18 +35,18 @@ describe('every page carries its own title, description, canonical and card', ()
   it.each(siteRoutes().map((r) => [r.path, r] as const))('%s', (_path, route) => {
     const m = metadataOf(route)
     expect(m.title).toBe(route.title)
-    expect(m.description).toBe(route.description)
+    expect(m.description).toBe(route.metaDescription)
     expect(m.alternates?.canonical).toBe(route.path)
     expect(m.openGraph).toMatchObject({
       title: route.title,
-      description: route.description,
+      description: route.metaDescription,
       url: route.path,
       images: [ogImage(route.path)],
     })
     expect(m.twitter).toMatchObject({
       card: 'summary_large_image',
       title: route.title,
-      description: route.description,
+      description: route.metaDescription,
       images: [ogImage(route.path)],
     })
   })
