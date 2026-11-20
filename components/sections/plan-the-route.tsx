@@ -3,13 +3,16 @@
 import { useState } from 'react'
 import { AlertOctagon, ArrowRight, Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/toaster'
+import { CHAT_OPEN_EVENT } from '@/lib/chat-events'
 import { availability, contactInfo, resumeUrl, sectionContent } from '@/lib/data'
 
 const FIELD =
   'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
 
-// On the amber plane: on-accent text only; the drawn underline marks hover.
-const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-on-accent sm:min-h-[32px]'
+const LABEL = 'map-label mb-1.5 block text-muted-strong'
+
+// On paper: ink text; the drawn underline marks hover.
+const CONTACT_LINK = 'inline-flex min-h-[44px] items-center text-ink sm:min-h-[32px]'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -27,7 +30,15 @@ function fieldFromMessage(message: string): Field | undefined {
   return match ? (match[1].toLowerCase() as Field) : undefined
 }
 
-export function ContactConsole() {
+/**
+ * Plan the route (spec §5): the contact form, last on the homepage. The left
+ * leg says how to reach Christian and puts Chunks, the site's assistant, a
+ * click away; the right leg is the form on a survey plate. Behaviour is the
+ * old contact console's: it posts to /api/contact, announces through a toast,
+ * ties a server error to the field it names, and hands off to the visitor's
+ * mail app when no mail provider is configured.
+ */
+export function PlanTheRoute() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<FormError | null>(null)
@@ -56,6 +67,8 @@ export function ContactConsole() {
     const body = encodeURIComponent(`${formData.message}\n\n- ${formData.name} (${formData.email})`)
     window.location.href = `mailto:${contactInfo.email}?subject=${subject}&body=${body}`
   }
+
+  const openChat = () => window.dispatchEvent(new Event(CHAT_OPEN_EVENT))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -100,19 +113,15 @@ export function ContactConsole() {
 
   return (
     <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
-      {/*
-        A business reply card: the amber address side, perforated to the
-        paper leaf you fill in. It slides up as it arrives and the perforation
-        draws; at rest (reduced motion, no support) it is simply there.
-      */}
-      <div className="reveal-reply grid md:grid-cols-[5fr_auto_7fr]">
-        <div className="on-plane flex flex-col rounded-t bg-accent-plane p-6 text-on-accent sm:p-8 md:rounded-l md:rounded-tr-none lg:p-10">
-          <p className="eyebrow mb-3 text-on-accent">{sectionContent.contact.eyebrow}</p>
-          <h2 id="contact-title" className="text-fluid-h2">
+      <div className="grid gap-10 md:grid-cols-[5fr_7fr] md:gap-12">
+        <div className="flex flex-col">
+          <p className="eyebrow mb-3">{sectionContent.contact.eyebrow}</p>
+          <h2 id="contact-title" className="text-section text-ink">
             {sectionContent.contact.title}
           </h2>
-          <p className="edge-code mt-5 text-sm">{availability}</p>
-          <ul className="mt-8 space-y-1 md:mt-auto md:pt-10">
+          <p className="text-lede mt-5 max-w-[30rem] text-muted-strong">{sectionContent.contact.lede}</p>
+          <p className="map-label mt-6 text-muted-strong">{availability}</p>
+          <ul className="mt-8 space-y-1">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
                 <span className="link-draw">{contactInfo.email}</span>
@@ -132,20 +141,17 @@ export function ContactConsole() {
                 </a>
               </li>
             )}
-            <li className="edge-code pt-2 text-sm">{contactInfo.location}</li>
+            <li className="map-label pt-2 text-muted">{contactInfo.location}</li>
           </ul>
+          <button type="button" aria-haspopup="dialog" onClick={openChat} className="press button-secondary mt-8 self-start">
+            {sectionContent.contact.chunks}
+          </button>
         </div>
 
-        {/* The perforation: dotted, with a half-circle notch at each end. */}
-        <span aria-hidden="true" className="perforation reveal-perf" />
-
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5 rounded-b border border-line bg-panel p-6 sm:p-8 md:rounded-r md:rounded-bl-none lg:p-10"
-        >
+        <form onSubmit={handleSubmit} className="survey-plate space-y-5 p-6 sm:p-8 lg:p-10">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="contact-name" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
+              <label htmlFor="contact-name" className={LABEL}>
                 Name
               </label>
               <input
@@ -162,7 +168,7 @@ export function ContactConsole() {
               />
             </div>
             <div>
-              <label htmlFor="contact-email" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
+              <label htmlFor="contact-email" className={LABEL}>
                 Email
               </label>
               <input
@@ -180,7 +186,7 @@ export function ContactConsole() {
             </div>
           </div>
           <div>
-            <label htmlFor="contact-message" className="mb-1.5 block edge-code text-[0.8125rem] text-muted-strong">
+            <label htmlFor="contact-message" className={LABEL}>
               What are you building?
             </label>
             <textarea

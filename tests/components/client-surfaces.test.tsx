@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { ContactConsole } from '@/components/sections/contact-console'
+import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { ChatWidget } from '@/components/ui/chat-widget'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { ToastProvider } from '@/components/ui/toaster'
@@ -38,10 +38,10 @@ describe('ToastProvider', () => {
   })
 })
 
-describe('ContactConsole', () => {
+describe('PlanTheRoute', () => {
   const html = renderToStaticMarkup(
     <ToastProvider>
-      <ContactConsole />
+      <PlanTheRoute />
     </ToastProvider>,
   )
 
@@ -54,7 +54,7 @@ describe('ContactConsole', () => {
   })
 
   it('ties a server error to the field it names, beside the form', () => {
-    const source = readFileSync('components/sections/contact-console.tsx', 'utf8')
+    const source = readFileSync('components/sections/plan-the-route.tsx', 'utf8')
     expect(source).toContain("'aria-describedby': error?.field === field ? ERROR_ID : undefined")
     expect(source).toContain('<p id={ERROR_ID}')
   })

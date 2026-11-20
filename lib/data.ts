@@ -540,7 +540,13 @@ export const sectionContent = {
       resume: 'Download résumé',
     },
   },
-  contact: { eyebrow: 'Contact', title: 'Start a project' },
+  contact: {
+    eyebrow: 'Plan the route',
+    title: 'Start a project',
+    lede: 'Tell me what you are building and when you need it. Hiring for a full-time role? Say so here too.',
+    // The button that opens Chunks, the site's assistant.
+    chunks: 'Ask Chunks, my site assistant',
+  },
 }
 
 // The footer's colophon, set as a small edge code.

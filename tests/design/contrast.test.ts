@@ -113,7 +113,7 @@ describe('theme default', () => {
 // --field-border (3:1), never a hairline token.
 describe('field borders', () => {
   it('every text field draws its border in --field-border, not a hairline token', () => {
-    const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
+    const contact = readFileSync('components/sections/plan-the-route.tsx', 'utf8')
     const field = contact.match(/const FIELD =\s*'([^']*)'/)?.[1] ?? ''
     expect(field).toContain('border-field-border')
     expect(field).not.toMatch(/border-line(-strong)?\b/)

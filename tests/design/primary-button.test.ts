@@ -37,7 +37,7 @@ describe('primary button', () => {
     expect(uses('app/projects/page.tsx', 'Start a project')).toContain('button-primary')
     expect(uses('app/projects/[slug]/page.tsx', 'Start a project')).toContain('button-primary')
     expect(uses('app/not-found.tsx', 'All projects')).toContain('button-primary')
-    expect(uses('components/sections/contact-console.tsx', 'Send message')).toContain('button-primary')
+    expect(uses('components/sections/plan-the-route.tsx', 'Send message')).toContain('button-primary')
   })
 
   it('is never composed by hand from a fill and padding', () => {

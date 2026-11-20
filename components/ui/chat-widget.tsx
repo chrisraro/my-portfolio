@@ -8,6 +8,7 @@ import { loadMotionFeatures } from '@/lib/motion-features'
 import { motionTokens } from '@/lib/motion-tokens'
 import { MessageCircle, X, Send } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { CHAT_OPEN_EVENT } from '@/lib/chat-events'
 
 interface Message {
   id: string
@@ -114,6 +115,14 @@ export function ChatWidget() {
     update()
     query.addEventListener('change', update)
     return () => query.removeEventListener('change', update)
+  }, [])
+
+  // The page opens the chat with one event (the contact section's "Ask
+  // Chunks"), so there is one chat and it owns its own state.
+  useEffect(() => {
+    const open = () => setIsOpen(true)
+    window.addEventListener(CHAT_OPEN_EVENT, open)
+    return () => window.removeEventListener(CHAT_OPEN_EVENT, open)
   }, [])
 
   useEffect(() => {

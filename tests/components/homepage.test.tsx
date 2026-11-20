@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
@@ -6,8 +6,10 @@ import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldMap } from '@/components/sections/field-map'
 import { Fork } from '@/components/sections/fork'
 import { OwnProducts } from '@/components/sections/own-products'
+import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { TrailJournals } from '@/components/sections/trail-journals'
 import { Trailhead } from '@/components/sections/trailhead'
+import { ToastProvider } from '@/components/ui/toaster'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
@@ -32,6 +34,7 @@ const SECTIONS: [string, ReactElement][] = [
   ['FieldMap', <FieldMap key="field-map" />],
   ['OwnProducts', <OwnProducts key="own-products" />],
   ['TrailJournals', <TrailJournals key="journals" />],
+  ['PlanTheRoute', <ToastProvider key="plan"><PlanTheRoute /></ToastProvider>],
 ]
 
 describe('Trailhead', () => {
@@ -288,6 +291,53 @@ describe('TrailJournals', () => {
   it('lifts like every catalog card and rises by transform only', () => {
     expect(html.match(/class="lift-card /g)).toHaveLength(FLAGSHIP_SLUGS.length)
     expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+  })
+})
+
+describe('PlanTheRoute', () => {
+  const html = renderToStaticMarkup(
+    <ToastProvider>
+      <PlanTheRoute />
+    </ToastProvider>,
+  )
+  const source = readFileSync('components/sections/plan-the-route.tsx', 'utf8')
+
+  it('is the #contact section, still the one form client component', () => {
+    expect(html).toContain('<section id="contact" aria-labelledby="contact-title"')
+    expect(source.trimStart()).toMatch(/^'use client'/)
+    expect(existsSync('components/sections/contact-console.tsx')).toBe(false)
+  })
+
+  it('takes its heading and copy from data', () => {
+    expect(html).toContain(`>${sectionContent.contact.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="contact-title" class="text-section[^"]*">${escape(sectionContent.contact.title)}</h2>`))
+    expect(html).toContain(`>${escape(sectionContent.contact.lede)}</p>`)
+  })
+
+  it('keeps the field ids and names the API and the labels expect', () => {
+    for (const [id, name] of [
+      ['contact-name', 'name'],
+      ['contact-email', 'email'],
+      ['contact-message', 'message'],
+    ]) {
+      expect(html).toContain(`for="${id}"`)
+      expect(html).toContain(`id="${id}" name="${name}"`)
+    }
+  })
+
+  it('sends with the one primary button', () => {
+    expect(html).toMatch(/<button type="submit" class="press button-primary[^"]*">Send message/)
+  })
+
+  it('keeps the toast and the mailto fallback', () => {
+    expect(source).toContain('useToast()')
+    expect(source).toContain('window.location.href = `mailto:${contactInfo.email}')
+  })
+
+  it('puts Chunks a click away', () => {
+    expect(html).toContain(`>${sectionContent.contact.chunks}</button>`)
+    expect(source).toContain('window.dispatchEvent(new Event(CHAT_OPEN_EVENT))')
+    expect(readFileSync('components/ui/chat-widget.tsx', 'utf8')).toContain('window.addEventListener(CHAT_OPEN_EVENT, open)')
   })
 })
 

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import { ContactConsole } from '@/components/sections/contact-console'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldMap } from '@/components/sections/field-map'
 import { Fork } from '@/components/sections/fork'
 import { OwnProducts } from '@/components/sections/own-products'
+import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { TrailJournals } from '@/components/sections/trail-journals'
 import { Trailhead } from '@/components/sections/trailhead'
 
@@ -11,8 +11,7 @@ import { Trailhead } from '@/components/sections/trailhead'
 // the homepage sets its own.
 export const metadata: Metadata = { alternates: { canonical: '/' } }
 
-// Section order: the Isarog Trail Map contract (.impeccable/surfaces/app-page-tsx.md,
-// spec §5). The contact console holds the form's place until Task 12.
+// Section order: the Isarog Trail Map contract (.impeccable/surfaces/app-page-tsx.md, spec §5).
 export default function HomePage() {
   return (
     <>
@@ -22,7 +21,7 @@ export default function HomePage() {
       <FieldMap />
       <OwnProducts />
       <TrailJournals />
-      <ContactConsole />
+      <PlanTheRoute />
     </>
   )
 }

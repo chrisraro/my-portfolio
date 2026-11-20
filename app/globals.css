@@ -132,9 +132,8 @@
 		outline-offset: 3px;
 	}
 	/* Focus on a filled plane draws in the plane's own ink. The project header
-	 * (components/case-study/project-header.tsx) and the contact console
-	 * (components/sections/contact-console.tsx) still use it; the rule goes when
-	 * those are rebuilt. */
+	 * (components/case-study/project-header.tsx) still uses it; the rule goes
+	 * when that is rebuilt. */
 	.on-plane :focus-visible {
 		outline-color: oklch(var(--on-accent));
 	}
@@ -405,43 +404,6 @@
 	}
 }
 
-/* The reply card's perforation: 2px dots with a half-circle notch cut at each
- * end. Across the card when it stacks, upright from 768px. */
-.perforation {
-	position: relative;
-	z-index: 1;
-	align-self: stretch;
-	height: 0;
-	border-top: 2px dotted oklch(var(--line-strong));
-}
-.perforation::before,
-.perforation::after {
-	content: '';
-	position: absolute;
-	top: -11px;
-	width: 20px;
-	height: 20px;
-	border-radius: 9999px;
-	background: oklch(var(--bg));
-}
-.perforation::before { left: -10px; }
-.perforation::after { right: -10px; }
-@media (min-width: 768px) {
-	.perforation {
-		height: auto;
-		width: 0;
-		border-top: 0;
-		border-left: 2px dotted oklch(var(--line-strong));
-	}
-	.perforation::before,
-	.perforation::after {
-		left: -11px;
-		right: auto;
-	}
-	.perforation::before { top: -10px; }
-	.perforation::after { top: auto; bottom: -10px; }
-}
-
 /*
  * Sections far below the fold skip style, layout and paint until they near the
  * viewport, so the first layout (and the relayout when the web fonts arrive)
@@ -560,21 +522,9 @@
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		@keyframes reveal-draw-x {
-			from { transform: scaleX(0); }
-			to { transform: none; }
-		}
-		@keyframes reveal-draw-y {
-			from { transform: scaleY(0); }
-			to { transform: none; }
-		}
 		/* Transform only, like reveal-rise: a case study is never read faded. */
 		@keyframes reveal-cover {
 			from { transform: translateY(24px); }
-			to { transform: none; }
-		}
-		@keyframes reveal-lift {
-			from { transform: translateY(40px); }
 			to { transform: none; }
 		}
 		@keyframes reveal-fold {
@@ -623,23 +573,6 @@
 			animation: reveal-fold var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
 			animation-range: entry 10% cover 30%;
-		}
-		.reveal-reply {
-			animation: reveal-lift var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
-		}
-		.reveal-perf {
-			transform-origin: center top;
-			animation: reveal-draw-y var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
-		}
-		@media (max-width: 767px) {
-			.reveal-perf {
-				transform-origin: left center;
-				animation-name: reveal-draw-x;
-			}
 		}
 	}
 }
@@ -736,7 +669,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-fold) {
+	:is(.reveal-stagger, .reveal-cover, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;
