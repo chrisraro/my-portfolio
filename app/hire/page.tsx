@@ -7,11 +7,11 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { TrailLink } from '@/components/ui/trail-link'
 import { WorkHistory } from '@/components/ui/work-history'
 import { availability, contactInfo, ctaLabels, hirePageContent, pagesUpdated, resumeUrl, skills, socialLinks } from '@/lib/data'
-import { buildPageMetadata } from '@/lib/site-metadata'
+import { buildRouteMetadata } from '@/lib/site-metadata'
 import { cn } from '@/lib/utils'
 import type { Skill } from '@/types'
 
-export const metadata: Metadata = buildPageMetadata(hirePageContent.title, hirePageContent.answer, '/hire')
+export const metadata: Metadata = buildRouteMetadata('/hire')
 
 const BLOCK = 'pb-[72px] md:pb-[112px]'
 const CHIP = 'map-label rounded-sm border border-line-strong px-3 py-2 text-ink'

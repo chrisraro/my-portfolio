@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { heroContent } from '@/lib/data'
-import { buildProjectPageTitle, buildProjectsTitle, routeFor } from '@/lib/site-routes'
-import type { Project, ProjectBand } from '@/types'
+import { buildProjectsTitle, routeFor, type SiteRoute } from '@/lib/site-routes'
+import type { ProjectBand } from '@/types'
 
 /** Strips a trailing slash so URLs built by concatenation never double one. */
 export function normaliseSiteUrl(url: string): string {
@@ -34,9 +34,6 @@ export function ogImage(path: string): OgImage {
   return { url: path === '/' ? '/og' : `/og${path}`, ...OG_SIZE, alt: routeFor(path).title }
 }
 
-/** The homepage's card. Every page names it until Task 5 gives each its own. */
-export const OG_IMAGE = ogImage('/')
-
 // Built from heroContent so the page, the chat assistant and every link preview
 // state the same positioning. The old hand-typed metadata said "Software
 // Engineer & Frontend Developer" long after the page stopped saying it.
@@ -45,20 +42,22 @@ export function buildSiteMetadata(
   siteUrl: string,
   googleVerification: string | undefined = process.env.GOOGLE_SITE_VERIFICATION,
 ): Metadata {
-  const title = heroContent.pageTitle
-  const description = heroContent.subheadline
+  const home = routeFor('/')
+  const image = ogImage('/')
 
   return {
     metadataBase: new URL(siteUrl),
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
-    title,
-    description,
+    title: home.title,
+    description: home.description,
     keywords: [
       heroContent.name,
       heroContent.title,
-      'WordPress specialist',
+      'full-stack developer Philippines',
       'Next.js',
+      'WordPress',
       'WooCommerce',
+      'AI automation',
       'Naga City',
       'Philippines',
     ],
@@ -68,15 +67,15 @@ export function buildSiteMetadata(
       ...OPEN_GRAPH_BASE,
       type: 'website',
       url: siteUrl,
-      title,
-      description,
-      images: [OG_IMAGE],
+      title: home.title,
+      description: home.description,
+      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
-      images: [OG_IMAGE],
+      title: home.title,
+      description: home.description,
+      images: [image],
     },
     robots: {
       index: true,
@@ -92,51 +91,39 @@ export function buildSiteMetadata(
   }
 }
 
+// A page's own link preview: its title and description, its canonical URL and
+// og:url (relative; the layout's metadataBase resolves them), and its own card.
+// Without this a page inherits the layout's openGraph, whose url is the homepage.
+function routeMetadata(route: SiteRoute, title: string): Metadata {
+  const image = ogImage(route.path)
+  const { description, path } = route
+  return {
+    title,
+    description,
+    ...(route.keywords ? { keywords: route.keywords } : {}),
+    alternates: { canonical: path },
+    openGraph: {
+      ...OPEN_GRAPH_BASE,
+      type: route.kind === 'project' ? 'article' : 'website',
+      title,
+      description,
+      url: path,
+      images: [image],
+    },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
+  }
+}
+
+/** Every page's metadata, from its route in lib/site-routes.ts. */
+export function buildRouteMetadata(path: string): Metadata {
+  const route = routeFor(path)
+  return routeMetadata(route, route.title)
+}
+
 /**
- * /projects's own metadata: every ?band= filter canonicalises to the
- * unfiltered page, and setting openGraph here (rather than inheriting the
- * layout's) keeps og:url off the homepage. Images are named explicitly
- * because setting openGraph drops the layout's file-convention image.
+ * /projects's metadata: every ?band= filter canonicalises to the unfiltered
+ * page and shares its card; the title names the band.
  */
 export function buildProjectsMetadata(band: ProjectBand | null): Metadata {
-  const title = buildProjectsTitle(band)
-  return {
-    title,
-    alternates: { canonical: '/projects' },
-    openGraph: { ...OPEN_GRAPH_BASE, type: 'website', title, url: '/projects', images: [OG_IMAGE] },
-  }
-}
-
-/**
- * A project page's own link preview: an article card with its title and
- * description, and its own canonical URL. `path` is relative; the layout's
- * metadataBase resolves it. Setting openGraph here drops the layout's
- * file-convention image, so the same card (app/opengraph-image.tsx) is named.
- */
-export function buildProjectPageMetadata(project: Project, description: string, path: string): Metadata {
-  const title = buildProjectPageTitle(project)
-  return {
-    title,
-    description,
-    alternates: { canonical: path },
-    openGraph: { ...OPEN_GRAPH_BASE, type: 'article', title, description, url: path, images: [OG_IMAGE] },
-    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
-  }
-}
-
-/**
- * An ordinary page's own link preview (/services, /about, /hire, the service
- * pages): its title and description, its own canonical URL and og:url, and the
- * shared card. `path` is relative; the layout's metadataBase resolves it.
- * Without this a page inherits the layout's openGraph, whose url is the homepage.
- */
-export function buildPageMetadata(title: string, description: string, path: string, keywords?: string[]): Metadata {
-  return {
-    title,
-    description,
-    ...(keywords ? { keywords } : {}),
-    alternates: { canonical: path },
-    openGraph: { ...OPEN_GRAPH_BASE, type: 'website', title, description, url: path, images: [OG_IMAGE] },
-    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
-  }
+  return routeMetadata(routeFor('/projects'), buildProjectsTitle(band))
 }

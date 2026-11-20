@@ -1,6 +1,6 @@
 import { aboutPageContent, contactInfo, heroContent, services, skills } from '@/lib/data'
 import { canLinkLive, projectHref } from '@/lib/project-page'
-import { OG_IMAGE, SITE_URL } from '@/lib/site-metadata'
+import { SITE_URL, absoluteUrl } from '@/lib/site-metadata'
 import type { CaseStudy, Project } from '@/types'
 
 // JSON-LD for search engines and AI tools, built from the content modules so it
@@ -35,7 +35,7 @@ export function personSchema(): JsonLdNode {
     description: aboutPageContent.answer,
     url: SITE_URL,
     email: contactInfo.email,
-    image: absolute(OG_IMAGE.url),
+    image: absoluteUrl(heroContent.portrait),
     address: localityAddress(),
     knowsAbout: skills.map((s) => s.name),
     sameAs: publicLinks(),
@@ -49,7 +49,7 @@ export function serviceSchema(): JsonLdNode {
     name: `${heroContent.name}, ${heroContent.title.toLowerCase()}`,
     url: SITE_URL,
     email: contactInfo.email,
-    image: absolute(OG_IMAGE.url),
+    image: absoluteUrl(heroContent.portrait),
     address: localityAddress(),
     areaServed: [
       { '@type': 'City', name: locality },

@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { OG_IMAGE } from '@/lib/site-metadata'
+import { ogImage } from '@/lib/site-metadata'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
@@ -118,8 +118,8 @@ describe('/projects/[slug]', () => {
 
   it('names a link-preview card from app/og', () => {
     const md = generateMetadata({ params: { slug: 'latag' } })
-    expect(md.openGraph).toMatchObject({ images: [OG_IMAGE] })
-    expect(md.twitter).toMatchObject({ images: [OG_IMAGE] })
+    expect(md.openGraph).toMatchObject({ images: [ogImage('/projects/latag')] })
+    expect(md.twitter).toMatchObject({ images: [ogImage('/projects/latag')] })
   })
 
   it('describes a short page by its description, not the summary fragment', () => {

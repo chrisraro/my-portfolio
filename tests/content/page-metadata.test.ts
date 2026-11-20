@@ -1,36 +1,72 @@
+import { readFileSync } from 'node:fs'
+import type { Metadata } from 'next'
 import { describe, expect, it } from 'vitest'
-import { metadata as servicesMetadata } from '@/app/services/page'
-import { generateMetadata as serviceMetadata } from '@/app/services/[slug]/page'
 import { metadata as aboutMetadata } from '@/app/about/page'
 import { metadata as hireMetadata } from '@/app/hire/page'
-import { servicePages } from '@/lib/data'
-import { buildPageMetadata, OG_IMAGE } from '@/lib/site-metadata'
-import type { Metadata } from 'next'
+import { metadata as homeMetadata } from '@/app/page'
+import { generateMetadata as projectsMetadata } from '@/app/projects/page'
+import { generateMetadata as projectMetadata } from '@/app/projects/[slug]/page'
+import { metadata as servicesMetadata } from '@/app/services/page'
+import { generateMetadata as serviceMetadata } from '@/app/services/[slug]/page'
+import { ogImage } from '@/lib/site-metadata'
+import { siteRoutes, type SiteRoute } from '@/lib/site-routes'
 
-const routes: Array<[string, Metadata, string]> = [
-  ['/services', servicesMetadata, '/services'],
-  ['/about', aboutMetadata, '/about'],
-  ['/hire', hireMetadata, '/hire'],
-  ...servicePages.map((s): [string, Metadata, string] => [
-    `/services/${s.slug}`,
-    serviceMetadata({ params: { slug: s.slug } }),
-    `/services/${s.slug}`,
-  ]),
-]
+// Each route's metadata as the page itself exports it.
+function metadataOf(route: SiteRoute): Metadata {
+  switch (route.kind) {
+    case 'home':
+      return homeMetadata
+    case 'projects':
+      return projectsMetadata({ searchParams: {} })
+    case 'services':
+      return servicesMetadata
+    case 'service':
+      return serviceMetadata({ params: { slug: route.slug! } })
+    case 'about':
+      return aboutMetadata
+    case 'hire':
+      return hireMetadata
+    case 'project':
+      return projectMetadata({ params: { slug: route.slug! } })
+  }
+}
 
-describe('each new page carries its own link preview', () => {
-  it.each(routes)('%s: og:url, og:title and twitter match the page', (_name, m, path) => {
-    expect(m.alternates?.canonical).toBe(path)
-    expect(m.openGraph?.url).toBe(path)
-    expect(m.openGraph?.title).toBe(m.title)
-    expect(m.openGraph?.description).toBe(m.description)
-    expect(m.twitter?.title).toBe(m.title)
-    expect(m.openGraph?.images).toEqual([OG_IMAGE])
+describe('every page carries its own title, description, canonical and card', () => {
+  it.each(siteRoutes().map((r) => [r.path, r] as const))('%s', (_path, route) => {
+    const m = metadataOf(route)
+    expect(m.title).toBe(route.title)
+    expect(m.description).toBe(route.description)
+    expect(m.alternates?.canonical).toBe(route.path)
+    expect(m.openGraph).toMatchObject({
+      title: route.title,
+      description: route.description,
+      url: route.path,
+      images: [ogImage(route.path)],
+    })
+    expect(m.twitter).toMatchObject({
+      card: 'summary_large_image',
+      title: route.title,
+      description: route.description,
+      images: [ogImage(route.path)],
+    })
   })
 
-  it('buildPageMetadata names the shared card and keeps keywords optional', () => {
-    const m = buildPageMetadata('T', 'D', '/x', ['k'])
-    expect(m.keywords).toEqual(['k'])
-    expect(buildPageMetadata('T', 'D', '/x').keywords).toBeUndefined()
+  it('marks a project page as an article and every other page as a website', () => {
+    for (const r of siteRoutes()) {
+      expect(metadataOf(r).openGraph, r.path).toMatchObject({ type: r.kind === 'project' ? 'article' : 'website' })
+    }
+  })
+
+  it('titles a filtered /projects view by its band, on the unfiltered page’s canonical and card', () => {
+    const m = projectsMetadata({ searchParams: { band: 'sites' } })
+    expect(m.title).toBe('Sites · Projects · Christian Raro')
+    expect(m.alternates?.canonical).toBe('/projects')
+    expect(m.openGraph).toMatchObject({ title: m.title, url: '/projects', images: [ogImage('/projects')] })
+  })
+
+  it('names no retired card anywhere', () => {
+    for (const file of ['lib/site-metadata.ts', 'lib/structured-data.ts', 'app/layout.tsx']) {
+      expect(readFileSync(file, 'utf8'), file).not.toMatch(/opengraph-image|OG_IMAGE/)
+    }
   })
 })

@@ -10,7 +10,7 @@ import { TrailLink } from '@/components/ui/trail-link'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { ctaLabels, pagesUpdated, projects, servicePages, servicesPageContent } from '@/lib/data'
 import { hasFullShot } from '@/lib/project-page'
-import { buildPageMetadata } from '@/lib/site-metadata'
+import { buildRouteMetadata } from '@/lib/site-metadata'
 import { cn } from '@/lib/utils'
 import type { Project, ServiceComparison } from '@/types'
 
@@ -28,7 +28,7 @@ export const dynamicParams = false
 export function generateMetadata({ params }: ServicePageProps): Metadata {
   const service = servicePages.find((s) => s.slug === params.slug)
   if (!service) return {}
-  return buildPageMetadata(service.title, service.answer, `/services/${service.slug}`, [service.keyword])
+  return buildRouteMetadata(`/services/${service.slug}`)
 }
 
 // tests/content/new-pages.test.ts holds every id to a real project.

@@ -13,7 +13,7 @@ import { TrailLink } from '@/components/ui/trail-link'
 import { getCaseStudy } from '@/lib/case-studies'
 import { ctaLabels, projects } from '@/lib/data'
 import { projectHref } from '@/lib/project-page'
-import { buildProjectPageMetadata } from '@/lib/site-metadata'
+import { buildRouteMetadata } from '@/lib/site-metadata'
 import { breadcrumbSchema, caseStudySchema, graph } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
 
@@ -31,10 +31,7 @@ export const dynamicParams = false
 export function generateMetadata({ params }: ProjectPageProps): Metadata {
   const project = projects.find((p) => p.slug === params.slug)
   if (!project) return {}
-  const study = getCaseStudy(project.slug)
-  // The summary is a dot-separated fragment; the description reads as a sentence.
-  const description = study ? study.brief[0] : project.description
-  return buildProjectPageMetadata(project, description, projectHref(project))
+  return buildRouteMetadata(projectHref(project))
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {

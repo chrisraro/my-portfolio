@@ -5,10 +5,10 @@ import { SECTION } from '@/components/ui/grid'
 import { PageIntro } from '@/components/ui/page-intro'
 import { TrailLink } from '@/components/ui/trail-link'
 import { ctaLabels, pagesUpdated, servicePages, servicesPageContent } from '@/lib/data'
-import { buildPageMetadata } from '@/lib/site-metadata'
+import { buildRouteMetadata } from '@/lib/site-metadata'
 import { cn } from '@/lib/utils'
 
-export const metadata: Metadata = buildPageMetadata(servicesPageContent.title, servicesPageContent.answer, '/services')
+export const metadata: Metadata = buildRouteMetadata('/services')
 
 // The business path from the fork (spec §5): the three services, each a card
 // with its name, one line and how many shipped projects prove it, then the
