@@ -16,3 +16,17 @@ export const trailheadTrail = {
   d: 'M1290 570 C1180 640 1060 700 960 760 S760 830 640 812',
   viewBox: '0 0 1440 900',
 }
+
+// Short stretches of the trail between homepage sections, alternating
+// direction so the trail zigzags down the page. 1440 x 120; the box crops the
+// sides on a phone, so each curve crosses the middle.
+export const trailSegments = [
+  { d: 'M1040 0 C1040 60 400 60 400 120', viewBox: '0 0 1440 120' },
+  { d: 'M400 0 C400 60 1040 60 1040 120', viewBox: '0 0 1440 120' },
+] as const
+
+// The elevation strip's ridge line, rising toward now. Stretched to the strip.
+export const elevationProfile = {
+  d: 'M0 50 C90 48 150 40 230 42 S380 30 470 34 S640 18 730 24 S900 8 1000 12 S1110 4 1152 2',
+  viewBox: '0 0 1152 56',
+}

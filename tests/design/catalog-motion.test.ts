@@ -33,11 +33,12 @@ describe('no scroll-linked previews', () => {
       if (!/animation-timeline|view-timeline/.test(r.body)) continue
       expect(r.selector, r.selector).not.toMatch(/rack-|project-shot|lift-card|img/)
     }
-    // The trail (.trail-draw, spec §4) is the one page-scroll timeline; cards
-    // and screenshots stay off every scroll timeline (checked above). No
-    // object-position animation.
+    // The elevation strip's "you are here" marker (.elevation-marker, the S2
+    // trail topology) is the one page-scroll timeline; cards and screenshots
+    // stay off every scroll timeline (checked above). No object-position
+    // animation.
     for (const r of rules) {
-      if (/scroll\(root/.test(r.body)) expect(r.selector, r.selector).toMatch(/^\.trail-draw$/)
+      if (/scroll\(root/.test(r.body)) expect(r.selector, r.selector).toMatch(/^\.elevation-marker$/)
     }
     expect(css).not.toMatch(/transition[^;]*object-position/)
     expect(css).not.toMatch(/@keyframes[^{]*\{[^@]*?object-position/)

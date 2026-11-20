@@ -851,19 +851,60 @@
 	}
 }
 
-/* The trail (spec §4): fully drawn by default; drawn with the page's scroll
- * where scroll timelines exist and motion is allowed. Never loops. */
+/*
+ * The trail (spec §4). Fully drawn by default. Where motion is allowed it
+ * draws: the trailhead's once on load (.trail-draw--load), and each short
+ * segment between homepage sections as it scrolls into view
+ * (.trail-draw--view). A segment's view timeline is named on its <svg>
+ * (.trail-view), a CSS box: an SVG <path> has none, so an anonymous view() on
+ * the path would stay inactive. Never loops; never follows the page's scroll.
+ */
 .trail-draw {
 	stroke-dasharray: 1;
 	stroke-dashoffset: 0;
 }
+.trail-view {
+	view-timeline: --trail-segment block;
+}
 
+@media (prefers-reduced-motion: no-preference) {
+	.trail-draw--load {
+		animation: trail-draw var(--dur-draw) var(--ease-smooth) var(--t-trail, 0ms) both;
+	}
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.trail-draw--view {
+			animation: trail-draw linear both;
+			animation-timeline: --trail-segment;
+			animation-range: entry 10% cover 45%;
+		}
+	}
+}
+
+/*
+ * The elevation strip's "you are here" marker
+ * (components/sections/elevation-strip.tsx) is the one element that follows
+ * the page's scroll. At rest it sits at now; where scroll timelines exist and
+ * motion is allowed it travels from the strip's start to now as the page is
+ * read. Transform only.
+ */
 @supports (animation-timeline: scroll()) {
 	@media (prefers-reduced-motion: no-preference) {
-		.trail-draw {
-			animation: trail-draw linear both;
+		.elevation-marker {
+			animation: elevation-marker linear both;
 			animation-timeline: scroll(root);
 		}
+	}
+}
+
+@keyframes elevation-marker {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: none;
 	}
 }
 

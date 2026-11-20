@@ -3,9 +3,10 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ContourField } from '@/components/map/contour-field'
 import { TrailPath } from '@/components/map/trail-path'
+import { TrailSegment } from '@/components/map/trail-segment'
 import { Footer } from '@/components/footer'
 import { footerContent, navigationItems, resumeUrl } from '@/lib/data'
-import { trailheadContours, trailheadTrail } from '@/lib/contours'
+import { trailSegments, trailheadContours, trailheadTrail } from '@/lib/contours'
 
 describe('map primitives', () => {
   it('renders contours as decorative SVG', () => {
@@ -14,12 +15,21 @@ describe('map primitives', () => {
     expect(html.match(/<path /g)?.length).toBe(trailheadContours.length)
   })
 
-  it('renders the trail with a unit path length and the draw class', () => {
-    const html = renderToStaticMarkup(<TrailPath d={trailheadTrail.d} viewBox={trailheadTrail.viewBox} />)
+  it('renders the trailhead trail with a unit path length, drawn once on load', () => {
+    const html = renderToStaticMarkup(<TrailPath mode="load" d={trailheadTrail.d} viewBox={trailheadTrail.viewBox} />)
     expect(html).toContain('pathLength="1"')
-    expect(html).toContain('trail-draw')
+    expect(html).toContain('class="trail-draw trail-draw--load"')
     expect(html).toContain('aria-hidden="true"')
     expect(html).not.toContain('vector-effect')
+    expect(html).not.toContain('trail-view')
+  })
+
+  it('renders a segment between sections on its own view timeline', () => {
+    const html = renderToStaticMarkup(<TrailSegment variant={0} />)
+    expect(html).toMatch(/<svg[^>]*class="[^"]*\btrail-view\b/)
+    expect(html).toContain('class="trail-draw trail-draw--view"')
+    expect(html).toContain(`d="${trailSegments[0].d}"`)
+    expect(html).toMatch(/^<div aria-hidden="true"/)
   })
 })
 
