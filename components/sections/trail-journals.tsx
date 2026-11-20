@@ -42,7 +42,7 @@ export function TrailJournals() {
       <SectionHeading id="journals-title" title={sectionContent.journals.title} />
       <ol className="grid gap-x-12 lg:grid-cols-[7fr_5fr]">
         {lead && (
-          <li className="reveal-cover mb-10 lg:row-span-5 lg:mb-0">
+          <li className="reveal-cover mb-10 lg:sticky lg:top-24 lg:row-span-5 lg:mb-0 lg:self-start">
             <Link
               href={projectHref(lead.project)}
               className="lift-card group relative flex h-full min-h-[22rem] flex-col rounded border border-line bg-panel p-6 sm:p-8"

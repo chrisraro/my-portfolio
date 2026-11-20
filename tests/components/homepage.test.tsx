@@ -316,6 +316,13 @@ describe('TrailJournals', () => {
     expect(lead).toContain('bg-panel')
   })
 
+  it('keeps the open cover at its own height and in view beside the rows at lg', () => {
+    const lead = html.slice(html.indexOf('<li'), html.indexOf('>', html.indexOf('<li')))
+    expect(lead).toContain('lg:self-start')
+    expect(lead).toContain('lg:sticky')
+    expect(lead).toContain('lg:top-24')
+  })
+
   it('names each cover by its visible text (WCAG 2.5.3): the h3 sits inside a link with no aria-labelledby', () => {
     for (const slug of FLAGSHIP_SLUGS) {
       const project = projects.find((p) => p.slug === slug)!
