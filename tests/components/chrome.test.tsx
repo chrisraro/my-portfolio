@@ -34,6 +34,8 @@ describe('legend navigation', () => {
 
   it('marks the current page by more than colour', () => {
     expect(src).toContain('aria-[current=page]:underline')
+    expect(src).toContain('aria-[current=page]:decoration-trail')
+    expect(src).not.toContain('aria-[current=page]:text-trail')
   })
 
   it('lists Work first and keeps Contact', () => {

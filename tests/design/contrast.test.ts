@@ -29,17 +29,28 @@ function readTheme(selector: string): Record<Token, Triplet> {
   return theme
 }
 
-function luminance([L, C, H]: Triplet): number {
+type Rgb = [number, number, number]
+
+function linearRgb([L, C, H]: Triplet): Rgb {
   const a = C * Math.cos((H * Math.PI) / 180)
   const b = C * Math.sin((H * Math.PI) / 180)
   const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3
   const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3
   const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3
   const clamp = (v: number) => Math.min(1, Math.max(0, v))
-  const R = clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)
-  const G = clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)
-  const B = clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s)
+  return [
+    clamp(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    clamp(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    clamp(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+  ]
+}
+
+function luminanceOf([R, G, B]: Rgb): number {
   return 0.2126 * R + 0.7152 * G + 0.0722 * B
+}
+
+function luminance(color: Triplet): number {
+  return luminanceOf(linearRgb(color))
 }
 
 function contrast(x: Triplet, y: Triplet): number {
@@ -110,5 +121,50 @@ describe('field borders', () => {
     const input = chat.match(/id="chat-input"[\s\S]*?className="([^"]*)"/)?.[1] ?? ''
     expect(input).toContain('border-field-border')
     expect(input).not.toMatch(/border-line(-strong)?\b/)
+  })
+})
+
+// The legend card is frosted: panel at --legend-glass alpha over whatever
+// scrolls beneath. Hold text contrast over the worst backdrops (the theme's
+// ink, and a pure white screenshot).
+describe('legend glass', () => {
+  const alpha = Number(CSS.match(/\.legend-glass \{[^}]*?background:\s*oklch\(var\(--panel\)\s*\/\s*([\d.]+)\)/)?.[1])
+
+  it('reads its alpha from the stylesheet', () => {
+    expect(alpha).toBeGreaterThan(0.5)
+    expect(alpha).toBeLessThanOrEqual(0.96)
+  })
+
+  describe.each([
+    ['day survey', ':root'],
+    ['night survey', '.dark'],
+  ])('%s', (_name, selector) => {
+    const theme = readTheme(selector)
+    const white: Triplet = [1, 0, 0]
+    const glasses = [
+      ['ink', theme.ink],
+      ['white', white],
+    ].map(([label, backdrop]) => {
+      const p = linearRgb(theme.panel)
+      const k = linearRgb(backdrop as Triplet)
+      const mixed = p.map((c, i) => alpha * c + (1 - alpha) * k[i]) as Rgb
+      return [label as string, luminanceOf(mixed)] as const
+    })
+
+    it.each(glasses)('ink text holds 4.5:1 over glass on %s', (_label, glassLum) => {
+      const [hi, lo] = [luminance(theme.ink), glassLum].sort((x, y) => y - x)
+      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(4.5)
+    })
+
+    it.each(glasses)('muted-strong text holds 4.5:1 over glass on %s', (_label, glassLum) => {
+      const [hi, lo] = [luminance(theme['muted-strong']), glassLum].sort((x, y) => y - x)
+      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(4.5)
+    })
+
+    // WCAG 1.4.11: trail red is a graphic here (the current-page underline).
+    it.each(glasses)('trail graphic holds 3:1 over glass on %s', (_label, glassLum) => {
+      const [hi, lo] = [luminance(theme.trail), glassLum].sort((x, y) => y - x)
+      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(3)
+    })
   })
 })
