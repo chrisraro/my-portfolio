@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
-// The top bar is sticky: about 101px tall below md (two rows), 65px from md.
+// The legend is sticky, floating 12px below the top, 56px tall at every width.
 // Without scroll padding, a focused element or an anchor target scrolled into
 // view lands under it (WCAG 2.4.11, the a11y gate's P1-1).
 const css = readFileSync('app/globals.css', 'utf8')
@@ -9,12 +9,10 @@ const rem = (v: string) => Number(v.replace('rem', '')) * 16
 
 describe('sticky header never hides focus or an anchor target', () => {
   it('pads the root scroller by more than the header at both breakpoints', () => {
+    // The legend floats 12px below the top and is 56px tall at every width.
     const base = css.match(/html \{[^}]*scroll-padding-top:\s*([\d.]+rem)/)?.[1]
     expect(base).toBeDefined()
-    expect(rem(base!)).toBeGreaterThanOrEqual(101 + 8)
-    const md = css.match(/@media \(min-width: 768px\) \{\s*html \{\s*scroll-padding-top:\s*([\d.]+rem)/)?.[1]
-    expect(md).toBeDefined()
-    expect(rem(md!)).toBeGreaterThanOrEqual(65 + 8)
+    expect(rem(base!)).toBeGreaterThanOrEqual(12 + 56 + 8)
   })
 
   it('gives anchor sections a scroll margin of their own', () => {
@@ -32,7 +30,7 @@ describe('in-page jumps land on their target', () => {
   })
 
   it('does so before a same-page hash link scrolls, on a hash load and after a route change', () => {
-    const bar = readFileSync('components/top-bar.tsx', 'utf8')
+    const bar = readFileSync('components/site-legend.tsx', 'utf8')
     expect(bar).toContain("classList.add('render-all')")
     expect(bar).toContain("document.addEventListener('click', onClick, true)")
     expect(bar).toMatch(/location\.hash/)

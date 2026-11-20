@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import { Footer } from '@/components/footer'
-import { TopBar } from '@/components/top-bar'
+import { SiteLegend } from '@/components/site-legend'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { FieldLog } from '@/components/sections/field-log'
 import { Hero } from '@/components/sections/hero'
@@ -356,22 +356,21 @@ describe('Lobby Rack type', () => {
   })
 })
 
-describe('Top bar', () => {
-  it('scrolls the nav only below md, padded so the focus ring is not clipped', () => {
-    const source = readFileSync('components/top-bar.tsx', 'utf8')
+describe('Site legend', () => {
+  it('scrolls the nav sideways when it must, padded so the focus ring is not clipped', () => {
+    const source = readFileSync('components/site-legend.tsx', 'utf8')
     const ul = source.match(/<ul className="([^"]*)"/)?.[1] ?? ''
-    expect(ul).toContain('max-md:overflow-x-auto')
-    expect(ul).not.toMatch(/(^|\s)overflow-x-auto/)
-    expect(ul).toMatch(/max-md:p-1\.5/)
+    expect(ul).toContain('overflow-x-auto')
+    expect(ul).toMatch(/(^|\s)p-1\.5/)
   })
 
   it('names the theme toggle neutrally until mount, so hydration cannot leave a wrong label', () => {
-    const source = readFileSync('components/top-bar.tsx', 'utf8')
+    const source = readFileSync('components/site-legend.tsx', 'utf8')
     // The label is gated on mount, like the icon: the server cannot know the theme.
     expect(source).toMatch(/aria-label=\{themeLabel\}/)
     expect(source).toMatch(/const themeLabel = !mounted \? 'Toggle theme'/)
     // The server render (mounted false) is the neutral name.
-    const html = renderToStaticMarkup(<TopBar />)
+    const html = renderToStaticMarkup(<SiteLegend />)
     expect(html).toContain('aria-label="Toggle theme"')
   })
 })

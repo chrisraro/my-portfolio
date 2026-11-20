@@ -91,7 +91,7 @@ app/
   robots.ts, sitemap.ts  sitemap.ts lists the homepage, /projects and every project page
   llms.txt/, llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 components/
-  top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
+  site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
   sections/           One file per homepage section
   ui/                 Primitives: status-badge, board-row, systems-board,
                       board-filter, product-panel, proof-band, chat-widget,

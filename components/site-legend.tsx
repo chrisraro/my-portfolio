@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { Moon, Sun } from 'lucide-react'
-import { availability, heroContent, navigationItems } from '@/lib/data'
+import { heroContent, navigationItems, resumeUrl } from '@/lib/data'
 import { BrandMark } from '@/components/brand-mark'
 
-export function TopBar() {
+export function SiteLegend() {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   // The theme is unknown until mount; render a same-sized placeholder icon
@@ -76,35 +76,15 @@ export function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas">
-      {/*
-        DOM order is visual order at every width (WCAG 2.4.3): mark, nav, then
-        availability and the theme toggle.
-        Below md: the mark has the first row; the nav and the toggle share the
-        second, toggle at its end. 44px targets for touch.
-        md and up: one 64px row, nav after the mark, controls pushed right.
-        Availability shows from lg, where the row has room for it.
-      */}
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto] items-center gap-x-4 px-5 pb-1 pt-2 sm:px-8 md:flex md:h-16 md:gap-x-10 md:py-0">
-        <Link
-          href="/"
-          className="col-span-2 inline-flex min-h-[44px] items-center gap-3 justify-self-start text-ink"
-        >
-          {/* The brand mark: a two-panel brochure, C and R, the flap unfolding. */}
+    <header className="pointer-events-none sticky top-3 z-40 px-3 sm:px-5">
+      <div className="legend-glass pointer-events-auto mx-auto flex h-14 max-w-6xl items-center gap-3 rounded border border-line px-3 sm:gap-6 sm:px-5">
+        <Link href="/" className="inline-flex min-h-[44px] shrink-0 items-center gap-2 text-ink">
           <BrandMark />
-          <span className="font-display text-xl font-bold leading-none tracking-[-0.01em] [font-variation-settings:'wdth'_75]">
-            {heroContent.name}
-          </span>
+          <span className="map-label text-[0.9375rem] text-ink">{heroContent.name}</span>
         </Link>
 
-        <nav aria-label="Primary" className="min-w-0">
-          {/*
-            Below md the row scrolls sideways. A scroll container clips on both
-            axes, so it is padded by 6px all round (the 2px ring at a 3px
-            offset needs 5px), and pulled back by the same so the text still
-            lines up. From md there is room: no scroll container, no clipping.
-          */}
-          <ul className="flex max-md:-mx-3 max-md:-my-1.5 max-md:overflow-x-auto max-md:p-1.5 md:gap-2">
+        <nav aria-label="Primary" className="min-w-0 flex-1">
+          <ul className="flex overflow-x-auto p-1.5 max-sm:-my-1.5 sm:gap-1">
             {navigationItems.map((item) => {
               const href = item.href.startsWith('#') ? `/${item.href}` : item.href
               const current = !item.href.startsWith('#') && pathname.startsWith(item.href)
@@ -113,9 +93,9 @@ export function TopBar() {
                   <Link
                     href={href}
                     aria-current={current ? 'page' : undefined}
-                    className="inline-flex min-h-[44px] items-center whitespace-nowrap px-1.5 font-display text-sm font-semibold text-muted-strong transition-colors duration-[var(--dur-fast)] ease-[var(--ease-sharp)] [font-variation-settings:'wdth'_85] md:px-2 md:text-[0.9375rem] md:[font-variation-settings:'wdth'_100] hover:text-ink aria-[current=page]:text-ink"
+                    className="map-label inline-flex min-h-[44px] items-center whitespace-nowrap px-2 text-muted-strong transition-colors duration-[var(--dur-fast)] ease-[var(--ease-sharp)] hover:text-ink aria-[current=page]:text-trail"
                   >
-                    <span className="link-draw">{item.label}</span>
+                    {item.label}
                   </Link>
                 </li>
               )
@@ -123,22 +103,20 @@ export function TopBar() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-5 md:ml-auto">
-          <p className="edge-code hidden items-center gap-2 text-[0.8125rem] text-muted-strong lg:inline-flex">
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
-            {availability}
-          </p>
+        <div className="flex shrink-0 items-center gap-2">
+          <a
+            href={resumeUrl}
+            className="map-label hidden min-h-[44px] items-center px-2 text-muted-strong hover:text-ink md:inline-flex"
+          >
+            Résumé
+          </a>
           <button
             type="button"
             onClick={() => switchTheme(isDark ? 'light' : 'dark')}
             aria-label={themeLabel}
-            className="press inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong text-muted-strong hover:border-accent hover:text-accent"
+            className="press inline-flex h-11 w-11 items-center justify-center rounded-sm border border-line-strong text-muted-strong hover:border-ink hover:text-ink"
           >
-            {mounted ? (
-              isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
-            ) : (
-              <span className="h-4 w-4" />
-            )}
+            {mounted ? isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" /> : <span className="h-4 w-4" />}
           </button>
         </div>
       </div>

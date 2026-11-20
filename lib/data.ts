@@ -448,9 +448,10 @@ export const contactInfo: ContactInfo = {
 
 // Labels a client understands. `#` targets are homepage sections; `/` targets
 // are pages. tests/design/nav-anchors.test.ts checks both kinds resolve.
+// Services, About and Hire join in S4, when their pages exist
+// (tests/design/nav-anchors.test.ts checks every route has a page).
 export const navigationItems: NavigationItem[] = [
-  { label: 'Work', href: '#work' },
-  { label: 'Projects', href: '/projects' },
+  { label: 'Work', href: '/projects' },
   { label: 'Experience', href: '#changelog' },
   { label: 'Contact', href: '#contact' },
 ]

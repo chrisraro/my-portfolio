@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import { BRAND_C, BRAND_FLAP, BRAND_FRONT, BRAND_R, BrandMark } from '@/components/brand-mark'
-import { TopBar } from '@/components/top-bar'
+import { SiteLegend } from '@/components/site-legend'
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
@@ -37,9 +37,9 @@ describe('BrandMark', () => {
   })
 })
 
-describe('Top bar mark', () => {
+describe('Legend mark', () => {
   it('renders the brand mark inside the home link, named by the visible name', () => {
-    const bar = renderToStaticMarkup(<TopBar />)
+    const bar = renderToStaticMarkup(<SiteLegend />)
     const link = bar.match(/<a[^>]*href="\/"[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? ''
     expect(link).toContain('<svg')
     expect(link).toContain('aria-hidden="true"')

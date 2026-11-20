@@ -77,14 +77,9 @@
 		scroll-behavior: smooth;
 		scrollbar-color: oklch(var(--line-strong)) oklch(var(--bg));
 		accent-color: oklch(var(--accent));
-		/* The sticky top bar (components/top-bar.tsx) is two rows, about 101px,
-		 * below md: focus and anchor targets scroll in below it (WCAG 2.4.11). */
-		scroll-padding-top: 7rem;
-	}
-	@media (min-width: 768px) {
-		html {
-			scroll-padding-top: 4.75rem;
-		}
+		/* The legend (components/site-legend.tsx) floats 12px down and is 56px
+		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
+		scroll-padding-top: 5rem;
 	}
 	/* An anchor section (#work, #changelog, #contact) keeps a little air above
 	 * its eyebrow once it lands under the bar. */
@@ -115,7 +110,7 @@
 		text-wrap: balance;
 	}
 	a { text-underline-offset: 0.2em; }
-	/* A theme switch changes colours at once (components/top-bar.tsx). */
+	/* A theme switch changes colours at once (components/site-legend.tsx). */
 	.theme-switching *,
 	.theme-switching *::before,
 	.theme-switching *::after {
@@ -134,6 +129,18 @@
 }
 
 @layer components {
+	/* The legend card (spec §3): the one frosted surface on the site. */
+	.legend-glass {
+		background: oklch(var(--panel) / 0.78);
+		-webkit-backdrop-filter: blur(14px) saturate(1.2);
+		backdrop-filter: blur(14px) saturate(1.2);
+		box-shadow: var(--shadow-overlay);
+	}
+	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+		.legend-glass {
+			background: oklch(var(--panel));
+		}
+	}
 	/* H1: 56px at a 360px viewport rising to 112px. Anybody 800, condensed. */
 	.text-fluid-h1 {
 		font-family: var(--font-display), system-ui, sans-serif;
@@ -436,7 +443,7 @@
 	}
 }
 
-/* For the length of an in-page jump (components/top-bar.tsx) every deferred
+/* For the length of an in-page jump (components/site-legend.tsx) every deferred
  * section renders for real, so the jump is measured against real heights, not
  * the estimates; `auto` then remembers them. */
 .render-all .defer-render,

@@ -4,7 +4,7 @@ import { Archivo } from 'next/font/google'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
 import { ThemeProvider } from '@/components/theme-provider'
-import { TopBar } from '@/components/top-bar'
+import { SiteLegend } from '@/components/site-legend'
 import { Footer } from '@/components/footer'
 import { ToastProvider } from '@/components/ui/toaster'
 import { ChatWidget } from '@/components/ui/chat-widget'
@@ -45,7 +45,7 @@ export default function RootLayout({
               Skip to content
             </a>
             <div className="min-h-screen bg-canvas text-ink">
-              <TopBar />
+              <SiteLegend />
               <main id="main">{children}</main>
               <Footer />
               <ChatWidget />

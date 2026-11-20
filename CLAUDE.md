@@ -64,7 +64,7 @@ app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page (the whole rack, filtered by ?band=)
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
-components/          top-bar.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
+components/          site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
 components/sections/ Homepage sections, in page order: hero, products, rack, case-studies, field-log, route-line, stack, contact-console
 components/ui/       Primitives: status-badge, section-heading, proof-band, rack-tier, rack-card, project-shot, live-preview, no-preview-tag, board-filter, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body, arrow-link-text — /projects/[slug]'s parts
@@ -234,7 +234,7 @@ Every project gets a slot in the rack. What fills it:
 
 Components are server components by default. Only these eight are client
 components (`grep -rl "^'use client'" app components`):
-`components/top-bar.tsx` (theme toggle, in-page jump fix),
+`components/site-legend.tsx` (theme toggle, in-page jump fix),
 `components/theme-provider.tsx`,
 `components/sections/contact-console.tsx` (form),
 `components/ui/chat-widget.tsx`,
