@@ -3,6 +3,7 @@ import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
+import { FieldMap } from '@/components/sections/field-map'
 import { Fork } from '@/components/sections/fork'
 import { OwnProducts } from '@/components/sections/own-products'
 import { Trailhead } from '@/components/sections/trailhead'
@@ -10,6 +11,9 @@ import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { heroContent, navigationItems, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
 import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
+import { MAP_VIEWBOX, project as toMap } from '@/lib/geo'
+import { phOutline } from '@/lib/ph-outline'
+import { placeGroups, unplacedProjects } from '@/lib/places'
 import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable } from '@/lib/project-page'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
@@ -23,6 +27,7 @@ const SECTIONS: [string, ReactElement][] = [
   ['Trailhead', <Trailhead key="trailhead" />],
   ['ElevationStrip', <ElevationStrip key="elevation" />],
   ['Fork', <Fork key="fork" />],
+  ['FieldMap', <FieldMap key="field-map" />],
   ['OwnProducts', <OwnProducts key="own-products" />],
 ]
 
@@ -135,6 +140,63 @@ describe('Fork', () => {
     expect(cards[1]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.team.cta}`))
     expect(cards[1]).toContain(`href="${resumeUrl}"`)
     expect(cards[1]).toContain('(PDF, opens in a new tab)')
+  })
+})
+
+describe('FieldMap', () => {
+  const html = renderToStaticMarkup(<FieldMap />)
+  const svg = html.slice(html.indexOf('<svg'), html.indexOf('</svg>'))
+  const list = html.slice(html.indexOf('</svg>'))
+  const groups = placeGroups(projects)
+  const { fieldMap } = sectionContent
+
+  it('is the #work section with its heading from data', () => {
+    expect(html).toMatch(/^<section id="work" aria-labelledby="work-title"/)
+    expect(html).toContain(`>${fieldMap.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="work-title"[^>]*>${escape(fieldMap.title)}</h2>`))
+  })
+
+  it('draws the Philippines outline in the projection the pins use', () => {
+    expect(svg).toContain(`viewBox="${MAP_VIEWBOX}"`)
+    expect(svg).toContain(`d="${phOutline.slice(0, 60)}`)
+  })
+
+  it('pins every place as a real link to its first project: a ring for a region, a dot for a city', () => {
+    for (const g of groups) {
+      const pin = svg.match(new RegExp(`<a href="/projects/${g.projects[0].slug}" tabindex="-1" aria-hidden="true" class="map-pin">([\\s\\S]*?)</a>`))?.[1]
+      expect(pin, g.name).toBeDefined()
+      const { x, y } = toMap(g.lat, g.lng)
+      expect(pin, g.name).toContain(`cx="${x}" cy="${y}"`)
+      expect(pin, g.name).toContain(`class="${g.precision === 'region' ? 'map-ring' : 'map-dot'} `)
+      expect(pin, g.name).toContain(`>${g.name}</text>`)
+    }
+    expect(svg.match(/<a /g)).toHaveLength(groups.length)
+  })
+
+  it('lists each place with its projects as map-label links, the way in for keyboard and screen readers', () => {
+    for (const g of groups) {
+      expect(list).toContain(`>${g.name}</span>`)
+      for (const p of g.projects) {
+        expect(list, p.slug).toContain(`href="/projects/${p.slug}"`)
+        expect(list, p.slug).toContain(`<span class="link-draw">${escape(p.title)}</span>`)
+      }
+    }
+    expect(list.match(/class="map-label inline-flex/g)!.length).toBeGreaterThanOrEqual(projects.length)
+  })
+
+  it('never pins a project without a verified place: it is listed under No fixed point', () => {
+    const unplaced = unplacedProjects(projects)
+    expect(unplaced.length).toBeGreaterThan(0)
+    expect(list).toContain(`>${fieldMap.unplacedHeading}</h3>`)
+    for (const p of unplaced) {
+      expect(svg, p.slug).not.toContain(`/projects/${p.slug}"`)
+      expect(list, p.slug).toContain(`href="/projects/${p.slug}"`)
+    }
+  })
+
+  it('links every project from the homepage, and leads on to /projects', () => {
+    for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+    expect(html).toContain('href="/projects"')
   })
 })
 

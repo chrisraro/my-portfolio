@@ -72,8 +72,8 @@ describe('first layout', () => {
     expect(css).toMatch(/@supports \(overflow-clip-margin: 1px\) \{\s*\.defer-render-lift \{[^}]*overflow-clip-margin/)
   })
 
-  it('never defers the first viewport, the work or the contact form', () => {
-    for (const f of ['trailhead', 'elevation-strip', 'own-products', 'rack', 'contact-console']) {
+  it('never defers the first viewport, the field map (#work) or the contact form', () => {
+    for (const f of ['trailhead', 'elevation-strip', 'field-map', 'own-products', 'contact-console']) {
       const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
       expect(src, f).not.toMatch(/<section[^>]*defer-render/)
     }

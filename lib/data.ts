@@ -499,9 +499,14 @@ const gatewaySentence = `${paymentGateways.slice(0, -1).join(', ')} and ${paymen
 // Headings and copy for each homepage section. `galleryContent` waits for /about (S4).
 export const sectionContent = {
   ownProducts: { eyebrow: 'Own products', title: 'Products of my own' },
-  systems: {
-    eyebrow: 'Systems',
-    title: 'Custom systems and client work',
+  fieldMap: {
+    eyebrow: 'Field map',
+    title: 'Where the work runs',
+    caption: 'A pin sits only where a project’s own page names the place.',
+    placesHeading: 'Places',
+    regionNote: 'Pinned at the region’s centre',
+    unplacedHeading: 'No fixed point',
+    unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
     cta: 'Browse every project',
   },
   caseStudies: {

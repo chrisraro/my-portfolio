@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from 'vitest'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { OwnProducts } from '@/components/sections/own-products'
-import { Rack } from '@/components/sections/rack'
 import { BoardFilter } from '@/components/ui/board-filter'
 import { heroContent, projects, projectsPageContent } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
@@ -30,21 +29,19 @@ function codes(html: string, splitter: RegExp): Map<string, string> {
 const renderProjects = (band?: string) => renderToStaticMarkup(ProjectsPage({ searchParams: band ? { band } : {} }))
 
 describe('edge codes', () => {
-  const home = new Map(
-    Array.from(codes(renderToStaticMarkup(<OwnProducts />), /<article/)).concat(
-      Array.from(codes(renderToStaticMarkup(<Rack />), /<li class="rack-slot/)),
-    ),
-  )
+  // On the homepage only the own products carry a catalog number (the field
+  // map lists places, not numbers); each matches /projects.
+  const home = codes(renderToStaticMarkup(<OwnProducts />), /<article/)
   const index = codes(renderProjects(), /<li class="rack-slot/)
 
-  it('numbers every project once on each page', () => {
-    expect(home.size).toBe(projects.length)
+  it('numbers every project once on /projects, and each own product once on /', () => {
+    expect(home.size).toBe(projects.filter((p) => p.band === 'Products').length)
     expect(index.size).toBe(projects.length)
     expect(new Set(index.values()).size).toBe(projects.length)
   })
 
-  it('gives a project the same code on / and /projects', () => {
-    for (const p of projects) expect(home.get(p.slug), p.slug).toBe(index.get(p.slug))
+  it('gives an own product the same code on / and /projects', () => {
+    for (const [slug, code] of Array.from(home)) expect(code, slug).toBe(index.get(slug))
   })
 
   it('keeps the code when a filter narrows /projects', () => {
