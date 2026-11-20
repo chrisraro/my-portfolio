@@ -84,6 +84,9 @@
 		scroll-behavior: smooth;
 		scrollbar-color: oklch(var(--line-strong)) oklch(var(--bg));
 		accent-color: oklch(var(--ink));
+		/* A page shorter than the window keeps the scrollbar's room, so the
+		 * legend and the grid sit where they sit on every other route. */
+		scrollbar-gutter: stable;
 		/* The legend (components/site-legend.tsx) floats 12px down and is 56px
 		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
 		scroll-padding-top: 5rem;

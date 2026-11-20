@@ -172,3 +172,15 @@ describe('one display voice (F5)', () => {
     expect(rule('.text-page-h1')).toMatch(/font-stretch:\s*75%/)
   })
 })
+
+describe('every route sits on the same grid and fills the window (F10)', () => {
+  it('reserves the scrollbar gutter, so a short page does not shift sideways', () => {
+    expect(rule('html')).toMatch(/scrollbar-gutter:\s*stable/)
+  })
+
+  it('lets main grow, so the footer meets the window’s bottom', () => {
+    const layout = readFileSync('app/layout.tsx', 'utf8')
+    expect(layout).toContain('<div className="flex min-h-screen flex-col bg-canvas text-ink">')
+    expect(layout).toContain('<main id="main" className="flex-1">')
+  })
+})

@@ -53,9 +53,10 @@ export default function RootLayout({
             >
               Skip to content
             </a>
-            <div className="min-h-screen bg-canvas text-ink">
+            {/* main grows, so on a page shorter than the window (the 404) the footer meets its bottom. */}
+            <div className="flex min-h-screen flex-col bg-canvas text-ink">
               <SiteLegend />
-              <main id="main">{children}</main>
+              <main id="main" className="flex-1">{children}</main>
               <Footer />
               <ChatWidget />
             </div>
