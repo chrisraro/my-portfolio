@@ -90,9 +90,16 @@ describe('/services/[slug]', () => {
       expect(html).toContain(`>${escape(c.caption)}</caption>`)
       expect(html.match(/<th scope="col"/g)).toHaveLength(3)
       expect(html.match(/<th scope="row"/g)).toHaveLength(c.rows.length)
-      for (const row of c.rows) {
-        for (const id of row.projectIds) expect(html).toContain(escape(projects.find((p) => p.id === id)!.title))
-      }
+      // Read inside the table, row by row: the project titles also appear as proof plates elsewhere on the page.
+      const table = html.match(/<table[\s\S]*?<\/table>/)![0]
+      const tbody = table.slice(table.indexOf('<tbody'))
+      const trs = tbody.match(/<tr[\s>][\s\S]*?<\/tr>/g)!
+      expect(trs).toHaveLength(c.rows.length)
+      c.rows.forEach((row, i) => {
+        expect(trs[i]).toContain(escape(row.need))
+        expect(trs[i]).toContain(escape(row.choice))
+        for (const id of row.projectIds) expect(trs[i]).toContain(escape(projects.find((p) => p.id === id)!.title))
+      })
     }
   })
 })
