@@ -70,8 +70,8 @@ describe('Trailhead', () => {
     expect(secondary).toBeGreaterThan(primary)
   })
 
-  it('sets the portrait on a survey plate inside the lightbox, named once', () => {
-    expect(html).toMatch(new RegExp(`<button type="button" aria-label="View larger image: ${heroContent.portraitAlt}" class="[^"]*survey-plate`))
+  it('sets the portrait on a survey plate around the lightbox, named once', () => {
+    expect(html).toMatch(new RegExp(`<div class="survey-plate"><button type="button" aria-label="View larger image: ${heroContent.portraitAlt}" class="[^"]*w-full`))
     expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
   })
 
@@ -297,6 +297,15 @@ describe('TrailJournals', () => {
   it('lifts like every catalog card and rises by transform only', () => {
     expect(html.match(/class="lift-card /g)).toHaveLength(FLAGSHIP_SLUGS.length)
     expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+  })
+
+  it('names each cover by its h3 and its cue, not by every line on it', () => {
+    for (const slug of FLAGSHIP_SLUGS) {
+      const project = projects.find((p) => p.slug === slug)!
+      expect(html, slug).toMatch(new RegExp(`<h3 id="journal-${slug}" class="[^"]*">${escape(project.title)}</h3>`))
+      expect(html, slug).toContain(`aria-labelledby="journal-${slug} journal-${slug}-cue"`)
+      expect(html, slug).toMatch(new RegExp(`<span id="journal-${slug}-cue" class="button-label`))
+    }
   })
 })
 

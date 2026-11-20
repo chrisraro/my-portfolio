@@ -5,6 +5,7 @@ import { ContourField } from '@/components/map/contour-field'
 import { TrailPath } from '@/components/map/trail-path'
 import { SECTION } from '@/components/ui/grid'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
+import { SurveyPlate } from '@/components/ui/survey-plate'
 import { trailheadContours, trailheadTrail } from '@/lib/contours'
 import { ctaLabels, heroContent } from '@/lib/data'
 import { cn } from '@/lib/utils'
@@ -55,20 +56,22 @@ export function Trailhead() {
 
         <div className="w-full max-w-[22rem] md:justify-self-end md:pt-2">
           {/* alt="" on the image: the lightbox button around it carries the name. */}
-          <ImageLightbox src={PORTRAIT} alt={heroContent.portraitAlt} className="survey-plate w-full">
-            <span className="relative block aspect-[4/5] overflow-hidden">
-              {/* priority on its own line: tests/design/performance.test.ts finds it there. */}
-              <Image
-                src={PORTRAIT}
-                alt=""
-                fill
-                priority
-                sizes="336px"
-                quality={85}
-                className="object-cover"
-              />
-            </span>
-          </ImageLightbox>
+          <SurveyPlate>
+            <ImageLightbox src={PORTRAIT} alt={heroContent.portraitAlt} className="w-full">
+              <span className="relative block aspect-[4/5] overflow-hidden">
+                {/* priority on its own line: tests/design/performance.test.ts finds it there. */}
+                <Image
+                  src={PORTRAIT}
+                  alt=""
+                  fill
+                  priority
+                  sizes="336px"
+                  quality={85}
+                  className="object-cover"
+                />
+              </span>
+            </ImageLightbox>
+          </SurveyPlate>
         </div>
       </div>
     </section>

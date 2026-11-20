@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
-import { SECTION } from '@/components/ui/grid'
 import { LivePreview } from '@/components/ui/live-preview'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
 import { ProjectShot } from '@/components/ui/project-shot'
+import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
+import { SurveyPlate } from '@/components/ui/survey-plate'
+import { TrailLink } from '@/components/ui/trail-link'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { ctaLabels, projects, sectionContent } from '@/lib/data'
 import { canLinkLive, fullShotFor, hasFullShot, previewFor, projectHref } from '@/lib/project-page'
@@ -14,10 +14,10 @@ import type { Project } from '@/types'
 
 /**
  * One own product as a survey plate: a still of the real site (or the printed
- * reason there is none) in the plate frame, then its catalog number (the one
- * /projects shows), name, summary, status, the detail and the ways in. The
- * screenshot links to the page "Read more" names, so it stays out of the tab
- * order.
+ * reason there is none, in the same 3:4 frame) on the plate, then its catalog
+ * number (the one /projects shows), name, summary, status, the detail and the
+ * ways in. The screenshot links to the page "Read more" names, so it stays out
+ * of the tab order.
  */
 function Plate({ project, code }: { project: Project; code: string }) {
   const shot = fullShotFor(project)
@@ -28,7 +28,7 @@ function Plate({ project, code }: { project: Project; code: string }) {
 
   return (
     <article aria-labelledby={titleId} className="flex flex-col">
-      <div className="survey-plate">
+      <SurveyPlate>
         {shot ? (
           <ProjectShot
             src={shot}
@@ -42,7 +42,7 @@ function Plate({ project, code }: { project: Project; code: string }) {
         ) : (
           <NoPreviewTag project={project} className="aspect-[3/4] w-full" />
         )}
-      </div>
+      </SurveyPlate>
       <p aria-hidden="true" className="map-label tabular mt-4 text-muted">{code}</p>
       <h3 id={titleId} className="text-title mt-2 text-ink">{project.title}</h3>
       <p className="mt-2 text-muted-strong">{project.summary}</p>
@@ -50,18 +50,8 @@ function Plate({ project, code }: { project: Project; code: string }) {
       <p className="mt-4 max-w-[60ch] leading-relaxed text-muted-strong">{project.description}</p>
       <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
         {preview && <LivePreview {...preview} />}
-        <Link href={projectHref(project)} className="button-label inline-flex min-h-[44px] items-center gap-2 text-ink">
-          <span className="link-draw">{ctaLabels.readMore}</span>
-          <span className="sr-only">{` about ${project.title}`}</span>
-          <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-        </Link>
-        {live && domain && (
-          <a href={live} target="_blank" rel="noopener noreferrer" className="map-label inline-flex min-h-[44px] items-center gap-1.5 text-muted-strong">
-            <span className="link-draw">{domain}</span>
-            <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
-            <span className="sr-only">(opens in a new tab)</span>
-          </a>
-        )}
+        <TrailLink href={projectHref(project)} text={ctaLabels.readMore} srText={` about ${project.title}`} />
+        {live && domain && <TrailLink href={live} text={domain} kind="label" external className="text-muted-strong" />}
       </div>
     </article>
   )

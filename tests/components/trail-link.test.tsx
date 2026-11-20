@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { TrailLink, TrailLinkText, trailLinkClass } from '@/components/ui/trail-link'
@@ -54,5 +55,15 @@ describe('TrailLink', () => {
     expect(cue).toMatch(/^<span class="button-label inline-flex/)
     expect(cue).toContain('<span class="link-draw">Read the case study</span><svg')
     expect(cue).not.toContain('<a ')
+  })
+})
+
+describe('the homepage link idiom', () => {
+  it('goes through TrailLink: no hand-rolled link-draw link or ProjectLink left', () => {
+    for (const f of ['field-map', 'own-products', 'trail-journals']) {
+      const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
+      expect(src, f).not.toContain('className="link-draw"')
+      expect(src, f).not.toMatch(/function (ProjectLink|Pin|PlaceGlyph)\b|const LABELS\b/)
+    }
   })
 })

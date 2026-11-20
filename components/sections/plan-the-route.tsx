@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { AlertOctagon, ArrowRight, Loader2 } from 'lucide-react'
 import { SECTION } from '@/components/ui/grid'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { SurveyPlate } from '@/components/ui/survey-plate'
 import { useToast } from '@/components/ui/toaster'
 import { CHAT_OPEN_EVENT } from '@/lib/chat-events'
 import { availability, contactInfo, ctaLabels, resumeUrl, sectionContent } from '@/lib/data'
@@ -117,10 +119,7 @@ export function PlanTheRoute() {
     <section id="contact" aria-labelledby="contact-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <div className="grid gap-10 md:grid-cols-[5fr_7fr] md:gap-12">
         <div className="flex flex-col">
-          <p className="eyebrow mb-3">{sectionContent.contact.eyebrow}</p>
-          <h2 id="contact-title" className="text-section text-ink">
-            {sectionContent.contact.title}
-          </h2>
+          <SectionHeading id="contact-title" eyebrow={sectionContent.contact.eyebrow} title={sectionContent.contact.title} className="mb-0" />
           <p className="text-lede mt-5 max-w-[30rem] text-muted-strong">{sectionContent.contact.lede}</p>
           <p className="map-label mt-6 text-muted-strong">{availability}</p>
           <ul className="mt-8 space-y-1">
@@ -150,84 +149,86 @@ export function PlanTheRoute() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="survey-plate space-y-5 p-6 sm:p-8 lg:p-10">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="contact-name" className={LABEL}>
-                Name
-              </label>
-              <input
-                id="contact-name"
-                name="name"
-                type="text"
-                required
-                maxLength={100}
-                autoComplete="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={FIELD}
-                {...fieldProps('name')}
-              />
+        <SurveyPlate className="p-6 sm:p-8 lg:p-10">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="contact-name" className={LABEL}>
+                  Name
+                </label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  required
+                  maxLength={100}
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={FIELD}
+                  {...fieldProps('name')}
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-email" className={LABEL}>
+                  Email
+                </label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  maxLength={254}
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={FIELD}
+                  {...fieldProps('email')}
+                />
+              </div>
             </div>
             <div>
-              <label htmlFor="contact-email" className={LABEL}>
-                Email
+              <label htmlFor="contact-message" className={LABEL}>
+                What are you building?
               </label>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
+              <textarea
+                id="contact-message"
+                name="message"
                 required
-                maxLength={254}
-                autoComplete="email"
-                value={formData.email}
+                maxLength={5000}
+                rows={5}
+                value={formData.message}
                 onChange={handleChange}
                 className={FIELD}
-                {...fieldProps('email')}
+                {...fieldProps('message')}
               />
             </div>
-          </div>
-          <div>
-            <label htmlFor="contact-message" className={LABEL}>
-              What are you building?
-            </label>
-            <textarea
-              id="contact-message"
-              name="message"
-              required
-              maxLength={5000}
-              rows={5}
-              value={formData.message}
-              onChange={handleChange}
-              className={FIELD}
-              {...fieldProps('message')}
-            />
-          </div>
-          {error && (
-            <p id={ERROR_ID} className="flex items-start gap-2 text-sm text-ink">
-              <AlertOctagon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-              {error.message}
-            </p>
-          )}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            aria-describedby={error && !error.field ? ERROR_ID : undefined}
-            className="press button-primary disabled:opacity-60"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
-                Sending
-              </>
-            ) : (
-              <>
-                Send message
-                <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-              </>
+            {error && (
+              <p id={ERROR_ID} className="flex items-start gap-2 text-sm text-ink">
+                <AlertOctagon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                {error.message}
+              </p>
             )}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              aria-describedby={error && !error.field ? ERROR_ID : undefined}
+              className="press button-primary disabled:opacity-60"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
+                  Sending
+                </>
+              ) : (
+                <>
+                  Send message
+                  <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
+                </>
+              )}
+            </button>
+          </form>
+        </SurveyPlate>
       </div>
     </section>
   )

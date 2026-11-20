@@ -18,8 +18,6 @@ interface ProjectShotProps {
    * accessibility tree, so keyboard and screen-reader users meet one link.
    */
   duplicateLink?: boolean
-  /** 3:4 (product, project page) or 9:16 (rack). */
-  ratio?: 'portrait' | 'tall'
   /** next/image sizes hint. */
   sizes?: string
   /**
@@ -42,7 +40,7 @@ interface ProjectShotProps {
 }
 
 /**
- * A still screenshot in a fixed-aspect frame: the top of a project's full-page
+ * A still screenshot in the 3:4 frame every screenshot shares (one scale, spec §3): the top of a project's full-page
  * shot. Nothing scrolls. As a link it takes the catalog's card hover
  * (.lift-card in app/globals.css): on a fine pointer it lifts 2px, its border
  * turns accent and the shot scales to 1.02 inside the clipping frame.
@@ -52,7 +50,6 @@ export function ProjectShot({
   label,
   className,
   href,
-  ratio = 'portrait',
   sizes = '(min-width: 1024px) 480px, 100vw',
   decorative = false,
   duplicateLink = false,
@@ -64,7 +61,7 @@ export function ProjectShot({
     'project-shot',
     linked && 'lift-card',
     'relative block rounded border border-line bg-panel',
-    ratio === 'tall' ? 'aspect-[9/16]' : 'aspect-[3/4]',
+    'aspect-[3/4]',
     className,
   )
 
