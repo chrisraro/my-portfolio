@@ -23,6 +23,9 @@ const PORTRAIT = heroContent.portrait
  * contours drift toward the half the pointer rests on (.trailhead-contours).
  * Under reduced motion everything is at rest from the first paint. Below 768px the plate stacks
  * under the buttons and the trail is not drawn: it would cross the text.
+ * From 1024px the copy takes every column but the 22rem plate, so the
+ * headline (13cqi of it) sets near 88px at 1440; the plate's top sits near
+ * y 150 under the legend while the copy keeps its line.
  */
 export function Trailhead() {
   const lines = heroContent.headlineLines
@@ -31,8 +34,8 @@ export function Trailhead() {
     <section id="top" aria-labelledby="trailhead-title" className="trailhead relative overflow-x-clip">
       <ContourField paths={trailheadContours} viewBox={trailheadTrail.viewBox} className="trailhead-contours" />
       <TrailPath mode="load" d={trailheadTrail.d} viewBox={trailheadTrail.viewBox} className="hidden md:block" />
-      <div className={cn(SECTION, 'relative grid gap-10 pb-16 pt-28 md:min-h-[44rem] md:grid-cols-[7fr_5fr] md:items-start md:gap-12 md:pb-20 md:pt-36')}>
-        <div className="trailhead-copy min-w-0">
+      <div className={cn(SECTION, 'relative grid gap-10 pb-16 pt-28 md:min-h-[44rem] md:grid-cols-[7fr_5fr] md:items-start md:gap-12 md:pb-20 md:pt-20 lg:grid-cols-[minmax(0,1fr)_22rem]')}>
+        <div className="trailhead-copy min-w-0 md:pt-16">
           <p className="eyebrow">{heroContent.eyebrow}</p>
           <h1 id="trailhead-title" className="text-display trailhead-title mt-6 text-ink">
             {lines.map((line, i) => (

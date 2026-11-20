@@ -1,6 +1,8 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { trailheadContours } from '@/lib/contours'
+import { parseCssRules } from '@/tests/helpers/css-rules'
 
 // Sprint 6 retires what Portfolio 4.0 left behind (master plan, S6): the
 // transitional amber aliases, the 4.0 utilities and the words that described
@@ -122,5 +124,44 @@ describe('section headings carry their own weight', () => {
   it('SectionHeading takes no eyebrow, and no page passes one', () => {
     expect(readFileSync('components/ui/section-heading.tsx', 'utf8')).not.toMatch(/eyebrow/)
     for (const { f, src } of sources) expect(src, f).not.toMatch(/<SectionHeading[^>]*\beyebrow=/)
+  })
+})
+
+// The finish review's visual findings (.superpowers/sdd/s6-finish-findings.md),
+// held where CSS or source can hold them.
+const rules = parseCssRules(css)
+const rule = (selector: string) => rules.find((r) => r.selector === selector)?.body ?? ''
+
+describe('the first viewport reads at the contract’s scale (F1, F2, F21)', () => {
+  const trailhead = readFileSync('components/sections/trailhead.tsx', 'utf8')
+
+  // At 1440 the grid is 1088px wide (max-w-6xl less px-8). The headline is
+  // 13cqi of the copy column; a 7fr/5fr split gave about 79px (contract 80-110px).
+  it('sets the headline near 88px at 1440: the copy column takes all but the 22rem plate from 1024px', () => {
+    expect(trailhead).toContain('lg:grid-cols-[minmax(0,1fr)_22rem]')
+    const cqi = Number(rule('.trailhead-title').match(/clamp\([^,]+,\s*([\d.]+)cqi/)?.[1])
+    const column = 1088 - 48 - 352
+    const size = (cqi / 100) * column
+    expect(size).toBeGreaterThanOrEqual(84)
+    expect(size).toBeLessThanOrEqual(96)
+  })
+
+  // The sticky legend takes about 65px; the plate's top sat at about 217.
+  it('lifts the portrait plate to about y 150 and keeps the copy where it was', () => {
+    expect(trailhead).toMatch(/md:gap-12 md:pb-20 md:pt-20 /)
+    expect(trailhead).toMatch(/className="trailhead-copy min-w-0 md:pt-16"/)
+    expect(trailhead).not.toContain('md:pt-36')
+  })
+
+  it('draws contours under the left column too, not only around the plate', () => {
+    const minX = (d: string) => {
+      const n = (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number)
+      return Math.min(...n.filter((_, i) => i % 2 === 0))
+    }
+    expect(trailheadContours.filter((d) => minX(d) < 480).length).toBeGreaterThanOrEqual(4)
+  })
+
+  it('balances the eyebrow, so no word is left alone on a line', () => {
+    expect(rule('.eyebrow')).toMatch(/text-wrap:\s*balance/)
   })
 })

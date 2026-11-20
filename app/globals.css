@@ -183,6 +183,8 @@
 		letter-spacing: 0.14em;
 		font-size: 0.8125rem;
 		color: oklch(var(--muted-strong));
+		/* A wrapped eyebrow splits evenly, never leaving one word alone. */
+		text-wrap: balance;
 	}
 	/* Display: condensed uppercase headlines (trailhead, section titles). */
 	.text-display {

@@ -9,6 +9,15 @@ export const trailheadContours: string[] = [
   'M640 900 C800 760 940 720 1120 690 S1380 620 1440 610',
   'M1080 620 C1160 560 1300 560 1360 640',
   'M1100 660 C1170 610 1290 610 1340 680',
+  // Under the copy column (S6 finish F2): a spur falling out of the top-left
+  // corner, and the lower slope running on under the buttons, so the headline
+  // reads over contours too.
+  'M0 120 C80 110 150 60 180 0',
+  'M0 210 C120 200 230 120 290 0',
+  'M0 300 C160 290 300 190 400 0',
+  'M0 400 C200 380 380 260 520 0',
+  'M0 560 C180 540 360 600 520 700 S700 860 740 900',
+  'M0 650 C160 640 320 690 460 780 S560 880 580 900',
 ]
 
 // The red trail leaving the trailhead plate toward the first waypoints.
