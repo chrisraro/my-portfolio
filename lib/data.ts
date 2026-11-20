@@ -498,7 +498,7 @@ const gatewaySentence = `${paymentGateways.slice(0, -1).join(', ')} and ${paymen
 
 // Headings and copy for each homepage section. `galleryContent` waits for /about (S4).
 export const sectionContent = {
-  work: { eyebrow: 'Products', title: 'Products of my own' },
+  ownProducts: { eyebrow: 'Own products', title: 'Products of my own' },
   systems: {
     eyebrow: 'Systems',
     title: 'Custom systems and client work',

@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { CaseStudies } from '@/components/sections/case-studies'
-import { Products } from '@/components/sections/products'
+import { OwnProducts } from '@/components/sections/own-products'
 import { Rack } from '@/components/sections/rack'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { groupForHomepage } from '@/lib/board'
@@ -10,72 +10,15 @@ import {
   projects,
   sectionContent,
 } from '@/lib/data'
-import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
+import { fullShotFor } from '@/lib/project-page'
 import type { Project } from '@/types'
 
 // The Portfolio 4.0 homepage sections, retired one per task in S2
 // (docs/superpowers/plans/2026-11-20-portfolio-v5-s2.md). The new sections are
 // tested in tests/components/homepage.test.tsx.
 
-const products = projects.filter((p) => p.band === 'Products')
 const racked = projects.filter((p) => p.band !== 'Products')
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
-
-describe('Products', () => {
-  const html = renderToStaticMarkup(<Products />)
-  const spreads = html.match(/<article[\s\S]*?<\/article>/g) ?? []
-
-  it('takes its heading from lib/data.ts', () => {
-    expect(html).toContain(`>${sectionContent.work.eyebrow}<`)
-    expect(html).toMatch(new RegExp(`<h2 id="work-title"[^>]*>${sectionContent.work.title}<`))
-  })
-
-  it('opens one spread per product, in order', () => {
-    expect(spreads).toHaveLength(products.length)
-    products.forEach((p, i) => expect(spreads[i]).toContain(`>${p.title}<`))
-  })
-
-  it('leads each spread with name, summary and status, before the detail and the preview', () => {
-    products.forEach((project, i) => {
-      const spread = spreads[i]
-      const at = (needle: string) => spread.indexOf(needle)
-      const title = at(`>${project.title}<`)
-      expect(title).toBeGreaterThan(-1)
-      expect(at(`>${escape(project.summary)}<`)).toBeGreaterThan(title)
-      expect(at('data-status=')).toBeGreaterThan(at(`>${escape(project.summary)}<`))
-      expect(at(escape(project.description.slice(0, 40)))).toBeGreaterThan(at('data-status='))
-    })
-  })
-
-  it('links each product to its page, and to the live site a visitor can open', () => {
-    products.forEach((project, i) => {
-      expect(spreads[i]).toContain(`href="/projects/${project.slug}"`)
-      if (canLinkLive(project) && project.links.live) expect(spreads[i]).toContain(`href="${project.links.live}"`)
-    })
-  })
-
-  it('shows the real site in a still screenshot, or says honestly why there is no picture', () => {
-    products.forEach((project, i) => {
-      if (fullShotFor(project)) {
-        expect(spreads[i]).toContain('project-shot__frame')
-        expect(spreads[i]).not.toMatch(/scroll-preview|animation-timeline/)
-        // "Read more" is the named link to the same page: the screenshot is not a second tab stop.
-        expect(spreads[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="project-shot lift-card /)
-      } else {
-        expect(spreads[i]).not.toContain('project-shot__frame')
-        expect(spreads[i]).toContain(escape(noPreviewCopy(project)))
-      }
-    })
-  })
-
-  it('offers a live preview on every product a visitor can open: live where it frames, a capture elsewhere', () => {
-    products.forEach((project, i) => {
-      expect(spreads[i].includes('aria-haspopup="dialog"'), project.slug).toBe(canLinkLive(project))
-      if (!canLinkLive(project)) return
-      expect(spreads[i], project.slug).toContain(`data-preview="${isEmbeddable(project) ? 'live' : 'capture'}"`)
-    })
-  })
-})
 
 describe('Rack', () => {
   const html = renderToStaticMarkup(<Rack />)
@@ -147,8 +90,8 @@ describe('Rack', () => {
 })
 
 describe('every project is reachable from the homepage', () => {
-  it('links each project page from Products or the rack', () => {
-    const html = renderToStaticMarkup(<Products />) + renderToStaticMarkup(<Rack />)
+  it('links each project page from the own products or the rack', () => {
+    const html = renderToStaticMarkup(<OwnProducts />) + renderToStaticMarkup(<Rack />)
     for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
   })
 })

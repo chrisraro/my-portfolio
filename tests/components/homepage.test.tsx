@@ -4,9 +4,13 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { Fork } from '@/components/sections/fork'
+import { OwnProducts } from '@/components/sections/own-products'
 import { Trailhead } from '@/components/sections/trailhead'
-import { heroContent, navigationItems, paymentGateways, resumeUrl, sectionContent } from '@/lib/data'
+import { noPreviewCopy } from '@/components/ui/no-preview-tag'
+import { catalogOrder, projectCode } from '@/lib/board'
+import { heroContent, navigationItems, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
 import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
+import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable } from '@/lib/project-page'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
 // The Isarog Trail Map homepage (spec §5): one describe per section, in page
@@ -19,6 +23,7 @@ const SECTIONS: [string, ReactElement][] = [
   ['Trailhead', <Trailhead key="trailhead" />],
   ['ElevationStrip', <ElevationStrip key="elevation" />],
   ['Fork', <Fork key="fork" />],
+  ['OwnProducts', <OwnProducts key="own-products" />],
 ]
 
 describe('Trailhead', () => {
@@ -130,6 +135,65 @@ describe('Fork', () => {
     expect(cards[1]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.team.cta}`))
     expect(cards[1]).toContain(`href="${resumeUrl}"`)
     expect(cards[1]).toContain('(PDF, opens in a new tab)')
+  })
+})
+
+describe('OwnProducts', () => {
+  const html = renderToStaticMarkup(<OwnProducts />)
+  const plates = html.match(/<article[\s\S]*?<\/article>/g) ?? []
+  const order = catalogOrder(projects, hasFullShot)
+  const own = order.filter((p) => p.band === 'Products')
+
+  it('is the #products section with its heading from data', () => {
+    expect(html).toMatch(/^<section id="products" aria-labelledby="products-title"/)
+    expect(html).toContain(`>${sectionContent.ownProducts.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="products-title"[^>]*>${escape(sectionContent.ownProducts.title)}</h2>`))
+  })
+
+  it('sets one survey plate per own product, in catalog order', () => {
+    expect(plates).toHaveLength(own.length)
+    own.forEach((p, i) => {
+      expect(plates[i], p.slug).toContain(`>${p.title}</h3>`)
+      expect(plates[i], p.slug).toContain('class="survey-plate"')
+    })
+  })
+
+  it('carries each product’s catalog number, the one /projects shows', () => {
+    own.forEach((p, i) => expect(plates[i], p.slug).toContain(`>${projectCode(p, order)}</p>`))
+  })
+
+  it('names, summarises and badges each product before its detail', () => {
+    own.forEach((p, i) => {
+      const at = (needle: string) => plates[i].indexOf(needle)
+      expect(at(`>${escape(p.summary)}</p>`)).toBeGreaterThan(at(`>${p.title}</h3>`))
+      expect(at('data-status=')).toBeGreaterThan(at(`>${escape(p.summary)}</p>`))
+      expect(at(escape(p.description.slice(0, 40)))).toBeGreaterThan(at('data-status='))
+    })
+  })
+
+  it('links each product to its page, and to the live site a visitor can open', () => {
+    own.forEach((p, i) => {
+      expect(plates[i]).toContain(`href="/projects/${p.slug}"`)
+      if (canLinkLive(p) && p.links.live) expect(plates[i]).toContain(`href="${p.links.live}"`)
+    })
+  })
+
+  it('shows the real site as a still with one link to its page, or says why there is no picture', () => {
+    own.forEach((p, i) => {
+      if (fullShotFor(p)) {
+        expect(plates[i]).toContain('project-shot__frame')
+        expect(plates[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="project-shot lift-card /)
+      } else {
+        expect(plates[i]).toContain(escape(noPreviewCopy(p)))
+      }
+    })
+  })
+
+  it('offers a live preview on every product a visitor can open: live where it frames, a capture elsewhere', () => {
+    own.forEach((p, i) => {
+      expect(plates[i].includes('aria-haspopup="dialog"'), p.slug).toBe(canLinkLive(p))
+      if (canLinkLive(p)) expect(plates[i], p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
+    })
   })
 })
 

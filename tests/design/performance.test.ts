@@ -73,7 +73,7 @@ describe('first layout', () => {
   })
 
   it('never defers the first viewport, the work or the contact form', () => {
-    for (const f of ['trailhead', 'elevation-strip', 'products', 'rack', 'contact-console']) {
+    for (const f of ['trailhead', 'elevation-strip', 'own-products', 'rack', 'contact-console']) {
       const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
       expect(src, f).not.toMatch(/<section[^>]*defer-render/)
     }

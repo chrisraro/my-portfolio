@@ -524,19 +524,9 @@
 	.lift-card:hover .lift-card__shot { transform: scale(1.02); }
 }
 
-/* Product spread: the flap tilts on hover, inviting the open. */
-.spread { perspective: 1600px; }
-.flap-tilt {
-	transform-origin: var(--hinge, right) center;
-	transition: transform var(--dur-normal) var(--ease-smooth);
-}
-
 /* The primary's arrow slides right on hover. */
 .arrow-nudge { transition: transform var(--dur-fast) var(--ease-sharp); }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-	.spread:hover .flap-tilt { transform: rotateY(var(--tilt-to, -4deg)); }
-}
 @media (prefers-reduced-motion: no-preference) {
 	:is(a, button):hover .arrow-nudge { transform: translateX(8px); }
 
@@ -756,7 +746,7 @@
 		animation: none !important;
 		transform: none;
 	}
-	.flap-tilt, .arrow-nudge { transition: none; }
+	.arrow-nudge { transition: none; }
 	.live-pulse::after { display: none; }
 	/* State changes without travel: the underline and colours still change. */
 	.press:hover, .press:active { transform: none; }

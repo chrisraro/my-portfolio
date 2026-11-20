@@ -36,15 +36,3 @@ describe('scroll reveals', () => {
     }
   })
 })
-
-// Refinement gate R5 (critique bug 7): the product spreads' scroll-scrubbed
-// flap and leaf left the crease seam out of line while in view. Spreads now
-// sit settled; nothing about them is driven by scroll.
-describe('product spreads', () => {
-  const src = readFileSync('components/sections/products.tsx', 'utf8')
-
-  it('carry no scroll reveal', () => {
-    expect(src).not.toMatch(/reveal-(flap|leaf)|--flap-from|--slide-from/)
-    expect(css).not.toMatch(/\.reveal-(flap|leaf)\b|@keyframes reveal-flap/)
-  })
-})

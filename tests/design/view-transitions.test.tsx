@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { Products } from '@/components/sections/products'
+import { OwnProducts } from '@/components/sections/own-products'
 import { Rack } from '@/components/sections/rack'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
@@ -77,7 +77,7 @@ describe('transition names', () => {
   })
 
   it('names nothing statically on the homepage’s work or /projects (the island names the clicked shot)', () => {
-    for (const html of [renderToStaticMarkup(<><Products /><Rack /></>), renderToStaticMarkup(ProjectsPage({ searchParams: {} }))]) {
+    for (const html of [renderToStaticMarkup(<><OwnProducts /><Rack /></>), renderToStaticMarkup(ProjectsPage({ searchParams: {} }))]) {
       expect(html).not.toMatch(/view-transition-name/)
       // Every screenshot that can be the source of a morph says which project it is.
       const marked = Array.from(html.matchAll(/data-vt-shot="([^"]+)"/g)).map((m) => m[1])

@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
-import { Products } from '@/components/sections/products'
+import { OwnProducts } from '@/components/sections/own-products'
 import { Rack } from '@/components/sections/rack'
 import { BoardFilter } from '@/components/ui/board-filter'
 import { heroContent, projects, projectsPageContent } from '@/lib/data'
@@ -31,7 +31,7 @@ const renderProjects = (band?: string) => renderToStaticMarkup(ProjectsPage({ se
 
 describe('edge codes', () => {
   const home = new Map(
-    Array.from(codes(renderToStaticMarkup(<Products />), /<article/)).concat(
+    Array.from(codes(renderToStaticMarkup(<OwnProducts />), /<article/)).concat(
       Array.from(codes(renderToStaticMarkup(<Rack />), /<li class="rack-slot/)),
     ),
   )
