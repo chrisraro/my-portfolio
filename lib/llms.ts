@@ -1,5 +1,5 @@
 import { FLAGSHIP_SLUGS, getCaseStudy } from '@/lib/case-studies'
-import { availability, caseStudyContent, contactInfo, education, experience, heroContent, projects, services } from '@/lib/data'
+import { aboutPageContent, availability, caseStudyContent, contactInfo, education, experience, heroContent, projects, services } from '@/lib/data'
 import { DISPLAY_STATUS_LABEL, displayStatus } from '@/lib/display-status'
 import { canLinkLive, projectHref } from '@/lib/project-page'
 import { SITE_URL } from '@/lib/site-metadata'
@@ -17,9 +17,9 @@ function header(): string {
   return [
     `# ${heroContent.name}`,
     '',
-    `> ${heroContent.title} · ${heroContent.specialism}`,
+    `> ${aboutPageContent.answer}`,
     '',
-    `${heroContent.lede} Based in ${contactInfo.location}. ${availability}.`,
+    `${heroContent.subheadline} Based in ${contactInfo.location}. ${availability}.`,
   ].join('\n')
 }
 

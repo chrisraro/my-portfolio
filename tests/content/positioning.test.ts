@@ -20,11 +20,7 @@ describe('positioning', () => {
     expect(heroContent.title).toBe('Mid-level full-stack developer')
   })
 
-  it('names the verticals in the lede and keeps the products, with no em-dash', () => {
-    expect(heroContent.lede).toBe(
-      'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
-    )
-    expect(heroContent.lede).not.toContain('—')
+  it('keeps the specialism free of em-dashes', () => {
     expect(heroContent.specialism).not.toContain('—')
   })
 
@@ -86,9 +82,10 @@ describe('site metadata', () => {
   const metadata = buildSiteMetadata('https://example.test')
   const serialized = JSON.stringify(metadata)
 
-  it('titles the site with the current positioning', () => {
-    expect(String(metadata.title)).toContain(heroContent.title)
-    expect(metadata.description).toBe(heroContent.lede)
+  it('titles the site as the spec’s titles table says, described by the subheadline', () => {
+    expect(metadata.title).toBe('Christian Raro · Full-Stack Developer in the Philippines')
+    expect(metadata.title).toBe(heroContent.pageTitle)
+    expect(metadata.description).toBe(heroContent.subheadline)
   })
 
   it('no longer calls Christian a software engineer or frontend developer', () => {

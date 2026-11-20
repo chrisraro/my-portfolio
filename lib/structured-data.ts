@@ -1,4 +1,4 @@
-import { contactInfo, heroContent, services, skills } from '@/lib/data'
+import { aboutPageContent, contactInfo, heroContent, services, skills } from '@/lib/data'
 import { canLinkLive, projectHref } from '@/lib/project-page'
 import { OG_IMAGE, SITE_URL } from '@/lib/site-metadata'
 import type { CaseStudy, Project } from '@/types'
@@ -32,7 +32,7 @@ export function personSchema(): JsonLdNode {
     '@id': PERSON_ID,
     name: heroContent.name,
     jobTitle: heroContent.title,
-    description: heroContent.lede,
+    description: aboutPageContent.answer,
     url: SITE_URL,
     email: contactInfo.email,
     image: absolute(OG_IMAGE.url),

@@ -31,8 +31,8 @@ export function buildSiteMetadata(
   siteUrl: string,
   googleVerification: string | undefined = process.env.GOOGLE_SITE_VERIFICATION,
 ): Metadata {
-  const title = `${heroContent.name} · ${heroContent.title}`
-  const description = heroContent.lede
+  const title = heroContent.pageTitle
+  const description = heroContent.subheadline
 
   return {
     metadataBase: new URL(siteUrl),

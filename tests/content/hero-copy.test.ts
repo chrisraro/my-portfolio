@@ -22,7 +22,7 @@ describe('trailhead copy', () => {
     )
   })
 
-  it('keeps the title that metadata and JSON-LD read until S5', () => {
+  it('keeps the title the JSON-LD reads as jobTitle', () => {
     expect(heroContent.title).toBe('Mid-level full-stack developer')
   })
 

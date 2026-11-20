@@ -9,7 +9,7 @@ const EM_DASH = '—'
 describe('visible copy', () => {
   it('uses no em-dash in the hero, captions, descriptions, the offline reply or titles', () => {
     const surfaces = [
-      heroContent.lede,
+      heroContent.subheadline,
       heroContent.specialism,
       ...galleryImages.map((g) => g.caption),
       ...projects.map((p) => p.description),

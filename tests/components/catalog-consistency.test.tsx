@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from 'vitest'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { OwnProducts } from '@/components/sections/own-products'
-import { heroContent, projects, projectsPageContent } from '@/lib/data'
-import { splitProofPoint } from '@/lib/proof'
+import { projects, projectsPageContent, sectionContent } from '@/lib/data'
+import { elevationFigures } from '@/lib/elevation'
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
@@ -67,9 +67,9 @@ describe('project counts', () => {
   const shipped = projects.filter((p) => p.status !== 'staging').length
   const staging = projects.length - shipped
 
-  it('states the shipped count the hero claims, and the staging one, on /projects', () => {
-    const claim = heroContent.proofPoints.find((p) => p.endsWith('projects shipped'))!
-    expect(Number(splitProofPoint(claim).value)).toBe(shipped)
+  it('states the shipped count the elevation strip claims, and the staging one, on /projects', () => {
+    const figure = elevationFigures().find((f) => f.label === sectionContent.timeline.figures.shipped)!
+    expect(figure.value).toBe(shipped)
     expect(renderProjects()).toContain(`${projects.length} projects · ${shipped} shipped${staging ? `, ${staging} in staging` : ''}`)
   })
 

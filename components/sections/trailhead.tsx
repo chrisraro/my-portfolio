@@ -11,7 +11,7 @@ import { trailheadContours, trailheadTrail } from '@/lib/contours'
 import { ctaLabels, heroContent } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
-const PORTRAIT = '/assets/images/about/profile-hiking.jpg'
+const PORTRAIT = heroContent.portrait
 
 /**
  * The trailhead (spec §3, first viewport): the eyebrow and the condensed

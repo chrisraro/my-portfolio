@@ -1,36 +1,36 @@
 import { describe, expect, it } from 'vitest'
+import { buildPortfolioContext } from '@/lib/chat-context'
 import {
   galleryImages,
   heroContent,
   paymentGateways,
   projects,
 } from '@/lib/data'
+import { elevationFigures } from '@/lib/elevation'
 
-describe('hero proof band', () => {
-  it('states two proof points: products and shipped projects', () => {
-    expect(heroContent.proofPoints).toHaveLength(2)
+// heroContent.proofPoints was retired in S5: the elevation strip's figures,
+// counted from the data, are the proof, and the chat prompt reads them too.
+describe('proof figures', () => {
+  it('count the products and shipped projects the inventory holds', () => {
+    const [products, shipped] = elevationFigures()
+    expect(products.value).toBe(projects.filter((p) => p.band === 'Products').length)
+    expect(products.value).toBe(4)
+    expect(shipped.value).toBe(projects.filter((p) => p.status !== 'staging').length)
+    expect(shipped.value).toBe(19)
   })
 
-  // Christian asked for the gateway and NFC labels to come off the hero.
-  it('makes no payment-gateway or NFC claim in the hero', () => {
-    for (const point of heroContent.proofPoints) expect(point).not.toMatch(/gateway|NFC/i)
+  it('reach the chat assistant as the same figures', () => {
+    const context = buildPortfolioContext()
+    for (const f of elevationFigures()) expect(context).toContain(`${f.value} ${f.label}`)
   })
 
-  it('claims as many products as the inventory holds', () => {
-    const products = projects.filter((p) => p.band === 'Products')
-    expect(products).toHaveLength(4)
-    expect(heroContent.proofPoints[0]).toBe('Four products of my own')
+  it('leave no hand-typed proof or lede on heroContent', () => {
+    expect('proofPoints' in heroContent).toBe(false)
+    expect('lede' in heroContent).toBe(false)
   })
 
-  it('claims as many shipped projects as the inventory holds', () => {
-    const shipped = projects.filter((p) => p.status !== 'staging')
-    expect(shipped).toHaveLength(19)
-    expect(heroContent.proofPoints[1]).toBe('Nineteen projects shipped')
-  })
-
-  it('claims no years-of-experience figure', () => {
-    const blob = JSON.stringify(heroContent)
-    expect(blob).not.toMatch(/\d+\+?\s*years?/i)
+  it('claim no years-of-experience figure', () => {
+    expect(JSON.stringify(heroContent)).not.toMatch(/\d+\+?\s*years?/i)
   })
 })
 

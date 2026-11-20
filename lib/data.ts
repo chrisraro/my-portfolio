@@ -26,16 +26,13 @@ const sectorLabels: Record<ProjectSector, string> = {
   directory: 'directories',
 }
 
-// The first viewport names the verticals a hospitality owner is looking for.
-// Every claim is checkable against the data below. No years-of-experience
-// figure is claimed; the dated timeline carries that. The lede says "with
-// online booking and payments where they need them" rather than "booking and
-// payment websites": Graceland has neither, and the lede must not overclaim.
+// The first viewport's copy. Every claim is checkable against the data below.
+// No years-of-experience figure is claimed; the dated timeline carries that.
 export const heroContent = {
   name: 'Christian Raro',
   // The trailhead (spec §6). The headline is three authored lines: each stays
   // one line in every font, so the font swap never re-wraps it (the R6 CLS
-  // lesson). `title` below stays: metadata and JSON-LD read it until S5.
+  // lesson). `title` below is the Person's jobTitle in the JSON-LD.
   eyebrow: 'Full-stack developer · Naga City, Philippines',
   headlineLines: ['Built in Bicol.', 'Running across', 'the Philippines.'],
   get headline(): string {
@@ -48,10 +45,13 @@ export const heroContent = {
     return `Booking and payment sites for travel businesses, AI automation for teams, and ${numberWord(own)} products of my own. Open to client projects and to full-time remote roles.`
   },
   title: 'Mid-level full-stack developer',
+  // The homepage's <title> (spec §6, titles table).
+  pageTitle: 'Christian Raro · Full-Stack Developer in the Philippines',
   location: 'Naga City',
+  // The hero photo: the trailhead's plate, and the Person's image in the JSON-LD.
+  portrait: '/assets/images/about/profile-hiking.jpg',
   // The hero photo, described for the portrait's labelled button.
   portraitAlt: 'Portrait of Christian Raro hiking',
-  lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
   // A getter, not a value: `projects` is declared further down this file, and
   // reading it eagerly here would hit the temporal dead zone at module load.
   // The count is the Sites band; the list is its distinct sectors in
@@ -63,10 +63,6 @@ export const heroContent = {
       .map((sector) => sectorLabels[sector])
     return `${sites.length} live sites · ${sectors.join(', ')}`
   },
-  proofPoints: [
-    'Four products of my own',
-    'Nineteen projects shipped',
-  ],
 }
 
 export const availability = 'Open to freelance and full-time roles'

@@ -11,6 +11,7 @@ import {
   services,
   skills,
 } from '@/lib/data'
+import { elevationFigures } from '@/lib/elevation'
 import { BAND_ORDER, type CaseStudy } from '@/types'
 
 // The portfolio facts in this file derive from lib/data.ts. The route used to
@@ -94,7 +95,7 @@ OWNER INFORMATION:
 - Availability: ${availability}
 - Location: ${contactInfo.location}
 - Email: ${contactInfo.email}
-- Proof points: ${heroContent.proofPoints.join('. ')}.
+- Proof points: ${elevationFigures().map((f) => `${f.value} ${f.label}`).join('; ')}.
 
 PROJECTS (${projects.length} total, grouped into ${bandList}):
 ${projectsList}
