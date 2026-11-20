@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { heroContent } from '@/lib/data'
-import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
+import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TITLE_WORD_GAP, TRAIL } from '@/lib/og-linework'
 import { ogPalette as c } from '@/lib/og-palette'
 import { OG_SIZE, SITE_URL } from '@/lib/site-metadata'
 import { findRoute } from '@/lib/site-routes'
@@ -68,7 +68,16 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
             padding: `64px ${PAD_X}px 56px`,
           }}
         >
-          <div style={{ display: 'flex', fontSize: 24, letterSpacing: 3, textTransform: 'uppercase', color: c.muted }}>
+          <div
+            style={{
+              display: 'flex',
+              maxWidth: TEXT_WIDTH,
+              fontSize: 24,
+              letterSpacing: 3,
+              textTransform: 'uppercase',
+              color: c.muted,
+            }}
+          >
             {card.eyebrow}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', maxWidth: TEXT_WIDTH }}>
@@ -77,7 +86,7 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                columnGap: 18,
+                columnGap: TITLE_WORD_GAP,
                 fontSize: 68,
                 fontWeight: 600,
                 lineHeight: 1.04,

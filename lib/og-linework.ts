@@ -6,6 +6,9 @@
 // handler and route options.
 export const PAD_X = 80
 export const TEXT_WIDTH = 760
+// Gap between title words, in px at the 68px title: the face's own space plus
+// the capitals' side bearings read wide, so the words are set one by one.
+export const TITLE_WORD_GAP = 9
 
 export const CONTOURS = [
   'M 860 0 C 900 80 980 120 1060 140 S 1170 190 1200 200',
