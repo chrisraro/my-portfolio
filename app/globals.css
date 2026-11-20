@@ -471,6 +471,15 @@
 @media (prefers-reduced-motion: no-preference) {
 	.map-pan { transition: transform var(--dur-slow) var(--ease-smooth); }
 }
+/* A pin keeps its size while the map pans: its mark and label scale by the
+ * inverse of the layer's --pan-s about the pin's own point (transform-origin,
+ * written per pin), gliding with the layer. On the homepage --pan-s is unset: 1. */
+.map-pin__mark {
+	transform: scale(calc(1 / var(--pan-s, 1)));
+}
+@media (prefers-reduced-motion: no-preference) {
+	.map-pin__mark { transition: transform var(--dur-slow) var(--ease-smooth); }
+}
 /* /Map pan */
 
 /*

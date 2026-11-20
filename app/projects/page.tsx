@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { JsonLd } from '@/components/json-ld'
+import { MapKey } from '@/components/map/map-key'
 import { PlaceMap } from '@/components/map/place-map'
 import { SECTION } from '@/components/ui/grid'
 import { LegendFilter } from '@/components/ui/legend-filter'
@@ -76,6 +77,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
           <figcaption className="mt-3 px-1 text-sm text-muted-strong">
             {sectionContent.fieldMap.caption}
             {unpinned > 0 && ` ${projectsPageContent.unpinned.replace('{count}', String(unpinned))}`}
+            <MapKey className="mt-2" />
           </figcaption>
         </SurveyPlate>
 

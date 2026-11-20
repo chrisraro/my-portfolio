@@ -1,3 +1,4 @@
+import { MapKey } from '@/components/map/map-key'
 import { PlaceGlyph } from '@/components/map/pin'
 import { PlaceMap } from '@/components/map/place-map'
 import { SECTION } from '@/components/ui/grid'
@@ -27,7 +28,10 @@ export function FieldMap() {
       <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-12">
         <SurveyPlate as="figure" className="mx-auto w-full max-w-[18rem] sm:max-w-md lg:max-w-none">
           <PlaceMap places={places} hrefFor={(group) => projectHref(group.projects[0])} />
-          <figcaption className="mt-3 px-1 text-sm text-muted-strong">{fieldMap.caption}</figcaption>
+          <figcaption className="mt-3 px-1 text-sm text-muted-strong">
+            {fieldMap.caption}
+            <MapKey className="mt-2" />
+          </figcaption>
         </SurveyPlate>
 
         {/* An explicit width, as every grid child here: content-sized, it can collapse. */}

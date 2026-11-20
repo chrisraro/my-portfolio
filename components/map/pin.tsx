@@ -24,14 +24,17 @@ export function Pin({ group, href }: { group: PlaceGroup; href: string }) {
   const label = LABELS[group.name] ?? DEFAULT_LABEL
   return (
     <a href={href} tabIndex={-1} aria-hidden="true" className="map-pin">
-      {group.precision === 'region' ? (
-        <circle cx={x} cy={y} r={18} className="map-ring fill-none stroke-ink" strokeWidth={2} strokeDasharray="4 3" />
-      ) : (
-        <circle cx={x} cy={y} r={6} className="map-dot fill-ink" />
-      )}
-      <text x={Math.round(x + label.dx)} y={Math.round(y + label.dy)} textAnchor={label.anchor} className="map-label fill-ink text-[22px]">
-        {group.name}
-      </text>
+      {/* Counter-scaled about its own point (.map-pin__mark), so a pan zooms the map, not the pin. */}
+      <g className="map-pin__mark" style={{ transformOrigin: `${x}px ${y}px` }}>
+        {group.precision === 'region' ? (
+          <circle cx={x} cy={y} r={18} className="map-ring fill-none stroke-ink" strokeWidth={2} strokeDasharray="4 3" />
+        ) : (
+          <circle cx={x} cy={y} r={6} className="map-dot fill-ink" />
+        )}
+        <text x={Math.round(x + label.dx)} y={Math.round(y + label.dy)} textAnchor={label.anchor} className="map-label fill-ink text-[22px]">
+          {group.name}
+        </text>
+      </g>
     </a>
   )
 }

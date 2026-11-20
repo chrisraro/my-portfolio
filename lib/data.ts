@@ -504,6 +504,8 @@ export const sectionContent = {
     caption: 'A pin sits only where a project’s own page names the place.',
     placesHeading: 'Places',
     regionNote: 'Pinned at the region’s centre',
+    // The map's key (draft copy for Christian's review): what a dot and a ring mean.
+    key: { city: 'Town or city', region: 'Region, pinned at its centre' },
     unplacedHeading: 'No fixed point',
     unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
     cta: ctaLabels.browseProjects,
