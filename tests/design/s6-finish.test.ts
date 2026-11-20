@@ -186,3 +186,9 @@ describe('every route sits on the same grid and fills the window (F10)', () => {
     expect(layout).toContain('<main id="main" className="flex-1">')
   })
 })
+
+describe('the headline fits at 320px (14b)', () => {
+  it('floors the trailhead title at 2.25rem, sized to its column up to 7.5rem', () => {
+    expect(rule('.trailhead-title')).toMatch(/font-size:\s*clamp\(2\.25rem,\s*13cqi,\s*7\.5rem\)/)
+  })
+})

@@ -356,7 +356,7 @@
 }
 /* The headline is sized to its column, never to the viewport. */
 .trailhead-copy { container-type: inline-size; }
-.trailhead-title { font-size: clamp(2.75rem, 13cqi, 7.5rem); }
+.trailhead-title { font-size: clamp(2.25rem, 13cqi, 7.5rem); }
 /* Each authored line stays one line in every font (Arial, the fallback, is
  * wider than Archivo), so the font swap never re-wraps the headline: no layout
  * shift under the first viewport. */
