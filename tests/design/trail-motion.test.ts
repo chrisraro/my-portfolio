@@ -23,6 +23,14 @@ describe('trail draw', () => {
     for (const r of base) expect(r.body).not.toMatch(/stroke-dashoffset:\s*1\b/)
   })
 
+  it('never hides the trail outside its keyframes', () => {
+    for (const r of trail) expect(r.body, r.selector).not.toMatch(/stroke-dashoffset:\s*1\b/)
+    const css = readFileSync('app/globals.css', 'utf8')
+    const keyframes = css.match(/@keyframes trail-draw \{([\s\S]*?)\n\}/)?.[1]
+    expect(keyframes).toBeDefined()
+    expect(keyframes).toMatch(/from\s*\{[^}]*stroke-dashoffset:\s*1\b/)
+  })
+
   it('never loops', () => {
     for (const r of trail) expect(r.body).not.toMatch(/infinite/)
   })

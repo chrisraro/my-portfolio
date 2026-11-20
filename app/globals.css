@@ -861,7 +861,6 @@
 @supports (animation-timeline: scroll()) {
 	@media (prefers-reduced-motion: no-preference) {
 		.trail-draw {
-			stroke-dashoffset: 1;
 			animation: trail-draw linear both;
 			animation-timeline: scroll(root);
 		}
@@ -869,6 +868,9 @@
 }
 
 @keyframes trail-draw {
+	from {
+		stroke-dashoffset: 1;
+	}
 	to {
 		stroke-dashoffset: 0;
 	}
