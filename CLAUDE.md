@@ -32,16 +32,17 @@ site claims (inventory, bands, proof band, positioning, testimonials, ordering,
 structured data, the AI files, the route registry (`site-routes`: every page once, titles from spec §6's table), robots, the privacy guards (`privacy-guard`: each guard shown failing), the S5 surfaces (`s5-surfaces`: nothing private on any route's metadata, JSON-LD or card; every route in the sitemap and llms.txt), CTA labels, the map pan, embeddability parsing, visible copy, the new pages' copy (`new-pages`: 40-60 word opening answers, keywords, every proving project held to its own data), removed
 routes and tooling). `tests/design/` asserts design invariants:
 
-- `contrast` (token contrast in both themes, field borders on `--field-border`, early-access violet at least 90 degrees of hue from amber)
+- `contrast` (token contrast in both themes, field borders on `--field-border`, early-access violet at least 90 degrees of hue from trail red)
 - `legacy-tokens` (no pre-4.0 tokens, no B3 mono voice), `og-palette` (the link-preview cards' hex copies match the day theme's `:root` tokens), `type-scale`
 - `green-means-live`, `client-boundary`, `nav-anchors`, `sticky-header` (scroll padding, in-page jumps)
 - `primary-button` (one `.button-primary`, used by every primary CTA)
-- `plate-motion` (screenshots are stills: nothing about a screenshot, a plate or the map follows scroll, no `scroll(root)`; `.lift-card` hover is 2px, 1.02, accent border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`), `retired-classes` (the rack, its stagger, the amber flap, the folds and `ArrowLinkText` stay gone, here and in this file)
-- `grid` (the one `SECTION` constant, never spelled out), `survey-plate` (every plate through `SurveyPlate`, every screenshot 3:4), `s3-surfaces` / `s4-surfaces` (the S3 and S4 files use no 4.0 amber, `edge-code` or creases; S4 pages write no trail red of their own)
+- `plate-motion` (screenshots are stills: nothing about a screenshot, a plate or the map follows scroll, no `scroll(root)`; `.lift-card` hover is 2px, 1.02, ink border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`), `retired-classes` (the rack, its stagger, the amber flap, the folds and `ArrowLinkText` stay gone, here and in this file)
+- `grid` (the one `SECTION` constant, never spelled out), `survey-plate` (every plate through `SurveyPlate`, every screenshot frame `SHOT_ASPECT`), `s3-surfaces` / `s4-surfaces` (the S3 and S4 files use no 4.0 classes; S4 pages write no trail red of their own)
 - `view-transitions` (click planning, transition names `shot-`/`plate-`/`band-`, the map pan, the island: feature detection, reduced motion, capture-phase interception, commit timeout, fallback, cleanup; the root cross-fade and the zeroed reduced-motion block)
 - `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the trailhead sequence behind their gates and off under reduce; trailhead under 2 s), `motion-visibility` (reveal ranges), `trail-motion` (the trail draws once on load; each trail segment draws on a named view timeline on its `<svg>`; the elevation marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll), `font-budget` (after a build: one preloaded Archivo file, at most 95 KB)
 - `no-framer-motion`, `no-inline-motion` (no numeric `duration`/`ease`/`delay` literals in `.tsx`)
-- `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, plain Arial font fallbacks, `content-visibility` deferral, transform-only reveals)
+- `s6-finish` (no `accent` token, key or utility; no 4.0 catalog-code class, bare reveal class or 4.0 width setting; no word of the retired worlds in the source; browser surfaces in the trail palette; the launcher clear of the footer; `SHOT_ASPECT`; no eyebrow on a section heading; these docs), `s6-motion` (the line-by-line rise, the contour shift, plates that appear once), `meta-descriptions` (every route 50-160 characters through `metaDescription`; the long answers stay for the AI files), `cn-type-utilities` (`cn` keeps a type utility beside a text colour)
+- `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, the size-adjusted Arial body fallback, the portrait at quality 70, `content-visibility` deferral, transform-only reveals)
 
 `tests/components/` renders components with `react-dom/server` and checks their
 markup (sections, project page, `/projects`, the services pages, `/about`, `/hire`, page intro and work history, the 404, status badge, project shot,
@@ -65,6 +66,7 @@ app/about/           /about (a Read page): story, the dated route, the six field
 app/hire/            /hire: résumé, email, stack by depth, at a glance, how I work, the full work history, the form
 app/globals.css      Every colour, motion and layout token, the reveal/trailhead/trail/card-hover/view-transition CSS and the reduced-motion block
 app/og/[[...path]]/  One link-preview card per page at the page's path under /og (/og is the homepage's): next/og on the edge runtime, day palette, Recursive Sans from app/fonts/; a path that is not a route is a 404
+lib/og-linework.ts  The link-preview card's contours, trail and text column (kept right of the words)
 app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
@@ -72,7 +74,7 @@ app/projects/        The whole inventory as a map and a list of the same data, f
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
 components/          site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
 components/sections/ Homepage sections, in page order: trailhead, elevation-strip, fork, field-map, own-products, trail-journals, plan-the-route
-components/map/      contour-field, trail-path (mode load or view), trail-segment, philippines-outline, pin (Pin, PlaceGlyph, LABELS), place-map: the survey-map SVG primitives
+components/map/      contour-field, trail-path (mode load or view), trail-segment, philippines-outline, pin (Pin, PlaceGlyph, PLACE_MARK, LABELS), map-key.tsx (MapKey: the dot and the ring), spot-height (SpotHeight), place-map: the survey-map SVG primitives
 components/ui/       Primitives: grid.ts (SECTION), page-intro, work-history, status-badge, section-heading, survey-plate, trail-link, project-shot, project-plate, legend-filter, live-preview, no-preview-tag, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body (the trail journal) — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
@@ -117,6 +119,11 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `/llms-full.txt`) and the chat assistant all read it. Adding a project or a
 service page reaches all of them automatically; nothing there needs
 hand-editing. A new kind of page is one entry in `siteRoutes()`.
+
+A page whose answer or description runs past a search snippet sets
+`metaDescription` (≤ 155 characters; `tests/content/meta-descriptions.test.ts`
+caps every route at 160). Only the metadata reads it; the AI files, the chat
+prompt and the JSON-LD keep the long answer.
 
 `lib/case-studies.ts` is the second content source: it holds the flagship
 case studies, keyed by project slug. A number from a client's business goes in
@@ -168,7 +175,7 @@ Every project gets a plate on `/projects`. What fills it:
 
 - **ProjectShot** (`components/ui/project-shot.tsx`, server) shows the top of
   `public/assets/images/projects/<id>-full.webp` when `fullShotFor(project)`
-  finds it, as a still in the 3:4 frame every screenshot shares, on a `SurveyPlate`. On `/projects` each project is a `ProjectPlate`: one plate, one link. Nothing inside it scrolls and nothing about it follows
+  finds it, as a still in the frame every screenshot shares (`SHOT_ASPECT`), on a `SurveyPlate`. On `/projects` each project is a `ProjectPlate`: one plate, one link. Nothing inside it scrolls and nothing about it follows
   the page's scroll. Make the shots with `npm run capture -- --full [id ...]`
   (1440 wide, whole page clipped at 6000px, WebP quality 70). View every new
   shot; a broken one is deleted and its id added to `FULL_SKIP` in
@@ -176,7 +183,7 @@ Every project gets a plate on `/projects`. What fills it:
   it back.
 - **No shot:** `NoPreviewTag` prints why (`caseStudyContent.noPreview`). Never
   fake a screenshot for an auth-gated or internal project; its interior needs
-  the client's clearance. It keeps the same 3:4 frame, so every plate stands at one scale.
+  the client's clearance. It keeps the same `SHOT_ASPECT` frame, so every plate stands at one scale.
 - **LivePreview** (`components/ui/live-preview.tsx`, client) appears only when
   `isEmbeddable(project)` is true, which reads `lib/embeddable.json`. Refresh it
   with `npm run check:embeds` (a site is embeddable when it answers 2xx and its
@@ -198,36 +205,37 @@ Every project gets a plate on `/projects`. What fills it:
 
 ## Styling
 
-- Visual authority is `DESIGN.md` (Lobby Rack, written from the built site), with
+- Visual authority is `DESIGN.md` (Isarog Trail Map, written from the built site), with
   the homepage's direction contract and motion choreography in
   `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
-- The world: a lagoon-night ground, paper panels, and signal amber laid down
-  only as whole flat planes (S3 surfaces no longer use it; trail red marks the primary buttons, trail strokes, the elevation marker and the current legend key on `/projects`). No gradients, glows, tints or outlines on
-  planes. Paper is square-ish (`--radius` 6px; postcards 2px, dialog 10px).
-- Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
-  `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
-  them and checks WCAG contrast in both themes; keep the format exact.
+- The world: survey paper (pale green-grey by day, dark field paper by night),
+  near-black ink, olive contour linework, and one trail red. No gradients, glows
+  or tints. Paper is square-ish (`--radius` 6px; buttons 2px, dialog 10px).
+- Colours are raw oklch `L C H` triplets in `app/globals.css`: `:root` is the
+  day theme and the default, `.dark` the night theme, one per line.
+  `tests/design/contrast.test.ts` parses them and checks WCAG contrast in both
+  themes; keep the format exact.
 - Tailwind colour keys: `canvas` (page, CSS `--bg`), `panel`, `ink`, `muted`,
   `muted-strong`, `line`, `line-strong`, `contour`, `trail`, `on-trail`,
-  `field-border`, `live`, `status-early`, `status-private`, `status-internal`,
-  plus the transitional `accent`, `accent-plane`, `on-accent` (removed in S6). Never raw hex,
-  never `dark:` colour pairs. Text fields draw their border in `field-border`
-  (3:1, WCAG 1.4.11), never a hairline token.
-- **Two ambers.** `accent-plane` fills planes and the primary button, bright in
-  both themes. `accent` is amber as ink and line (focus ring, hover border,
-  links, small glyphs); in the light theme it is a deeper amber so it holds AA
-  on paper. Never fill a plane with `accent` or set text on one in `ink`; the
-  contrast test greps for it.
+  `field-border`, `live`, `status-early`, `status-private`, `status-internal`.
+  Never raw hex, never `dark:` colour pairs. Text fields draw their border in
+  `field-border` (3:1, WCAG 1.4.11), never a hairline token. There is no
+  `accent` key any more (`tests/design/s6-finish.test.ts`).
+- **Trail red (`trail`) marks the primary action and the current position only:**
+  `.button-primary`, the chat's send button, the trail strokes, the elevation
+  marker, the legend's current-page underline, the 404's dot, the focus ring
+  and the caret (where the keyboard is). Hover and focus borders are `ink`;
+  selection is `ink` with `bg` text; the brand mark is an ink plane.
 - **One primary button:** `.button-primary` (with `.press` for the hover lift),
-  defined once in `globals.css`: an `accent-plane` fill on paper. Never compose a primary from a fill and
+  defined once in `globals.css`: a trail-red fill with `on-trail` text, beside
+  the ink-outline `.button-secondary`. Never compose a primary from a fill and
   padding; `tests/design/primary-button.test.ts` enforces it.
-- **Green (`live`) means a live system and nothing else.** Brand and availability
-  use `accent`, and so does the chat assistant's status dot. `live` and
-  `.live-pulse` appear only in `StatusBadge`; `tests/design/green-means-live.test.ts`
-  enforces it.
+- **Green (`live`) means a live system and nothing else.** The chat
+  assistant's status dot is `ink`. `live` and `.live-pulse` appear only in
+  `StatusBadge`; `tests/design/green-means-live.test.ts` enforces it.
 - **Status is never colour alone.** Render it only through `StatusBadge`, which
   pairs a glyph shape with a text label: live dot, early-access ring (violet,
-  `status-early`, kept well away from amber), private
+  `status-early`, kept well away from trail red), private
   lock, internal filled square, staging outlined square.
 - Type: one variable family via `next/font`, nothing else: **Archivo**, loaded
   with its `wdth` axis as `--font-sans` (`font-sans`). `.text-display` and
@@ -235,16 +243,14 @@ Every project gets a plate on `/projects`. What fills it:
   which `app/layout.tsx` sets inline on `<html>` to Archivo, then
   `'Archivo Display Fallback'` (a size-adjusted Arial Narrow/Arial face in
   `globals.css`, so the condensed headline does not overflow before Archivo
-  loads). Body text falls back to plain Arial (`adjustFontFallback: false`).
+  loads). Body text falls back to Arial sized to Archivo's metrics (`adjustFontFallback: true`), so the swap re-wraps nothing. Every width is set with `font-stretch`, never `font-variation-settings: 'wdth'`.
   Utilities: `.map-label`, `.eyebrow`, `.tabular`. No serif, no mono. Numerals
   use `tabular-nums` and are plain ("4", not "04").
-- One grid: every section and read-page block uses `SECTION` from `components/ui/grid.ts` (`mx-auto max-w-6xl px-5 sm:px-8`), never the literal (`tests/design/grid.test.ts`). Every plate is a `SurveyPlate`; every text link is a `TrailLink` (an action with an arrow, or a map label).
-- Section headings: `SectionHeading` (`components/ui/section-heading.tsx`), an
-  `.eyebrow` then an `<h2 className="text-section">`, with copy from
-  `sectionContent` in `lib/data.ts`.
+- One grid: every section and read-page block uses `SECTION` from `components/ui/grid.ts` (`mx-auto max-w-6xl px-5 sm:px-8`), never the literal (`tests/design/grid.test.ts`). Every screenshot frame and no-preview frame uses `SHOT_ASPECT` (`components/ui/project-shot.tsx`: 4:3 below 640px, 3:4 from 640px, 4:3 again from 1024px). Every plate is a `SurveyPlate`; every text link is a `TrailLink` (an action with an arrow, or a map label).
+- Section headings: `SectionHeading` (`components/ui/section-heading.tsx`), one `<h2 className="text-section">` with copy from `lib/data.ts`. No eyebrow over a section heading (the craft floor bans it); the hero keeps the spec's eyebrow, and page eyebrows above an h1 name where you are.
 - Read pages (`/services`, a service page, `/about`, `/hire`) open with `PageIntro` (eyebrow, the h1, the answer in ink, the updated date, the actions) and end in `PlanTheRoute`, except `/about`, which ends in links. The 404's "You are here" dot is its only trail red.
-- Shadows: none in flow at rest. `shadow-lift` only while a card or postcard is
-  lifted (on a card, a pseudo-element faded in by opacity: never animate `box-shadow`); `shadow-overlay` for the dialog, chat and toasts.
+- Shadows: none in flow at rest. `shadow-lift` only while a plate is
+  lifted (on a plate, a pseudo-element faded in by opacity: never animate `box-shadow`); `shadow-overlay`, ink-hued in both themes, for the legend, the dialog, chat and toasts.
 - Off-screen work: far sections carry `.defer-render` (`content-visibility:
   auto`). `/projects` bands are not deferred (a lifted plate's shadow would clip).
   Never defer the trailhead, elevation strip, field map, own products, trail journals or the plan-the-route form. `ProjectShot`
@@ -271,21 +277,21 @@ homepage and `/projects` on the server; do not raise it.
 
 ## Animation
 
-Paper that unfolds when you pay attention, and restrained: three verbs only —
-*unfold* (reveal detail), *lift* (answer attention), *slide* (keep continuity).
-Screenshots are stills; nothing about a screenshot or a card is driven by
-scroll. The full choreography is in `DESIGN.md` (Components → Motion) and the
-direction contract.
+Three verbs only (spec §4): *draw* (trails, contours and routes stroke in),
+*rise* (lines and plates lift into place, once), *pan* (the map and the page
+glide to a waypoint). Screenshots are stills: nothing about a screenshot is
+scrubbed by scroll; a plate rises once as it enters. The choreography is in
+`DESIGN.md` (Motion) and the direction contract.
 
 - **Tokens:** durations, easings, distances and springs live in
   `lib/motion-tokens.ts` and are mirrored as `--dur-fast|normal|slow|crawl` and
   `--ease-smooth|sharp` in `globals.css`; `tests/design/motion-tokens.test.ts`
   keeps the two in step. Never write a numeric `duration`, `ease` or `delay` in a
   `.tsx` file (`tests/design/no-inline-motion.test.ts`); a literal 0 is allowed.
-- **CSS first.** Trailhead sequence, the trail draws, scroll reveals, the card hover and
+- **CSS first.** Trailhead sequence, the trail draws, scroll reveals, the contour shift, the plate rise, the card hover and
   the hover grammar are all CSS in `globals.css`. Animate transform and opacity
   only; a shadow is a pseudo-element whose opacity fades.
-- **Scroll-driven reveals** (`.reveal`, `.reveal-cover`)
+- **Scroll-driven reveals** (`.reveal-cover`, the journal rows)
   use `animation-timeline: view()` and live inside both
   `@supports (animation-timeline: view())` and
   `@media (prefers-reduced-motion: no-preference)`. Outside the gates nothing is
@@ -296,13 +302,24 @@ direction contract.
 - **Trailhead sequence:** CSS keyframes on load, no JS, 1.9 s, once (the
   headline's authored lines rise in turn, the copy under them rises, the trail
   draws out of the portrait plate). It must stay under two seconds (`motion-tokens` test).
+- **Contour shift (`.trailhead-contours`):** under `(hover: hover) and
+  (pointer: fine)` and no-preference only, the hero contours drift 8px toward
+  the half the pointer rests on (`.trailhead:has(.trailhead-copy:hover)` /
+  `:has(.trailhead-plate:hover)`), on `--dur-crawl`. CSS only; nothing on touch;
+  the trail does not move (`tests/design/s6-motion.test.ts`).
+- **Plates appear once (`.plate-rise`):** every `/projects` plate, own-product
+  plate and case-study shot rises its last 16px once on a scroll trigger
+  (`timeline-trigger` + `animation-trigger: play-forwards`) inside
+  `@supports (timeline-trigger: --plate view())` and no-preference; filled
+  backwards, so a plate is held at its start until its trigger fires, and a
+  plate already in view never moves; without support, plates sit at rest (`s6-motion`).
 - **Trail:** `TrailPath mode="load"` draws once on load; `mode="view"` (the
   `TrailSegment`s between sections) draws on its own named view timeline.
   The elevation "you are here" marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll (`plate-motion`, `trail-motion`).
 - **Catalog hover (`.lift-card`)**: `/projects` plates, a product's screenshot and
   the journal covers. On a fine pointer with motion allowed: lift 2px, border to
-  `accent`, screenshot scale 1.02 inside a clipping frame, fast/smooth, shadow
-  faded in on a pseudo-element. Keyboard focus gets the accent border with no
+  `ink`, screenshot scale 1.02 inside a clipping frame, fast/smooth, shadow
+  faded in on a pseudo-element. Keyboard focus gets the ink border with no
   travel in every mode.
 - **View transitions** (`components/ui/view-transitions.tsx`, rules in
   `lib/view-transition.ts`): a `/projects` filter change glides plates and band
@@ -313,7 +330,7 @@ direction contract.
   (`startViewTransition`), off under reduced motion, modified clicks and other
   routes left to next/link, 2.5s commit timeout, full-navigation fallback,
   `::view-transition { pointer-events: none }`. Without JS, plain links.
-- **Map pan (`.map-pan`)**: `/projects` writes `--pan-x/--pan-y/--pan-s` from `lib/map-pan.ts` on a map layer inside a clipping frame; a client navigation (a legend key) glides it (`--dur-slow`, `--ease-smooth`, transform only, no-preference only). A pin jumps to its plate (`#plate-<slug>`) on the page's smooth scroll.
+- **Map pan (`.map-pan`)**: `/projects` writes `--pan-x/--pan-y/--pan-s` from `lib/map-pan.ts` on a map layer inside a clipping frame; a client navigation (a legend key) glides it (`--dur-slow`, `--ease-smooth`, transform only, no-preference only). A pin jumps to its plate (`#plate-<slug>`) on the page's smooth scroll. Pins counter-scale (`.map-pin__mark`, `scale(calc(1 / var(--pan-s, 1)))` about each pin's point), so a pan zooms the map, not the labels; `MapKey` names the dot (town or city) and the ring (region) in both map captions.
 - **`motion/react` only in client components** (LivePreview, ImageLightbox, chat,
   toasts; the view-transition island uses the browser API, not motion), and only as `m.*` from `motion/react-m` inside
   `<LazyMotion features={loadMotionFeatures} strict>`, so the engine loads in its
@@ -324,10 +341,10 @@ direction contract.
 - **Nothing moves for more than five seconds** (WCAG 2.2.2). The live pulse
   (`.live-pulse`, only in `StatusBadge`) fades twice (2.4 s each) and stops. The
   chat typing dots (`.typing-dot`) and the "Sending" spinner run only while a
-  request is pending. No count-ups, parallax or continuous animation.
+  request is pending. No count-ups, scroll parallax or continuous animation.
 - **Reduced motion:** the gates switch off every reveal and the trailhead
-  sequence, and the `reduce` block resets them explicitly; hover transforms go
-  (colour, the accent border and underlines still change, instantly); the
+  sequence; the contour shift, the plate rise and the pins' glide are off; and the `reduce` block resets them explicitly; hover transforms go
+  (colour, the ink border and underlines still change, instantly); the
   island navigates without a transition and any view-transition animation is
   zeroed; the pulse is removed; every animation and transition
   collapses to one near-instant iteration. In JS, `useReducedMotion` drops

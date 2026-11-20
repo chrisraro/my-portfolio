@@ -8,12 +8,15 @@ web
 
 ## Users
 
-- **Primary: prospective freelance clients.** Often non-technical small-business
-  owners in the Philippines, strongest in tourism and hospitality — hotels, tour
-  and shuttle operators, restaurants, review centres. They arrive deciding
-  whether Christian can build and run their website or system, and how to reach
-  him.
-- **Secondary: engineering hiring managers** evaluating him for full-stack roles.
+**Freelance clients and engineering hiring managers, equally** (spec §2):
+
+- **Freelance clients.** Often non-technical small-business owners in the
+  Philippines, strongest in tourism and hospitality — hotels, tour and shuttle
+  operators, restaurants, review centres. They arrive deciding whether
+  Christian can build and run their website or system, and how to reach him.
+- **Engineering hiring managers** evaluating him for full-time remote
+  full-stack roles: what he has shipped, how deep his stack goes, and how he
+  works.
 
 ## Product Purpose
 
@@ -30,8 +33,8 @@ him — and every claim on the page is backed by the project inventory.
 considered and rejected, because a narrow niche risks starving the pipeline in a
 regional market. That puts the whole differentiation burden on proof.
 
-The claim a neighbouring developer cannot truthfully copy: **three products of
-his own** (Iskotify, Giya, Latag) alongside client work, plus **custom systems**
+The claim a neighbouring developer cannot truthfully copy: **4 own products**
+(Iskotify, Giya, Latag, Connecta PH) alongside client work, plus **custom systems**
 (an NFC card system for BeachBus Palawan, and an internal WordPress control panel
 for Online Creative Solutions). WordPress specialism is shown as proof — nine
 production sites — not stated as a title.
@@ -45,17 +48,21 @@ production sites — not stated as a title.
 - Visitors reach him through the contact form (`/api/contact`, with a mailto
   fallback when no mail provider is configured), email, the résumé PDF, and an
   AI assistant named Chunks that answers only from the portfolio data.
-- Deployed on Vercel from `main`. The Portfolio 4.0 redesign is built on a `v4`
-  branch, with a Vercel preview for every push.
+- Deployed on Vercel from `main`. Portfolio 5.0 (Isarog Trail Map) is built on
+  the `v5` branch, with a Vercel preview for every push; it merges after
+  Christian signs off a preview.
 
 ## Capabilities and Constraints
 
 - Next.js 14 App Router, TypeScript, Tailwind CSS. All content lives in
   `lib/data.ts`; Vitest content tests assert every factual claim the site makes.
-- Surfaces: the homepage; `/projects`, an index of 15 projects in four bands
-  (Products, Custom systems, Applications, Sites); and a page per project at
-  `/projects/[slug]` — five flagships with a full case study, the other ten
-  with a short page built only from data they already have.
+- Surfaces: the homepage; `/projects`, map and list views of 20 projects in
+  four bands (Products, Custom systems, Applications, Sites) with the `?band=`
+  filter; a page per project at `/projects/[slug]`, the 6 case studies as
+  trail journals and the rest as short pages built only from data they already
+  have; `/services` with three service pages (full-stack development,
+  WordPress and WooCommerce, AI automation); `/about`; `/hire`; the "Off the
+  trail" 404; `/llms.txt` and `/llms-full.txt`.
 - Both API routes must work with no environment variables set.
 - Payment gateways, confirmed by Christian on 2026-09-23 and corroborated by the
   live sites: **PayPal, PayMongo and Maya on BeachBus Palawan; Xendit on ACAD1
@@ -71,8 +78,9 @@ production sites — not stated as a title.
 
 ## Evidence on Hand
 
-- 15 projects, 14 with live URLs, with homepage screenshots in
+- 20 projects, 19 with live URLs, with full-page screenshots in
   `public/assets/images/projects/`.
+- 6 case studies in `lib/case-studies.ts`.
 - Four real, attributed testimonials in `lib/data.ts` (Alec Santos, Brian
   Labilles, Bryden Elizan, Joseph Cua). Three are attached to the project they
   refer to.

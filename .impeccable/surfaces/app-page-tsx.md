@@ -25,7 +25,7 @@ position; nothing auto-moves longer than 5 s; CSS-first motion that is
 progressive enhancement; fewer than 10 client components.
 Replaces: Lobby Rack (Portfolio 4.0). Spec:
 `docs/superpowers/specs/2026-11-20-portfolio-v5-revamp-design.md`.
-Unresolved: the contour pointer shift and screenshot appear-once land in S6.
+Resolved in S6: the contour pointer shift (.trailhead-contours) and screenshot appear-once (.plate-rise).
 
 ## Direction contract
 
@@ -77,4 +77,14 @@ one at a time), pan (/projects: a legend key glides the map to the band's pins; 
   (`entry 10% cover 45%`), inside both gates.
 - Elevation strip: the "you are here" marker travels on its own `--elevation`
   view timeline (both gates) and rests at now; nothing follows the page's scroll.
+- Contour shift (`.trailhead-contours`): under `(hover: hover) and (pointer: fine)`
+  and no-preference only, the hero contours drift 8px toward the half the
+  pointer rests on (`.trailhead:has(.trailhead-copy:hover)` /
+  `:has(.trailhead-plate:hover)`), on `--dur-crawl`. CSS only; nothing on touch;
+  the trail does not move.
+- Plates appear once (`.plate-rise`): every `/projects` plate, own-product plate
+  and case-study shot rises its last 16px once on a scroll trigger
+  (`timeline-trigger` + `animation-trigger: play-forwards`) inside
+  `@supports (timeline-trigger: --plate view())` and no-preference; held at its
+  start until the trigger fires; without support, plates sit at rest.
 - Outside the gates the trail is fully drawn and nothing is offset.

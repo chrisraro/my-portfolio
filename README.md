@@ -1,13 +1,16 @@
 # Christian Raro — Portfolio
 
 The portfolio of Christian Raro, a full-stack developer in Naga City,
-Philippines. A homepage and a `/projects` index of 15 projects, two API routes,
-and no database: every fact on the site is static data in
-[`lib/data.ts`](lib/data.ts), and tests check the claims against it.
+Philippines. A homepage, a `/projects` map and list of 20 projects with a page
+per project, `/services` with three service pages, `/about`, `/hire`, two API
+routes, and no database: every fact on the site is static data in
+[`lib/data.ts`](lib/data.ts) and [`lib/case-studies.ts`](lib/case-studies.ts),
+and tests check the claims against it.
 
-The design is **B3 Signal**: the work shown as an operations board of running
-systems, each with an honest status, on warm graphite with sodium amber as the
-only brand colour. [`DESIGN.md`](DESIGN.md) documents the system as built.
+The design is the **Isarog Trail Map**: the work as a survey map you walk, one
+red trail from a trailhead in Naga City, every project a waypoint at a place it
+really served, on pale green-grey survey paper by day and dark field paper by
+night. [`DESIGN.md`](DESIGN.md) documents the system as built.
 [`CLAUDE.md`](CLAUDE.md) holds the working rules for editing the codebase.
 
 ## Tech Stack
@@ -19,8 +22,8 @@ only brand colour. [`DESIGN.md`](DESIGN.md) documents the system as built.
 | UI | React 18, server components by default |
 | Styling | Tailwind CSS 3 over oklch colour tokens |
 | Typeface | Archivo (one variable family, `wdth` axis, via `next/font`) |
-| Theming | next-themes (dark by default, plus a light theme) |
-| Motion | framer-motion 10 (chat, lightbox and toast fades only) |
+| Theming | next-themes (the day survey by default, plus a night theme) |
+| Motion | CSS first; `motion` (`motion/react`, `LazyMotion`) for the dialogs, chat and toasts only |
 | Icons | lucide-react |
 | Chat | Groq via `groq-sdk` (model from `GROQ_MODEL`, default `openai/gpt-oss-120b`) |
 | Email | Resend (REST API, no SDK) |
@@ -78,14 +81,17 @@ each feature degrades honestly instead of erroring. See
 ```
 app/
   layout.tsx          Archivo, theme and toast providers, page chrome
-  page.tsx            Homepage: hero, products, systems board, field log,
-                      changelog, stack, contact
-  projects/           /projects: every project, filterable by band (?band=)
-  projects/[slug]/    One page per project: a case study for five flagships,
-                      a short page for the rest
+  page.tsx            Homepage: trailhead, elevation strip, fork, field map,
+                      own products, trail journals, plan the route
+  projects/           /projects: every project as a map and a list, filtered
+                      by band (?band=), the map panning to the band
+  projects/[slug]/    One page per project: a trail journal for the six case
+                      studies, a short page for the rest
+  services/, about/, hire/  /services and its three pages, /about, /hire
+  not-found.tsx       The 404, "Off the trail"
   api/chat/           Groq-backed chat endpoint
   api/contact/        Resend-backed contact endpoint
-  globals.css         Colour tokens (oklch) and shared utilities
+  globals.css         Colour, motion and layout tokens (oklch) and shared utilities
   og/[[...path]]/     One link-preview card per page (next/og, edge runtime)
   fonts/              Recursive Sans, the one static font the cards use
   robots.ts, sitemap.ts  sitemap.ts lists every route in lib/site-routes.ts
@@ -93,21 +99,33 @@ app/
 components/
   site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
   sections/           One file per homepage section
-  ui/                 Primitives: status-badge, board-row, systems-board,
-                      board-filter, product-panel, proof-band, chat-widget,
-                      toaster, image-lightbox
+  map/                Survey-map SVG: contour-field, trail-path, trail-segment,
+                      philippines-outline, pin, map-key (MapKey), spot-height,
+                      place-map
+  ui/                 Primitives: grid (SECTION), survey-plate, project-shot
+                      (SHOT_ASPECT), project-plate, status-badge, trail-link,
+                      section-heading, page-intro, legend-filter, live-preview,
+                      chat-widget, toaster, image-lightbox, view-transitions
+  case-study/         The project page's parts (the trail journal)
 lib/
   data.ts             Single source of truth for all content, including headings
-  chat-context.ts     Builds the chat assistant's system prompt from data.ts
-  structured-data.ts  Builds JSON-LD from data.ts and case-studies.ts
+  case-studies.ts     The six case studies
+  site-routes.ts      Every page once: title, description, metaDescription,
+                      card words; metadata, cards, JSON-LD, sitemap and AI files
+                      read it
+  chat-context.ts     Builds the chat assistant's system prompt from the content
+  structured-data.ts  Builds each page's JSON-LD graph
   llms.ts             Builds /llms.txt and /llms-full.txt from the same content
-  site-metadata.ts    Builds page metadata from heroContent
-  board.ts, display-status.ts, proof.ts, dates.ts, timeline.ts
+  site-metadata.ts    Builds every page's metadata from its route
+  og-linework.ts      The link-preview card's contours, trail and text column
+  og-palette.ts       The day theme as hex for the cards
+  contours.ts, geo.ts, map-pan.ts  Authored linework, the map projection, the /projects pan
+  board.ts, display-status.ts, proof.ts, dates.ts, timeline.ts, places.ts, elevation.ts
                       Pure helpers, all tested
-  utils.ts            cn(), extractDomain
+  utils.ts            cn() (tailwind-merge, extended with the type utilities), extractDomain
 types/index.ts        Shared interfaces
 tests/                content/, design/, components/, helpers/ (shared test helpers)
-scripts/              Screenshot capture, résumé PDF, URL check
+scripts/              Screenshot capture, résumé PDF, URL check, embeddability check
 public/assets/        images/{about,gallery,projects}, resume/
 ```
 
@@ -117,21 +135,24 @@ All content lives in [`lib/data.ts`](lib/data.ts): `heroContent`,
 `availability`, `resumeUrl`, `projects`, `paymentGateways`, `skills`,
 `experience`, `education`, `recommendations`, `galleryContent`, `galleryImages`,
 `sectionContent`, `projectsPageContent`, `socialLinks`, `contactInfo`,
-`navigationItems` and `services`. Components never hardcode facts, headings or
-eyebrows. New shapes get an interface in [`types/index.ts`](types/index.ts).
+`navigationItems`, `services`, `servicePages`, `aboutPageContent`,
+`hirePageContent` and the rest listed in `CLAUDE.md`. Components never hardcode
+facts, headings or eyebrows. New shapes get an interface in [`types/index.ts`](types/index.ts).
 
 The JSON-LD ([`lib/structured-data.ts`](lib/structured-data.ts)), the sitemap
 and the AI files ([`lib/llms.ts`](lib/llms.ts), served at `/llms.txt` and
 `/llms-full.txt`) are all built from `lib/data.ts` and `lib/case-studies.ts`,
 so a new project reaches them the same way it reaches the chat assistant: no
-hand-editing needed. Only public email and social links appear in any of
+hand-editing needed. A page whose description runs past a search snippet sets
+`metaDescription` (at most 160 characters); only the metadata reads it, and
+the AI files keep the long answer. Only public email and social links appear in any of
 them, and the address is the public locality, never a street or a phone
 number.
 
 Each project carries a `band` (`Products`, `Custom systems`, `Applications` or
 `Sites`) and a `status`. Several lines on the page are derived from the data
-rather than typed: the hero's specialism line counts the Sites band and names
-its sectors, and the proof band's claims are checked against the inventory. Change
+rather than typed: the elevation strip's counts (`elevationFigures()` in
+`lib/elevation.ts`) and the field map's places are counted from the inventory. Change
 the inventory and those lines change with it, or a test fails.
 
 The chat assistant builds its whole system prompt from `lib/data.ts` through
@@ -143,41 +164,60 @@ automatically. Don't reintroduce hand-written portfolio prose in
 
 Read [`DESIGN.md`](DESIGN.md) before UI work. The essentials:
 
-- Colours are oklch tokens in [`app/globals.css`](app/globals.css) (`.dark` is
-  the default theme, `:root` the light one), exposed as Tailwind keys in
-  [`tailwind.config.js`](tailwind.config.js): `canvas`, `panel`, `ink`, `muted`,
-  `muted-strong`, `line`, `line-strong`, `accent`, `on-accent`, `live`,
-  `status-early`, `status-private`, `status-internal`. No raw hex, no `dark:`
-  colour pairs.
-- Amber (`accent`) is the only brand colour. Green (`live`) means a live system
-  and nothing else.
+- Colours are oklch tokens in [`app/globals.css`](app/globals.css) (`:root` is
+  the day survey and the default, `.dark` the night survey), exposed as
+  Tailwind keys in [`tailwind.config.js`](tailwind.config.js): `canvas`,
+  `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `contour`,
+  `trail`, `on-trail`, `field-border`, `live`, `status-early`,
+  `status-private`, `status-internal`. There is no `accent` key. No raw hex, no
+  `dark:` colour pairs.
+- Trail red (`trail`) marks the primary action and the current position only:
+  the primary button, the trail, the "you are here" marker, the current page,
+  the focus ring and the caret. Hover borders and selection are ink. Green
+  (`live`) means a live system and nothing else.
 - Status always renders through `StatusBadge`: a glyph shape plus a text label,
   never colour alone.
-- One typeface, Archivo. No mono voice, and every numeral is tabular.
-- One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
+- One typeface, Archivo, on its width axis through `font-stretch`: condensed
+  uppercase for display and map labels, normal width for reading. Numerals are
+  tabular. No serif, no mono.
+- One grid: every section uses `SECTION` (`mx-auto max-w-6xl px-5 sm:px-8`).
+  Every photo and screenshot sits on a `SurveyPlate`, and every screenshot
+  frame uses `SHOT_ASPECT` (4:3 on a phone, 3:4 from 640px, 4:3 from 1024px).
+- Section headings carry no eyebrow; the field map's `MapKey` names its dot
+  (town or city) and ring (region).
 
 ## Motion
 
-Almost nothing moves. The live status dot pulses twice and stops, the chat's
-typing dots run only while a reply loads, and the chat, lightbox and toasts fade
-in and out. Reduced motion removes the pulse and the offsets. Content renders
-visible from the server, with no entrance animation.
+Three verbs, CSS first: **draw** (the trail draws out of the portrait on load,
+and short segments draw between sections), **rise** (the headline rises line by
+line on load in under two seconds; each plate rises its last 16px once as it
+enters, `.plate-rise`), **pan** (a `/projects` legend key glides the map to the
+band, pins counter-scaling so the labels keep their size). The hero contours
+drift 8px toward the half a fine pointer rests on (`.trailhead-contours`).
+Project links morph the clicked screenshot into the project page through view
+transitions. Nothing follows the page's scroll, nothing moves for more than
+five seconds, and reduced motion turns all of it off. Content renders visible
+from the server: motion is transform and stroke only, never opacity.
 
 ## Testing
 
 `npm test` runs Vitest over three folders:
 
 - [`tests/content/`](tests/content/) checks the facts the site claims against
-  `lib/data.ts`: inventory, bands, the proof band, positioning, testimonials,
-  dates and ordering.
+  `lib/data.ts`: inventory, bands, the proof counts, positioning, testimonials,
+  dates and ordering, the route registry, the privacy guards, and
+  `meta-descriptions` (every route's description 50-160 characters).
 - [`tests/design/`](tests/design/) checks design invariants: WCAG contrast of
-  the tokens in both themes, no legacy tokens, green only on the live status,
-  the link-preview cards' palette, the client-component count and nav anchors.
+  the tokens in both themes, green only on the live status, trail red's
+  places, the link-preview cards' palette, the client-component count, the
+  motion gates, `s6-finish` (no retired tokens, classes or words; one display
+  voice; these docs) and `s6-motion` (the line-by-line rise, the contour
+  shift, plates that appear once).
 - [`tests/components/`](tests/components/) renders components with
   `react-dom/server` and checks their markup.
 
 [`tests/helpers/`](tests/helpers/) holds helpers shared across those folders,
-such as the phone-number guard the JSON-LD and AI-file tests reuse.
+such as the privacy guards every public surface's test runs.
 
 There are no end-to-end tests. CI
 ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs type-check, lint,

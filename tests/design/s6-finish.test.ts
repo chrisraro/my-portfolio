@@ -1,7 +1,9 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { FLAGSHIP_SLUGS } from '@/lib/case-studies'
 import { trailheadContours } from '@/lib/contours'
+import { projects } from '@/lib/data'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
 // Sprint 6 retires what Portfolio 4.0 left behind (master plan, S6): the
@@ -214,5 +216,38 @@ describe('the leftovers (14b)', () => {
   it('keeps break-words on a case-study figure and no doubled parentheses in the shot doc', () => {
     expect(readFileSync('components/case-study/case-study-body.tsx', 'utf8')).toMatch(/text-title tabular break-words text-ink/)
     expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).not.toMatch(/\)\s*\(/)
+  })
+})
+
+describe('the docs describe the trail map that shipped', () => {
+  it('DESIGN.md is the Isarog Trail Map, written from the code', () => {
+    const doc = readFileSync('DESIGN.md', 'utf8')
+    for (const name of ['Isarog Trail Map', '--trail', '--contour', 'survey-plate', 'legend-glass', 'Archivo', 'font-stretch', 'plate-rise', 'map-pin__mark', 'trailhead-contours', 'SHOT_ASPECT', 'app/og/']) {
+      expect(doc, name).toContain(name)
+    }
+    expect(doc).not.toMatch(/Lobby Rack|--accent|accent-plane|on-accent|edge-code|opengraph-image|on-plane|postcard|lagoon|amber/i)
+  })
+
+  it('PRODUCT.md counts the inventory the data holds', () => {
+    const doc = readFileSync('PRODUCT.md', 'utf8')
+    const own = projects.filter((p) => p.band === 'Products').length
+    expect(doc).toContain(`${projects.length} projects`)
+    expect(doc).toContain(`${own} own products`)
+    expect(doc).toContain(`${FLAGSHIP_SLUGS.length} case studies`)
+    expect(doc).toContain('/services')
+    expect(doc).toContain('/hire')
+    expect(doc).not.toMatch(/\b15 projects\b|three products|Portfolio 4\.0 redesign is built/)
+  })
+
+  it('CLAUDE.md drops the amber and the 4.0 utilities and names the S6 pieces', () => {
+    const doc = readFileSync('CLAUDE.md', 'utf8')
+    expect(doc).not.toMatch(/accent-plane|on-accent|Two ambers|edge-code|removed in S6|Lobby Rack|\.reveal(?![\w-])|lagoon|plain Arial|adjustFontFallback: false/)
+    for (const name of ['plate-rise', 'map-pin__mark', 'trailhead-contours', 's6-finish', 's6-motion', 'metaDescription', 'SHOT_ASPECT', 'MapKey', 'adjustFontFallback: true']) {
+      expect(doc, name).toContain(name)
+    }
+  })
+
+  it('the direction contract no longer lists S6 work as unresolved', () => {
+    expect(readFileSync('.impeccable/surfaces/app-page-tsx.md', 'utf8')).not.toMatch(/Unresolved: the contour pointer shift/)
   })
 })

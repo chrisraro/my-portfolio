@@ -1,102 +1,150 @@
 ---
-name: Christian Raro, Portfolio 4.0
-description: Lobby Rack. Every project is a brochure in a resort lobby rack, printed on paper over a lagoon-night ground, with signal amber laid down as flat planes. Restrained motion: still screenshots, a gated card hover, a once-only stagger, view transitions.
+name: Christian Raro, Portfolio 5.0
+description: "The work as a survey map you walk: one red trail from a trailhead in Naga City, every project a waypoint at a place it really served. It refuses the category default, a big claim over a grid of project cards, and keeps the map honest: a pin only where a project's own words name the place."
 colors:
-  canvas: "oklch(0.2350 0.0420 232)"
-  panel: "oklch(0.2750 0.0460 232)"
-  ink: "oklch(0.9640 0.0110 100)"
-  muted: "oklch(0.6900 0.0320 226)"
-  muted-strong: "oklch(0.8500 0.0220 220)"
-  line: "oklch(0.3450 0.0420 232)"
-  line-strong: "oklch(0.4300 0.0420 232)"
-  field-border: "oklch(0.6000 0.0350 228)"
-  accent: "oklch(0.8200 0.1500 85)"
-  accent-plane: "oklch(0.8200 0.1500 85)"
-  on-accent: "oklch(0.2350 0.0420 232)"
-  live: "oklch(0.8200 0.1500 152)"
-  status-early: "oklch(0.7600 0.1200 285)"
-  status-private: "oklch(0.6400 0.0300 226)"
-  status-internal: "oklch(0.6400 0.0300 226)"
-  canvas-light: "oklch(0.9780 0.0060 220)"
-  panel-light: "oklch(1.0000 0.0000 0)"
-  ink-light: "oklch(0.2500 0.0450 240)"
-  muted-light: "oklch(0.4900 0.0350 235)"
-  muted-strong-light: "oklch(0.3700 0.0400 238)"
-  line-light: "oklch(0.9000 0.0120 225)"
-  line-strong-light: "oklch(0.8200 0.0180 228)"
-  field-border-light: "oklch(0.6000 0.0350 232)"
-  accent-light: "oklch(0.5300 0.1150 68)"
-  accent-plane-light: "oklch(0.8000 0.1500 80)"
-  on-accent-light: "oklch(0.2500 0.0450 240)"
-  live-light: "oklch(0.5500 0.1400 152)"
-  status-early-light: "oklch(0.5200 0.1600 285)"
-  status-private-light: "oklch(0.5600 0.0300 235)"
-  status-internal-light: "oklch(0.5600 0.0300 235)"
+  bg: "oklch(0.9450 0.0150 125)"
+  panel: "oklch(0.9900 0.0040 120)"
+  ink: "oklch(0.2300 0.0200 130)"
+  muted: "oklch(0.4700 0.0250 128)"
+  muted-strong: "oklch(0.3700 0.0250 128)"
+  line: "oklch(0.8700 0.0200 125)"
+  line-strong: "oklch(0.7800 0.0250 125)"
+  contour: "oklch(0.6600 0.0600 115)"
+  trail: "oklch(0.5000 0.1900 30)"
+  on-trail: "oklch(0.9900 0.0040 120)"
+  field-border: "oklch(0.5800 0.0300 125)"
+  live: "oklch(0.5200 0.1400 152)"
+  status-early: "oklch(0.5200 0.1600 285)"
+  status-private: "oklch(0.5400 0.0250 128)"
+  status-internal: "oklch(0.5400 0.0250 128)"
+  bg-night: "oklch(0.2100 0.0180 135)"
+  panel-night: "oklch(0.2600 0.0200 135)"
+  ink-night: "oklch(0.9500 0.0120 120)"
+  muted-night: "oklch(0.7200 0.0250 125)"
+  muted-strong-night: "oklch(0.8400 0.0200 122)"
+  line-night: "oklch(0.3300 0.0220 135)"
+  line-strong-night: "oklch(0.4200 0.0250 135)"
+  contour-night: "oklch(0.4600 0.0500 120)"
+  trail-night: "oklch(0.6800 0.1800 32)"
+  on-trail-night: "oklch(0.1800 0.0180 135)"
+  field-border-night: "oklch(0.5600 0.0300 130)"
+  live-night: "oklch(0.8000 0.1500 152)"
+  status-early-night: "oklch(0.7600 0.1200 285)"
+  status-private-night: "oklch(0.6400 0.0250 125)"
+  status-internal-night: "oklch(0.6400 0.0250 125)"
 typography:
   display:
-    fontFamily: "Anybody, Arial, sans-serif"
-    fontSize: "clamp(3.5rem, 2.2rem + 5.6vw, 7rem)"
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
+    fontSize: "clamp(3rem, 1.6rem + 6vw, 7.5rem)"
     fontWeight: 800
     lineHeight: 0.9
-    letterSpacing: "-0.02em"
-    fontVariation: "'wdth' 75"
-  display-page:
-    fontFamily: "Anybody, Arial, sans-serif"
+    letterSpacing: "-0.01em"
+    fontVariation: "font-stretch: 70%"
+  display-trailhead:
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
+    fontSize: "clamp(2.25rem, 13cqi, 7.5rem)"
+    fontWeight: 800
+    lineHeight: 0.9
+    letterSpacing: "-0.01em"
+    fontVariation: "font-stretch: 70%"
+  section:
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
+    fontSize: "clamp(2.25rem, 1.5rem + 3vw, 4.25rem)"
+    fontWeight: 800
+    lineHeight: 0.95
+    letterSpacing: "-0.005em"
+    fontVariation: "font-stretch: 75%"
+  page-h1:
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
     fontSize: "clamp(2.75rem, 2rem + 3.5vw, 5rem)"
     fontWeight: 800
     lineHeight: 0.92
-    letterSpacing: "-0.02em"
-    fontVariation: "'wdth' 75"
-  headline:
-    fontFamily: "Anybody, Arial, sans-serif"
-    fontSize: "clamp(2rem, 1.5rem + 2.2vw, 3.5rem)"
-    fontWeight: 750
-    lineHeight: 0.95
-    letterSpacing: "-0.015em"
-    fontVariation: "'wdth' 75"
+    letterSpacing: "-0.01em"
+    fontVariation: "font-stretch: 75%"
+  footer-name:
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
+    fontSize: "2.5rem"
+    fontWeight: 800
+    lineHeight: 0.9
+    letterSpacing: "-0.01em"
+    fontVariation: "font-stretch: 70%"
   title:
-    fontFamily: "Anybody, Arial, sans-serif"
+    fontFamily: "Archivo, 'Archivo Display Fallback', sans-serif"
     fontSize: "1.5rem"
     fontWeight: 700
     lineHeight: 1.05
-    fontVariation: "'wdth' 85"
-  numeral:
-    fontFamily: "Anybody, Arial, sans-serif"
-    fontSize: "clamp(2.5rem, 2rem + 2vw, 4rem)"
-    fontWeight: 800
-    lineHeight: 0.9
-    fontFeature: "'tnum'"
-    fontVariation: "'wdth' 75"
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 85%"
   lede:
-    fontFamily: "Figtree, Arial, sans-serif"
+    fontFamily: "Archivo, Arial, sans-serif"
     fontSize: "1.1875rem"
     fontWeight: 400
     lineHeight: 1.55
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
   body:
-    fontFamily: "Figtree, Arial, sans-serif"
+    fontFamily: "Archivo, Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
-  label:
-    fontFamily: "Anybody, Arial, sans-serif"
-    fontSize: "0.8125rem"
-    fontWeight: 600
-    lineHeight: 1.2
-    letterSpacing: "0.04em"
-    fontFeature: "'tnum'"
-    fontVariation: "'wdth' 100"
-  edge-code:
-    fontFamily: "Anybody, Arial, sans-serif"
-    fontWeight: 500
-    letterSpacing: "0.04em"
-    fontFeature: "'tnum'"
-    fontVariation: "'wdth' 100"
-  button:
-    fontFamily: "Anybody, Arial, sans-serif"
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
+  button-label:
+    fontFamily: "Archivo, Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 650
     lineHeight: 1
-    fontVariation: "'wdth' 100"
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
+  button:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 600
+    lineHeight: 1.5
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
+  small:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.43
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
+  caption:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 500
+    lineHeight: 1.33
+    letterSpacing: "0em"
+    fontVariation: "font-stretch: 100%"
+  map-label:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.8125rem"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "0.08em"
+    fontVariation: "font-stretch: 75%"
+  map-label-legend:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "0.08em"
+    fontVariation: "font-stretch: 75%"
+  map-label-pin:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "22px"
+    fontWeight: 600
+    lineHeight: 1.2
+    letterSpacing: "0.08em"
+    fontVariation: "font-stretch: 75%"
+  eyebrow:
+    fontFamily: "Archivo, Arial, sans-serif"
+    fontSize: "0.8125rem"
+    fontWeight: 600
+    lineHeight: 1.6
+    letterSpacing: "0.14em"
+    fontVariation: "font-stretch: 100%"
 rounded:
   sm: "2px"
   md: "4px"
@@ -104,473 +152,233 @@ rounded:
   xl: "10px"
   full: "9999px"
 spacing:
-  "1": "4px"
-  "2": "8px"
-  "3": "12px"
-  "4": "16px"
-  "6": "24px"
-  "8": "32px"
-  "12": "48px"
-  section: "72px"
-  section-md: "112px"
+  plate-margin: "8px"
+  gutter: "20px"
+  gutter-sm: "32px"
+  heading-gap: "40px"
+  section-gap: "72px"
+  section-gap-md: "112px"
+  container: "72rem"
 components:
   button-primary:
-    backgroundColor: "{colors.accent-plane}"
-    textColor: "{colors.on-accent}"
+    backgroundColor: "{colors.trail}"
+    textColor: "{colors.on-trail}"
     typography: "{typography.button}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "10px 20px"
-    height: "44px"
-  button-primary-on-plane:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.accent}"
-    typography: "{typography.button}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "10px 20px"
-    height: "44px"
+    rounded: "{rounded.sm}"
+    padding: "12px 24px"
+    height: "48px"
   button-secondary:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "10px 20px"
-    height: "44px"
-  amber-plane:
-    backgroundColor: "{colors.accent-plane}"
-    textColor: "{colors.on-accent}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "32px"
-  paper-panel:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "32px"
-  rack-card:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "16px"
-  postcard:
-    backgroundColor: "{colors.panel}"
+    typography: "{typography.button}"
     rounded: "{rounded.sm}"
-    padding: "12px"
-  input:
-    backgroundColor: "{colors.canvas}"
+    padding: "12px 24px"
+    height: "48px"
+  survey-plate:
+    backgroundColor: "{colors.panel}"
+    padding: "8px"
+  legend-glass:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.DEFAULT}"
+    height: "56px"
+    padding: "0 20px"
+  text-field:
+    backgroundColor: "{colors.bg}"
     textColor: "{colors.ink}"
     rounded: "{rounded.DEFAULT}"
     padding: "10px 12px"
-  filter-tab-current:
-    backgroundColor: "{colors.accent-plane}"
-    textColor: "{colors.on-accent}"
-    typography: "{typography.button}"
-    height: "44px"
-    padding: "0 16px"
-  filter-tab:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.muted-strong}"
-    typography: "{typography.button}"
-    height: "44px"
-    padding: "0 16px"
-  status-chip:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.muted}"
-    typography: "{typography.edge-code}"
-    rounded: "{rounded.full}"
-    padding: "6px 12px"
-  dialog:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.xl}"
 ---
 
-# Design System: Christian Raro, Portfolio 4.0
-
-This file describes the system as built on the `v4.1` branch (the Lobby Rack, refined). Tokens live in
-`app/globals.css` (raw oklch `L C H` triplets, `:root` light, `.dark` the
-default) and are mapped to Tailwind keys in `tailwind.config.js`; motion tokens
-live in `lib/motion-tokens.ts`, mirrored as `--dur-*` / `--ease-*`. The
-homepage's direction contract, with the choreography it was built from, is
-`.impeccable/surfaces/app-page-tsx.md`. Where this file and the code disagree,
-the code and its tests win, and this file is stale.
+# Design System: Christian Raro, Portfolio 5.0
 
 ## Overview
 
-**Creative North Star: "Lobby Rack"**
+**Creative North Star: "Isarog Trail Map"**
 
-Every project is a brochure standing in a resort lobby rack at night. You see
-its top, a still screenshot of the real site; give it attention and it lifts a
-hair. The page does the job his clients' brochures did before he built their
-websites. The ground is a deep lagoon, the surfaces are paper (panels, cards,
-folds, a rack lip, a perforated reply card, postcards), and colour arrives only
-as whole flat signal-amber planes locked to the grid. A condensed variable
-display face (Anybody) shouts; Figtree reads.
+The work is a survey map you walk. One red trail leaves a trailhead in Naga
+City, under Mount Isarog, and every project is a waypoint at a place it really
+served: Palawan, El Nido, Baguio, Boracay, Naga. The map carries facts, not
+decoration, and it stays honest: a pin goes down only where a project's own
+words name the place, and every count on the page is counted from
+`lib/data.ts`. The site refuses the category default, a big claim over a grid
+of identical project cards.
 
-Motion is restrained, and has one meaning: **paper that unfolds when you pay
-attention.** Three verbs only. *Unfold* reveals detail (the hero tri-fold,
-case-study decisions). *Lift* answers attention (a card rising 2px, a postcard
-straightening). *Slide* keeps continuity (cards glide to their new place when a
-filter changes, a screenshot morphs into the case study it opens). Nothing about
-a screenshot or a card is driven by scroll: screenshots are stills, and the product
-spreads sit settled. Motion is CSS-first, transform-led, progressive
-enhancement: outside its gates every piece sits at rest and fully visible, and
-the server HTML is the finished page.
+Two themes, one map. The **day survey** is the default, because clients read
+on phones in daylight: pale green-grey survey paper, near-black ink, olive
+contour linework, and one trail red. The **night survey** is the same sheet
+read under a head torch: dark field paper, lighter contours, the same trail
+red. The palette is near-monochrome on purpose; colour is spent on where you
+are and what to do next.
 
-It replaced B3 Signal (graphite, sodium amber, Recursive, an ops board) and
-refuses both the dev-portfolio default (dark hero, gradient blobs, a grid of
-screenshot cards) and the mono terminal board B3 already was.
+Motion has three verbs only: **draw** (trails, contours and routes stroke
+in), **rise** (lines and plates lift into place, once), **pan** (the map and
+the page glide to a waypoint). Everything is CSS first and progressive: outside
+its gates the trail is fully drawn, nothing is offset, and the server HTML is
+the finished page.
 
 **Key Characteristics:**
-- Lagoon-night ground, paper panels, signal amber as flat printed planes; no gradients, glows or tints.
-- Two variable families: Anybody (display, condensed on its width axis) and Figtree (reading).
-- Edge codes: every card, cover and product carries a printed running index ("07 / 18 · Sites").
-- Fold creases (dashed 6 on 5 off), a rack lip with a paper ledge, a perforation with notched ends.
-- Honest claims: the hero's AI line carries its proof (what is in use, linked where there is a page).
-- Still previews: 9:16 rack cards and 3:4 frames showing the top of a full-page screenshot of the real site. Nothing scrolls inside them.
-- Honest absence: a project with no public screen keeps its slot with a printed tag saying why.
-- One in-flow shadow, applied only while a card is lifted.
+- Survey paper and ink, olive contours, one trail red for the primary action and the current position.
+- Archivo only, on its width axis: condensed uppercase for display and map labels, normal width for reading, tabular numerals for dates and counts.
+- Every photo and screenshot on a survey plate, at one scale on one baseline.
+- Recognisable with the content removed: contours, a solid red trail, ringed and dotted pins, spot heights, a frosted legend card.
+- Flat at rest; a shadow only while a plate is lifted, and under overlays.
 
 ## Colors
 
-A committed two-tone print: lagoon and paper, with amber as the one ink that
-covers whole planes. Dark is the default theme; the light theme is cool paper
-with lagoon ink.
+A near-monochrome survey sheet in the olive-green hue band (115-135), with one
+saturated red and three small status hues that never decorate.
 
 ### Primary
-- **Signal Amber** (two tokens, one hue): `accent-plane` fills whole planes, bright in both themes (the hero's front panel, each product's flap, the contact reply card, the current filter tab, the primary button on paper, text selection, the brand tile in the top bar); `accent` is amber used as ink and line (the focus ring, the card hover border, links such as "View all projects" and "Read the case study", small glyphs, the availability dot). In the dark theme the two are the same value; in the light theme `accent` is a deeper amber (`oklch(0.53 0.115 68)`) so it holds AA as text on paper, while `accent-plane` stays bright (`oklch(0.80 0.15 80)`). Planes are 30 to 40% of the first viewport.
-- **Plane Ink** (`on-accent`): the only text colour on an amber plane. Lagoon ink in the dark theme, deep ink in the light theme (the light plane is bright, so ink, not white).
-
-### Tertiary
-- **Live Green** (`live`): the live status glyph and its pulse, nothing else.
-- **Ube Violet** (`status-early`): the early-access ring glyph, nothing else. Violet sits well away from amber, so the ring is never mistaken for brand.
-- **Slate Glyph** (`status-private`, `status-internal`): the lock, the filled square (internal) and the outlined square (staging).
+- **Trail Red** (`--trail`, `{colors.trail}` by day, `{colors.trail-night}` by night): the trail strokes, the elevation strip's "you are here" marker, the primary button, the chat's send button, the legend's current-page underline, the current key on `/projects`, the 404's dot, the link-preview card's trail, the focus ring and the text caret. Text on it is **On-Trail** (`--on-trail`): paper by day, near-black by night.
 
 ### Neutral
-- **Lagoon Night** (`canvas`, CSS `--bg`): the page ground; also form-field fill and the inverted primary on a plane.
-- **Paper** (`panel`): cards, leaves, panels, the rack ledge, the dialog, toasts, chat.
-- **Paper Ink** (`ink`): text, headings, the route line's stops.
-- **Margin Note** (`muted`): metadata, edge codes, eyebrows, placeholders.
-- **Lede Ink** (`muted-strong`): ledes, summaries, descriptions, inactive nav and tabs.
-- **Hairline** (`line`): card borders, dividers, the header and footer rules.
-- **Crease** (`line-strong`): fold creases, the rack lip, perforation dots, control borders, the preview track.
-- **Field Border** (`field-border`): text-field borders only, 3:1 against canvas and panel (WCAG 1.4.11).
+- **Survey Paper** (`--bg`): the page ground. Pale green-grey by day, dark field paper by night.
+- **Plate Paper** (`--panel`): survey plates, the legend card, panels, the dialog, the chat. One step lighter than the ground by day, one step lighter by night too.
+- **Survey Ink** (`--ink`): text, the brand mark's plane, map dots and rings, the hover and focus border of every plate and field, the fork's split, the journal rings, selection.
+- **Muted** (`--muted`) and **Muted Strong** (`--muted-strong`): secondary text, captions, catalog numbers, place lines, eyebrows.
+- **Line** (`--line`) and **Line Strong** (`--line-strong`): hairlines and rules; the survey plate's frame is Line Strong.
+- **Contour Olive** (`--contour`): contour linework only: the trailhead contours, the elevation ridge, the field map's outline. Never text.
+- **Field Border** (`--field-border`): the border of every text field, at 3:1 against the paper (WCAG 1.4.11), never a hairline.
+
+### Status (never decoration)
+- **Live Green** (`--live`): a live system, and nothing else, only inside `StatusBadge`.
+- **Early-Access Violet** (`--status-early`): the early-access ring, kept at least 90 degrees of hue from trail red.
+- **Private / Internal Grey** (`--status-private`, `--status-internal`): the lock, the filled square, the outlined square.
 
 ### Named Rules
-**The Flat Plane Rule.** Colour arrives as whole planes locked to the grid: no outlines on planes, no tints, no gradients. Removing a plane must break the composition.
+**The One Red Rule.** Trail red marks the primary action and the current position only. It never fills a large area, never decorates, never colours a heading, a hover or a link. If it is not "do this" or "you are here", it is ink.
 
-**The Plane Ink Rule.** On an amber plane, text is `on-accent` and focus is drawn in `on-accent` (`.on-plane :focus-visible`). Planes and the primary button fill with `accent-plane`, never `accent`; ink on a plane is forbidden, and an accent ring on a plane disappears (`tests/design/contrast.test.ts` holds all three).
+**The Green Means Live Rule.** Green is a live system's status dot and nothing else; the chat assistant's dot is ink.
 
-**The Green Means Live Rule.** `live` and `.live-pulse` appear only inside `StatusBadge` (`tests/design/green-means-live.test.ts`). Brand and availability use `accent`.
+**The Ink States Rule.** Hover borders, field focus borders, `accent-color` (checkboxes) and `::selection` are ink (selection: ink ground, paper text). The keyboard's focus ring and the caret are trail red, because that is where you are.
 
-**The Contrast Ledger Rule.** Every token is a raw oklch triplet, one per line; `tests/design/contrast.test.ts` parses them and checks WCAG AA in both themes (text 4.5:1, glyphs and focus 3:1, field borders 3:1, `on-accent` on `accent-plane`, `accent` as text on paper, early-access violet apart from amber). No raw hex in components, no `dark:` colour pairs. The one hex copy is `lib/og-palette.ts`, held to `.dark` by `tests/design/og-palette.test.ts`.
+Shadows share the ink hue in both themes (`oklch(0.2 0.03 130)` by day, `oklch(0.08 0.02 135)` by night), so a shadow reads as paper over paper. Colours are raw `L C H` triplets in `app/globals.css`, one per line, and `tests/design/contrast.test.ts` checks every pairing in both themes.
 
 ## Typography
 
-**Display Font:** Anybody (variable `wght` and `wdth`, loaded with `axes: ['wdth']`), `--font-display`, fallback plain Arial
-**Body Font:** Figtree (variable `wght`), `--font-sans`, fallback plain Arial
-**Label/Mono Font:** none. Edge codes, dates, domains and counts are Anybody at normal width with tabular numerals.
+**Display Font:** Archivo at 70-75% width (with `'Archivo Display Fallback'`, Arial Narrow sized to 70%)
+**Body Font:** Archivo at 100% width (with Arial, size-adjusted to Archivo's metrics)
 
-**Character:** a brochure's condensed headline voice over a friendly, plain reading face. Anybody carries everything that is printed on the object (headings, numerals, labels, buttons); Figtree carries everything you read.
+**Character:** One variable family on its width axis does the whole job: condensed, heavy uppercase for the headline and the map's labels, normal width for reading, forms and chat. The narrow display face reads like the lettering on a printed survey sheet; the body reads like its notes.
 
-Both load through `next/font/google` with `display: 'swap'` and
-`adjustFontFallback: false`: the fallback is plain Arial, not a metric-adjusted
-`local()` face per weight and size, which cost about 200ms of main thread on the
-first layout (`tests/design/performance.test.ts`).
+Every width is set with `font-stretch` (70% display, 75% section titles, page h1s, h1/h2 and map labels, 85% titles and h3/h4, 100% body, eyebrows and buttons), never `font-variation-settings: 'wdth'`. Archivo loads once through `next/font` with its `wdth` axis as `--font-sans`; `app/layout.tsx` sets `--font-display` on `<html>` to Archivo, then `'Archivo Display Fallback'` (a `@font-face` in `globals.css`: local Arial Narrow, else Arial, at `size-adjust: 70%`), so the condensed headline holds its column before Archivo arrives. Body text falls back to Arial sized to Archivo's metrics (`adjustFontFallback: true`), so the swap re-wraps nothing.
 
 ### Hierarchy
-- **Display** (800, wdth 75, `clamp(3.5rem, 2.2rem + 5.6vw, 7rem)`, 0.9): `.text-fluid-h1`. The hero H1 is additionally sized to its panel (`.hero-title`, `clamp(2.75rem, 21cqi, 7rem)` in a container) so it never breaks out of the plane.
-- **Display, read pages** (800, wdth 75, `clamp(2.75rem, 2rem + 3.5vw, 5rem)`, 0.92): `.text-page-h1` on `/projects`, project pages and the 404.
-- **Headline** (750, wdth 75, `clamp(2rem, 1.5rem + 2.2vw, 3.5rem)`, 0.95): `.text-fluid-h2`, section titles and product names on their flaps.
-- **Title** (700, wdth 85, 1.5rem, 1.05): `.text-title`, card names, h3s, case-study section headings.
-- **Numeral** (800, wdth 75, `clamp(2.5rem, 2rem + 2vw, 4rem)`, tabular): `.text-numeral`, the hero's proof band; `.text-numeral-lg` (`clamp(3rem, 0.5rem + 7vw, 8.5rem)`) sets its two figures, which sit side by side when stacked and one above the other from 768px, each owning half the back panel. Plain numerals ("4"), never zero-padded, never counted up.
-- **Lede** (Figtree 400, 1.1875rem, 1.55): `.text-lede`.
-- **Body** (Figtree 400, 1rem, 1.6): prose held to about 60 to 70ch.
-- **Label** (600, wdth 100, 0.8125rem, 0.04em, tabular, sentence case): `.eyebrow`, in `muted` (in `on-accent` on a plane).
-- **Edge code** (500, wdth 100, 0.04em, tabular): `.edge-code`, sized per use (`text-xs` on cards, `text-sm` for tier headings).
-- **Button** (650, wdth 100, 1rem, 1): `.button-label`.
-
-h1/h2 default to wdth 75 and h3/h4 to wdth 85 in the base layer, all with `text-wrap: balance`.
+- **Display** (`.text-display`; 800, `{typography.display}`, 0.9, uppercase, 70%): the homepage headline; the trailhead sizes it to its column instead (`.trailhead-title`, `{typography.display-trailhead}`), each authored line one unbroken line. The footer prints the name in it at 2.5rem.
+- **Section** (`.text-section`; 800, `{typography.section}`, 0.95, uppercase, 75%): every homepage section heading, through `SectionHeading`.
+- **Page H1** (`.text-page-h1`; 800, `{typography.page-h1}`, 0.92, uppercase, 75%): the h1 of `/projects`, a project, the services pages, `/about`, `/hire` and the 404.
+- **Title** (`.text-title`; 700, 1.5rem, 1.05, 85%): plate names, h3s, place names, counts in the elevation legend and case-study figures.
+- **Lede** (`.text-lede`; 400, 1.1875rem, 1.55): the subheadline and page answers, held to 30-40rem.
+- **Body** (400, 1rem, 1.6): prose, held to about 46-48ch in columns. Small copy is 0.875rem; the status label 0.75rem at 500.
+- **Button** (`.button-primary`, `.button-secondary`: 600, 0.9375rem; `.button-label`: 650, 1rem, line-height 1, for text actions).
+- **Map Label** (`.map-label`; 600, 0.8125rem, 0.08em, uppercase, 75%): place names, catalog numbers, dates, legend keys, field labels. The legend's name sets it at 0.9375rem; a pin's label at 22px in map units.
+- **Eyebrow** (`.eyebrow`; 600, 0.8125rem, 0.14em, uppercase, 100%, balanced): the hero's line and a page's line over its h1. Never over a section heading.
 
 ### Named Rules
-**The Two Families Rule.** Anybody and Figtree, nothing else. There is no `font-mono` key; `tests/design/legacy-tokens.test.ts` fails a stray one.
+**The One Family Rule.** Archivo and its two fallbacks only. No serif, no mono, no second sans. The link-preview card, which cannot read a variable font, uses a static Recursive Sans file; that is the one exception and it lives off-page.
 
-**The Printed Label Rule.** Eyebrows are edge-code labels from `lib/data.ts`, without the old `// ` prefix.
+**The Plain Numeral Rule.** Numerals are `tabular-nums` (`.tabular`) and plain: "4", not "04".
 
 ## Layout
 
-One container everywhere: `mx-auto max-w-6xl px-5 sm:px-8`. Sections pad
-72px below, 112px from 768px. The heading stack (`SectionHeading`) is eyebrow,
-12px, h2, 40px, content. Spacing steps in use: 4, 8, 12, 16, 24, 32, 48, 72, 112.
+One grid: every section and read-page block centres on `SECTION` (`components/ui/grid.ts`: `mx-auto max-w-6xl px-5 sm:px-8`, a 72rem container with 20px gutters, 32px from 640px). Sections are separated by open space, not hairlines: 72px under a section, 112px from 768px; a section heading sits 40px above its content. The trailhead splits copy and plate at `minmax(0,1fr) 22rem` from 1024px, so the headline lands near 88px at 1440.
 
-Homepage order (`app/page.tsx`): Hero tri-fold, Products (`#work`), the Rack
-(`#systems`), Case studies, Field log, Route line (`#changelog`), Stack, Contact
-(`#contact`).
+**Screenshot frames.** Every screenshot frame and every no-preview frame uses `SHOT_ASPECT` (`components/ui/project-shot.tsx`): 4:3 below 640px, 3:4 from 640px, and 4:3 again from 1024px. One scale per width, every plate on one baseline.
 
-- **Hero:** `1.3fr | crease | 0.85fr | crease | 0.85fr` from 768px, at least 640px tall. Below 768px the panels stack (amber front, portrait as a 4:3 band, proof panel) and the creases turn horizontal.
-- **Product spreads:** `4fr | crease | 8fr`, flap side alternating per product; the leaf holds the text and a 3:4 preview (15 to 17rem).
-- **Rack tiers:** 4 cards per row from 1024px, 3 from 640px; below 640px a horizontal scroll-snap strip with cards at 78% width.
-- **Case-study covers:** 3 columns at 1024px, 2 at 640px, 1 below.
-- **Route line:** horizontal lanes (Work, Education) from 768px, vertical below.
-- **Contact reply card:** `5fr | perforation | 7fr`.
-- **Project page:** an amber front-cover header (`7fr | crease | 5fr`), then a read spread: prose leaf on the left, a fold crease, and a sticky preview rail on the right (96px from the top) from 1024px. Below 1024px the rail drops in after "The brief" on flagships, straight after the header on short pages.
-
-The sticky top bar is about 101px below md (two rows) and 64px from md, so
-`html` carries `scroll-padding-top` of 7rem / 4.75rem and anchor sections a
-0.5rem scroll margin (`tests/design/sticky-header.test.ts`).
-
-Far sections (case studies, field log, route, stack, case-study sections) carry
-`.defer-render` (`content-visibility: auto`, intrinsic size `auto 600px`); rack
-tiers use `.defer-render-lift`, which lets paint run 3rem out so a lifted card
-and its shadow are not clipped. Screenshot frames (`.project-shot__frame`) skip
-rendering until they near the viewport. The hero, products, rack section and contact card are never
-deferred. Before an in-page jump the top bar adds `.render-all` for 1.5s so the
-jump is measured against real heights.
+**Phone pacing.** On a phone the frames go 4:3 so `/projects` is not a tower of portraits, the field map narrows to 18rem and its places set two to a row, and the journals' shelf is single ruled rows. The legend collapses to a menu below 1024px. The footer keeps 96px of bottom padding (`pb-24`) and the page scroll padding is 5rem top and 6rem bottom, so neither the floating legend nor the chat launcher ever covers a target.
 
 ## Elevation & Depth
 
-Flat paper by default. Depth is conveyed by surface (canvas under panel, amber
-planes over both), by creases and the rack lip, and by 3D folds in perspective
-(`perspective: 1600px` on the hero and each spread). Shadows exist only as a
-response to state or for floating layers.
+Flat at rest. Depth comes from paper on paper (plate paper one step off the ground) and hairlines, not shadow. Two shadows exist, both in the ink hue:
 
 ### Shadow Vocabulary
-- **Lift** (`--shadow-lift`: `0 18px 30px -18px oklch(0.12 0.03 232 / 0.55)`): the one in-flow shadow, only while a catalog card (`.lift-card`) or postcard is lifted.
-- **Overlay** (`--shadow-overlay`: `0 24px 48px -12px oklch(0.12 0.03 232 / 0.5)`): the LivePreview dialog, chat, toasts.
+- **Lift** (`--shadow-lift`: `0 18px 30px -18px`, ink at 45% by day, 70% by night): only while a plate is lifted, painted on a `::after` pseudo-element whose opacity fades in. A `box-shadow` is never animated.
+- **Overlay** (`--shadow-overlay`: `0 24px 48px -12px`, ink at 40% by day, 65% by night): the floating legend card, the live-preview dialog, the chat panel and launcher, the lightbox and toasts.
 
 ### Named Rules
-**The Lifted-Only Rule.** Nothing in the page flow casts a shadow at rest.
+**The Flat-At-Rest Rule.** Nothing in the page's flow carries a shadow until it answers the pointer. The legend card is the one frosted surface (`.legend-glass`: panel at 96% with `blur(14px) saturate(1.2)`, solid panel where backdrop-filter is unsupported).
 
 ## Shapes
 
-Paper is square-ish. `--radius` is 6px: cards, panels, buttons and fields at
-6px (`rounded`), postcards and staging tags at 2px (`rounded-sm`), the dialog
-at 10px (`rounded-xl`), chips and the status pill at full round. Joined panels
-round only their outer corners (a flap's inner edge meets the crease square).
-
-Recurring geometry:
-- **Creases** (`.crease-v`, `.crease-h`, `.crease-fold`): 1px dashes, 6 on 5 off, in `line-strong`; `.crease-fold` runs across when panels stack and upright from 768px.
-- **Rack lip:** a 2px `line-strong` rule over a 14px `panel` ledge each card stands on.
-- **Perforation:** 2px dotted `line-strong` with a 20px half-circle notch (canvas-coloured) at each end; across when stacked, upright from 768px.
-- **Printed tag:** a dashed `line-strong` box on canvas for honest absence (`NoPreviewTag`, the 404's empty slot).
-- **Staging tag:** an edge-code label on canvas, 2px radius, rotated 8deg in a rack card's corner.
+Paper is square-ish. Plates, panels, fields and the legend card take `--radius` (6px); buttons 2px; the shot frame inside a plate 4px; the dialog and chat panel 10px. The survey plate itself is a square-cornered frame: panel paper, a 1px Line Strong hairline, an 8px margin. Status dots, the live pulse's ring and the elevation lanes are fully round (`rounded-full`, 9999px). The map's marks are geometric: a 6px ink dot for a town or city, an 18px dashed ink ring for a region, a small solid triangle (`SpotHeight`) beside a measured count. Lines are dashed where they are routes (the fork's split, the journal's left rule) and solid where they are the trail.
 
 ## Components
 
 ### Buttons
-- **Shape:** gently squared (6px), at least 44px tall, Anybody 650 at normal width.
-- **Primary** (`.button-primary`, defined once in `globals.css`): amber fill, `on-accent` text, 10px 20px. On an amber plane (`.on-plane`) it inverts to a lagoon fill with amber text. "Start a project" and "Send message" are the primaries; `tests/design/primary-button.test.ts` requires every primary CTA to use the class and forbids composing one from a fill and padding.
-- **Hover / Press** (`.press`): lifts 2px, sinks 1px and scales to 0.98 on press, fast/sharp; colour changes fast/sharp. The trailing arrow (`.arrow-nudge`) slides 8px right on hover of its link or button.
-- **Secondary:** a `line-strong` outline with ink text that turns accent on hover ("Live preview", "Open live site"). On a plane the outline and text are `on-accent` ("Résumé").
-- **Text links:** `.link-draw`, an underline drawn from the left on hover or focus and leaving to the right; `[aria-current='page']` keeps it drawn.
+- **Shape:** gently squared (2px), at least 48px tall, 12px × 24px.
+- **Primary** (`.button-primary`): trail red with on-trail text, defined once in `globals.css`; one per view where it matters ("Start a project", "Send").
+- **Secondary** (`.button-secondary`): a 2px ink outline, never filled ("Hire me for a role", the fork's two paths).
+- **Hover / press** (`.press`): lift 2px on hover, sink 1px and scale 0.98 on press, fast/sharp; the arrow inside slides 8px right (`.arrow-nudge`). Under reduced motion only the colours change.
 
-### Chips
-- **Stack chips:** edge-code, full round, `line` border with `muted-strong` text; WordPress, the specialism, sits on a canvas chip with a `line-strong` border (never an amber outline). The hero shows `heroContent.stack` as chips.
-- **Status pill:** on an amber flap or header the `StatusBadge` sits in a full-round `panel` pill.
+### Text links (`TrailLink`)
+One idiom in two weights: an *action* in button-label type with an arrow, or a *label* in map-label type. The underline draws from the left on hover or focus (`.link-draw`) and leaves to the right. Hit areas stay 44px (32px for a label from 640px). External links point up and out and say they open a new tab.
 
-### Cards / Containers
-- **Corner Style:** 6px; postcards 2px.
-- **Background:** `panel` on `canvas`; amber planes for flaps and the reply card.
-- **Shadow Strategy:** none at rest; Lift (a pseudo-element faded in by opacity) while hovered.
-- **Border:** 1px `line`.
-- **Internal Padding:** 16px (rack card top), 24px (covers), 24 to 40px (planes and leaves).
+### Navigation (the legend)
+A floating map-legend card (`SiteLegend`, `.legend-glass`), sticky 12px from the top, 56px tall on the 72rem grid: the brand mark (an ink plane with paper letters, never red), the name in map-label type, Work, Services, About, Hire, Contact, the theme switch and the résumé link. Keys are muted-strong map labels; hover turns them ink; the current page is ink with a 2px trail-red underline 6px below. Below 1024px the keys fold into a disclosure menu.
 
-### Inputs / Fields
-- **Style:** canvas fill, 1px `field-border`, 6px radius, 10px 12px padding, Figtree; labels above in edge-code `muted-strong`.
-- **Focus:** the global ring (2px accent, 3px offset) plus the border turns accent.
-- **Error:** `aria-invalid` turns the border ink; the message sits below with an octagon glyph in ink.
+### Survey plates (`SurveyPlate`, `.survey-plate`)
+The frame every photo, screenshot and map sits in. The only place the class is written. The portrait sits on one at the trailhead (4:5 inside), the field map on one as a figure, the plan-the-route form on one.
 
-### Navigation
-- **Top bar:** sticky, canvas, a `line` rule below. An amber initials tile and the name in Anybody bold at wdth 75. Nav links in Anybody 600 (wdth 85 below md, 100 from md), `muted-strong` turning ink, with `.link-draw`; the current route keeps its underline. Availability (accent dot plus edge code) from lg; a 44px theme toggle with `.press`. Below md the bar is two rows and the nav scrolls sideways inside a padded strip so focus rings are not clipped.
-- **Filter tabs** (`/projects`, `?band=` links): index tabs on a 2px `line-strong` lip; the current tier is an amber plane with `on-accent` text (`aria-current="true"`), the rest paper with `muted-strong` text.
-- **Footer:** a hairline, the name in Anybody, an edge-code colophon ("Printed in Naga City"), social links with `.link-draw`.
+### Project plates (`ProjectPlate`)
+A waypoint in the `/projects` list and a case study's next stop: one plate, one link. The still (`ProjectShot`, the top of the full-page shot, quality 50, `SHOT_ASPECT`) or the printed no-preview reason (`NoPreviewTag`) in the same frame; then the catalog number, the name, `StatusBadge`, the summary and the domain. Hover lifts it (`.lift-card`). It rises once on entry (`.plate-rise`).
 
-### Status Badge (signature)
-`StatusBadge` is the only way status reaches the page: a glyph shape plus a text
-label, edge-code `text-xs`, `muted`. Live: a filled green dot with the
-twice-then-stop pulse. Early access: an ube-violet ring. Private: a lock. Internal:
-a filled square. Staging: an outlined square. `compact` hides the label visually
-but keeps it in the accessibility tree.
+### Status (`StatusBadge`)
+Status is never colour alone: a glyph shape plus a text label. Live: a green dot with a bounded pulse. Early access: a violet ring. Private: a lock. Internal: a filled square. Staging: an outlined square.
 
-### Rack Card and Rack Tier (signature)
-`RackTier` (`components/ui/rack-tier.tsx`): an edge-code heading with its count,
-then a row of cards on a lip, shared by the homepage rack and `/projects`.
-Within a tier, cards with a screenshot lead. The tier is named (`--vt-tier`) so
-it glides when a `/projects` filter changes.
+### The field map
+The Philippines outline on a survey plate, with a pin per verified place: a dot for a town or city, a ring for a region, each name in map-label type. `MapKey` names the dot and the ring under both map captions (homepage and `/projects`). Pins carry `PLACE_MARK` classes (`map-dot`, `map-ring`) and counter-scale (`.map-pin__mark`) so a pan zooms the map, not the labels. Beside it, the places as a ruled list.
 
-`RackCard` (`components/ui/rack-card.tsx`): a 9:16 paper card standing whole on
-the shelf, one link to the project page. Its top 44% shows the edge code, name,
-`StatusBadge`, a two-line summary and the domain; the rest is a decorative
-`ProjectShot` (the top of the site) or a `NoPreviewTag`. Nothing is sunk, clipped
-or reserved for a lift. A card with no public screen is flat from 640px: square,
-the reason printed in its text block. Below 640px the cards sit in a
-scroll-snap strip. Each card's slot is named (`--vt-card`) for the filter
-re-layout, and its shot is marked (`data-vt-shot`) as the start of the
-card-to-case-study morph.
+### The fork
+Two paths up from the trailhead, drawn as a split: one dashed ink leg dividing in two, one over each path (from 768px). Each path is a 2px ink top rule, a title, a line of copy and a secondary button; the trail-red primary stays the trailhead's.
 
-**Hover (`.lift-card`)**, shared by rack cards, product screenshots and
-case-study covers: on a fine pointer, with motion allowed, the card lifts 2px,
-its border turns `accent` and its screenshot scales to 1.02 inside a clipping
-frame, fast/smooth. The Lift shadow is a pseudo-element faded in by opacity, so
-`box-shadow` is never animated. Keyboard focus turns the border `accent` beside
-the global ring, with no travel, in every mode.
+### Trail journals
+The six case studies in reading order: the first lies open as a cover on panel paper (number, title, place, the brief's first sentence, the role), sticky beside the shelf from 1024px and lifting like a plate; the other five sit on the shelf as one ruled row each. On a case-study page the journal's parts are numbered waypoints: an ink ring on a dashed left rule, each holding its number.
 
-**Entrance (`.reveal-stagger`)**: from 640px, where timeline triggers exist, a
-card rises its last 16px once as it enters the viewport, each visible column
-`--stagger-card` (60ms) after the one before (3 columns from 640px, 4 from
-1024px). It is a trigger, not a scrub: it plays forward once and never reverses,
-never plays on a card already in view at load or after a filter change, and
-moves by transform only, so the server HTML is the finished rack.
+### Elevation strip
+The proof counts as the strip's legend (a `SpotHeight` triangle, the count in title type, its label), then the contour ridge, the work and education lanes, the year ticks, and the trail-red "you are here" marker resting at now.
 
-### Product Spread (signature)
-Each product is an open fold-out spread: an amber flap (edge code, name in
-headline type, summary, status pill) joined at a crease to a paper leaf
-(description, "Live preview" wherever the site is public, "Read more", the domain, and a 3:4
-`ProjectShot`). Flaps alternate sides. The spread sits settled: nothing about it
-moves with scroll (a scrubbed flap and leaf left the crease seam out of line).
-On a fine pointer, hovering the spread tilts the flap 4deg on its hinge,
-inviting the open.
+### Plan the route (`PlanTheRoute`)
+The contact form on a survey plate. Fields: canvas fill, a Field Border border, 6px, map-label labels above; focus and invalid borders turn ink. The submit is the primary button. Beside it the ways to reach Christian and "Ask Chunks", which opens the chat.
 
-### ProjectShot (signature)
-`components/ui/project-shot.tsx` (server). A still, fixed-aspect (3:4 or 9:16)
-frame over a full-page screenshot (`<id>-full.webp`, 1440 wide, at most 6000px
-tall), `object-fit: cover` from the top, `quality={50}`, never `priority`. There
-is no scroll inside it, no cue and no progress rule; nothing about it follows
-the page's scroll (`tests/design/catalog-motion.test.ts` holds this).
-- **Hover:** as a link it is a `.lift-card` (see Rack Card).
-- **Accessibility:** a named `role="img"` with no link; a named link with an href ("..., opens project page"); out of the tab order and the tree when it duplicates a visible link (`duplicateLink`); silent inside a rack card (`decorative`).
-- **Morph ends:** `slug` marks the shot as the morph's start (`data-vt-shot`); `morphTarget` gives the case-study header shot its shared `view-transition-name`. Only one per page.
-- **Rendering:** the frame carries `content-visibility: auto`, so an off-screen shot is not requested until it nears the viewport.
+### Overlays
+The live-preview dialog (10px, Line Strong border, overlay shadow), the chat panel (10px, a trail-red send button, an ink status dot), and toasts sit on plate paper with the overlay shadow; the lightbox shows the photo itself, framed by a Line hairline, under the same shadow.
 
-### LivePreview (signature)
-`components/ui/live-preview.tsx` (client). A secondary "Live preview" button,
-shown on every project a visitor can open (`previewFor(project)` in
-`lib/project-page.ts`, which passes plain props from the server), opens a dialog portalled to `<body>`: canvas scrim at 90%, a 10px paper dialog
-with the Overlay shadow, a title (with a "Staging site" tag for staging), a
-Desktop / Mobile toggle (`aria-pressed`), an "Open site in a new tab" link, and
-Close. Every other child of `<body>` is made inert; focus moves to Close, Tab
-cycles inside, Escape and the scrim dismiss, focus returns to the trigger. The
-iframe is sandboxed (`allow-scripts allow-same-origin allow-popups`, no forms),
-hidden and out of the tab order until it loads; after 7.2s (crawl × 6) it is
-called failed and the new-tab link becomes the amber fill. A polite status
-region announces loading, loaded and failed. Capture mode: a site that
-refuses framing (`isEmbeddable` false, from `lib/embeddable.json`) shows its
-full-page shot instead, in a named, keyboard-scrollable region in the same
-dialog, with a "Capture" tag on the title and a note under the header ("This
-site doesn't allow embedding, so this is a capture of it. Open the live site");
-the Mobile toggle switches to the `-mobile` shot. Motion: `AnimatePresence
-mode="wait"`; the scrim fades and the dialog rises 16px at normal/smooth, and
-exits at fast. The width toggle squeezes the frame with a WAAPI `scaleX` (token
-duration and easing) and swaps the width once at the end. Under reduced motion
-the dialog only fades (fast) and the width swaps at once.
+### The link-preview card (`app/og/`)
+One card per page at the page's path under `/og`, 1200 × 630, in the day palette (`lib/og-palette.ts`): the page's words in a 760px column from an 80px margin, and the linework (`lib/og-linework.ts`: contours and the trail ending at the "you are here" dot) kept right of that column at x 840 and beyond, so nothing runs behind a word.
 
-### Hero Tri-fold (signature)
-Front panel: the amber plane (`.on-plane`, the LCP surface, static from the
-first frame) with the eyebrow, H1, the AI line ("AI-enabled engineer and
-automations: Claude Code, Codex, Qwen Code, n8n") and its proof ("In use:", one
-item per line, linked where a page exists: the site's own assistant on Groq,
-Connecta PH's case study; all from `heroContent`), the lede, specialism and the
-CTA row. Middle: the
-portrait, full bleed, opening `ImageLightbox`. Back: the proof band (numerals
-over labels; screen readers hear the original sentence) and the core-stack chips
-on paper.
+## Motion
 
-### Other surfaces
-- **Case-study covers:** closed tri-folds, paper with an upright crease just inside the right edge, edge code, title, sector, the brief's first sentence, role, "Read the case study". The whole cover is a `.lift-card` link.
-- **Field log:** postcards (2px radius, 12px paper border, captions always visible) resting at -1.5deg and +1deg alternately, interleaved with testimonial cards; photos open `ImageLightbox`.
-- **Route line:** a 2px `line-strong` line with ink-ringed stops, dates in edge code.
-- **Stack:** the brochure's "amenities" back panel, categories in columns on dotted leaders, in the order `lib/data.ts` gives them: WordPress & e-commerce (the specialism, first and widest), Frontend, Backend, AI & automation (Claude Code, Codex, Qwen Code, n8n, Groq / LLM APIs), Tools & DevOps. No scroll motion.
-- **Contact reply card:** an amber plane (heading, availability, email, résumé, Facebook, location) perforated to a paper form leaf; "Send message" is the primary.
-- **404:** an empty rack slot, the lip and ledge with a dashed slot and a printed tag.
-- **Chat (Chunks) and toasts:** paper panels with the Overlay shadow; typing dots in `muted`; enter and exit with short fades gated by `useReducedMotion`.
+Tokens live in `lib/motion-tokens.ts`, mirrored as CSS variables: `--dur-fast` 0.18s, `--dur-normal` 0.35s, `--dur-slow` 0.6s, `--dur-crawl` 1.2s, `--dur-draw` 1.6s; `--ease-smooth` `cubic-bezier(0.22, 1, 0.36, 1)`, `--ease-sharp` `cubic-bezier(0.4, 0, 0.2, 1)`; `--stagger-line` 70ms. Transform, opacity and stroke only.
 
-### Motion
-Tokens (`lib/motion-tokens.ts`, mirrored in `:root`; `tests/design/motion-tokens.test.ts` keeps them in step):
-
-| Token | Value | CSS |
-|---|---|---|
-| duration fast / normal / slow / crawl | 0.18s / 0.35s / 0.6s / 1.2s | `--dur-fast` … `--dur-crawl` |
-| easing smooth | `cubic-bezier(0.22, 1, 0.36, 1)` | `--ease-smooth` |
-| easing sharp | `cubic-bezier(0.4, 0, 0.2, 1)` | `--ease-sharp` |
-| distance sm / md / lg / xl | 8 / 16 / 24 / 40px | (JS only) |
-| springs snappy / gentle | 400/32, 180/26 | (JS only) |
-
-**Hero sequence** (CSS keyframes on load, no JS, 1.9s, once; timeline variables on `.hero-fold`):
-- 0ms: H1 words rise 0.35em → 0, slow/smooth, 90ms stagger. Transform only, painted from frame one, so LCP is unaffected.
-- 250ms: lede, specialism and CTAs rise 16px with opacity 0.01 → 1, normal/smooth.
-- 400ms / 650ms: middle and right panels unfold `rotateY(88deg) → 0` from their left hinge, slow/smooth; the free edge recedes, so a panel opens from behind the front one and never swings past the hero.
-- 450ms / 700ms: the two creases draw `scaleY(0 → 1)` from the top, crawl/smooth.
-- 1100ms: proof items rise 8px, 60ms stagger, normal/smooth.
-- Below 768px panels unfold `rotateX(-88deg) → 0` from their top edge and creases draw across.
-- Reduced motion: every piece in its final state at first paint, creases drawn.
-
-**Scroll reveals** (`animation-timeline: view()`, range `entry 10% cover 30%`, all inside `@supports (animation-timeline: view())` and `@media (prefers-reduced-motion: no-preference)`; transform only, so nothing is painted or measured faded). They are entrances for text and furniture; no screenshot and no card is scroll-driven:
-
-| Class | Where | Motion |
-|---|---|---|
-| `.reveal` | generic | rise 24px |
-| `.reveal-stagger` | rack card | rise 16px once on a scroll trigger, columns 60ms apart (from 640px; see Rack Card) |
-| `.reveal-cover` | case-study cover | rise 24px, staggered by `--i` x 10% |
-| `.reveal-postcard` | postcard | slide 40px at its resting tilt |
-| `.reveal-fold` | case-study decision | fold down `rotateX(-22deg)` from its crease |
-| `.reveal-reply` | contact card | rise 40px |
-| `.reveal-perf` | perforation | draw down (across below 768px) |
-| `.reveal-route` / `.reveal-stop` | route line | the line draws across its section's named timeline; stops pop from `scale(0.6)` as it passes |
-
-**Hover / press:** `.press` (2px lift, press sink), `.link-draw`, `.arrow-nudge`, `.lift-card` (2px lift, accent border, shot 1.02; fine pointer and no-preference only), the product flap tilt, the postcard straighten-and-lift (8px with Lift). Colour transitions fast/sharp.
-
-**View transitions** (`components/ui/view-transitions.tsx`, a client island mounted once in `app/layout.tsx` inside `Suspense`; click rules in `lib/view-transition.ts`, tested without a browser):
-- *Filter FLIP:* a `/projects` filter tab change names every card (`card-<slug>`) and tier heading (`tier-<heading>`) for the length of the change (`.vt-filter` on `<html>`), so they glide from old place to new, normal/smooth.
-- *Card to case study:* a click on a project link names the clicked screenshot `shot-<slug>` and morphs it into the case study's header shot (the static `morphTarget`), cropping from the top and never stretching; the rest cross-fades, the old page out fast before the new one fades in. The morph runs only if the header shot is mostly in the viewport (on a phone it sits below the cover, so the page just cross-fades), waits up to 300ms for it to decode, lands at the top and moves focus to the h1.
-- *Safety:* feature-detected (`startViewTransition`); skipped under reduced motion; modified or non-primary clicks, other origins and other routes are left to next/link; a 2.5s commit timeout; a failed push falls back to a full navigation; only the latest of rapid clicks cleans up its names. `::view-transition` never takes the pointer. Without JavaScript every link is a plain link.
-
-**Bounded loops:** the live pulse runs twice (2.4s each) and stops. The chat typing dots and the "Sending" spinner run only while a request is pending.
-
-**Reduced motion:** reveals and the hero are switched off by their gates and explicitly reset in the `reduce` block; hover transforms are removed (colour and underline still change, instantly); the stagger and view transitions are off (the island navigates without one, and the view-transition animations are zeroed); the live pulse is removed; then every animation and transition collapses to one 0.001ms iteration. `useReducedMotion` drops offsets in the `motion/react` pieces.
+- **Draw.** The trailhead's trail draws out of the portrait plate once on load (`.trail-draw--load`, from 300ms over `--dur-draw`). Short trail segments between homepage sections draw on their own named view timeline on their `<svg>` (`.trail-draw--view`, `entry 10% cover 45%`). The trail never loops and never follows the page's scroll.
+- **Rise.** The trailhead, on load, once, under 2 s: the headline's authored lines rise `0.35em` in turn (`--stagger-line` apart), the copy and buttons rise 16px at 250ms. Plates appear once (`.plate-rise`): every `/projects` plate, own-product plate and case-study shot rises its last 16px as it enters, on a scroll trigger (`timeline-trigger` with `animation-trigger: play-forwards`), filled backwards so a plate waiting for its trigger is held at its start; a plate already in view never moves; without trigger support plates sit at rest. Journal rows rise 24px on a view timeline (`.reveal-cover`). Nothing fades; the server HTML is the finished page.
+- **Contour shift** (`.trailhead-contours`): on a fine pointer with hover, the hero contours drift 8px toward the half the pointer rests on (`.trailhead:has(.trailhead-copy:hover)` / `:has(.trailhead-plate:hover)`) on `--dur-crawl`. CSS only; nothing on touch; the trail stays put, so the land moves under a fixed route.
+- **The elevation marker** travels on its own `--elevation` view timeline as the strip comes into view and rests at now.
+- **Pan.** On `/projects` a legend key glides the map to the band's pins (`.map-pan`, `--pan-x/--pan-y/--pan-s` from `lib/map-pan.ts`, `--dur-slow`, smooth), pins counter-scaling with it; a pin glides the page to its plate.
+- **View transitions.** A filter change glides plates and band headings to their new places while the map pans; a project link morphs the clicked screenshot into the project page's shot while the rest cross-fades. Feature-detected, off under reduced motion, plain links without JS.
+- **Hover.** `.lift-card`: lift 2px, border to ink, shot to 1.02 inside its clipping frame, the lift shadow faded in; fine pointer and no-preference only. Keyboard focus gets the ink border with no travel.
+- **Bounds.** Nothing moves for more than five seconds: the live pulse fades twice (2.4 s each) and stops; the typing dots and the sending spinner run only while a request is pending. No count-ups, scroll parallax or continuous animation.
+- **Reduced motion.** Every reveal, the trailhead sequence, the contour shift, the plate rise and the pins' glide are off; the trail is drawn at first paint; hover transforms go while colours, the ink border and underlines still change, instantly; view transitions are zeroed; the pulse is removed.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** take every colour from the Tailwind keys (`canvas`, `panel`, `ink`, `muted`, `muted-strong`, `line`, `line-strong`, `field-border`, `accent`, `on-accent`, `live`, `status-*`) and keep `globals.css` triplets one per line.
-- **Do** put text and focus on an amber plane in `on-accent`, and mark the plane `.on-plane` when it holds focusable controls.
-- **Do** use `.button-primary` with `.press` for every primary call to action.
-- **Do** render status only through `StatusBadge`.
-- **Do** give every project a slot: a still `ProjectShot` when a full shot exists, a printed `NoPreviewTag` when it does not.
-- **Do** take durations and easings from `lib/motion-tokens.ts` or `--dur-*` / `--ease-*`, and gate every scroll-driven animation behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`.
-- **Do** keep proof (products, the rack) visible in the server HTML: transform-only motion, no opacity entrance.
-- **Do** fill planes with `accent-plane` and use `accent` for text, rings and lines; keep violet for early access only.
-- **Do** keep catalog hover on `.lift-card`, behind the fine-pointer and no-preference queries.
-- **Do** keep the hero sequence under two seconds and everything bounded under five.
+- **Do** spend trail red only on the primary action and the current position: the trail, the marker, the primary button, the send button, the current page or key, the focus ring and the caret.
+- **Do** put every photo, screenshot and map on a `SurveyPlate`, and every screenshot frame on `SHOT_ASPECT`, so plates stand at one scale on one baseline.
+- **Do** set every width with `font-stretch` and keep Archivo the only family.
+- **Do** let a section heading carry its own weight: one `<h2 className="text-section">`, copy from `lib/data.ts`.
+- **Do** keep status to `StatusBadge`: a glyph and a label, never colour alone.
+- **Do** keep night plates dark. Night survey paper is the whole sheet; a pale frame on it would be the brightest thing on screen and outshine the trail red and the shot it holds. The plate keeps its day relation instead: plate paper one step up from the ground, framed by the Line Strong hairline. (Designed, finish review F20.)
+- **Do** number a case study's parts as waypoint rings. The ring is the journal's waypoint on its dashed route and the number is the order a walker follows it, the one place sequence is the content; the rings stay ink, never red. (Designed, finish review F14.)
+- **Do** draw contours in Contour Olive and keep them under the words, never through them.
 
 ### Don't:
-- **Don't** use gradients, glows, tints or outlines on planes; colour is a whole flat plane or nothing.
-- **Don't** set ink text on amber, or use amber as a text colour on an amber-adjacent plane.
-- **Don't** use green anywhere outside `StatusBadge`'s live glyph.
-- **Don't** add a third typeface or a mono family.
-- **Don't** cast a shadow from anything at rest in the page flow.
-- **Don't** fade proof in, count numbers up, add parallax, drive a screenshot or card from scroll, or loop anything past five seconds.
-- **Don't** animate `box-shadow`; fade a pseudo-element's opacity instead.
-- **Don't** import `framer-motion`, render `motion.*`, or use `useAnimate`; client motion is `m.*` inside a strict `LazyMotion`.
-- **Don't** mark a preview image `priority` or fake a screenshot for a gated or internal project.
-- **Don't** hardcode portfolio content (headings, eyebrows, facts) in components.
-
-## Raster Provenance
-
-| Raster | Source | Provenance |
-|---|---|---|
-| `public/assets/images/projects/<id>.png`, `<id>-mobile.png` | Each project's live site | `npm run capture` (`scripts/capture-screenshots.mjs`, system Chrome/Edge via `puppeteer-core`), 1440×900 and a phone viewport. |
-| `public/assets/images/projects/<id>-full.webp` | Each project's live site | `npm run capture -- --full`: 1440 wide, whole page clipped at 6000px, WebP quality 70, overlays dismissed. Dropped shots are listed in `FULL_SKIP` so a rerun does not bring them back. |
-| `public/assets/images/gallery/*.jpg` | Christian's own photographs | Field-log postcards; captions in `galleryImages`. |
-| `public/assets/images/about/profile-hiking.jpg` | Christian's own photograph | The hero portrait. |
-| `/opengraph-image` | `app/opengraph-image.tsx` | `next/og` on the edge runtime from `heroContent`, in the dark palette (`lib/og-palette.ts`) and Recursive (static instances in `app/fonts/`). |
-
-Auth-gated and internal projects (the OCS control panel, the BeachBus NFC
-system) have no screenshot; their interiors need client clearance.
-
-## Open Points
-
-Recorded, not resolved.
-
-1. **Homepage performance is 92, not 95.** Lighthouse mobile after the SP2 fixes: `/` 92 (LCP about 3.3s, the hero lede, network-bound), `/projects` 96, a flagship 91 to 97 (machine noise); accessibility 100 on all three. The remaining gap on `/` is bytes before first paint: about 470KB (roughly 140KB of JS, 75KB of fonts, the 92KB portrait and one product shot). `tests/design/performance.test.ts` pins the fixes already made (priority only on first-viewport images, preview shots at quality 50 and never prioritised, motion's engine in a lazy chunk via `LazyMotion` + `m.*`, no `useAnimate`, plain Arial fallbacks, no next-themes transition suppression on load, `content-visibility` on off-screen frames and far sections, the hero, work and contact never deferred, transform-only reveals).
-2. **The social card still renders in Recursive.** `next/og` needs static font files and cannot use `next/font`'s variable Anybody and Figtree, so the OG image keeps B3's Recursive instances in `app/fonts/` (its colours follow the Lobby Rack dark palette, amber included). Replacing it needs static Anybody/Figtree TTFs committed under `app/fonts/`.
-3. **The rack scrolls sideways below 640px.** Each tier is a horizontal scroll-snap strip on phones; the a11y gate accepted it as P2 given the "View all projects" link, but a vertical stack would remove the hidden overflow.
-4. **View transitions are Chromium-first.** `startViewTransition` is feature-detected; without it (and under reduced motion) navigation is instant and nothing else changes. The card morph is skipped when the case-study header shot is not in view (phones).
-5. **The stagger needs scroll triggers.** `timeline-trigger` is new; where unsupported, cards simply sit at rest.
-6. **The refinement awaits review.** The Lobby Rack world was chosen in an unattended run (direction contract, "Unresolved") and refined on `v4.1` (amber, still shots, restrained motion); it stands until Christian signs off on the v4.1 preview.
+- **Don't** put an eyebrow over a section heading. Eyebrows belong to the hero and to a page's h1, where they name where you are.
+- **Don't** build a big-number row or a hero-metric template; counts sit in the elevation strip's legend beside a spot height.
+- **Don't** lay out identical card grids: the products, the journals' open cover and shelf, the fork's split and the map each take their own form.
+- **Don't** use trail red for a hover, a heading, a link, a decoration or a large fill.
+- **Don't** use gradients, glows, tints or text over images; don't put a shadow on anything at rest or animate a `box-shadow`.
+- **Don't** fake a screenshot for an auth-gated or internal project; print the reason in the shot frame.
+- **Don't** pin a place a project's own words do not name.
+- **Don't** let anything follow the page's scroll or move for more than five seconds.
