@@ -40,6 +40,14 @@ describe('trail map type utilities', () => {
     }
   })
 
+  it('resets the old width-axis settings so font-stretch wins', () => {
+    for (const cls of ['text-display', 'map-label', 'eyebrow']) {
+      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
+      expect(body, cls).toBeDefined()
+      expect(body, cls).toMatch(/font-variation-settings:\s*normal/)
+    }
+  })
+
   it('gives numerals tabular figures', () => {
     expect(css).toMatch(/\.tabular \{[^}]*font-variant-numeric:\s*tabular-nums/)
   })

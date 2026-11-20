@@ -206,6 +206,7 @@
 	.eyebrow {
 		font-family: var(--font-sans);
 		font-stretch: 100%;
+		font-variation-settings: normal;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
@@ -216,6 +217,7 @@
 	.text-display {
 		font-family: var(--font-sans);
 		font-stretch: 70%;
+		font-variation-settings: normal;
 		font-weight: 800;
 		text-transform: uppercase;
 		line-height: 0.9;
@@ -227,6 +229,7 @@
 	.map-label {
 		font-family: var(--font-sans);
 		font-stretch: 75%;
+		font-variation-settings: normal;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
