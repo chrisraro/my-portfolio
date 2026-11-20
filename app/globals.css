@@ -167,14 +167,6 @@
 		line-height: 1.05;
 		font-weight: 700;
 	}
-	.text-numeral {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-stretch: 75%;
-		font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
-		line-height: 0.9;
-		font-weight: 800;
-		font-variant-numeric: tabular-nums;
-	}
 	.text-lede {
 		font-size: 1.1875rem;
 		line-height: 1.55;

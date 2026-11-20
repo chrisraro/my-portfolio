@@ -1,3 +1,4 @@
+import { SpotHeight } from '@/components/map/spot-height'
 import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { elevationProfile } from '@/lib/contours'
@@ -6,15 +7,6 @@ import { buildElevationStrip, elevationFigures, type StripEntry } from '@/lib/el
 import { cn } from '@/lib/utils'
 
 const pct = (n: number) => `${(n * 100).toFixed(2)}%`
-
-/** A survey spot height: the glyph a map uses for a measured point. */
-function SpotHeight() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 10 10" className="h-2.5 w-2.5 shrink-0 fill-current text-ink">
-      <path d="M5 1 9 9H1Z" />
-    </svg>
-  )
-}
 
 function Lane({ entries, className }: { entries: StripEntry[]; className: string }) {
   return (

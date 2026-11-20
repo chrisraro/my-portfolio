@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { ReadSpread } from '@/components/case-study/read-spread'
+import { SpotHeight } from '@/components/map/spot-height'
 import { SECTION } from '@/components/ui/grid'
 import { ProjectPlate } from '@/components/ui/project-plate'
 import { TrailLink } from '@/components/ui/trail-link'
@@ -126,12 +127,17 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
             </p>
           ))}
           {study.metrics && study.metrics.length > 0 && (
-            <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+            // A legend row of spot heights, as the elevation strip prints its counts:
+            // the figure beside its glyph, its label after it. dt comes first, as
+            // HTML requires; order-last sets it after the figure.
+            <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-y border-line py-5">
               {study.metrics.map((m) => (
-                // dt before dd, as HTML requires; flex-col-reverse puts the number on top.
-                <div key={m.label} className="flex flex-col-reverse rounded-sm border border-line bg-panel p-4">
-                  <dt className="mt-1 text-sm text-muted-strong">{m.label}</dt>
-                  <dd className="text-numeral break-words text-ink">{m.value}</dd>
+                <div key={m.label} className="flex items-baseline gap-2">
+                  <dt className="order-last text-sm leading-snug text-muted-strong">{m.label}</dt>
+                  <dd className="flex items-baseline gap-2 text-title tabular text-ink">
+                    <SpotHeight />
+                    {m.value}
+                  </dd>
                 </div>
               ))}
             </dl>

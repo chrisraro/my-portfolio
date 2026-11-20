@@ -378,4 +378,21 @@ describe('the trail journal', () => {
     const latag = projects.find((p) => p.slug === 'latag')!
     for (const t of latag.technologies) expect(render('latag')).toMatch(new RegExp(`<li class="map-label [^"]*">${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</li>`))
   })
+
+  // F13 (finish review): a lone big number in its own card is the hero-metric
+  // template; the figure reads as a spot height, the way the elevation strip prints one.
+  it('prints an outcome figure as a spot height in a legend row, not a big number in a card', () => {
+    const studies = caseStudies.filter((s) => s.metrics?.length)
+    expect(studies.length).toBeGreaterThan(0)
+    for (const study of studies) {
+      const html = render(study.slug)
+      expect(html, study.slug).not.toContain('text-numeral')
+      const outcome = html.slice(html.indexOf('id="outcome"'))
+      for (const m of study.metrics!) {
+        expect(outcome, study.slug).toMatch(
+          new RegExp(`<dd class="flex items-baseline gap-2 text-title tabular text-ink"><svg[^>]*>.*?</svg>${m.value}</dd>`),
+        )
+      }
+    }
+  })
 })
