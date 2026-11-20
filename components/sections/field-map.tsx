@@ -25,7 +25,7 @@ export function FieldMap() {
     <section id="work" aria-labelledby="work-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="work-title" eyebrow={fieldMap.eyebrow} title={fieldMap.title} />
       <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-12">
-        <SurveyPlate as="figure" className="mx-auto w-full max-w-md lg:max-w-none">
+        <SurveyPlate as="figure" className="mx-auto w-full max-w-[18rem] sm:max-w-md lg:max-w-none">
           <PlaceMap places={places} hrefFor={(group) => projectHref(group.projects[0])} />
           <figcaption className="mt-3 px-1 text-sm text-muted-strong">{fieldMap.caption}</figcaption>
         </SurveyPlate>
@@ -33,7 +33,7 @@ export function FieldMap() {
         {/* An explicit width, as every grid child here: content-sized, it can collapse. */}
         <div className="w-full min-w-0">
           <h3 className="map-label text-ink">{fieldMap.placesHeading}</h3>
-          <ol className="mt-4 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          <ol className="mt-4 grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8">
             {places.map((group) => (
               <li key={group.name} className="border-t border-line pt-3">
                 <p className="flex items-center gap-2 text-ink">

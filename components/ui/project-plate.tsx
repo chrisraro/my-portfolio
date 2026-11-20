@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
-import { ProjectShot } from '@/components/ui/project-shot'
+import { ProjectShot, SHOT_ASPECT } from '@/components/ui/project-shot'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { SurveyPlate } from '@/components/ui/survey-plate'
 import { canLinkLive, fullShotFor, projectHref } from '@/lib/project-page'
@@ -19,8 +19,8 @@ interface ProjectPlateProps {
 /**
  * A waypoint in the /projects list, and a case study's next stop: one survey
  * plate that is one link to the project page. On it, a still of the site's top
- * in the 3:4 frame every screenshot shares or, with no public screen, the
- * printed reason in the same 3:4 frame, so every plate stands at one scale on
+ * in the shot frame every screenshot shares or, with no public screen, the
+ * printed reason in the same shot frame, so every plate stands at one scale on
  * one baseline. Under it the catalog number, name (h3), status, summary and
  * domain. The link is named by its own visible text (WCAG 2.5.3): the sr-only
  * prefix, name, status and summary; code and domain are aria-hidden. Hover lifts it like every catalog card (.lift-card). The li carries the
@@ -53,7 +53,7 @@ export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) 
             className="w-full"
           />
         ) : (
-          <NoPreviewTag project={project} className="aspect-[3/4] w-full" />
+          <NoPreviewTag project={project} className={`${SHOT_ASPECT} w-full`} />
         )}
         <div className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-4">
           <span aria-hidden="true" className="map-label tabular text-muted">

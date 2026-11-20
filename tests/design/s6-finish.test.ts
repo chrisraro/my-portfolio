@@ -93,3 +93,27 @@ describe('the chat launcher never covers a target', () => {
     expect(footer).not.toMatch(/\b(?:sm|md|lg|xl):pb-/)
   })
 })
+
+describe('phone pacing', () => {
+  // /projects was 15,094px tall at 390 wide: twenty 3:4 shots in one column.
+  it('frames every screenshot 4:3 below 640px and 3:4 from it: one scale per width', () => {
+    const shot = readFileSync('components/ui/project-shot.tsx', 'utf8')
+    expect(shot).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'")
+    for (const f of [
+      'components/ui/project-plate.tsx',
+      'components/sections/own-products.tsx',
+      'components/case-study/project-screenshots.tsx',
+    ]) {
+      const src = readFileSync(f, 'utf8')
+      expect(src, f).not.toContain('aspect-[3/4]')
+      expect(src, f).toContain('SHOT_ASPECT')
+    }
+  })
+
+  // The field map section was 2,253px tall at 390 wide.
+  it('sets the field map’s places two to a row on a phone, under a narrower map', () => {
+    const src = readFileSync('components/sections/field-map.tsx', 'utf8')
+    expect(src).toContain('grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8')
+    expect(src).toContain('max-w-[18rem] sm:max-w-md')
+  })
+})

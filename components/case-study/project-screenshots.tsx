@@ -2,7 +2,7 @@ import Image from 'next/image'
 import type { CSSProperties } from 'react'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
-import { ProjectShot } from '@/components/ui/project-shot'
+import { ProjectShot, SHOT_ASPECT } from '@/components/ui/project-shot'
 import { SurveyPlate } from '@/components/ui/survey-plate'
 import { fullShotFor, screenshotsFor } from '@/lib/project-page'
 import { extractDomain } from '@/lib/utils'
@@ -15,11 +15,11 @@ const FRAME = 'w-full sm:max-w-[22rem] lg:max-w-[min(100%,calc((100vh_-_22rem)_*
 
 /**
  * The screenshot rail of a project page, on a survey plate: the top of the
- * site's full-page shot, still, at the 3:4 scale every screenshot shares (the
+ * site's full-page shot, still, at the one scale every screenshot shares (the
  * end of the plate-to-page morph), with the phone shot beside or below it in a
  * lightbox. A project with no full-page shot falls back to its desktop
  * screenshot; one with no public screen at all keeps the plate with the
- * printed reason in the same 3:4 frame.
+ * printed reason in the same shot frame.
  */
 export function ProjectScreenshots({ project }: { project: Project }) {
   const full = fullShotFor(project)
@@ -30,7 +30,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
     // A printed tag, not a picture-sized hole: it keeps the plate without pretending.
     return (
       <SurveyPlate className={FRAME}>
-        <NoPreviewTag project={project} className="aspect-[3/4] w-full" />
+        <NoPreviewTag project={project} className={`${SHOT_ASPECT} w-full`} />
       </SurveyPlate>
     )
   }

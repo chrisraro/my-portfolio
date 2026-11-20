@@ -40,7 +40,14 @@ interface ProjectShotProps {
 }
 
 /**
- * A still screenshot in the 3:4 frame every screenshot shares (one scale, spec §3): the top of a project's full-page
+ * Every screenshot frame (and the printed no-preview frame in its place): 4:3
+ * on a phone, where one column of 3:4 shots made /projects 15,000px tall, and
+ * 3:4 from 640px. One scale per width, every plate on one baseline.
+ */
+export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'
+
+/**
+ * A still screenshot in the frame every screenshot shares (SHOT_ASPECT) (one scale, spec §3): the top of a project's full-page
  * shot. Nothing scrolls. As a link it takes the catalog hover
  * (.lift-card in app/globals.css): on a fine pointer it lifts 2px, its border
  * turns ink and the shot scales to 1.02 inside the clipping frame.
@@ -61,7 +68,7 @@ export function ProjectShot({
     'project-shot',
     linked && 'lift-card',
     'relative block rounded border border-line bg-panel',
-    'aspect-[3/4]',
+    SHOT_ASPECT,
     className,
   )
 

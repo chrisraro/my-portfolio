@@ -47,6 +47,6 @@ describe('one screenshot scale', () => {
     const src = readFileSync('components/ui/project-shot.tsx', 'utf8')
     expect(src).not.toMatch(/\bratio\b/)
     expect(src).not.toContain('aspect-[9/16]')
-    expect(src).toContain("'aspect-[3/4]'")
+    expect(src).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4]'")
   })
 })

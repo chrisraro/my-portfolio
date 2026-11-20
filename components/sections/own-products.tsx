@@ -1,6 +1,6 @@
 import { LivePreview } from '@/components/ui/live-preview'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
-import { ProjectShot } from '@/components/ui/project-shot'
+import { ProjectShot, SHOT_ASPECT } from '@/components/ui/project-shot'
 import { SECTION } from '@/components/ui/grid'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { StatusBadge } from '@/components/ui/status-badge'
@@ -14,7 +14,7 @@ import type { Project } from '@/types'
 
 /**
  * One own product as a survey plate: a still of the real site (or the printed
- * reason there is none, in the same 3:4 frame) on the plate, then its catalog
+ * reason there is none, in the same shot frame) on the plate, then its catalog
  * number (the one /projects shows), name, summary, status, the detail and the
  * ways in. The screenshot links to the page "Read more" names, so it stays out
  * of the tab order.
@@ -40,7 +40,7 @@ function Plate({ project, code }: { project: Project; code: string }) {
             className="w-full"
           />
         ) : (
-          <NoPreviewTag project={project} className="aspect-[3/4] w-full" />
+          <NoPreviewTag project={project} className={`${SHOT_ASPECT} w-full`} />
         )}
       </SurveyPlate>
       <p aria-hidden="true" className="map-label tabular mt-4 text-muted">{code}</p>
