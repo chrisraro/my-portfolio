@@ -119,7 +119,7 @@ export function PlanTheRoute() {
     <section id="contact" aria-labelledby="contact-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <div className="grid gap-10 md:grid-cols-[5fr_7fr] md:gap-12">
         <div className="flex flex-col">
-          <SectionHeading id="contact-title" eyebrow={sectionContent.contact.eyebrow} title={sectionContent.contact.title} className="mb-0" />
+          <SectionHeading id="contact-title" title={sectionContent.contact.title} className="mb-0" />
           <p className="text-lede mt-5 max-w-[30rem] text-muted-strong">{sectionContent.contact.lede}</p>
           <p className="map-label mt-6 text-muted-strong">{availability}</p>
           <ul className="mt-8 space-y-1">

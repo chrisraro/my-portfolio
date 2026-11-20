@@ -117,3 +117,10 @@ describe('phone pacing', () => {
     expect(src).toContain('max-w-[18rem] sm:max-w-md')
   })
 })
+
+describe('section headings carry their own weight', () => {
+  it('SectionHeading takes no eyebrow, and no page passes one', () => {
+    expect(readFileSync('components/ui/section-heading.tsx', 'utf8')).not.toMatch(/eyebrow/)
+    for (const { f, src } of sources) expect(src, f).not.toMatch(/<SectionHeading[^>]*\beyebrow=/)
+  })
+})

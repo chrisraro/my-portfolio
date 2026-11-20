@@ -498,9 +498,8 @@ export const ctaLabels = {
 
 // Headings and copy for each homepage section. `galleryContent` heads the photos on /about.
 export const sectionContent = {
-  ownProducts: { eyebrow: 'Own products', title: 'Products of my own' },
+  ownProducts: { title: 'Products of my own' },
   fieldMap: {
-    eyebrow: 'Field map',
     title: 'Where the work runs',
     caption: 'A pin sits only where a project’s own page names the place.',
     placesHeading: 'Places',
@@ -509,9 +508,8 @@ export const sectionContent = {
     unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
     cta: ctaLabels.browseProjects,
   },
-  journals: { eyebrow: 'Trail journals', title: 'From the brief to launch' },
+  journals: { title: 'From the brief to launch' },
   timeline: {
-    eyebrow: 'Elevation · the route so far',
     title: "Where I've worked",
     // The marker at now on the strip.
     here: 'You are here',
@@ -526,7 +524,6 @@ export const sectionContent = {
   // The two paths up from the trailhead (spec §5): a business to /services, a
   // hiring team to /hire.
   fork: {
-    eyebrow: 'The fork',
     title: 'Two ways up',
     business: {
       title: 'For your business',
@@ -541,7 +538,6 @@ export const sectionContent = {
     },
   },
   contact: {
-    eyebrow: 'Plan the route',
     title: ctaLabels.startProject,
     lede: 'Tell me what you are building and when you need it. Hiring for a full-time role? Say so here too.',
     // The button that opens Chunks, the site's assistant.
@@ -601,7 +597,6 @@ export const recommendations: Recommendation[] = [
 // photos are client work and three are the life around it, so the heading
 // names both rather than overclaiming. Client-work photos lead.
 export const galleryContent = {
-  eyebrow: 'Field log',
   title: 'On site and on the road',
 }
 
@@ -889,7 +884,7 @@ export const servicesPageContent: ServicesPageContent = {
   get answer(): string {
     return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with PayPal and Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the projects that prove it, and each page ends in a contact form.`
   },
-  proof: { eyebrow: 'Proof', title: 'Projects that prove it' },
+  proof: { title: 'Projects that prove it' },
 }
 
 export const aboutPageContent: AboutPageContent = {
@@ -902,7 +897,6 @@ export const aboutPageContent: AboutPageContent = {
     return `Christian Raro is a web developer in Naga City, Camarines Sur, in the Bicol region of the Philippines. He studied computer science at Bicol University, has worked at Online Creative Solutions since November 2024, and builds booking and payment sites for travel businesses, AI automation for teams and ${numberWord(ownProductTitles().length)} products of his own.`
   },
   story: {
-    eyebrow: 'Story',
     title: 'Built in Bicol',
     get paragraphs(): string[] {
       return [
@@ -915,8 +909,8 @@ export const aboutPageContent: AboutPageContent = {
       ]
     },
   },
-  timeline: { eyebrow: 'Route', title: sectionContent.timeline.title },
-  testimonials: { eyebrow: 'From the field', title: 'What clients and colleagues say' },
+  timeline: { title: sectionContent.timeline.title },
+  testimonials: { title: 'What clients and colleagues say' },
 }
 
 export const hirePageContent: HirePageContent = {
@@ -931,7 +925,6 @@ export const hirePageContent: HirePageContent = {
   },
   facts: { title: 'At a glance', labels: { availability: 'Availability', base: 'Base', code: 'Code' } },
   stack: {
-    eyebrow: 'Stack',
     title: 'Stack, by depth',
     coreLabel: 'Core',
     coreNote: 'Each one runs in projects on this site.',
@@ -940,7 +933,6 @@ export const hirePageContent: HirePageContent = {
     moreLabel: 'Also in use',
   },
   howIWork: {
-    eyebrow: 'Practice',
     title: 'How I work',
     get notes() {
       return [
@@ -960,5 +952,5 @@ export const hirePageContent: HirePageContent = {
       { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
     ],
   },
-  history: { eyebrow: 'Route', title: 'Work history' },
+  history: { title: 'Work history' },
 }

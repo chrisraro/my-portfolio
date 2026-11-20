@@ -67,7 +67,7 @@ export function OwnProducts() {
 
   return (
     <section id="products" aria-labelledby="products-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-      <SectionHeading id="products-title" eyebrow={sectionContent.ownProducts.eyebrow} title={sectionContent.ownProducts.title} />
+      <SectionHeading id="products-title" title={sectionContent.ownProducts.title} />
       <div className="grid items-start gap-x-8 gap-y-14 md:grid-cols-2">
         {own.map((project) => (
           <Plate key={project.id} project={project} code={projectCode(project, order)} />

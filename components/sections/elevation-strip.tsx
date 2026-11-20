@@ -46,7 +46,7 @@ export function ElevationStrip() {
 
   return (
     <section id="timeline" aria-labelledby="timeline-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-      <SectionHeading id="timeline-title" eyebrow={timeline.eyebrow} title={timeline.title} />
+      <SectionHeading id="timeline-title" title={timeline.title} />
       <ul className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
         {figures.map((f) => (
           <li key={f.label} className="flex flex-col gap-2 border-t border-line pt-3">

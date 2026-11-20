@@ -223,9 +223,8 @@ export interface CaseStudy {
   related?: string[]
 }
 
-/** An eyebrow and an h2: the heading stack every section shares. */
+/** The h2 every section shares. */
 export interface SectionCopy {
-  eyebrow: string
   title: string
 }
 

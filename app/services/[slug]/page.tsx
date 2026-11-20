@@ -114,7 +114,7 @@ export default function ServicePage({ params }: ServicePageProps) {
       </div>
 
       <section aria-labelledby="proof-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-        <SectionHeading id="proof-title" eyebrow={proof.eyebrow} title={proof.title} />
+        <SectionHeading id="proof-title" title={proof.title} />
         <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {service.projectIds.map(byId).map((p) => (
             <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} />

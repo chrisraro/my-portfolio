@@ -86,9 +86,9 @@ describe('ElevationStrip', () => {
   const html = renderToStaticMarkup(<ElevationStrip />)
   const strip = html.match(/<div aria-hidden="true" class="elevation-track relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
 
-  it('is the #timeline section, its heading from data', () => {
+  it('is the #timeline section, its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="timeline" aria-labelledby="timeline-title"/)
-    expect(html).toContain(`>${sectionContent.timeline.eyebrow}</p>`)
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="timeline-title" class="text-section[^"]*">${escape(sectionContent.timeline.title)}</h2>`))
   })
 
@@ -122,9 +122,9 @@ describe('Fork', () => {
   const { fork } = sectionContent
   const cards = html.match(/<li[\s\S]*?<\/li>/g) ?? []
 
-  it('is the #fork section with its heading from data', () => {
+  it('is the #fork section with its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="fork" aria-labelledby="fork-title"/)
-    expect(html).toContain(`>${fork.eyebrow}</p>`)
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="fork-title"[^>]*>${escape(fork.title)}</h2>`))
   })
 
@@ -160,9 +160,9 @@ describe('FieldMap', () => {
   const groups = placeGroups(projects)
   const { fieldMap } = sectionContent
 
-  it('is the #work section with its heading from data', () => {
+  it('is the #work section with its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="work" aria-labelledby="work-title"/)
-    expect(html).toContain(`>${fieldMap.eyebrow}</p>`)
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="work-title"[^>]*>${escape(fieldMap.title)}</h2>`))
   })
 
@@ -216,9 +216,9 @@ describe('OwnProducts', () => {
   const order = catalogOrder(projects, hasFullShot)
   const own = order.filter((p) => p.band === 'Products')
 
-  it('is the #products section with its heading from data', () => {
+  it('is the #products section with its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="products" aria-labelledby="products-title"/)
-    expect(html).toContain(`>${sectionContent.ownProducts.eyebrow}</p>`)
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="products-title"[^>]*>${escape(sectionContent.ownProducts.title)}</h2>`))
   })
 
@@ -272,9 +272,9 @@ describe('OwnProducts', () => {
 describe('TrailJournals', () => {
   const html = renderToStaticMarkup(<TrailJournals />)
 
-  it('is the #journals section with its heading from data', () => {
+  it('is the #journals section with its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="journals" aria-labelledby="journals-title"/)
-    expect(html).toContain(`>${sectionContent.journals.eyebrow}</p>`)
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="journals-title"[^>]*>${escape(sectionContent.journals.title)}</h2>`))
   })
 
@@ -328,8 +328,8 @@ describe('PlanTheRoute', () => {
     expect(existsSync('components/sections/contact-console.tsx')).toBe(false)
   })
 
-  it('takes its heading and copy from data', () => {
-    expect(html).toContain(`>${sectionContent.contact.eyebrow}</p>`)
+  it('takes its heading and copy from data, no eyebrow', () => {
+    expect(html).not.toContain('class="eyebrow')
     expect(html).toMatch(new RegExp(`<h2 id="contact-title" class="text-section[^"]*">${escape(sectionContent.contact.title)}</h2>`))
     expect(html).toContain(`>${escape(sectionContent.contact.lede)}</p>`)
   })

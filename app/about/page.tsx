@@ -53,7 +53,7 @@ export default function AboutPage() {
       </PageIntro>
 
       <section id="story" aria-labelledby="story-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="story-title" eyebrow={c.story.eyebrow} title={c.story.title} />
+        <SectionHeading id="story-title" title={c.story.title} />
         <div className="grid max-w-[62ch] gap-5 text-lg leading-relaxed text-muted-strong">
           {c.story.paragraphs.map((p) => (
             <p key={p}>{p}</p>
@@ -62,12 +62,12 @@ export default function AboutPage() {
       </section>
 
       <section id="route" aria-labelledby="route-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="route-title" eyebrow={c.timeline.eyebrow} title={c.timeline.title} />
+        <SectionHeading id="route-title" title={c.timeline.title} />
         <WorkHistory />
       </section>
 
       <section id="field-log" aria-labelledby="field-log-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="field-log-title" eyebrow={galleryContent.eyebrow} title={galleryContent.title} />
+        <SectionHeading id="field-log-title" title={galleryContent.title} />
         <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {galleryImages.map((img) => (
             <li key={img.id}>
@@ -94,7 +94,7 @@ export default function AboutPage() {
       </section>
 
       <section id="testimonials" aria-labelledby="testimonials-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="testimonials-title" eyebrow={c.testimonials.eyebrow} title={c.testimonials.title} />
+        <SectionHeading id="testimonials-title" title={c.testimonials.title} />
         <ul className="grid gap-6 md:grid-cols-2">
           {recommendations.map((r) => {
             const project = projects.find((p) => p.id === r.projectId)

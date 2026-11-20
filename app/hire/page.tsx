@@ -49,7 +49,7 @@ export default function HirePage() {
 
       <div className={cn(SECTION, BLOCK, 'grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-start')}>
         <section aria-labelledby="stack-title" className="min-w-0">
-          <SectionHeading id="stack-title" eyebrow={c.stack.eyebrow} title={c.stack.title} />
+          <SectionHeading id="stack-title" title={c.stack.title} />
           <h3 className="map-label text-ink">{c.stack.coreLabel}</h3>
           <p className="mt-1 text-sm text-muted">{c.stack.coreNote}</p>
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -106,7 +106,7 @@ export default function HirePage() {
       </div>
 
       <section aria-labelledby="practice-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="practice-title" eyebrow={c.howIWork.eyebrow} title={c.howIWork.title} />
+        <SectionHeading id="practice-title" title={c.howIWork.title} />
         <ul className="grid gap-6 md:grid-cols-3">
           {c.howIWork.notes.map((n) => (
             <li key={n.title} className="border-t border-line pt-4">
@@ -130,7 +130,7 @@ export default function HirePage() {
       </section>
 
       <section aria-labelledby="history-title" className={cn(SECTION, BLOCK)}>
-        <SectionHeading id="history-title" eyebrow={c.history.eyebrow} title={c.history.title} />
+        <SectionHeading id="history-title" title={c.history.title} />
         <WorkHistory detailed />
       </section>
 

@@ -23,7 +23,7 @@ export function FieldMap() {
 
   return (
     <section id="work" aria-labelledby="work-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-      <SectionHeading id="work-title" eyebrow={fieldMap.eyebrow} title={fieldMap.title} />
+      <SectionHeading id="work-title" title={fieldMap.title} />
       <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-12">
         <SurveyPlate as="figure" className="mx-auto w-full max-w-[18rem] sm:max-w-md lg:max-w-none">
           <PlaceMap places={places} hrefFor={(group) => projectHref(group.projects[0])} />

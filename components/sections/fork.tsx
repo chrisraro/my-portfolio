@@ -17,7 +17,7 @@ export function Fork() {
 
   return (
     <section id="fork" aria-labelledby="fork-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-      <SectionHeading id="fork-title" eyebrow={fork.eyebrow} title={fork.title} />
+      <SectionHeading id="fork-title" title={fork.title} />
       <ul className="grid gap-6 md:grid-cols-2">
         <li className={CARD}>
           <h3 className="text-title text-ink">{fork.business.title}</h3>

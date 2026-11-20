@@ -64,11 +64,10 @@ describe('positioning', () => {
     expect(existsSync(`public${resumeUrl}`)).toBe(true)
   })
 
-  it('gives every section a heading', () => {
+  it('gives every section a heading and no eyebrow', () => {
     for (const section of Object.values(sectionContent)) {
-      expect(section.eyebrow.trim()).not.toBe('')
-      expect(section.eyebrow).not.toMatch(/^\/\//)
       expect(section.title.trim()).not.toBe('')
+      expect('eyebrow' in section).toBe(false)
     }
   })
 
