@@ -24,8 +24,7 @@ position; nothing auto-moves longer than 5 s; CSS-first motion that is
 progressive enhancement; fewer than 10 client components.
 Replaces: Lobby Rack (Portfolio 4.0). Spec:
 `docs/superpowers/specs/2026-11-20-portfolio-v5-revamp-design.md`.
-Unresolved: the contour pointer shift and screenshot appear-once land in S6;
-a pin opening its project's plate (map pan) lands in S3.
+Unresolved: the contour pointer shift and screenshot appear-once land in S6.
 
 ## Direction contract
 
@@ -68,7 +67,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 ## Motion choreography
 
 Three verbs: draw (trails and routes stroke in), rise (lines lift into place,
-one at a time), pan (S3: the map and the page glide to a waypoint).
+one at a time), pan (/projects: a legend key glides the map to the band's pins; a pin glides the page to its plate).
 - Trailhead, on load, once, under 2 s, no-preference only: headline lines rise
   `translateY(0.35em) → 0` (slow/smooth, `--stagger-line` apart); the
   subheadline and buttons rise 16px at 250ms; the trail draws out of the plate

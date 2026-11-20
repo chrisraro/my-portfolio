@@ -44,3 +44,13 @@ describe('retired Portfolio 4.0 pieces', () => {
     for (const f of GONE) expect(existsSync(f), f).toBe(false)
   })
 })
+
+describe('the docs', () => {
+  it('describe the trail map, not the retired rack', () => {
+    const doc = readFileSync('CLAUDE.md', 'utf8')
+    expect(doc).not.toMatch(/rack-card|rack-tier|board-filter|arrow-link-text|reveal-stagger|defer-render-lift|catalog-motion|\.on-plane|RackCard|RackTier/)
+    for (const name of ['survey-plate', 'legend-filter', 'project-plate', 'trail-link', 'map-pan', 'plate-motion', 'retired-classes']) {
+      expect(doc, name).toContain(name)
+    }
+  })
+})
