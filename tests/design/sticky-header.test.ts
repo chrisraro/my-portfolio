@@ -15,6 +15,10 @@ describe('sticky header never hides focus or an anchor target', () => {
     expect(rem(base!)).toBeGreaterThanOrEqual(12 + 56 + 8)
   })
 
+  it('keeps focus clear of the fixed chat launcher below sm', () => {
+    expect(css).toMatch(/@media \(max-width: 639px\) \{\s*html \{\s*scroll-padding-bottom:\s*4\.5rem;/)
+  })
+
   it('gives anchor sections a scroll margin of their own', () => {
     expect(css).toMatch(/section\[id\][^{]*\{[^}]*scroll-margin-top:/)
   })

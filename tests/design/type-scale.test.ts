@@ -31,6 +31,16 @@ describe('type scale', () => {
 describe('trail map type utilities', () => {
   const css = readFileSync('app/globals.css', 'utf8')
 
+  it('keeps UI labels on the body stack, not the condensed display face', () => {
+    // Before Archivo loads the display fallback renders at 70%: a 12px badge at ~8.4px.
+    for (const cls of ['button-label', 'edge-code']) {
+      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
+      expect(body, cls).toBeDefined()
+      expect(body, cls).not.toContain('var(--font-display)')
+      expect(body, cls).toContain('var(--font-sans)')
+    }
+  })
+
   it('sets display and map labels condensed and uppercase', () => {
     for (const cls of ['text-display', 'text-section', 'map-label']) {
       const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]

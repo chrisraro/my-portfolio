@@ -91,6 +91,12 @@
 		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
 		scroll-padding-top: 5rem;
 	}
+	/* Keeps focused controls clear of the fixed chat launcher on phones (WCAG 2.4.11). */
+	@media (max-width: 639px) {
+		html {
+			scroll-padding-bottom: 4.5rem;
+		}
+	}
 	/* An anchor section (#work the field map, #timeline, #contact) keeps a
 	 * little air above its eyebrow once it lands under the bar. */
 	section[id] {
@@ -152,14 +158,6 @@
 			background: oklch(var(--panel));
 		}
 	}
-	.text-fluid-h2 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
-		font-size: clamp(2rem, 1.5rem + 2.2vw, 3.5rem);
-		line-height: 0.95;
-		letter-spacing: -0.015em;
-		font-weight: 750;
-	}
 	/* Read pages (/projects, a project, the 404): the H1 at the smaller end. */
 	.text-page-h1 {
 		font-family: var(--font-display), system-ui, sans-serif;
@@ -195,7 +193,7 @@
 	 * the job. Eyebrows are edge-code labels in sentence case.
 	 */
 	.edge-code {
-		font-family: var(--font-display), system-ui, sans-serif;
+		font-family: var(--font-sans), system-ui, sans-serif;
 		font-variation-settings: 'wdth' 100;
 		font-weight: 500;
 		font-variant-numeric: tabular-nums;
@@ -258,7 +256,7 @@
 		padding: 0.5rem;
 	}
 	.button-label {
-		font-family: var(--font-display), system-ui, sans-serif;
+		font-family: var(--font-sans), system-ui, sans-serif;
 		font-variation-settings: 'wdth' 100;
 		font-size: 1rem;
 		font-weight: 650;
@@ -364,8 +362,8 @@
 }
 
 /*
- * Homepage (Lobby Rack, .impeccable/surfaces/app-page-tsx.md). Paper that
- * unfolds when you pay attention: three verbs, unfold, lift and slide.
+ * Homepage (Isarog Trail Map, .impeccable/surfaces/app-page-tsx.md). Three
+ * verbs: unfold, lift and slide.
  * Layout pieces first (always on), then the Trailhead's load sequence and the
  * scroll reveals, each behind its gates. Outside the gates every piece sits at
  * rest, fully visible.
@@ -511,13 +509,13 @@
 }
 
 /*
- * Scroll choreography. Proof (products, the rack) moves by transform only,
+ * Scroll choreography. Proof (the field map, the products, the journals) moves by transform only,
  * never opacity, so the server HTML is the finished page. Ranges are the
  * contract's `entry 10% cover 30%`: the motion plays while the element is in
  * view, not as it crosses the bottom edge (the gate's critique found reveals
  * finished before anyone saw them), and distances use the larger tokens (lg
  * 24px, xl 40px). Rows stagger by starting later in the range (--i), since a
- * time delay means nothing on a scroll timeline. The rack's row is the
+ * time delay means nothing on a scroll timeline. The stagger is the
  * exception: a scroll trigger plays it once, in time (.reveal-stagger).
  */
 @supports (animation-timeline: view()) {

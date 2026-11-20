@@ -18,7 +18,7 @@ function sourceFiles(dir: string): string[] {
 }
 
 describe('homepage direction contract', () => {
-  it('is the Isarog Trail Map, with all six blocks', () => {
+  it('is the Isarog Trail Map, with its five blocks (FINISH is checked below)', () => {
     expect(brief).toContain('## Direction contract')
     for (const block of ['THESIS:', 'OWN-WORLD:', 'STORY:', 'FIRST VIEWPORT', 'FORM:']) expect(contract, block).toContain(block)
     expect(contract).toContain('Isarog Trail Map')

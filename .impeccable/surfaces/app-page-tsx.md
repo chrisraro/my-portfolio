@@ -75,6 +75,6 @@ one at a time), pan (S3: the map and the page glide to a waypoint).
   from 300ms over `--dur-draw`. Nothing fades.
 - Between sections: short trail segments draw on their own view timeline
   (`entry 10% cover 45%`), inside both gates.
-- Elevation strip: the "you are here" marker is the only thing on the page that
-  follows the page's scroll (`scroll(root)`, both gates); at rest it sits at now.
+- Elevation strip: the "you are here" marker travels on its own `--elevation`
+  view timeline (both gates) and rests at now; nothing follows the page's scroll.
 - Outside the gates the trail is fully drawn and nothing is offset.
