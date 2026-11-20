@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import NotFound from '@/app/not-found'
+import NotFound, { metadata } from '@/app/not-found'
 import { offTrail } from '@/lib/contours'
-import { notFoundContent } from '@/lib/data'
+import { heroContent, notFoundContent } from '@/lib/data'
 
 // Spec §5: "Off the trail", an empty map square with a route home.
 describe('404: off the trail', () => {
@@ -41,5 +41,11 @@ describe('404: off the trail', () => {
 
   it('keeps its copy free of em-dashes', () => {
     for (const t of Object.values(notFoundContent)) expect(t).not.toContain('—')
+  })
+})
+
+describe('404: the tab title', () => {
+  it('says it is the 404, built from the page heading and the site name', () => {
+    expect(metadata.title).toBe(`${notFoundContent.title} · ${heroContent.name}`)
   })
 })

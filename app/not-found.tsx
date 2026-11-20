@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { ContourField } from '@/components/map/contour-field'
@@ -5,8 +6,10 @@ import { SECTION } from '@/components/ui/grid'
 import { SurveyPlate } from '@/components/ui/survey-plate'
 import { TrailLink } from '@/components/ui/trail-link'
 import { offTrail } from '@/lib/contours'
-import { ctaLabels, notFoundContent } from '@/lib/data'
+import { ctaLabels, heroContent, notFoundContent } from '@/lib/data'
 import { cn } from '@/lib/utils'
+
+export const metadata: Metadata = { title: `${notFoundContent.title} · ${heroContent.name}` }
 
 // Every unknown address lands here, including an unknown /projects/<slug> or
 // /services/<slug> (both routes set dynamicParams = false).
