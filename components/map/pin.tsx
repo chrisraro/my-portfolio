@@ -10,6 +10,8 @@ export const LABELS: Record<string, { dx: number; dy: number; anchor: 'start' | 
   Bicol: { dx: 26, dy: 20, anchor: 'start' },
   Palawan: { dx: 26, dy: 8, anchor: 'start' },
 }
+/** The mark's class per precision, shared by the pin and the key so the two cannot drift apart. */
+export const PLACE_MARK: Record<PlacePrecision, 'map-dot' | 'map-ring'> = { city: 'map-dot', region: 'map-ring' }
 const DEFAULT_LABEL = { dx: 14, dy: 7, anchor: 'start' as const }
 
 /**
@@ -27,9 +29,9 @@ export function Pin({ group, href }: { group: PlaceGroup; href: string }) {
       {/* Counter-scaled about its own point (.map-pin__mark), so a pan zooms the map, not the pin. */}
       <g className="map-pin__mark" style={{ transformOrigin: `${x}px ${y}px` }}>
         {group.precision === 'region' ? (
-          <circle cx={x} cy={y} r={18} className="map-ring fill-none stroke-ink" strokeWidth={2} strokeDasharray="4 3" />
+          <circle cx={x} cy={y} r={18} className={`${PLACE_MARK.region} fill-none stroke-ink`} strokeWidth={2} strokeDasharray="4 3" />
         ) : (
-          <circle cx={x} cy={y} r={6} className="map-dot fill-ink" />
+          <circle cx={x} cy={y} r={6} className={`${PLACE_MARK.city} fill-ink`} />
         )}
         <text x={Math.round(x + label.dx)} y={Math.round(y + label.dy)} textAnchor={label.anchor} className="map-label fill-ink text-[22px]">
           {group.name}
@@ -44,9 +46,9 @@ export function PlaceGlyph({ precision }: { precision: PlacePrecision }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-ink">
       {precision === 'region' ? (
-        <circle cx={8} cy={8} r={6} fill="none" stroke="currentColor" strokeWidth={1.5} strokeDasharray="3 2" />
+        <circle cx={8} cy={8} r={6} className={PLACE_MARK.region} fill="none" stroke="currentColor" strokeWidth={1.5} strokeDasharray="3 2" />
       ) : (
-        <circle cx={8} cy={8} r={3.5} fill="currentColor" />
+        <circle cx={8} cy={8} r={3.5} className={PLACE_MARK.city} fill="currentColor" />
       )}
     </svg>
   )
