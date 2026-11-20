@@ -2,7 +2,10 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import sitemap from '@/app/sitemap'
-import { OFFLINE_REPLY, SYSTEM_PROMPT } from '@/lib/chat-context'
+import { OFFLINE_REPLY, SYSTEM_PROMPT, numberToWords } from '@/lib/chat-context'
+import { projects } from '@/lib/data'
+import { elevationFigures } from '@/lib/elevation'
+import { canLinkLive } from '@/lib/project-page'
 import { buildLlmsFullTxt, buildLlmsTxt } from '@/lib/llms'
 import { absoluteUrl, buildRouteMetadata, buildSiteMetadata } from '@/lib/site-metadata'
 import { siteRoutes, type SiteRoute } from '@/lib/site-routes'
@@ -180,5 +183,30 @@ describe('the docs', () => {
     for (const gone of ['app/opengraph-image.tsx', 'proofPoints', 'ProfessionalService', 'until S5']) {
       expect(doc, gone).not.toContain(gone)
     }
+  })
+})
+
+describe('S5: the chat prompt names every project page and no gated live link', () => {
+  it('contains every project route URL', () => {
+    const projectRoutes = guardedRoutes().filter((r) => r.kind === 'project')
+    expect(projectRoutes.length).toBeGreaterThan(0)
+    for (const r of projectRoutes) expect(SYSTEM_PROMPT, r.path).toContain(absoluteUrl(r.path))
+  })
+
+  it('never carries the live URL of a project that cannot be linked', () => {
+    const gated = projects.filter((p) => p.links.live && !canLinkLive(p))
+    expect(gated.length).toBeGreaterThan(0)
+    for (const p of gated) expect(SYSTEM_PROMPT, p.slug).not.toContain(p.links.live as string)
+  })
+
+  it('still carries the live URL of a linkable project', () => {
+    const open = projects.filter((p) => canLinkLive(p))
+    expect(open.length).toBeGreaterThan(0)
+    for (const p of open) expect(SYSTEM_PROMPT, p.slug).toContain(p.links.live as string)
+  })
+
+  it('counts shipped projects in the offline reply as the elevation strip does', () => {
+    const shipped = elevationFigures()[1].value
+    expect(OFFLINE_REPLY).toContain(`${numberToWords(shipped)} projects shipped`)
   })
 })

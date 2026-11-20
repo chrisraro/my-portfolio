@@ -13,8 +13,9 @@ import {
   skills,
 } from '@/lib/data'
 import { elevationFigures } from '@/lib/elevation'
+import { canLinkLive } from '@/lib/project-page'
 import { absoluteUrl } from '@/lib/site-metadata'
-import { siteRoutes } from '@/lib/site-routes'
+import { projectHref, siteRoutes } from '@/lib/site-routes'
 import { BAND_ORDER, type CaseStudy } from '@/types'
 
 // The portfolio facts in this file derive from lib/data.ts. The route used to
@@ -49,10 +50,11 @@ export function buildCaseStudyContext(studies: CaseStudy[]): string {
 export function buildPortfolioContext(): string {
   const projectsList = projects
     .map((p) => {
-      const link = p.links.live ? ` | URL: ${p.links.live}` : ''
+      const page = ` | Page: ${absoluteUrl(projectHref(p))}`
+      const link = canLinkLive(p) ? ` | Live: ${p.links.live}` : ''
       const when = p.dates ? ` | ${p.dates}` : ''
       const flag = p.featured ? ' [FEATURED]' : ''
-      return `- ${p.title} (${p.band}): ${p.description} | Tech: ${p.technologies.join(', ')}${link}${when}${flag}`
+      return `- ${p.title} (${p.band}): ${p.description} | Tech: ${p.technologies.join(', ')}${page}${link}${when}${flag}`
     })
     .join('\n')
 
@@ -188,8 +190,9 @@ export function numberToWords(n: number): string {
 // to hand-type "three products of his own, fifteen projects shipped" directly
 // in app/api/chat/route.ts — a second copy of portfolio facts in the very file
 // this module exists to keep those facts out of. Derived from the same
-// `projects` array as the rest of this file, so it cannot drift.
+// `projects` array as the rest of this file, so it cannot drift. Shipped
+// excludes the staging site, the same count the elevation strip prints.
 const productCount = projects.filter((p) => p.band === 'Products').length
-const projectCount = projects.length
+const projectCount = elevationFigures()[1].value
 
 export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City, with ${numberToWords(productCount)} products of his own and ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`

@@ -90,7 +90,8 @@ describe('offline reply', () => {
     // these expectations recompute from the same source and would catch a
     // stale hand-typed count.
     const productCount = projects.filter((p) => p.band === 'Products').length
-    const projectCount = projects.length
+    // Shipped excludes the staging site, as the elevation strip does.
+    const projectCount = projects.filter((p) => p.status !== 'staging').length
     expect(OFFLINE_REPLY).toContain(`${numberToWords(productCount)} products of his own`)
     expect(OFFLINE_REPLY).toContain(`${numberToWords(projectCount)} projects shipped`)
   })
