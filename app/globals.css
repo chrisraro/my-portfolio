@@ -531,14 +531,6 @@
 	transition: transform var(--dur-normal) var(--ease-smooth);
 }
 
-/* Postcards rest at a slight tilt; attention straightens and lifts them. */
-.postcard {
-	transform: rotate(var(--tilt, 0deg));
-	transition:
-		transform var(--dur-normal) var(--ease-smooth),
-		box-shadow var(--dur-normal) var(--ease-smooth);
-}
-
 /* The primary's arrow slides right on hover. */
 .arrow-nudge { transition: transform var(--dur-fast) var(--ease-sharp); }
 
@@ -546,10 +538,6 @@
 	.spread:hover .flap-tilt { transform: rotateY(var(--tilt-to, -4deg)); }
 }
 @media (prefers-reduced-motion: no-preference) {
-	.postcard:is(:hover, :focus-within) {
-		transform: translateY(-8px);
-		box-shadow: var(--shadow-lift);
-	}
 	:is(a, button):hover .arrow-nudge { transform: translateX(8px); }
 
 	@keyframes trailhead-line {
@@ -582,10 +570,6 @@
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		@keyframes reveal-slide {
-			from { transform: translateX(var(--slide-from, 40px)); }
-			to { transform: none; }
-		}
 		@keyframes reveal-draw-x {
 			from { transform: scaleX(0); }
 			to { transform: none; }
@@ -607,12 +591,6 @@
 			from { transform: rotateX(-22deg); }
 			to { transform: none; }
 		}
-		.reveal-postcard {
-			animation: reveal-slide var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
-		}
-		.reveal-postcard { --slide-from: 40px; }
 		/*
 		 * The rack's grid: each card rises its last 16px once, as it enters the
 		 * viewport, its visible column --stagger-card after the one before
@@ -768,7 +746,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-fold) {
+	:is(.reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;
@@ -778,7 +756,7 @@
 		animation: none !important;
 		transform: none;
 	}
-	.flap-tilt, .postcard, .arrow-nudge { transition: none; }
+	.flap-tilt, .arrow-nudge { transition: none; }
 	.live-pulse::after { display: none; }
 	/* State changes without travel: the underline and colours still change. */
 	.press:hover, .press:active { transform: none; }

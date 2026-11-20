@@ -3,8 +3,9 @@ import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
+import { Fork } from '@/components/sections/fork'
 import { Trailhead } from '@/components/sections/trailhead'
-import { heroContent, navigationItems, sectionContent } from '@/lib/data'
+import { heroContent, navigationItems, paymentGateways, resumeUrl, sectionContent } from '@/lib/data'
 import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
@@ -17,6 +18,7 @@ const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').r
 const SECTIONS: [string, ReactElement][] = [
   ['Trailhead', <Trailhead key="trailhead" />],
   ['ElevationStrip', <ElevationStrip key="elevation" />],
+  ['Fork', <Fork key="fork" />],
 ]
 
 describe('Trailhead', () => {
@@ -95,6 +97,39 @@ describe('ElevationStrip', () => {
     expect(strip).toContain('>2020</span>')
     expect(strip).toContain('class="elevation-marker')
     expect(strip).toContain(`>${sectionContent.timeline.here}</span>`)
+  })
+})
+
+describe('Fork', () => {
+  const html = renderToStaticMarkup(<Fork />)
+  const { fork } = sectionContent
+  const cards = html.match(/<li[\s\S]*?<\/li>/g) ?? []
+
+  it('is the #fork section with its heading from data', () => {
+    expect(html).toMatch(/^<section id="fork" aria-labelledby="fork-title"/)
+    expect(html).toContain(`>${fork.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="fork-title"[^>]*>${escape(fork.title)}</h2>`))
+  })
+
+  it('offers two paths, business first', () => {
+    expect(cards).toHaveLength(2)
+    expect(cards[0]).toContain(`>${fork.business.title}</h3>`)
+    expect(cards[1]).toContain(`>${fork.team.title}</h3>`)
+  })
+
+  it('names every payment gateway on the business path, from the data', () => {
+    for (const gateway of paymentGateways) expect(fork.business.body).toContain(gateway)
+    expect(cards[0]).toContain(escape(fork.business.body))
+  })
+
+  it('sends the business path to the contact form until S4 builds /services', () => {
+    expect(cards[0]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.business.cta}`))
+  })
+
+  it('sends the team path to the contact form and the résumé until S4 builds /hire', () => {
+    expect(cards[1]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.team.cta}`))
+    expect(cards[1]).toContain(`href="${resumeUrl}"`)
+    expect(cards[1]).toContain('(PDF, opens in a new tab)')
   })
 })
 

@@ -1,22 +1,15 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { CaseStudies } from '@/components/sections/case-studies'
-import { FieldLog } from '@/components/sections/field-log'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
-import { Stack } from '@/components/sections/stack'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { groupForHomepage } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
 import {
-  galleryContent,
-  galleryImages,
   projects,
-  recommendations,
   sectionContent,
-  skills,
 } from '@/lib/data'
-import { buildFieldLog } from '@/lib/field-log'
 import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
 import type { Project } from '@/types'
 
@@ -178,53 +171,5 @@ describe('Case studies', () => {
       expect(html).toContain(escape(study.role))
       expect(html).toContain(escape(briefLead(study)))
     }
-  })
-})
-
-describe('Field log', () => {
-  const html = renderToStaticMarkup(<FieldLog />)
-
-  it('takes its heading from lib/data.ts', () => {
-    expect(html).toMatch(new RegExp(`<h2 id="field-log-title"[^>]*>${galleryContent.title}<`))
-  })
-
-  it('ties every photo button to its visible caption', () => {
-    for (const image of galleryImages) {
-      const id = `field-log-caption-${image.id}`
-      expect(html).toContain(`aria-describedby="${id}"`)
-      expect(html).toContain(`id="${id}"`)
-    }
-  })
-
-  it('marks thumbnails decorative, since their buttons carry the description', () => {
-    for (const image of galleryImages) {
-      expect(html).not.toMatch(new RegExp(`<img[^>]*alt="${image.alt}"`))
-    }
-  })
-
-  it('attributes every testimonial and links it to the project it is about', () => {
-    for (const r of recommendations) {
-      expect(html).toContain(escape(r.authorName))
-      const project = projects.find((p) => p.id === r.projectId)
-      if (project) expect(html).toContain(`href="/projects/${project.slug}"`)
-    }
-  })
-
-  it('never leaves a single card alone on the last three-column row', () => {
-    const entries = buildFieldLog(galleryImages, recommendations, projects)
-    if (entries.length % 3 === 1) expect(html).toContain('lg:col-span-3')
-  })
-})
-
-describe('Stack', () => {
-  const html = renderToStaticMarkup(<Stack />)
-
-  it('lists every skill under its category', () => {
-    for (const s of skills) expect(html).toContain(`>${s.name}<`)
-  })
-
-  it('renders the AI & automation group', () => {
-    expect(html).toContain('>AI &amp; automation<')
-    for (const name of ['Claude Code', 'Codex', 'Qwen Code', 'n8n', 'Groq / LLM APIs']) expect(html).toContain(`>${name}<`)
   })
 })

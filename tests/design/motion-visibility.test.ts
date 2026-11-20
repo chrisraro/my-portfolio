@@ -35,10 +35,6 @@ describe('scroll reveals', () => {
       expect(rule, cls).toMatch(/animation-range:\s*entry (?:calc\()?10%[^;]*cover 30%/)
     }
   })
-
-  it('travel far enough to be seen: postcards 40px (the xl distance)', () => {
-    expect(block).toMatch(/translateX\(var\(--slide-from, 40px\)\)/)
-  })
 })
 
 // Refinement gate R5 (critique bug 7): the product spreads' scroll-scrubbed

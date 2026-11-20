@@ -493,7 +493,10 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Contact', href: '#contact' },
 ]
 
-// Headings for each homepage section. The Field log uses `galleryContent`.
+// The gateways as a sentence names them: "PayPal, PayMongo, Maya and Xendit".
+const gatewaySentence = `${paymentGateways.slice(0, -1).join(', ')} and ${paymentGateways[paymentGateways.length - 1]}`
+
+// Headings and copy for each homepage section. `galleryContent` waits for /about (S4).
 export const sectionContent = {
   work: { eyebrow: 'Products', title: 'Products of my own' },
   systems: {
@@ -518,7 +521,23 @@ export const sectionContent = {
       places: 'places on the field map',
     },
   },
-  stack: { eyebrow: 'Stack', title: 'What I ship with' },
+  // The two paths up from the trailhead (spec §5). Until S4 builds /services
+  // and /hire, both lead to the contact form.
+  fork: {
+    eyebrow: 'The fork',
+    title: 'Two ways up',
+    business: {
+      title: 'For your business',
+      body: `Booking and payment sites for hotels, tours and restaurants, WooCommerce stores with ${gatewaySentence}, and AI automation for the work your team repeats.`,
+      cta: 'Start a project',
+    },
+    team: {
+      title: 'For your team',
+      body: 'A full-stack developer for a full-time remote role: Next.js, TypeScript, Supabase and WordPress, with tests, CI and AI coding tools in daily use.',
+      cta: 'Hire me for a role',
+      resume: 'Download résumé',
+    },
+  },
   contact: { eyebrow: 'Contact', title: 'Start a project' },
 }
 

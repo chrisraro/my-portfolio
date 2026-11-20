@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { ContactConsole } from '@/components/sections/contact-console'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
-import { FieldLog } from '@/components/sections/field-log'
+import { Fork } from '@/components/sections/fork'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
-import { Stack } from '@/components/sections/stack'
 import { Trailhead } from '@/components/sections/trailhead'
 
 // The layout's metadata has no canonical (it would leak to the 404 page), so
@@ -20,11 +19,10 @@ export default function HomePage() {
     <>
       <Trailhead />
       <ElevationStrip />
+      <Fork />
       <Products />
       <Rack />
       <CaseStudies />
-      <FieldLog />
-      <Stack />
       <ContactConsole />
     </>
   )

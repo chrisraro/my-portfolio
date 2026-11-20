@@ -4,7 +4,6 @@ import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
-import { Stack } from '@/components/sections/stack'
 import { BoardFilter } from '@/components/ui/board-filter'
 import { heroContent, projects, projectsPageContent } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
@@ -108,14 +107,5 @@ describe('filter tabs', () => {
     const html = renderToStaticMarkup(<BoardFilter active="Sites" />)
     const current = html.match(/<li class="([^"]*)"><a [^>]*aria-current="true"/)?.[1] ?? ''
     expect(current).toContain('[scroll-initial-target:nearest]')
-  })
-})
-
-describe('stack', () => {
-  it('shows WordPress & e-commerce as its own group, first, without a chip', () => {
-    const html = renderToStaticMarkup(<Stack />)
-    const groups = Array.from(html.matchAll(/<dt[^>]*>([^<]+)<\/dt>/g)).map((m) => m[1])
-    expect(groups[0]).toBe('WordPress &amp; e-commerce')
-    expect(html).not.toMatch(/rounded-full bg-panel[^"]*">WordPress</)
   })
 })
