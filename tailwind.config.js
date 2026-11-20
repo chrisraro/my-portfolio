@@ -33,10 +33,10 @@ module.exports = {
         'on-accent': token('on-accent'),
       },
       fontFamily: {
-        // Figtree reads; Anybody (variable, with a width axis) shouts. There is
-        // no mono family: edge codes use .edge-code (Anybody, tabular numerals).
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        // Archivo only. `display` is the same family; width and case come
+        // from .text-display and .map-label.
+        sans: ['var(--font-sans)', 'Arial', 'sans-serif'],
+        display: ['var(--font-sans)', 'Arial', 'sans-serif'],
       },
       // --radius is 6px: sm 2px (postcards), md 4px, DEFAULT/lg 6px (cards,
       // panels, buttons), xl 10px (dialog). Chips use rounded-full.

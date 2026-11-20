@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
@@ -54,9 +54,9 @@ describe('motion stays off the first load', () => {
 })
 
 describe('first layout', () => {
-  it('falls back to plain Arial, not a metric-adjusted local() face per weight and size', () => {
+  it('falls back to plain Arial, not a metric-adjusted local() face', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout.match(/adjustFontFallback: false/g)).toHaveLength(2)
+    expect(layout.match(/adjustFontFallback: false/g)).toHaveLength(1)
   })
 
   it('does not run next-themes’ transition suppression on every load', () => {
@@ -80,14 +80,15 @@ describe('first layout', () => {
   })
 })
 
-describe('display font', () => {
-  // R6: Anybody, instanced to the axis ranges in use, is a third smaller than
-  // Google's full variable file, and it sits on every page's critical path.
-  it('is the self-hosted instance, preloaded, no larger than 40 KB', () => {
+describe('type family', () => {
+  // One variable family on its width axis: condensed for display and map
+  // labels, normal width for reading. Anybody and Figtree are retired.
+  it('loads Archivo with its wdth axis and nothing else', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout).toMatch(/localFont\(\{\s*src: '\.\/fonts\/anybody-latin-wght400-800-wdth75-100\.woff2'/)
-    expect(layout).not.toMatch(/import \{[^}]*Anybody[^}]*\} from 'next\/font\/google'/)
-    expect(statSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2').size).toBeLessThanOrEqual(40 * 1024)
+    expect(layout).toMatch(/import \{ Archivo \} from 'next\/font\/google'/)
+    expect(layout).toMatch(/axes: \['wdth'\]/)
+    expect(layout).not.toMatch(/Figtree|localFont|anybody/i)
+    expect(existsSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2')).toBe(false)
   })
 })
 

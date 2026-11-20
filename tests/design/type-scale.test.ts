@@ -27,3 +27,20 @@ describe('type scale', () => {
     expect(offenders).toEqual([])
   })
 })
+
+describe('trail map type utilities', () => {
+  const css = readFileSync('app/globals.css', 'utf8')
+
+  it('sets display and map labels condensed and uppercase', () => {
+    for (const cls of ['text-display', 'map-label']) {
+      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
+      expect(body, cls).toBeDefined()
+      expect(body, cls).toMatch(/font-stretch:\s*(?:6\d|7\d)%/)
+      expect(body, cls).toMatch(/text-transform:\s*uppercase/)
+    }
+  })
+
+  it('gives numerals tabular figures', () => {
+    expect(css).toMatch(/\.tabular \{[^}]*font-variant-numeric:\s*tabular-nums/)
+  })
+})
