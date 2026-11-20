@@ -13,7 +13,7 @@ function cssVar(name: string): string {
 
 describe('motion tokens', () => {
   it('has the spec durations, distances and easings', () => {
-    expect(motionTokens.duration).toEqual({ fast: 0.18, normal: 0.35, slow: 0.6, crawl: 1.2 })
+    expect(motionTokens.duration).toEqual({ fast: 0.18, normal: 0.35, slow: 0.6, crawl: 1.2, draw: 1.6 })
     expect(motionTokens.distance).toEqual({ sm: 8, md: 16, lg: 24, xl: 40 })
     expect(motionTokens.scale).toEqual({ settle: 0.98 })
     expect(motionTokens.easing.smooth).toEqual([0.22, 1, 0.36, 1])
@@ -38,6 +38,10 @@ describe('motion tokens', () => {
     for (const [k, v] of Object.entries(motionTokens.easing)) {
       expect(cssVar(`--ease-${k}`).replace(/\s+/g, '')).toBe(`cubic-bezier(${v.join(',')})`)
     }
+  })
+
+  it('staggers rising lines with a CSS token', () => {
+    expect(cssVar('--stagger-line')).toBe('70ms')
   })
 
   it('keeps every .reveal animation inside both gates', () => {

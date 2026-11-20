@@ -20,6 +20,9 @@
 	--dur-normal: 0.35s;
 	--dur-slow: 0.6s;
 	--dur-crawl: 1.2s;
+	--dur-draw: 1.6s;
+	/* Rising lines (spec §4, "rise"): each line starts this much after the one before. */
+	--stagger-line: 70ms;
 	--ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 	--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
 	/* A rack row's once-only entrance: each column starts this much later. */
@@ -234,16 +237,15 @@
 		line-height: 1;
 	}
 	/*
-	 * The one primary button, on every page. On paper it is an amber fill; on
-	 * an amber plane (.on-plane: the hero's front panel) it inverts to a lagoon
-	 * fill with amber text, since an amber button would vanish there. Pair
-	 * it with .press for the hover lift.
+	 * The one primary action: trail red, on-trail text (spec §3). Pair it with
+	 * .press for the hover lift.
 	 */
 	.button-primary {
-		@apply button-label inline-flex min-h-[44px] items-center gap-2 rounded bg-accent-plane px-5 py-2.5 text-on-accent;
+		@apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-trail px-6 py-3 font-sans text-[0.9375rem] font-semibold text-on-trail;
 	}
-	.on-plane .button-primary {
-		@apply bg-canvas text-accent;
+	/* The second path beside it: an ink outline, never filled. */
+	.button-secondary {
+		@apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border-2 border-ink bg-transparent px-6 py-3 font-sans text-[0.9375rem] font-semibold text-ink;
 	}
 
 	/*

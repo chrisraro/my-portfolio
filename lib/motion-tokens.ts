@@ -1,7 +1,8 @@
 // Motion tokens. Mirrored as --dur-* / --ease-* custom properties in app/globals.css;
 // tests/design/motion-tokens.test.ts keeps the two in step.
 export const motionTokens = {
-  duration: { fast: 0.18, normal: 0.35, slow: 0.6, crawl: 1.2 },
+  // draw: a trail or contour stroking in (spec §4, the "draw" verb).
+  duration: { fast: 0.18, normal: 0.35, slow: 0.6, crawl: 1.2, draw: 1.6 },
   easing: {
     smooth: [0.22, 1, 0.36, 1],
     sharp: [0.4, 0, 0.2, 1],

@@ -16,9 +16,9 @@ const css = readFileSync('app/globals.css', 'utf8')
 const sources = ['app', 'components'].flatMap(tsxFiles).map((f) => ({ f, src: readFileSync(f, 'utf8') }))
 
 describe('primary button', () => {
-  it('is defined once, with the plane inversion', () => {
-    expect(css).toMatch(/\.button-primary \{[^}]*bg-accent-plane[^}]*text-on-accent/)
-    expect(css).toMatch(/\.on-plane \.button-primary \{[^}]*bg-canvas[^}]*text-accent/)
+  it('is defined once: trail fill with on-trail text, plus an ink-outline secondary', () => {
+    expect(css).toMatch(/\.button-primary \{[^}]*bg-trail[^}]*text-on-trail/)
+    expect(css).toMatch(/\.button-secondary \{[^}]*border-ink[^}]*text-ink/)
   })
 
   it('is used by every primary call to action', () => {
@@ -41,8 +41,8 @@ describe('primary button', () => {
 
   it('is never composed by hand from a fill and padding', () => {
     for (const { f, src } of sources) {
+      expect(src, f).not.toMatch(/\bbg-trail\b[^"]*\bpx-\d/)
       expect(src, f).not.toMatch(/rounded bg-accent(?:-plane)? px-\d/)
-      expect(src, f).not.toMatch(/rounded bg-canvas px-\d/)
     }
   })
 })
