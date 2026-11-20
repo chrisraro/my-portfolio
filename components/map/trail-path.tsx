@@ -18,14 +18,14 @@ export function TrailPath({ d, viewBox, className }: TrailPathProps) {
       className={cn('pointer-events-none absolute inset-0 h-full w-full text-trail', className)}
       fill="none"
     >
+      {/* No vector-effect here: non-scaling-stroke makes Chromium ignore the pathLength-based dash offset, so the trail would never draw. */}
       <path
         d={d}
         pathLength={1}
         className="trail-draw"
         stroke="currentColor"
-        strokeWidth={3}
+        strokeWidth={4}
         strokeLinecap="round"
-        vectorEffect="non-scaling-stroke"
       />
     </svg>
   )

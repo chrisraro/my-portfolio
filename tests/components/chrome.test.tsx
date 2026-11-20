@@ -16,5 +16,6 @@ describe('map primitives', () => {
     expect(html).toContain('pathLength="1"')
     expect(html).toContain('trail-draw')
     expect(html).toContain('aria-hidden="true"')
+    expect(html).not.toContain('vector-effect')
   })
 })
