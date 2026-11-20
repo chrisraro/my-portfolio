@@ -3,7 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ContourField } from '@/components/map/contour-field'
 import { TrailPath } from '@/components/map/trail-path'
-import { navigationItems } from '@/lib/data'
+import { Footer } from '@/components/footer'
+import { footerContent, navigationItems, resumeUrl } from '@/lib/data'
 import { trailheadContours, trailheadTrail } from '@/lib/contours'
 
 describe('map primitives', () => {
@@ -38,5 +39,24 @@ describe('legend navigation', () => {
 
   it('offers the résumé from the legend', () => {
     expect(src).toContain('resumeUrl')
+  })
+})
+
+describe('survey footer', () => {
+  const html = renderToStaticMarkup(<Footer />)
+
+  it('marks Naga City as the base with its coordinates', () => {
+    expect(footerContent.base.place).toBe('Naga City, Camarines Sur')
+    expect(html).toContain(footerContent.base.place)
+    expect(html).toContain(footerContent.base.coordinates)
+  })
+
+  it('carries no phone number or street address', () => {
+    expect(html).not.toMatch(/\+?63[\s-]?9\d{2}|09\d{9}/)
+    expect(html).not.toMatch(/Street|St\.\s|Barangay/i)
+  })
+
+  it('offers the résumé on every width', () => {
+    expect(html).toContain(`href="${resumeUrl}"`)
   })
 })

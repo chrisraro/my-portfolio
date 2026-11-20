@@ -475,7 +475,10 @@ export const sectionContent = {
 
 // The footer's colophon, set as a small edge code.
 export const footerContent = {
-  colophon: 'Printed in Naga City',
+  colophon: 'Surveyed in Naga City',
+  // The public locality only (CLAUDE.md privacy rule): Naga City's centre,
+  // rounded to two decimals.
+  base: { place: 'Naga City, Camarines Sur', coordinates: '13.62° N · 123.19° E' },
 }
 
 export const projectsPageContent = {
