@@ -63,11 +63,12 @@ describe('Trailhead', () => {
     expect(html).toContain(`>${escape(heroContent.subheadline)}</p>`)
   })
 
-  it('offers both paths: Start a project, then Hire me for a role, both to #contact until S4', () => {
+  it('offers both paths: Start a project to the form, then Hire me for a role to /hire', () => {
     const primary = html.search(/<a href="#contact" class="press button-primary">Start a project/)
-    const secondary = html.search(/<a href="#contact" class="press button-secondary">Hire me for a role/)
+    const secondary = html.search(/<a [^>]*href="\/hire"[^>]*>Hire me for a role/)
     expect(primary).toBeGreaterThan(-1)
     expect(secondary).toBeGreaterThan(primary)
+    expect(html.match(/<a [^>]*href="\/hire"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
   })
 
   it('sets the portrait on a survey plate around the lightbox, named once', () => {
@@ -138,12 +139,15 @@ describe('Fork', () => {
     expect(cards[0]).toContain(escape(fork.business.body))
   })
 
-  it('sends the business path to the contact form until S4 builds /services', () => {
-    expect(cards[0]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.business.cta}`))
+  it('sends the business path to /services', () => {
+    expect(cards[0]?.match(/<a [^>]*href="\/services"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
+    expect(cards[0]).toContain(`>${fork.business.cta}`)
+    expect(cards[0]).not.toContain('href="#contact"')
   })
 
-  it('sends the team path to the contact form and the résumé until S4 builds /hire', () => {
-    expect(cards[1]).toMatch(new RegExp(`<a href="#contact" class="press button-secondary">${fork.team.cta}`))
+  it('sends the team path to /hire, the résumé beside it', () => {
+    expect(cards[1].match(/<a [^>]*href="\/hire"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
+    expect(cards[1]).toContain(`>${fork.team.cta}`)
     expect(cards[1]).toContain(`href="${resumeUrl}"`)
     expect(cards[1]).toContain('(PDF, opens in a new tab)')
   })

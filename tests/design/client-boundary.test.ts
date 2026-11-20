@@ -25,4 +25,17 @@ describe('client boundary', () => {
     expect(clientFiles).not.toContain(join('app', 'page.tsx'))
     expect(clientFiles).not.toContain(join('app', 'projects', 'page.tsx'))
   })
+
+  it('renders the S4 pages on the server and adds no client component', () => {
+    for (const f of [
+      join('app', 'services', 'page.tsx'),
+      join('app', 'services', '[slug]', 'page.tsx'),
+      join('app', 'about', 'page.tsx'),
+      join('app', 'hire', 'page.tsx'),
+      join('app', 'not-found.tsx'),
+    ]) {
+      expect(clientFiles).not.toContain(f)
+    }
+    expect(clientFiles, clientFiles.join('\n')).toHaveLength(8)
+  })
 })

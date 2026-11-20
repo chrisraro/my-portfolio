@@ -38,6 +38,10 @@ describe('primary button', () => {
     expect(uses('app/projects/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
     expect(uses('app/projects/[slug]/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
     expect(uses('app/not-found.tsx', '{ctaLabels.backHome}')).toContain('button-primary')
+    expect(uses('app/services/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/services/[slug]/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/about/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('app/hire/page.tsx', '{ctaLabels.downloadResume}')).toContain('button-primary')
     expect(uses('components/sections/plan-the-route.tsx', 'Send message')).toContain('button-primary')
   })
 

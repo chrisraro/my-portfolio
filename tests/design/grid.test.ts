@@ -41,6 +41,11 @@ describe('the one grid', () => {
       'app/not-found.tsx',
       'app/projects/page.tsx',
       'app/projects/[slug]/page.tsx',
+      'app/services/page.tsx',
+      'app/services/[slug]/page.tsx',
+      'app/about/page.tsx',
+      'app/hire/page.tsx',
+      'components/ui/page-intro.tsx',
     ]
     for (const f of users) expect(readFileSync(f, 'utf8'), f).toContain("from '@/components/ui/grid'")
   })

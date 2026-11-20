@@ -528,15 +528,15 @@ export const sectionContent = {
       places: 'places on the field map',
     },
   },
-  // The two paths up from the trailhead (spec §5). Until S4 builds /services
-  // and /hire, both lead to the contact form.
+  // The two paths up from the trailhead (spec §5): a business to /services, a
+  // hiring team to /hire.
   fork: {
     eyebrow: 'The fork',
     title: 'Two ways up',
     business: {
       title: 'For your business',
       body: `Booking and payment sites for hotels, tours and restaurants, WooCommerce stores with ${gatewaySentence}, and AI automation for the work your team repeats.`,
-      cta: ctaLabels.startProject,
+      cta: ctaLabels.viewServices,
     },
     team: {
       title: 'For your team',

@@ -36,7 +36,7 @@ describe('call-to-action labels', () => {
   })
 
   it('feed the section copy that repeats them', () => {
-    expect(sectionContent.fork.business.cta).toBe(ctaLabels.startProject)
+    expect(sectionContent.fork.business.cta).toBe(ctaLabels.viewServices)
     expect(sectionContent.fork.team.cta).toBe(ctaLabels.hireForRole)
     expect(sectionContent.fork.team.resume).toBe(ctaLabels.downloadResume)
     expect(sectionContent.contact.title).toBe(ctaLabels.startProject)

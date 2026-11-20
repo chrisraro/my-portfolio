@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ContourField } from '@/components/map/contour-field'
@@ -46,10 +47,9 @@ export function Trailhead() {
                 {ctaLabels.startProject}
                 <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
               </a>
-              {/* S4 points this at /hire. */}
-              <a href="#contact" className="press button-secondary">
+              <Link href="/hire" className="press button-secondary">
                 {ctaLabels.hireForRole}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
