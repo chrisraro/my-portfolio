@@ -2,14 +2,15 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { recommendations } from '@/lib/data'
 import embeddable from '@/lib/embeddable.json'
+import { projectHref } from '@/lib/site-routes'
 import type { Project, ProjectStatus, Recommendation } from '@/types'
 
 // Server-only helpers for /projects/[slug]. They read the filesystem, so never
 // import this module from a client component.
 
-export function projectHref(project: Project): string {
-  return `/projects/${project.slug}`
-}
+// projectHref lives in lib/site-routes.ts (pure, so the edge card route can use
+// it); re-exported here for the pages and modules that import it from here.
+export { projectHref }
 
 // ua-gated sites refuse automated clients but open in any browser, so a
 // visitor can follow the link. Login-walled and internal systems cannot.

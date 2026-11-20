@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { OFFLINE_REPLY } from '@/lib/chat-context'
 import { galleryImages, heroContent, projects, projectsPageContent } from '@/lib/data'
-import { buildProjectsTitle, buildSiteMetadata } from '@/lib/site-metadata'
+import { buildSiteMetadata } from '@/lib/site-metadata'
+import { buildProjectsTitle } from '@/lib/site-routes'
 
 // House style: no em-dash in copy a visitor reads.
 const EM_DASH = '—'

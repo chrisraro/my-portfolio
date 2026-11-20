@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import sitemap from '@/app/sitemap'
 import { FLAGSHIP_SLUGS } from '@/lib/case-studies'
 import { projects, servicePages } from '@/lib/data'
-import { SITE_URL } from '@/lib/site-metadata'
+import { SITE_URL, absoluteUrl } from '@/lib/site-metadata'
+import { siteRoutes } from '@/lib/site-routes'
 
 describe('sitemap', () => {
   const entries = sitemap()
@@ -21,5 +22,9 @@ describe('sitemap', () => {
     expect(priority('/hire')).toBeGreaterThan(priority('/projects'))
     expect(priority(`/projects/${FLAGSHIP_SLUGS[0]}`)).toBe(0.7)
     expect(priority('/projects/latag')).toBe(0.5)
+  })
+
+  it('lists every route in lib/site-routes.ts once, in its order', () => {
+    expect(urls).toEqual(siteRoutes().map((r) => absoluteUrl(r.path)))
   })
 })

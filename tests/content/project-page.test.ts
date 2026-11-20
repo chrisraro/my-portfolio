@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { caseStudyContent, projects, sectorNames } from '@/lib/data'
 import { canLinkLive, fullShotFor, isEmbeddable, liveLinkLabel, nextInOrder, previewFor, projectHref, recommendationFor, screenshotsFor } from '@/lib/project-page'
-import { buildProjectPageTitle } from '@/lib/site-metadata'
+import { buildProjectPageTitle } from '@/lib/site-routes'
 import type { Project, ProjectStatus } from '@/types'
 
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)!

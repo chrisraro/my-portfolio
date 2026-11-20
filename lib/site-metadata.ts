@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { heroContent } from '@/lib/data'
+import { buildProjectPageTitle, buildProjectsTitle } from '@/lib/site-routes'
 import type { Project, ProjectBand } from '@/types'
 
 /** Strips a trailing slash so URLs built by concatenation never double one. */
@@ -9,6 +10,11 @@ export function normaliseSiteUrl(url: string): string {
 
 /** Falls back to this when NEXT_PUBLIC_SITE_URL is unset (CI, local builds). */
 export const SITE_URL = normaliseSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || 'https://christian-digital-portfolio.vercel.app')
+
+/** A site path as an absolute URL; the homepage is the bare origin. */
+export function absoluteUrl(path: string): string {
+  return path === '/' ? SITE_URL : `${SITE_URL}${path}`
+}
 
 // A page that sets its own openGraph replaces the layout's whole object, so
 // these ride along with every one.
@@ -76,11 +82,6 @@ export function buildSiteMetadata(
   }
 }
 
-/** /projects gets its own title, naming the band when a filter is applied. */
-export function buildProjectsTitle(band: ProjectBand | null): string {
-  return band ? `${band} · Projects · ${heroContent.name}` : `Projects · ${heroContent.name}`
-}
-
 /**
  * /projects's own metadata: every ?band= filter canonicalises to the
  * unfiltered page, and setting openGraph here (rather than inheriting the
@@ -94,11 +95,6 @@ export function buildProjectsMetadata(band: ProjectBand | null): Metadata {
     alternates: { canonical: '/projects' },
     openGraph: { ...OPEN_GRAPH_BASE, type: 'website', title, url: '/projects', images: [OG_IMAGE] },
   }
-}
-
-/** Each project page is titled for its project. */
-export function buildProjectPageTitle(project: Project): string {
-  return `${project.title} · ${heroContent.name}`
 }
 
 /**
