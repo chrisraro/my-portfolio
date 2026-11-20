@@ -23,7 +23,7 @@ const RETIRED: [string, RegExp][] = [
   ['the folds', /crease-(?:v|h)\b|reveal-fold/],
   ['the arrow-link text', /ArrowLinkText|arrow-link-text/],
   ['the rack transition names', /--vt-card|--vt-tier|cardTransitionName|tierTransitionName/],
-  ['the amber flap', /on-plane|crease-fold/],
+  ['the amber flap', /\bon-plane\b|crease-fold/],
 ]
 
 const GONE = [

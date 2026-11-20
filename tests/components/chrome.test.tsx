@@ -78,7 +78,7 @@ describe('survey footer', () => {
 
   it('carries no phone number or street address', () => {
     expect(html).not.toMatch(/\+?63[\s-]?9\d{2}|09\d{9}/)
-    expect(html).not.toMatch(/Street|St\.\s|Barangay/i)
+    expect(html).not.toMatch(/\bStreet\b|\bSt\.\s|\bBarangay\b/i)
   })
 
   it('offers the résumé on every width', () => {
