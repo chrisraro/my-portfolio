@@ -42,11 +42,11 @@ describe('screenshots are stills', () => {
 describe('plate hover', () => {
   const hover = rules.filter((r) => /\.lift-card[^,]*:hover/.test(r.selector))
 
-  it('lifts 2px, scales the shot 1.02 and turns the border accent', () => {
+  it('lifts 2px, scales the shot 1.02 and turns the border ink', () => {
     const body = hover.map((r) => r.body).join(';')
     expect(body).toMatch(/transform:\s*translateY\(-2px\)/)
     expect(body).toMatch(/transform:\s*scale\(1\.02\)/)
-    expect(body).toMatch(/border-color:\s*oklch\(var\(--accent\)\)/)
+    expect(body).toMatch(/border-color:\s*oklch\(var\(--ink\)\)/)
     expect(body).toMatch(/opacity:\s*1/)
   })
 
@@ -78,10 +78,10 @@ describe('plate hover', () => {
     expect(shadow!.body).toMatch(/pointer-events:\s*none/)
   })
 
-  it('gives keyboard focus the accent border without any travel', () => {
+  it('gives keyboard focus the ink border without any travel', () => {
     const focus = rules.filter((r) => /\.lift-card:focus-visible/.test(r.selector))
     expect(focus.length).toBeGreaterThan(0)
-    expect(focus.map((r) => r.body).join(';')).toMatch(/border-color:\s*oklch\(var\(--accent\)\)/)
+    expect(focus.map((r) => r.body).join(';')).toMatch(/border-color:\s*oklch\(var\(--ink\)\)/)
     for (const r of focus) {
       expect(r.body).not.toMatch(/transform/)
       expect(r.ancestors.join(' ')).not.toContain('hover')

@@ -48,7 +48,7 @@ export default function RootLayout({
           <ToastProvider>
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent-plane focus:font-display focus:px-4 focus:py-2 focus:text-on-accent"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:font-sans focus:px-4 focus:py-2 focus:text-canvas"
             >
               Skip to content
             </a>

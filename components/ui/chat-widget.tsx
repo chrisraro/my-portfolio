@@ -36,13 +36,13 @@ const WELCOME =
 const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contact info']
 
 const CHIP =
-  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-accent hover:text-accent'
+  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-ink hover:text-ink'
 
-// The status dots are the accent (amber), never green: green means a live system and
+// The status dot is ink, never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
 // reply arrives. Once the API answers `offline: true`, the header says so in
 // words (status is never colour alone) and the launcher drops its dot.
-const DOT_READY = 'bg-accent'
+const DOT_READY = 'bg-ink'
 const DOT_OFFLINE = 'bg-muted'
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -277,7 +277,7 @@ export function ChatWidget() {
               type="button"
               onClick={() => setIsOpen(true)}
               aria-haspopup="dialog"
-              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-accent shadow-overlay transition-colors hover:border-accent sm:h-14 sm:w-14"
+              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-ink shadow-overlay transition-colors hover:border-ink sm:h-14 sm:w-14"
               aria-label="Open chat"
             >
               <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
@@ -322,7 +322,7 @@ export function ChatWidget() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded text-muted transition-colors hover:text-accent"
+                className="inline-flex h-9 w-9 items-center justify-center rounded text-muted transition-colors hover:text-ink"
                 aria-label="Close chat"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
@@ -406,13 +406,13 @@ export function ChatWidget() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ask about projects, skills, experience"
-                  className="min-h-[40px] flex-1 rounded border border-field-border bg-canvas px-3 text-sm text-ink placeholder:text-muted focus-visible:border-accent"
+                  className="min-h-[40px] flex-1 rounded border border-field-border bg-canvas px-3 text-sm text-ink placeholder:text-muted focus-visible:border-ink"
                 />
                 <button
                   type="button"
                   onClick={() => handleSend()}
                   disabled={!inputValue.trim() || isTyping}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded bg-accent-plane text-on-accent transition-colors hover:bg-accent-plane/90 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded bg-trail text-on-trail transition-colors hover:bg-trail/90 disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="Send message"
                 >
                   <Send className="h-4 w-4" aria-hidden="true" />

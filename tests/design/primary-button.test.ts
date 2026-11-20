@@ -49,8 +49,8 @@ describe('primary button', () => {
     for (const { f, src } of sources) {
       // Each quoted class string on its own, whichever order its classes come in.
       for (const str of src.match(/"[^"]*"|`[^`]*`/g) ?? []) {
-        // Unprefixed utilities only: focus:bg-accent-plane (the skip link) is not a resting button.
-        const composed = /(?<![:\w-])bg-(?:trail|accent(?:-plane)?)(?![\w-])/.test(str) && /(?<![:\w-])px-\d/.test(str)
+        // Unprefixed utilities only: a focus: or hover: fill is not a resting button.
+        const composed = /(?<![:\w-])bg-trail(?![\w-])/.test(str) && /(?<![:\w-])px-\d/.test(str)
         expect(composed, `${f}: ${str}`).toBe(false)
       }
     }

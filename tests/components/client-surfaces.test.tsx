@@ -146,9 +146,9 @@ describe('ChatWidget', () => {
     expect(html).not.toContain('live-pulse')
   })
 
-  it('marks the launcher with a still amber dot', () => {
+  it('marks the launcher with a still ink dot', () => {
     const html = renderToStaticMarkup(<ChatWidget />)
-    expect(html).toMatch(/<span aria-hidden="true" class="[^"]*rounded-full[^"]*bg-accent"/)
+    expect(html).toMatch(/<span aria-hidden="true" class="[^"]*rounded-full[^"]*bg-ink"/)
   })
 
   it('says so in words, not colour alone, when the API answers offline', () => {

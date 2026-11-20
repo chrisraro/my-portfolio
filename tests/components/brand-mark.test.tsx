@@ -15,8 +15,9 @@ describe('BrandMark', () => {
   })
 
   it('fills from the theme tokens, never literal colours', () => {
-    expect(html).toContain('oklch(var(--accent-plane))')
-    expect(html).toContain('oklch(var(--on-accent))')
+    expect(html).toContain('oklch(var(--ink))')
+    expect(html).toContain('oklch(var(--bg))')
+    expect(html).not.toMatch(/--trail\b/)
     expect(html).not.toMatch(/#[0-9a-f]{3,8}\b/i)
     expect(html).not.toMatch(/--live\b/)
   })

@@ -44,9 +44,9 @@ function ToastIcon({ type }: { type: Toast['type'] }) {
   const cls = 'h-4 w-4 shrink-0'
   switch (type) {
     case 'success':
-      return <Check aria-hidden="true" className={`${cls} text-accent`} />
+      return <Check aria-hidden="true" className={`${cls} text-ink`} />
     case 'info':
-      return <Info aria-hidden="true" className={`${cls} text-accent`} />
+      return <Info aria-hidden="true" className={`${cls} text-ink`} />
     case 'warning':
       return <AlertTriangle aria-hidden="true" className={`${cls} text-ink`} />
     case 'error':

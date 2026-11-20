@@ -11,7 +11,7 @@ import { availability, contactInfo, ctaLabels, resumeUrl, sectionContent } from 
 import { cn } from '@/lib/utils'
 
 const FIELD =
-  'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-accent aria-[invalid=true]:border-ink'
+  'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-ink aria-[invalid=true]:border-ink'
 
 const LABEL = 'map-label mb-1.5 block text-muted-strong'
 

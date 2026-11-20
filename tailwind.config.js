@@ -27,10 +27,6 @@ module.exports = {
         'status-early': token('status-early'),
         'status-private': token('status-private'),
         'status-internal': token('status-internal'),
-        // Transitional (Portfolio 4.0 sections); removed in S6.
-        accent: token('accent'),
-        'accent-plane': token('accent-plane'),
-        'on-accent': token('on-accent'),
       },
       fontFamily: {
         // Archivo only. `display` is the same family; width and case come
@@ -38,7 +34,7 @@ module.exports = {
         sans: ['var(--font-sans)', 'Arial', 'sans-serif'],
         display: ['var(--font-sans)', 'Arial', 'sans-serif'],
       },
-      // --radius is 6px: sm 2px (postcards), md 4px, DEFAULT/lg 6px (cards,
+      // --radius is 6px: sm 2px (buttons), md 4px, DEFAULT/lg 6px (plates,
       // panels, buttons), xl 10px (dialog). Chips use rounded-full.
       borderRadius: {
         DEFAULT: 'var(--radius)',

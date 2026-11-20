@@ -102,7 +102,7 @@ export function ImageLightbox({ src, alt, children, className, describedBy }: Im
               ref={closeRef}
               type="button"
               onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong bg-panel text-ink transition-colors hover:border-accent hover:text-accent"
+              className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded border border-line-strong bg-panel text-ink transition-colors hover:border-ink"
               aria-label="Close"
             >
               <X className="h-5 w-5" aria-hidden="true" />
