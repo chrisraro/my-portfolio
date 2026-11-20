@@ -41,37 +41,43 @@ function byId(id: string): Project {
 }
 
 /**
- * A comparison as a real table. On a phone it is wider than the screen, so it
- * scrolls sideways inside a labelled region that takes focus (keyboard users
- * can scroll it), never the page.
+ * A comparison as a real table under its own heading, set like the question
+ * sections above it. On a phone the table is wider than the screen, so it
+ * scrolls sideways inside a region that takes focus (keyboard users can scroll
+ * it), never the page. The heading sits outside the scroller, so it wraps
+ * instead of being cut, and names both the region and the table.
  */
 function Comparison({ comparison }: { comparison: ServiceComparison }) {
   return (
-    <div role="region" aria-label={comparison.caption} tabIndex={0} className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] border-collapse text-left">
-        <caption className="text-title mb-5 text-left text-ink">{comparison.caption}</caption>
-        <thead>
-          <tr>
-            {comparison.columns.map((column) => (
-              <th key={column} scope="col" className="map-label border-b border-line-strong pb-2 pr-6 text-muted-strong">
-                {column}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {comparison.rows.map((row) => (
-            <tr key={row.need} className="border-b border-line align-top">
-              <th scope="row" className="py-4 pr-6 font-semibold text-ink">
-                {row.need}
-              </th>
-              <td className="py-4 pr-6 text-muted-strong">{row.choice}</td>
-              <td className="py-4 text-muted-strong">{row.projectIds.map((id) => byId(id).title).join(', ')}</td>
+    <section aria-labelledby="comparison-title" className="border-t border-line pt-8">
+      <h2 id="comparison-title" className="text-title text-ink">
+        {comparison.caption}
+      </h2>
+      <div role="region" aria-labelledby="comparison-title" tabIndex={0} className="mt-5 overflow-x-auto">
+        <table aria-labelledby="comparison-title" className="w-full min-w-[36rem] border-collapse text-left">
+          <thead>
+            <tr>
+              {comparison.columns.map((column) => (
+                <th key={column} scope="col" className="map-label border-b border-line-strong pb-2 pr-6 text-muted-strong">
+                  {column}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {comparison.rows.map((row) => (
+              <tr key={row.need} className="border-b border-line align-top">
+                <th scope="row" className="py-4 pr-6 font-semibold text-ink">
+                  {row.need}
+                </th>
+                <td className="py-4 pr-6 text-muted-strong">{row.choice}</td>
+                <td className="py-4 text-muted-strong">{row.projectIds.map((id) => byId(id).title).join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }
 

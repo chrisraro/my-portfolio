@@ -82,12 +82,19 @@ describe('/services/[slug]', () => {
     expect(html.indexOf('<section id="contact"')).toBeGreaterThan(html.lastIndexOf('<li id="plate-'))
   })
 
-  it('sets each comparison as a real table: a caption, column and row headers, a focusable scroll region', () => {
+  // F12 (finish review): a caption inside the 36rem scroller was cut mid-word at
+  // 390, so the title is a heading above it that names the region and the table.
+  it('sets each comparison as a real table: a heading above it, column and row headers, a focusable scroll region', () => {
     for (const s of servicePages.filter((x) => x.comparison)) {
       const html = render(ServicePage({ params: { slug: s.slug } }))
       const c = s.comparison!
-      expect(html).toContain(`<div role="region" aria-label="${escape(c.caption)}" tabindex="0"`)
-      expect(html).toContain(`>${escape(c.caption)}</caption>`)
+      const heading = `<h2 id="comparison-title" class="text-title text-ink">${escape(c.caption)}</h2>`
+      const region = '<div role="region" aria-labelledby="comparison-title" tabindex="0" class="mt-5 overflow-x-auto">'
+      expect(html).toContain(heading)
+      expect(html).toContain(region)
+      expect(html.indexOf(heading)).toBeLessThan(html.indexOf(region))
+      expect(html).toContain('<table aria-labelledby="comparison-title"')
+      expect(html).not.toContain('<caption')
       expect(html.match(/<th scope="col"/g)).toHaveLength(3)
       expect(html.match(/<th scope="row"/g)).toHaveLength(c.rows.length)
       // Read inside the table, row by row: the project titles also appear as proof plates elsewhere on the page.
