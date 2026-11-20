@@ -80,11 +80,11 @@ export function SiteLegend() {
       <div className="legend-glass pointer-events-auto mx-auto flex h-14 max-w-6xl items-center gap-3 rounded border border-line px-3 sm:gap-6 sm:px-5">
         <Link href="/" className="inline-flex min-h-[44px] shrink-0 items-center gap-2 text-ink">
           <BrandMark />
-          <span className="map-label text-[0.9375rem] text-ink">{heroContent.name}</span>
+          <span className="map-label text-[0.9375rem] text-ink max-sm:sr-only">{heroContent.name}</span>
         </Link>
 
         <nav aria-label="Primary" className="min-w-0 flex-1">
-          <ul className="flex overflow-x-auto p-1.5 max-sm:-my-1.5 sm:gap-1">
+          <ul className="flex overflow-x-auto p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-sm:-my-1.5 sm:gap-1">
             {navigationItems.map((item) => {
               const href = item.href.startsWith('#') ? `/${item.href}` : item.href
               const current = !item.href.startsWith('#') && pathname.startsWith(item.href)

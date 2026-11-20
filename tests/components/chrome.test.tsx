@@ -40,6 +40,11 @@ describe('legend navigation', () => {
   it('offers the résumé from the legend', () => {
     expect(src).toContain('resumeUrl')
   })
+
+  it('fits the three links on a phone: the name hides visually and the row shows no scrollbar', () => {
+    expect(src).toMatch(/className="[^"]*max-sm:sr-only[^"]*"[^>]*>\{heroContent\.name\}/)
+    expect(src).toContain('[scrollbar-width:none]')
+  })
 })
 
 describe('survey footer', () => {
