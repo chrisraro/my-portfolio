@@ -77,8 +77,8 @@ describe('positioning', () => {
     }
   })
 
-  it('navigates to the work, experience and contact', () => {
-    expect(navigationItems.map((n) => n.href)).toEqual(['/projects', '#timeline', '#contact'])
+  it('navigates to the work, the services, about, hire and contact', () => {
+    expect(navigationItems.map((n) => n.href)).toEqual(['/projects', '/services', '/about', '/hire', '#contact'])
   })
 })
 

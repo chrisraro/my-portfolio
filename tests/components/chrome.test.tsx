@@ -52,18 +52,54 @@ describe('legend navigation', () => {
     expect(src).not.toContain('aria-[current=page]:text-trail')
   })
 
-  it('lists Work first and keeps Contact', () => {
-    expect(navigationItems[0]).toEqual({ label: 'Work', href: '/projects' })
-    expect(navigationItems.map((n) => n.label)).toContain('Contact')
+  it('lists the pages in the spec’s order: Work, Services, About, Hire, then Contact', () => {
+    expect(navigationItems).toEqual([
+      { label: 'Work', href: '/projects' },
+      { label: 'Services', href: '/services' },
+      { label: 'About', href: '/about' },
+      { label: 'Hire', href: '/hire' },
+      { label: 'Contact', href: '#contact' },
+    ])
   })
 
   it('offers the résumé from the legend', () => {
     expect(src).toContain('resumeUrl')
   })
 
-  it('fits the three links on a phone: the name hides visually and the row shows no scrollbar', () => {
+  it('keeps the row from 1024px and folds it into a menu below; the name hides visually on a phone', () => {
     expect(src).toMatch(/className="[^"]*max-sm:sr-only[^"]*"[^>]*>\{heroContent\.name\}/)
     expect(src).toContain('[scrollbar-width:none]')
+    const html = renderToStaticMarkup(<SiteLegend />)
+    const navs = html.match(/<nav aria-label="Primary"[^>]*>/g) ?? []
+    expect(navs).toHaveLength(2)
+    expect(navs[0]).toContain('max-lg:hidden')
+    expect(html).toContain('<details class="lg:hidden">')
+    expect(html).toMatch(/<summary[^>]*>[\s\S]*?Menu<\/summary>/)
+  })
+
+  it('puts every page and the résumé in the menu', () => {
+    const html = renderToStaticMarkup(<SiteLegend />)
+    const menu = html.slice(html.indexOf('<details'), html.indexOf('</details>'))
+    for (const item of navigationItems) {
+      expect(menu, item.label).toContain(`href="${item.href.startsWith('#') ? `/${item.href}` : item.href}"`)
+    }
+    expect(menu).toContain(`href="${resumeUrl}"`)
+  })
+
+  it('shows the row’s résumé link only from 1024px, where the menu is gone', () => {
+    const html = renderToStaticMarkup(<SiteLegend />)
+    const row = html.slice(0, html.indexOf('<details'))
+    const escaped = resumeUrl.replace(/[.*+?^$()|[\]\\{}]/g, '\\$&')
+    expect(row).toMatch(new RegExp(`<a href="${escaped}" class="[^"]*\\bhidden\\b[^"]*\\blg:inline-flex\\b`))
+  })
+
+  it('closes the menu on a route change, on Escape (focus back on Menu), on a press outside and when a link is followed', () => {
+    expect(src).toContain('useEffect(() => setMenuOpen(false), [pathname])')
+    expect(src).toContain("e.key !== 'Escape'")
+    expect(src).toContain('summaryRef.current?.focus()')
+    expect(src).toContain("document.addEventListener('pointerdown', onPointer)")
+    expect(src).toMatch(/onClick=\{\(\) => setMenuOpen\(false\)\}/)
+    expect(src).toMatch(/onToggle=\{\(e\) => setMenuOpen\(e\.currentTarget\.open\)\}/)
   })
 })
 

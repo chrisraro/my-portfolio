@@ -14,7 +14,7 @@ import { ToastProvider } from '@/components/ui/toaster'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
-import { heroContent, navigationItems, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
+import { heroContent, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
 import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
 import { MAP_VIEWBOX, project as toMap } from '@/lib/geo'
 import { phOutline } from '@/lib/ph-outline'
@@ -85,9 +85,8 @@ describe('ElevationStrip', () => {
   const html = renderToStaticMarkup(<ElevationStrip />)
   const strip = html.match(/<div aria-hidden="true" class="elevation-track relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
 
-  it('is the #timeline section the legend’s Experience link lands on, its heading from data', () => {
+  it('is the #timeline section, its heading from data', () => {
     expect(html).toMatch(/^<section id="timeline" aria-labelledby="timeline-title"/)
-    expect(navigationItems.find((n) => n.label === 'Experience')?.href).toBe('#timeline')
     expect(html).toContain(`>${sectionContent.timeline.eyebrow}</p>`)
     expect(html).toMatch(new RegExp(`<h2 id="timeline-title" class="text-section[^"]*">${escape(sectionContent.timeline.title)}</h2>`))
   })

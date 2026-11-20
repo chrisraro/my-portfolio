@@ -471,13 +471,15 @@ export const contactInfo: ContactInfo = {
   socialLinks,
 }
 
-// Labels a client understands. `#` targets are homepage sections; `/` targets
-// are pages. tests/design/nav-anchors.test.ts checks both kinds resolve.
-// Services, About and Hire join in S4, when their pages exist
-// (tests/design/nav-anchors.test.ts checks every route has a page).
+// Labels a client understands, in the spec's order (§3). `/` targets are
+// pages; `#contact` is the homepage's form. tests/design/nav-anchors.test.ts
+// checks both kinds resolve. The dated route lives on /about, so the legend no
+// longer jumps to #timeline.
 export const navigationItems: NavigationItem[] = [
   { label: 'Work', href: '/projects' },
-  { label: 'Experience', href: '#timeline' },
+  { label: 'Services', href: '/services' },
+  { label: 'About', href: '/about' },
+  { label: 'Hire', href: '/hire' },
   { label: 'Contact', href: '#contact' },
 ]
 
