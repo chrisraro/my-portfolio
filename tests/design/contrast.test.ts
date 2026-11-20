@@ -97,3 +97,18 @@ describe('theme default', () => {
     expect(readFileSync('app/layout.tsx', 'utf8')).toContain('defaultTheme="light"')
   })
 })
+
+// WCAG 1.4.11: a text field's border is its only boundary, so it draws in
+// --field-border (3:1), never a hairline token.
+describe('field borders', () => {
+  it('every text field draws its border in --field-border, not a hairline token', () => {
+    const contact = readFileSync('components/sections/contact-console.tsx', 'utf8')
+    const field = contact.match(/const FIELD =\s*'([^']*)'/)?.[1] ?? ''
+    expect(field).toContain('border-field-border')
+    expect(field).not.toMatch(/border-line(-strong)?\b/)
+    const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
+    const input = chat.match(/id="chat-input"[\s\S]*?className="([^"]*)"/)?.[1] ?? ''
+    expect(input).toContain('border-field-border')
+    expect(input).not.toMatch(/border-line(-strong)?\b/)
+  })
+})
