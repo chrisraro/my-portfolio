@@ -101,6 +101,12 @@ describe('legend navigation', () => {
     expect(src).toMatch(/onClick=\{\(\) => setMenuOpen\(false\)\}/)
     expect(src).toMatch(/onToggle=\{\(e\) => setMenuOpen\(e\.currentTarget\.open\)\}/)
   })
+
+  it('closes the menu when keyboard focus leaves it (focusout to nothing or outside the details)', () => {
+    expect(src).toContain("details?.addEventListener('focusout', onFocusOut)")
+    expect(src).toContain("details?.removeEventListener('focusout', onFocusOut)")
+    expect(src).toMatch(/e\.relatedTarget instanceof Node && details\.contains\(e\.relatedTarget\)/)
+  })
 })
 
 describe('survey footer', () => {

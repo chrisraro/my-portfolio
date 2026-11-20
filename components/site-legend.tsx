@@ -28,8 +28,8 @@ export function SiteLegend() {
 
   // Below 1024px the links fold into a menu: a <details> disclosure, so it
   // opens without JavaScript too. Script closes it on a route change, on
-  // Escape (focus back on its summary), on a press outside, and when one of
-  // its links is followed (a same-page #contact jump changes no route).
+  // Escape (focus back on its summary), on a press outside, when focus leaves
+  // it, and when one of its links is followed (a same-page #contact jump changes no route).
   const [menuOpen, setMenuOpen] = useState(false)
   const detailsRef = useRef<HTMLDetailsElement>(null)
   const summaryRef = useRef<HTMLElement>(null)
@@ -39,8 +39,17 @@ export function SiteLegend() {
     const onPointer = (e: PointerEvent) => {
       if (detailsRef.current && e.target instanceof Node && !detailsRef.current.contains(e.target)) setMenuOpen(false)
     }
+    // Tabbing past the last link would leave the panel open over the page.
+    const details = detailsRef.current
+    const onFocusOut = (e: FocusEvent) => {
+      if (details && !(e.relatedTarget instanceof Node && details.contains(e.relatedTarget))) setMenuOpen(false)
+    }
     document.addEventListener('pointerdown', onPointer)
-    return () => document.removeEventListener('pointerdown', onPointer)
+    details?.addEventListener('focusout', onFocusOut)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      details?.removeEventListener('focusout', onFocusOut)
+    }
   }, [menuOpen])
   const onMenuKey = (e: KeyboardEvent<HTMLDetailsElement>) => {
     if (e.key !== 'Escape' || !menuOpen) return
