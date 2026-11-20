@@ -11,15 +11,16 @@ import { ViewTransitions } from '@/components/ui/view-transitions'
 import { SITE_URL, buildSiteMetadata } from '@/lib/site-metadata'
 
 // One variable family on its width axis (spec §3): condensed uppercase for
-// display and map labels, normal width for body, forms and chat. The fallback
-// is plain Arial: a metric-adjusted local() face cost ~200ms of main thread
-// per first layout (traced in Portfolio 4.0).
+// display and map labels, normal width for body, forms and chat. Body text
+// falls back to Arial sized to Archivo's metrics (Next's adjusted face), so
+// the swap re-wraps nothing; the S2 and S4 traces measured CLS 0.094 and 0.096
+// from plain Arial. Task 16 of the S6 plan re-measures the main-thread cost.
 const archivo = Archivo({
   subsets: ['latin'],
   axes: ['wdth'],
   variable: '--font-sans',
   display: 'swap',
-  adjustFontFallback: false,
+  adjustFontFallback: true,
   fallback: ['Arial', 'sans-serif'],
 })
 

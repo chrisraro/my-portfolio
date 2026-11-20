@@ -54,9 +54,19 @@ describe('motion stays off the first load', () => {
 })
 
 describe('first layout', () => {
-  it('falls back to plain Arial, not a metric-adjusted local() face', () => {
+  // S2 and S4 traces: the body re-wrapped when Archivo swapped in (CLS 0.094 on
+  // /, 0.096 on /about). Next sizes Arial to Archivo's metrics (size-adjust
+  // 98.70%, ascent 88.96%, descent 21.28%), so the swap moves nothing.
+  it('falls back to Arial size-adjusted to Archivo, so the font swap re-wraps nothing', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout.match(/adjustFontFallback: false/g)).toHaveLength(1)
+    expect(layout.match(/adjustFontFallback: true/g)).toHaveLength(1)
+    expect(layout).not.toContain('adjustFontFallback: false')
+  })
+
+  it('loads the trailhead portrait, the first viewport’s largest paint, at quality 70', () => {
+    const trailhead = readFileSync('components/sections/trailhead.tsx', 'utf8')
+    expect(trailhead).toContain('quality={70}')
+    expect(trailhead).not.toContain('quality={85}')
   })
 
   it('does not run next-themes’ transition suppression on every load', () => {

@@ -66,7 +66,7 @@ export function Trailhead() {
                   fill
                   priority
                   sizes="336px"
-                  quality={85}
+                  quality={70}
                   className="object-cover"
                 />
               </span>
