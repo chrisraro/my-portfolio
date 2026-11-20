@@ -18,7 +18,7 @@ only brand colour. [`DESIGN.md`](DESIGN.md) documents the system as built.
 | Language | TypeScript 5 (`strict`) |
 | UI | React 18, server components by default |
 | Styling | Tailwind CSS 3 over oklch colour tokens |
-| Typeface | Recursive (one variable family, via `next/font`; its MONO axis is the monospace voice) |
+| Typeface | Archivo (one variable family, `wdth` axis, via `next/font`) |
 | Theming | next-themes (dark by default, plus a light theme) |
 | Motion | framer-motion 10 (chat, lightbox and toast fades only) |
 | Icons | lucide-react |
@@ -77,7 +77,7 @@ each feature degrades honestly instead of erroring. See
 
 ```
 app/
-  layout.tsx          Recursive, theme and toast providers, page chrome
+  layout.tsx          Archivo, theme and toast providers, page chrome
   page.tsx            Homepage: hero, products, systems board, field log,
                       changelog, stack, contact
   projects/           /projects: every project, filterable by band (?band=)
@@ -86,9 +86,9 @@ app/
   api/chat/           Groq-backed chat endpoint
   api/contact/        Resend-backed contact endpoint
   globals.css         Colour tokens (oklch) and shared utilities
-  opengraph-image.tsx Link-preview card, rendered from heroContent by next/og
-  fonts/              Recursive instances for the preview card
-  robots.ts, sitemap.ts  sitemap.ts lists the homepage, /projects and every project page
+  og/[[...path]]/     One link-preview card per page (next/og, edge runtime)
+  fonts/              Recursive Sans, the one static font the cards use
+  robots.ts, sitemap.ts  sitemap.ts lists every route in lib/site-routes.ts
   llms.txt/, llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 components/
   site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx
@@ -153,8 +153,7 @@ Read [`DESIGN.md`](DESIGN.md) before UI work. The essentials:
   and nothing else.
 - Status always renders through `StatusBadge`: a glyph shape plus a text label,
   never colour alone.
-- One typeface, Recursive. `font-mono` is the same family with its MONO axis on,
-  and every numeral is tabular.
+- One typeface, Archivo. No mono voice, and every numeral is tabular.
 - One grid: every section uses `mx-auto max-w-6xl px-5 sm:px-8`.
 
 ## Motion
@@ -173,7 +172,7 @@ visible from the server, with no entrance animation.
   dates and ordering.
 - [`tests/design/`](tests/design/) checks design invariants: WCAG contrast of
   the tokens in both themes, no legacy tokens, green only on the live status,
-  the social card's palette, the client-component count and nav anchors.
+  the link-preview cards' palette, the client-component count and nav anchors.
 - [`tests/components/`](tests/components/) renders components with
   `react-dom/server` and checks their markup.
 

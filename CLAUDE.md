@@ -29,11 +29,11 @@ Resend (email)
 
 Tests live in `tests/` and run under Vitest. `tests/content/` asserts the facts the
 site claims (inventory, bands, proof band, positioning, testimonials, ordering,
-structured data, the AI files, CTA labels, the map pan, embeddability parsing, visible copy, the new pages' copy (`new-pages`: 40-60 word opening answers, keywords, every proving project held to its own data), removed
+structured data, the AI files, the route registry (`site-routes`: every page once, titles from spec §6's table), robots, the privacy guards (`privacy-guard`: each guard shown failing), the S5 surfaces (`s5-surfaces`: nothing private on any route's metadata, JSON-LD or card; every route in the sitemap and llms.txt), CTA labels, the map pan, embeddability parsing, visible copy, the new pages' copy (`new-pages`: 40-60 word opening answers, keywords, every proving project held to its own data), removed
 routes and tooling). `tests/design/` asserts design invariants:
 
 - `contrast` (token contrast in both themes, field borders on `--field-border`, early-access violet at least 90 degrees of hue from amber)
-- `legacy-tokens` (no pre-4.0 tokens, no B3 mono voice), `og-palette` (the social card's hex copies match `.dark`), `type-scale`
+- `legacy-tokens` (no pre-4.0 tokens, no B3 mono voice), `og-palette` (the link-preview cards' hex copies match the day theme's `:root` tokens), `type-scale`
 - `green-means-live`, `client-boundary`, `nav-anchors`, `sticky-header` (scroll padding, in-page jumps)
 - `primary-button` (one `.button-primary`, used by every primary CTA)
 - `plate-motion` (screenshots are stills: nothing about a screenshot, a plate or the map follows scroll, no `scroll(root)`; `.lift-card` hover is 2px, 1.02, accent border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`), `retired-classes` (the rack, its stagger, the amber flap, the folds and `ArrowLinkText` stay gone, here and in this file)
@@ -45,10 +45,12 @@ routes and tooling). `tests/design/` asserts design invariants:
 
 `tests/components/` renders components with `react-dom/server` and checks their
 markup (sections, project page, `/projects`, the services pages, `/about`, `/hire`, page intro and work history, the 404, status badge, project shot,
-live preview, JSON-LD, client surfaces, OG image, catalog consistency: catalog numbers and counts; project plate, legend filter, trail link, survey plate, map pin; `homepage`: the seven trail-map sections and the page order), plus source guards for
+live preview, JSON-LD, client surfaces, the link-preview cards (`og-card`), catalog consistency: catalog numbers and counts; project plate, legend filter, trail link, survey plate, map pin; `homepage`: the seven trail-map sections and the page order), plus source guards for
 behaviour static markup cannot reach. `tests/helpers/` holds helpers shared
-across those folders — `privacy.ts` is the phone-number guard the JSON-LD and
-AI-file tests reuse. There are no E2E tests.
+across those folders: `privacy.ts` (`hasPhone`, `hasStreet`, `privacyIssues`:
+phone, street, a telephone field, any email but the public one), which every
+public surface's test runs, and `json-ld.ts` (`danglingRefs`, `missingFields`),
+the graph-shape checks. There are no E2E tests.
 
 CI (`.github/workflows/ci.yml`) runs type-check, lint, test, and build on push and
 PR to `main`. Run all four locally before committing; they must pass with no
@@ -57,12 +59,12 @@ environment variables set.
 ## Project Structure
 
 ```
-app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404, "Off the trail": an empty map square and the route home), robots.ts, sitemap.ts (the homepage, /services and its pages, /hire, /about, /projects and every project page)
+app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404, "Off the trail": an empty map square and the route home), robots.ts (names Googlebot, OAI-SearchBot, Claude-SearchBot and PerplexityBot; every crawler, AI training crawlers included, allowed outside /api/), sitemap.ts (every route in lib/site-routes.ts)
 app/services/        /services (the three services, then the form) and services/[slug]/ (one page per service, statically generated: the answer, question-style sections, a comparison where the data holds one, the proving projects as plates, the form)
 app/about/           /about (a Read page): story, the dated route, the six field photos, the four attributed quotes, résumé
 app/hire/            /hire: résumé, email, stack by depth, at a glance, how I work, the full work history, the form
 app/globals.css      Every colour, motion and layout token, the reveal/trailhead/trail/card-hover/view-transition CSS and the reduced-motion block
-app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og, edge runtime); fonts in app/fonts/
+app/og/[[...path]]/  One link-preview card per page at the page's path under /og (/og is the homepage's): next/og on the edge runtime, day palette, Recursive Sans from app/fonts/; a path that is not a route is a 404
 app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 app/api/chat/        Groq-backed chat endpoint
 app/api/contact/     Resend-backed contact endpoint
@@ -80,11 +82,12 @@ lib/embeddable.json  Which live sites allow framing, written by `npm run check:e
 lib/motion-tokens.ts Durations, easings, distances, springs (mirrored as --dur-* / --ease-* in globals.css)
 lib/view-transition.ts Pure click rules and transition names for components/ui/view-transitions.tsx
 lib/motion-features.ts, lib/motion-dom-animation.ts  Lazy-load motion's domAnimation features for <LazyMotion>
-lib/og-palette.ts    The dark theme as hex for the social card (held to globals.css by a test)
+lib/og-palette.ts    The day theme as hex for the link-preview cards (held to globals.css's `:root` by a test)
 lib/chat-context.ts  Builds the AI assistant's system prompt from lib/data.ts and lib/case-studies.ts
-lib/structured-data.ts Builds JSON-LD (Person, ProfessionalService, WebSite, BreadcrumbList, CreativeWork) from lib/data.ts and lib/case-studies.ts
+lib/structured-data.ts Builds each page's JSON-LD graph (`routeGraph`, `graphFor`): one Person `@id`, WebSite, BreadcrumbList (not on the homepage), ProfilePage on /about, Service per service page, CreativeWork or SoftwareApplication per project (Products and Applications are software). The layout renders no graph
 lib/llms.ts           Builds /llms.txt and /llms-full.txt from the same content modules
-lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
+lib/site-metadata.ts Builds every page's metadata from its route (`buildRouteMetadata`, `buildProjectsMetadata`, `ogImage`, `absoluteUrl`); SITE_URL falls back to https://christian-digital-portfolio.vercel.app
+lib/site-routes.ts   Every page once (`siteRoutes`, `routeFor`, `findRoute`): path, title, description, keywords, card words, breadcrumbs, sitemap priority; also projectHref. Pure, so the edge card route can read it. Metadata, cards, JSON-LD, sitemap, llms files and the chat prompt all read it
 lib/board.ts         Band grouping and ordering (groupByBand, previewFirst, catalogOrder), catalog numbers, the /projects ?band= parameter
 lib/map-pan.ts       The /projects map pan (panTo, panStyle): frames a band's pins, zoom 1-1.75, never past the map's edge
 lib/display-status.ts, lib/proof.ts, lib/dates.ts, lib/timeline.ts, lib/places.ts, lib/elevation.ts — pure helpers, all tested
@@ -93,7 +96,7 @@ lib/contours.ts      Authored linework: the trailhead contours and trail, the se
 lib/ph-outline.ts    The Philippines outline, generated by scripts/build-ph-outline.mjs (do not edit)
 lib/utils.ts         cn(), extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
-tests/               content/, design/, components/ (Vitest); tests/helpers/ holds shared test helpers (privacy.ts)
+tests/               content/, design/, components/ (Vitest); tests/helpers/ holds shared test helpers (privacy.ts, json-ld.ts, css-rules.ts)
 scripts/             Puppeteer and network utilities: capture-screenshots, check-embeds, verify-urls, build-resume; scripts/lib/ (inventory reader, embeddability check)
 public/assets/       images/{about,gallery,projects}, resume/
 ```
@@ -105,13 +108,15 @@ Never hardcode portfolio content in components. Add or edit the typed arrays in
 `galleryImages`, `socialLinks`, `contactInfo`, `navigationItems`, `heroContent`,
 `availability`, `resumeUrl`, `sectionContent`, `footerContent`,
 `projectsPageContent`, `paymentGateways`, `galleryContent`, `caseStudyContent`,
-`notFoundContent`, `sectorNames`, `services`, `ctaLabels`, `servicePages`, `servicesPageContent`, `aboutPageContent`, `hirePageContent`, `pagesUpdated`) and add the matching interface in
+`notFoundContent`, `sectorNames`, `services`, `ctaLabels`, `servicePages`, `servicesPageContent`, `aboutPageContent`, `hirePageContent`, `pagesUpdated`, `serviceArea`) and add the matching interface in
 `types/index.ts` if it's new.
 
-`lib/structured-data.ts` (JSON-LD), `app/sitemap.ts` and `lib/llms.ts`
-(`/llms.txt`, `/llms-full.txt`) are all built from `lib/data.ts` and
-`lib/case-studies.ts`, the same as the page and the chat assistant. Adding a
-project reaches all of them automatically; nothing there needs hand-editing.
+`lib/site-routes.ts` lists every page once, from `lib/data.ts` and
+`lib/case-studies.ts`. The metadata, the link-preview cards, the JSON-LD
+(`lib/structured-data.ts`), `app/sitemap.ts`, `lib/llms.ts` (`/llms.txt`,
+`/llms-full.txt`) and the chat assistant all read it. Adding a project or a
+service page reaches all of them automatically; nothing there needs
+hand-editing. A new kind of page is one entry in `siteRoutes()`.
 
 `lib/case-studies.ts` is the second content source: it holds the flagship
 case studies, keyed by project slug. A number from a client's business goes in
@@ -143,19 +148,19 @@ duplicate existed once and drifted out of date.
 Projects carry a `band` from a closed four-value vocabulary — `Products`,
 `Custom systems`, `Applications`, `Sites` — and a `status` that decides how they
 preview (`live`, `ua-gated`, `early-access`, `auth-gated`, `internal`,
-`staging`). `heroContent.proofPoints` (no longer on the homepage; still read by
-the metadata, JSON-LD, chat prompt and AI files until S5) makes factual claims that
-`tests/content/proof-band.test.ts` checks against the data; if you change the
-inventory, the points change with it.
+`staging`). The proof counts (products, shipped projects, case studies,
+places) are `elevationFigures()` in `lib/elevation.ts`, counted from the data;
+the elevation strip and the chat prompt read them, and
+`tests/content/proof-band.test.ts` holds them to the inventory.
 
 **Do not put private contact details in the chat prompt.** Public email and social
 links only — no phone number, no home address. Rule 8 of the system prompt states
 this; keep it that way.
 
-The same rule applies to the JSON-LD (`lib/structured-data.ts`) and the AI files
+The same rule applies to the metadata, the link-preview cards, the JSON-LD (`lib/structured-data.ts`) and the AI files
 (`lib/llms.ts`): public email and social links only, and the address is the
 public locality (Naga City, Camarines Sur, Philippines), never a street. No
-telephone field anywhere.
+telephone field anywhere. No FAQPage, AggregateRating or Review markup. `tests/content/s5-surfaces.test.ts` runs `privacyIssues` over every route's metadata, graph and card, both AI files and the chat prompt.
 
 ## Previews
 
@@ -368,9 +373,9 @@ Things that have already bitten:
   `npm run type-check` then fails pointing at a file no longer in the source tree.
   Clear `.next` and re-run.
 - `next/og`'s Node build throws "Invalid URL" on Windows, which failed `next build`.
-  `app/opengraph-image.tsx` runs on the edge runtime for that reason; keep it there.
-  It also needs static font files, so the card renders in Recursive from the
-  static files in `app/fonts/`, not Archivo.
+  `app/og/[[...path]]/route.tsx` runs on the edge runtime for that reason; keep it
+  there. It also needs a static font file, so the cards render in Recursive Sans
+  from `app/fonts/recursive-sans-600.ttf`, not Archivo.
 
 ## Git
 

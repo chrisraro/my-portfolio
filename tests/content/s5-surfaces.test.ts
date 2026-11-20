@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import sitemap from '@/app/sitemap'
@@ -156,5 +156,29 @@ describe('S5: the route registry matches the filesystem', () => {
         p.dynamic ? path.startsWith(p.path.slice(0, p.path.indexOf('['))) && path.length > p.path.indexOf('[') : p.path === path,
       )
     expect(guardedRoutes().filter((r) => !covered(r.path)).map((r) => r.path)).toEqual([])
+  })
+})
+
+describe('the docs', () => {
+  it('describe the S5 routes, cards, graph and crawlers', () => {
+    const doc = readFileSync('CLAUDE.md', 'utf8')
+    for (const name of [
+      'lib/site-routes.ts',
+      'app/og/',
+      'routeGraph',
+      'ProfilePage',
+      'SoftwareApplication',
+      'OAI-SearchBot',
+      'Claude-SearchBot',
+      'PerplexityBot',
+      'privacyIssues',
+      's5-surfaces',
+      'elevationFigures',
+    ]) {
+      expect(doc, name).toContain(name)
+    }
+    for (const gone of ['app/opengraph-image.tsx', 'proofPoints', 'ProfessionalService', 'until S5']) {
+      expect(doc, gone).not.toContain(gone)
+    }
   })
 })
