@@ -735,7 +735,7 @@ export const servicePages: ServicePage[] = [
     keyword: 'full-stack developer Philippines',
     // Aman Group Web App (loan calculator), Giya (receipt rewards), Connecta PH (NFC cards, no app).
     answer:
-      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has shipped a real estate showcase with a loan calculator, a receipt-scanning rewards app and NFC business cards with no app to install, and is open to client projects and full-time remote roles.',
+      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has built a real estate showcase with a loan calculator, a receipt-scanning rewards app and NFC business cards with no app to install, and is open to client projects and full-time remote roles.',
     sections: [
       {
         question: 'What do I build with Next.js and React?',
@@ -778,7 +778,7 @@ export const servicePages: ServicePage[] = [
       rows: [
         { need: 'Owners and staff editing pages, listings and bookings without a developer', choice: 'WordPress and WooCommerce', projectIds: ['elnido'] },
         { need: 'Custom interactive screens, such as a loan calculator', choice: 'A Next.js app', projectIds: ['aman-webapp'] },
-        { need: 'Sign-in, a database and file storage, shipped fast by one developer', choice: 'Next.js with Supabase', projectIds: ['naga-perks-giya-app', 'connecta-ph'] },
+        { need: 'Sign-in, a database and file storage, built fast by one developer', choice: 'Next.js with Supabase', projectIds: ['naga-perks-giya-app', 'connecta-ph'] },
         { need: 'Small key-value data such as listings, settings and leads', choice: 'Upstash Redis through Vercel KV', projectIds: ['aman-webapp'] },
       ],
     },
@@ -879,7 +879,7 @@ export const servicesPageContent: ServicesPageContent = {
   eyebrow: 'Services',
   heading: 'What I build',
   get answer(): string {
-    return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the shipped projects that prove it, and each page ends in a contact form.`
+    return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the projects that prove it, and each page ends in a contact form.`
   },
   proof: { eyebrow: 'Proof', title: 'Projects that prove it' },
 }

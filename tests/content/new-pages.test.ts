@@ -123,6 +123,27 @@ describe('service pages', () => {
   })
 })
 
+// A /services copy string that calls its projects shipped must not prove a
+// service with a project still in staging.
+describe('shipped claims on /services', () => {
+  const served = [
+    servicesPageContent.answer,
+    servicesPageContent.proof.title,
+    ...servicePages.flatMap((s) => [s.title, s.name, s.summary, s.answer, ...s.sections.flatMap((x) => [x.question, ...x.answer])]),
+  ]
+
+  it('proves a shipped claim only with projects that are not in staging', () => {
+    const claimsShipped = served.some((text) => /\bshipped\b/i.test(text))
+    if (!claimsShipped) return
+    for (const s of servicePages) {
+      for (const id of s.projectIds) {
+        const project = projects.find((p) => p.id === id)!
+        expect(project.status, `${s.slug}: ${id}`).not.toBe('staging')
+      }
+    }
+  })
+})
+
 describe('/about copy', () => {
   it('is titled as the spec says and answers its keyword', () => {
     expect(aboutPageContent.title).toBe('About Christian Raro · Web Developer in Naga City, Bicol')
