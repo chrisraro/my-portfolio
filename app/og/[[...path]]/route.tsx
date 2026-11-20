@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { heroContent } from '@/lib/data'
+import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
 import { ogPalette as c } from '@/lib/og-palette'
 import { OG_SIZE, SITE_URL } from '@/lib/site-metadata'
 import { findRoute } from '@/lib/site-routes'
@@ -20,19 +21,6 @@ import { findRoute } from '@/lib/site-routes'
 export const runtime = 'edge'
 
 const SANS = 'Recursive'
-
-// The card's survey linework, authored for 1200×630 and kept to the right
-// third so it never runs under the words: contours, and the trail ending at
-// the "you are here" dot (trail red's one use on the card).
-const CONTOURS = [
-  'M 860 0 C 900 80 980 120 1060 140 S 1170 190 1200 200',
-  'M 960 0 C 990 50 1050 80 1110 92 S 1180 110 1200 112',
-  'M 880 630 C 900 540 960 470 1040 430 S 1170 330 1200 300',
-  'M 960 630 C 980 560 1030 510 1100 480 S 1180 410 1200 395',
-  'M 1040 630 C 1060 590 1100 560 1150 545 S 1190 530 1200 528',
-]
-const TRAIL = 'M 900 630 C 930 560 980 500 1030 440 S 1100 330 1120 300'
-const HERE = { cx: 1120, cy: 300 }
 
 const host = new URL(SITE_URL).host
 
@@ -68,7 +56,7 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
             <path key={d} d={d} fill="none" stroke={c.contour} strokeWidth={2} />
           ))}
           <path d={TRAIL} fill="none" stroke={c.trail} strokeWidth={5} strokeLinecap="round" />
-          <circle cx={HERE.cx} cy={HERE.cy} r={11} fill={c.trail} />
+          <circle cx={HERE.cx} cy={HERE.cy} r={HERE.r} fill={c.trail} />
         </svg>
         <div
           style={{
@@ -77,16 +65,19 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
             justifyContent: 'space-between',
             width: '100%',
             height: '100%',
-            padding: '64px 80px 56px',
+            padding: `64px ${PAD_X}px 56px`,
           }}
         >
           <div style={{ display: 'flex', fontSize: 24, letterSpacing: 3, textTransform: 'uppercase', color: c.muted }}>
             {card.eyebrow}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 760 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', maxWidth: TEXT_WIDTH }}>
+            {/* Word by word with an explicit gap: the face's own space read wide in capitals. */}
             <div
               style={{
                 display: 'flex',
+                flexWrap: 'wrap',
+                columnGap: 18,
                 fontSize: 68,
                 fontWeight: 600,
                 lineHeight: 1.04,
@@ -94,7 +85,9 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
                 textTransform: 'uppercase',
               }}
             >
-              {card.title}
+              {card.title.split(' ').map((word, i) => (
+                <span key={`${word}-${i}`}>{word}</span>
+              ))}
             </div>
             <div style={{ display: 'flex', marginTop: 24, fontSize: 28, lineHeight: 1.3, color: c.muted }}>
               {card.detail}
@@ -104,6 +97,7 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
             style={{
               display: 'flex',
               justifyContent: 'space-between',
+              maxWidth: TEXT_WIDTH,
               paddingTop: 24,
               borderTop: `2px solid ${c.line}`,
               fontSize: 24,

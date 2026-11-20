@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GET, runtime } from '@/app/og/[[...path]]/route'
+import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
 import { OG_SIZE, ogImage } from '@/lib/site-metadata'
 import { siteRoutes } from '@/lib/site-routes'
 
@@ -54,4 +55,23 @@ describe('link-preview cards', () => {
       expect(png.readUInt32BE(20)).toBe(630)
     }
   }, 60000)
+})
+
+describe('the card’s layout', () => {
+  // S5 controller look: the trail and contours ran behind the site URL at the
+  // bottom right, and the headline's word gap read wide.
+  const xs = (d: string) => (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number).filter((_, i) => i % 2 === 0)
+
+  it('keeps every line of the linework right of the words’ column', () => {
+    const right = PAD_X + TEXT_WIDTH
+    for (const d of [...CONTOURS, TRAIL]) expect(Math.min(...xs(d)), d).toBeGreaterThan(right)
+    expect(HERE.cx - HERE.r).toBeGreaterThan(right)
+  })
+
+  it('sets the name and the URL inside that column, and the title word by word', () => {
+    const source = readFileSync(SOURCE, 'utf8')
+    expect(source.match(/maxWidth: TEXT_WIDTH/g)).toHaveLength(2)
+    expect(source).toContain("card.title.split(' ').map(")
+    expect(source).toContain('columnGap: 18')
+  })
 })
