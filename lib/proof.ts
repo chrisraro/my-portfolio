@@ -16,3 +16,10 @@ export function splitProofPoint(point: string): { value: string; label: string }
   if (n === undefined) throw new Error(`Proof point must start with a number word: "${point}"`)
   return { value: String(n), label: rest.join(' ') }
 }
+
+/** 4 → 'four': a count as the copy writes it. Throws rather than guessing outside 1-20. */
+export function numberWord(n: number): string {
+  const word = Object.keys(NUMBER_WORDS).find((w) => NUMBER_WORDS[w] === n)
+  if (word === undefined) throw new Error(`No number word for ${n}`)
+  return word
+}

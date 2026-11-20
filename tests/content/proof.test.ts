@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { heroContent, projects } from '@/lib/data'
-import { splitProofPoint } from '@/lib/proof'
+import { numberWord, splitProofPoint } from '@/lib/proof'
 
 describe('splitProofPoint', () => {
   it('turns the leading number word into a plain numeral, not zero-padded', () => {
@@ -22,5 +22,21 @@ describe('splitProofPoint', () => {
 
   it('refuses a point that does not start with a number word', () => {
     expect(() => splitProofPoint('Several projects')).toThrow()
+  })
+})
+
+describe('numberWord', () => {
+  it('writes a count as a word, the way copy reads', () => {
+    expect(numberWord(4)).toBe('four')
+    expect(numberWord(19)).toBe('nineteen')
+  })
+
+  it('round-trips with splitProofPoint', () => {
+    for (const n of [1, 6, 11, 20]) expect(splitProofPoint(`${numberWord(n)} things`).value).toBe(String(n))
+  })
+
+  it('refuses a count it has no word for', () => {
+    expect(() => numberWord(0)).toThrow()
+    expect(() => numberWord(21)).toThrow()
   })
 })

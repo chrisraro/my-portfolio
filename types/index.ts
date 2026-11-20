@@ -52,6 +52,24 @@ export type ProjectStatus =
 // live in any browser, and only the preview mechanism needs the distinction.
 export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal' | 'staging'
 
+/** How exact a pin is: a city's centre (a dot) or a whole region's (a ring). */
+export type PlacePrecision = 'city' | 'region'
+
+/**
+ * A project's verified place on the field map (spec §5, the map data rule).
+ * `evidence` quotes the words in the project's own title or description that
+ * name the place; tests/content/places.test.ts checks it.
+ */
+export interface ProjectPlace {
+  name: string
+  region: string
+  /** Public city or region centre, two decimals. */
+  lat: number
+  lng: number
+  precision: PlacePrecision
+  evidence: string
+}
+
 export interface Project {
   id: string;
   slug: string;
@@ -81,6 +99,8 @@ export interface Project {
   /** What Christian personally built. Written in Phase 3; omitted until then. */
   contribution?: string;
   featured?: boolean;
+  /** Where the project runs, only where its own words name the place. */
+  place?: ProjectPlace;
 }
 
 export interface Skill {

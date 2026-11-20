@@ -1,4 +1,5 @@
-import { Project, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
+import { Project, ProjectPlace, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
+import { numberWord } from '@/lib/proof'
 
 // The four gateways actually integrated across the WooCommerce projects. The
 // hero proof band cites this count and a test enforces the match — an early
@@ -30,6 +31,20 @@ const sectorLabels: Record<ProjectSector, string> = {
 // payment websites": Graceland has neither, and the lede must not overclaim.
 export const heroContent = {
   name: 'Christian Raro',
+  // The trailhead (spec §6). The headline is three authored lines: each stays
+  // one line in every font, so the font swap never re-wraps it (the R6 CLS
+  // lesson). `title` below stays: metadata and JSON-LD read it until S5.
+  eyebrow: 'Full-stack developer · Naga City, Philippines',
+  headlineLines: ['Built in Bicol.', 'Running across', 'the Philippines.'],
+  get headline(): string {
+    return this.headlineLines.join(' ')
+  },
+  // A getter for the same reason as `specialism`: `projects` is declared below.
+  // The count is the Products band, written as a word.
+  get subheadline(): string {
+    const own = projects.filter((p) => p.band === 'Products').length
+    return `Booking and payment sites for travel businesses, AI automation for teams, and ${numberWord(own)} products of my own. Open to client projects and to full-time remote roles.`
+  },
   title: 'Mid-level full-stack developer',
   location: 'Naga City',
   // Plain text under the title; the tools match the AI & automation skills.
@@ -69,6 +84,17 @@ export const heroContent = {
 export const availability = 'Open to freelance and full-time roles'
 
 export const resumeUrl = '/assets/resume/Raro, Christian F - Resume (DEV).pdf'
+
+// Public city and region centres, two decimals (spec §5, the map data rule). A
+// project is pinned only where its own title or description names the place;
+// its `evidence` quotes those words and tests/content/places.test.ts checks
+// them. Every other project is listed beside the map, never at a guessed point.
+const NAGA_CITY: Omit<ProjectPlace, 'evidence'> = { name: 'Naga City', region: 'Camarines Sur', lat: 13.62, lng: 123.19, precision: 'city' }
+const EL_NIDO: Omit<ProjectPlace, 'evidence'> = { name: 'El Nido', region: 'Palawan', lat: 11.2, lng: 119.42, precision: 'city' }
+const PALAWAN: Omit<ProjectPlace, 'evidence'> = { name: 'Palawan', region: 'Philippines', lat: 9.84, lng: 118.74, precision: 'region' }
+const BAGUIO_CITY: Omit<ProjectPlace, 'evidence'> = { name: 'Baguio City', region: 'Benguet', lat: 16.41, lng: 120.6, precision: 'city' }
+const BORACAY: Omit<ProjectPlace, 'evidence'> = { name: 'Boracay', region: 'Aklan', lat: 11.97, lng: 121.92, precision: 'city' }
+const BICOL: Omit<ProjectPlace, 'evidence'> = { name: 'Bicol', region: 'Philippines', lat: 13.4, lng: 123.4, precision: 'region' }
 
 export const projects: Project[] = [
   // --- Products ------------------------------------------------------------
@@ -127,6 +153,7 @@ export const projects: Project[] = [
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend', 'Vercel', 'NFC'],
     links: { live: 'https://connectaph.vercel.app' },
     status: 'live',
+    place: { ...NAGA_CITY, evidence: 'Built for Naga first' },
     featured: false,
   },
 
@@ -143,6 +170,7 @@ export const projects: Project[] = [
     technologies: ['NFC'],
     links: {},
     status: 'internal',
+    place: { ...PALAWAN, evidence: 'BeachBus Palawan' },
     featured: false,
   },
   {
@@ -204,6 +232,7 @@ export const projects: Project[] = [
     technologies: ['Next.js', 'React', 'TypeScript', 'Neon Postgres', 'PostGIS', 'PWA', 'Playwright'],
     links: { live: 'https://para-naga.vercel.app', github: 'https://github.com/chrisraro/ParaNaga' },
     status: 'staging',
+    place: { ...NAGA_CITY, evidence: 'Naga City' },
     dates: 'October 2026',
     featured: false,
   },
@@ -220,6 +249,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'SEO'],
     links: { live: 'https://graceland.ph' },
     status: 'live',
+    place: { ...BICOL, evidence: 'Bicolano' },
     dates: 'May 2026',
     featured: true,
   },
@@ -235,6 +265,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'Dokan', 'PayPal', 'Maya'],
     links: { live: 'https://elnidoguide.ph' },
     status: 'live',
+    place: { ...EL_NIDO, evidence: 'El Nido' },
     dates: 'May – July 2025',
     featured: true,
   },
@@ -250,6 +281,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'WooCommerce', 'PayPal', 'PayMongo', 'Maya'],
     links: { live: 'https://beachbus.ph' },
     status: 'live',
+    place: { ...PALAWAN, evidence: 'Palawan' },
     dates: 'June – August 2025',
     featured: true,
   },
@@ -265,6 +297,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'WooCommerce', 'QR Code', 'Online Reservation'],
     links: { live: 'https://upcatreviewplus.com' },
     status: 'live',
+    place: { ...BICOL, evidence: 'Bicol' },
     featured: false,
   },
   {
@@ -308,6 +341,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://azaleabaguio.com' },
     status: 'live',
+    place: { ...BAGUIO_CITY, evidence: 'Baguio' },
     featured: false,
   },
   {
@@ -322,6 +356,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks'],
     links: { live: 'https://azaleaboracay.com' },
     status: 'live',
+    place: { ...BORACAY, evidence: 'Boracay' },
     featured: false,
   },
   {
@@ -350,6 +385,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'Custom theme', 'Custom plug-in', 'CMB2', 'Google Maps', 'Yoast SEO'],
     links: { live: 'https://nagacityguide.com' },
     status: 'live',
+    place: { ...NAGA_CITY, evidence: 'Naga City' },
     featured: false,
   },
   {
@@ -364,6 +400,7 @@ export const projects: Project[] = [
     technologies: ['WordPress', 'GeneratePress', 'GenerateBlocks', 'Fluent Forms', 'Rank Math', 'Cloudbeds'],
     links: { live: 'https://eastwindbeachvillas.com' },
     status: 'live',
+    place: { ...EL_NIDO, evidence: 'San Fernando, El Nido, Palawan' },
     featured: false,
   },
 ]
