@@ -75,7 +75,7 @@ export function OwnProducts() {
   const own = order.filter((p) => p.band === 'Products')
 
   return (
-    <section id="products" aria-labelledby="products-title" className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
+    <section id="products" aria-labelledby="products-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="products-title" eyebrow={sectionContent.ownProducts.eyebrow} title={sectionContent.ownProducts.title} />
       <div className="grid items-start gap-x-8 gap-y-14 md:grid-cols-2">
         {own.map((project) => (

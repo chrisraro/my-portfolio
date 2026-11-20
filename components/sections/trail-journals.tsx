@@ -28,7 +28,7 @@ export function TrailJournals() {
   })
 
   return (
-    <section id="journals" aria-labelledby="journals-title" className="defer-render mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
+    <section id="journals" aria-labelledby="journals-title" className="defer-render mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="journals-title" eyebrow={sectionContent.journals.eyebrow} title={sectionContent.journals.title} />
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {journals.map(({ project, study }, i) => (

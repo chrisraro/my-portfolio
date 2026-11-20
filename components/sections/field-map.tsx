@@ -75,7 +75,7 @@ export function FieldMap() {
   const { fieldMap } = sectionContent
 
   return (
-    <section id="work" aria-labelledby="work-title" className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
+    <section id="work" aria-labelledby="work-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="work-title" eyebrow={fieldMap.eyebrow} title={fieldMap.title} />
       <div className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-12">
         <figure className="survey-plate mx-auto w-full max-w-md lg:max-w-none">

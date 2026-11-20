@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
+import HomePage from '@/app/page'
 import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldMap } from '@/components/sections/field-map'
 import { Fork } from '@/components/sections/fork'
@@ -288,6 +289,11 @@ describe('TrailJournals', () => {
     }
   })
 
+  it('opens one journal per flagship, so a missing study cannot silently drop a cover', () => {
+    expect(html.match(/<li class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+    expect(html.match(/href="\/projects\/[^"]+"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
+  })
+
   it('lifts like every catalog card and rises by transform only', () => {
     expect(html.match(/class="lift-card /g)).toHaveLength(FLAGSHIP_SLUGS.length)
     expect(html.match(/class="reveal-cover"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
@@ -357,5 +363,35 @@ describe('proof renders visible without JavaScript', () => {
       if (FADES.has(name)) continue
       expect(r.body, name).not.toMatch(/opacity/)
     }
+  })
+})
+
+describe('HomePage', () => {
+  const html = renderToStaticMarkup(
+    <ToastProvider>
+      <HomePage />
+    </ToastProvider>,
+  )
+
+  it('runs the seven sections in the spec’s order', () => {
+    const ids = Array.from(html.matchAll(/<section id="([^"]+)"/g)).map((m) => m[1])
+    expect(ids).toEqual(['top', 'timeline', 'fork', 'work', 'products', 'journals', 'contact'])
+  })
+
+  it('threads the trail: drawn out of the plate on load, then a segment between each section below the strip', () => {
+    expect(html.match(/class="trail-draw trail-draw--load"/g)).toHaveLength(1)
+    expect(html.match(/class="trail-draw trail-draw--view"/g)).toHaveLength(5)
+  })
+
+  it('links every project page', () => {
+    for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+  })
+
+  it('keeps two primary buttons: the trailhead’s and the form’s', () => {
+    expect(html.match(/class="press button-primary/g)).toHaveLength(2)
+  })
+
+  it('ships no opacity:0 entrance', () => {
+    expect(html).not.toMatch(/opacity:\s*0/)
   })
 })

@@ -28,6 +28,12 @@ export function parseDateToken(token: string, now: Date = new Date()): number {
   return Date.UTC(year, month, 1)
 }
 
+// A range's non-empty parts, split on en dash, em dash, non-breaking hyphen
+// (U+2011) or hyphen.
+function rangeParts(dates: string): string[] {
+  return dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
+}
+
 /**
  * The sort key for a human date range is its END — that is what "most recent"
  * means. Splits on en dash, em dash, non-breaking hyphen (U+2011) or hyphen.
@@ -35,12 +41,11 @@ export function parseDateToken(token: string, now: Date = new Date()): number {
  * split, so the last *non-empty* part is used rather than the literal last one.
  */
 export function endOfRange(dates: string, now: Date = new Date()): number {
-  const parts = dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
+  const parts = rangeParts(dates)
   return parseDateToken(parts[parts.length - 1] ?? '', now)
 }
 
 /** A human date range's START (its first non-empty part), for placing it on a strip. */
 export function startOfRange(dates: string, now: Date = new Date()): number {
-  const parts = dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
-  return parseDateToken(parts[0] ?? '', now)
+  return parseDateToken(rangeParts(dates)[0] ?? '', now)
 }

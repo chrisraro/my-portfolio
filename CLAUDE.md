@@ -38,14 +38,14 @@ routes and tooling). `tests/design/` asserts design invariants:
 - `primary-button` (one `.button-primary`, used by every primary CTA)
 - `catalog-motion` (screenshots are stills: nothing follows scroll, the old preview component and pockets stay gone; `.lift-card` hover is 2px, 1.02, accent border, inside the fine-pointer and no-preference queries, shadow on a pseudo-element, never an animated `box-shadow`; `.reveal-stagger` plays once on a scroll trigger, 30-80ms per column, off under reduced motion)
 - `view-transitions` (click planning, transition names, the island: feature detection, reduced motion, capture-phase interception, commit timeout, fallback, cleanup; the root cross-fade and the zeroed reduced-motion block)
-- `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the hero behind their gates and off under reduce; hero under 2 s), `motion-visibility` (reveal ranges and distances, hero unfold direction, products settled)
+- `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the trailhead sequence behind their gates and off under reduce; trailhead under 2 s), `motion-visibility` (reveal ranges), `trail-motion` (the trail draws once on load and per segment on a named view timeline; only `.elevation-marker` follows the page scroll), `font-budget` (after a build: one preloaded Archivo file, at most 95 KB)
 - `no-framer-motion`, `no-inline-motion` (no numeric `duration`/`ease`/`delay` literals in `.tsx`)
 - `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, plain Arial font fallbacks, `content-visibility` deferral, transform-only reveals)
 
 `tests/components/` renders components with `react-dom/server` and checks their
 markup (sections, project page, `/projects`, 404, status badge, project shot,
 live preview, JSON-LD, client surfaces, OG image, catalog consistency: edge codes,
-counts, filter tabs, the hero AI proof, the stack groups), plus source guards for
+counts, filter tabs; `homepage`: the seven trail-map sections and the page order), plus source guards for
 behaviour static markup cannot reach. `tests/helpers/` holds helpers shared
 across those folders — `privacy.ts` is the phone-number guard the JSON-LD and
 AI-file tests reuse. There are no E2E tests.
@@ -58,7 +58,7 @@ environment variables set.
 
 ```
 app/                 App Router: layout.tsx (fonts, providers, chrome), page.tsx (homepage), not-found.tsx (the 404: an empty rack slot), robots.ts, sitemap.ts (lists the homepage, /projects and every project page)
-app/globals.css      Every colour, motion and layout token, the reveal/hero/card-hover/view-transition CSS and the reduced-motion block
+app/globals.css      Every colour, motion and layout token, the reveal/trailhead/trail/card-hover/view-transition CSS and the reduced-motion block
 app/opengraph-image.tsx  Link-preview card rendered from heroContent (next/og, edge runtime); fonts in app/fonts/
 app/llms.txt/, app/llms-full.txt/  AI-readable summaries (llmstxt.org), built by lib/llms.ts
 app/api/chat/        Groq-backed chat endpoint
@@ -66,8 +66,9 @@ app/api/contact/     Resend-backed contact endpoint
 app/projects/        Full project list page (the whole rack, filtered by ?band=)
 app/projects/[slug]/ One page per project, statically generated (generateStaticParams over every slug)
 components/          site-legend.tsx, footer.tsx, theme-provider.tsx, json-ld.tsx (renders a JSON-LD <script> from lib/structured-data.ts)
-components/sections/ Homepage sections, in page order: hero, products, rack, case-studies, field-log, route-line, stack, contact-console
-components/ui/       Primitives: status-badge, section-heading, proof-band, rack-tier, rack-card, project-shot, live-preview, no-preview-tag, board-filter, view-transitions (client island), chat-widget, toaster, image-lightbox
+components/sections/ Homepage sections, in page order: trailhead, elevation-strip, fork, field-map, own-products, trail-journals, plan-the-route
+components/map/      contour-field, trail-path (mode load or view), trail-segment, philippines-outline: the survey-map SVG primitives
+components/ui/       Primitives: status-badge, section-heading, rack-tier, rack-card, project-shot, live-preview, no-preview-tag, board-filter, view-transitions (client island), chat-widget, toaster, image-lightbox
 components/case-study/ project-header, read-spread, project-screenshots, project-summary, case-study-body, arrow-link-text — /projects/[slug]'s parts
 lib/data.ts          Single source of truth for ALL portfolio content, including section copy
 lib/case-studies.ts  Flagship case studies (lib/data.ts is the primary content source; this is the second)
@@ -82,7 +83,9 @@ lib/structured-data.ts Builds JSON-LD (Person, ProfessionalService, WebSite, Bre
 lib/llms.ts           Builds /llms.txt and /llms-full.txt from the same content modules
 lib/site-metadata.ts Builds page metadata from heroContent (preview image comes from opengraph-image.tsx)
 lib/board.ts         Rack grouping and ordering (groupByBand, groupForHomepage, homepageOrder, previewFirst), edge codes, the /projects ?band= parameter
-lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts — pure helpers, all tested
+lib/display-status.ts, lib/proof.ts, lib/field-log.ts, lib/dates.ts, lib/timeline.ts, lib/places.ts, lib/elevation.ts — pure helpers, all tested
+lib/geo.ts           The field map's projection (project(lat, lng)), shared with scripts/build-ph-outline.mjs
+lib/ph-outline.ts    The Philippines outline, generated by scripts/build-ph-outline.mjs (do not edit)
 lib/utils.ts         cn(), extractDomain
 types/index.ts       Every shared interface — Project, Skill, ExperienceItem, …
 tests/               content/, design/, components/ (Vitest); tests/helpers/ holds shared test helpers (privacy.ts)
@@ -126,9 +129,10 @@ duplicate existed once and drifted out of date.
 Projects carry a `band` from a closed four-value vocabulary — `Products`,
 `Custom systems`, `Applications`, `Sites` — and a `status` that decides how they
 preview (`live`, `ua-gated`, `early-access`, `auth-gated`, `internal`,
-`staging`). The hero's proof band in `heroContent` makes factual claims that
+`staging`). `heroContent.proofPoints` (no longer on the homepage; still read by
+the metadata, JSON-LD, chat prompt and AI files until S5) makes factual claims that
 `tests/content/proof-band.test.ts` checks against the data; if you change the
-inventory, the band changes with it.
+inventory, the points change with it.
 
 **Do not put private contact details in the chat prompt.** Public email and social
 links only — no phone number, no home address. Rule 8 of the system prompt states
@@ -179,8 +183,8 @@ Every project gets a slot in the rack. What fills it:
   the homepage's direction contract and motion choreography in
   `.impeccable/surfaces/app-page-tsx.md`. Read both before UI work.
 - The world: a lagoon-night ground, paper panels, and signal amber laid down
-  only as whole flat planes (hero front panel, product flaps, the contact reply
-  card, the current filter tab). No gradients, glows, tints or outlines on
+  only as whole flat planes (the current filter tab on `/projects`; the homepage
+  keeps trail red to its primary buttons, trail strokes and the position marker). No gradients, glows, tints or outlines on
   planes. Paper is square-ish (`--radius` 6px; postcards 2px, dialog 10px).
 - Colours are raw oklch `L C H` triplets in `app/globals.css` — `:root` is light,
   `.dark` is the default — one per line. `tests/design/contrast.test.ts` parses
@@ -228,7 +232,7 @@ Every project gets a slot in the rack. What fills it:
   lifted (on a card, a pseudo-element faded in by opacity: never animate `box-shadow`); `shadow-overlay` for the dialog, chat and toasts.
 - Off-screen work: far sections carry `.defer-render` (`content-visibility:
   auto`); rack tiers use `.defer-render-lift` so a lifted card and its shadow are not clipped.
-  Never defer the hero, products, rack section or contact card. `ProjectShot`
+  Never defer the trailhead, elevation strip, field map, own products or contact form. `ProjectShot`
   frames skip rendering until near the viewport (`.project-shot__frame`).
 
 ## Client/Server Boundary
@@ -237,15 +241,15 @@ Components are server components by default. Only these eight are client
 components (`grep -rl "^'use client'" app components`):
 `components/site-legend.tsx` (theme toggle, in-page jump fix),
 `components/theme-provider.tsx`,
-`components/sections/contact-console.tsx` (form),
+`components/sections/plan-the-route.tsx` (form; its "Ask Chunks" opens the chat through `CHAT_OPEN_EVENT`),
 `components/ui/chat-widget.tsx`,
 `components/ui/image-lightbox.tsx`,
 `components/ui/live-preview.tsx` (dialog),
 `components/ui/toaster.tsx` and
 `components/ui/view-transitions.tsx` (renders nothing: the catalog's view-transition
 island, mounted once in `app/layout.tsx` inside `Suspense`). A server component
-may render a client one as a child — `Hero`, `FieldLog` and `ProjectScreenshots`
-render `ImageLightbox`, and `Products` and `ProjectHeader` render `LivePreview`.
+may render a client one as a child — `Trailhead` and `ProjectScreenshots`
+render `ImageLightbox`, and `OwnProducts` and `ProjectHeader` render `LivePreview`.
 `ProjectShot`, `RackCard` and `RackTier` are server components; their motion is
 CSS. `tests/design/client-boundary.test.ts` keeps the count under 10 and the
 homepage and `/projects` on the server; do not raise it.
@@ -263,7 +267,7 @@ direction contract.
   `--ease-smooth|sharp` in `globals.css`; `tests/design/motion-tokens.test.ts`
   keeps the two in step. Never write a numeric `duration`, `ease` or `delay` in a
   `.tsx` file (`tests/design/no-inline-motion.test.ts`); a literal 0 is allowed.
-- **CSS first.** Hero sequence, scroll reveals, the card hover, the stagger and
+- **CSS first.** Trailhead sequence, the trail draws, scroll reveals, the card hover, the stagger and
   the hover grammar are all CSS in `globals.css`. Animate transform and opacity
   only; a shadow is a pseudo-element whose opacity fades.
 - **Scroll-driven reveals** (`.reveal`, `.reveal-cover|postcard|fold|reply|perf|route|stop`)
@@ -272,11 +276,14 @@ direction contract.
   `@media (prefers-reduced-motion: no-preference)`. Outside the gates nothing is
   hidden or offset. Reveals move by transform only — never opacity — so the server
   HTML is the finished page and nothing is measured for contrast while faded.
-  Proof (Products, the rack) must be visible in the server HTML;
-  `tests/components/sections.test.tsx` forbids `opacity:0` there.
-- **Hero sequence:** CSS keyframes on load, no JS, 1.9 s, once (H1 words rise,
-  the inner panels unfold from behind the front one, creases draw, proof rises).
-  It must stay under two seconds (`motion-tokens` test).
+  Every homepage section must be visible in the server HTML;
+  `tests/components/homepage.test.tsx` forbids `opacity:0` there.
+- **Trailhead sequence:** CSS keyframes on load, no JS, 1.9 s, once (the
+  headline's authored lines rise in turn, the copy under them rises, the trail
+  draws out of the portrait plate). It must stay under two seconds (`motion-tokens` test).
+- **Trail:** `TrailPath mode="load"` draws once on load; `mode="view"` (the
+  `TrailSegment`s between sections) draws on its own named view timeline.
+  Only `.elevation-marker` uses `scroll(root)` (`catalog-motion`, `trail-motion`).
 - **Catalog hover (`.lift-card`)**: rack cards, a product's screenshot and
   case-study covers. On a fine pointer with motion allowed: lift 2px, border to
   `accent`, screenshot scale 1.02 inside a clipping frame, fast/smooth, shadow
@@ -306,7 +313,7 @@ direction contract.
   (`.live-pulse`, only in `StatusBadge`) fades twice (2.4 s each) and stops. The
   chat typing dots (`.typing-dot`) and the "Sending" spinner run only while a
   request is pending. No count-ups, parallax or continuous animation.
-- **Reduced motion:** the gates switch off every reveal, the stagger and the hero
+- **Reduced motion:** the gates switch off every reveal, the stagger and the trailhead
   sequence, and the `reduce` block resets them explicitly; hover transforms go
   (colour, the accent border and underlines still change, instantly); the
   island navigates without a transition and any view-transition animation is

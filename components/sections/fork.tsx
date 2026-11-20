@@ -14,7 +14,7 @@ export function Fork() {
   const { fork } = sectionContent
 
   return (
-    <section id="fork" aria-labelledby="fork-title" className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 md:pb-24">
+    <section id="fork" aria-labelledby="fork-title" className="mx-auto max-w-6xl px-5 pb-[72px] sm:px-8 md:pb-[112px]">
       <SectionHeading id="fork-title" eyebrow={fork.eyebrow} title={fork.title} />
       <ul className="grid gap-6 md:grid-cols-2">
         <li className={CARD}>
