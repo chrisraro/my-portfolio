@@ -469,8 +469,9 @@
 /*
  * Screenshots appear once (spec §4): a plate rises its last 16px as it
  * enters the viewport. A scroll trigger starts a time-based animation (not
- * scrubbed; play-forwards never reverses); nothing is filled before it fires,
- * so a plate already in view at load, or after a filter change, never moves.
+ * scrubbed; play-forwards never reverses). The fill is backwards, so a plate
+ * waiting for its trigger is held at its start until the trigger fires, and a
+ * plate already in view at load, or after a filter change, never moves.
  * Without trigger support the plates simply sit at rest. Transform only.
  */
 @supports (timeline-trigger: --plate view()) {
