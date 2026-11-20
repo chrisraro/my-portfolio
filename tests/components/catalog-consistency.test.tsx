@@ -3,19 +3,20 @@ import { describe, expect, it, vi } from 'vitest'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { OwnProducts } from '@/components/sections/own-products'
-import { BoardFilter } from '@/components/ui/board-filter'
 import { heroContent, projects, projectsPageContent } from '@/lib/data'
 import { splitProofPoint } from '@/lib/proof'
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
-// Refinement gate R5 (critique "Concrete UI bugs" 1-3): the same project
-// carries the same edge code everywhere, the counts agree, and a filtered
-// /projects says which band it shows.
+// Refinement gate R5 (critique "Concrete UI bugs" 1-3), carried into the trail
+// map: the same project carries the same catalog number everywhere, the counts
+// agree, and a filtered /projects says which band it shows.
 
 const CODE = /(\d+ \/ \d+ · [^<]+)</
+// A plate on /projects. Until Task 6 a case study's next stop is still a rack card.
+const PLATE = /<li (?:id="plate-|class="rack-slot)/
 
-/** slug -> edge code, for every chunk of markup (a card or a spread) that links one project and prints a code. */
+/** slug -> catalog number, for every chunk of markup (a plate or a product) that links one project and prints a number. */
 function codes(html: string, splitter: RegExp): Map<string, string> {
   const out = new Map<string, string>()
   for (const chunk of html.split(splitter).slice(1)) {
@@ -28,11 +29,9 @@ function codes(html: string, splitter: RegExp): Map<string, string> {
 
 const renderProjects = (band?: string) => renderToStaticMarkup(ProjectsPage({ searchParams: band ? { band } : {} }))
 
-describe('edge codes', () => {
-  // On the homepage only the own products carry a catalog number (the field
-  // map lists places, not numbers); each matches /projects.
+describe('catalog numbers', () => {
   const home = codes(renderToStaticMarkup(<OwnProducts />), /<article/)
-  const index = codes(renderProjects(), /<li class="rack-slot/)
+  const index = codes(renderProjects(), PLATE)
 
   it('numbers every project once on /projects, and each own product once on /', () => {
     expect(home.size).toBe(projects.filter((p) => p.band === 'Products').length)
@@ -40,25 +39,25 @@ describe('edge codes', () => {
     expect(new Set(index.values()).size).toBe(projects.length)
   })
 
-  it('gives an own product the same code on / and /projects', () => {
+  it('gives an own product the same number on / and /projects', () => {
     for (const [slug, code] of Array.from(home)) expect(code, slug).toBe(index.get(slug))
   })
 
-  it('keeps the code when a filter narrows /projects', () => {
-    const sites = codes(renderProjects('sites'), /<li class="rack-slot/)
+  it('keeps the number when a filter narrows /projects', () => {
+    const sites = codes(renderProjects('sites'), PLATE)
     expect(sites.size).toBeGreaterThan(0)
     for (const [slug, code] of Array.from(sites)) expect(code, slug).toBe(index.get(slug))
   })
 
-  it('numbers /projects in the order its cards appear', () => {
+  it('numbers /projects in the order its plates appear', () => {
     const order = Array.from(index.values()).map((c) => Number(c.split(' ')[0]))
     expect(order).toEqual(order.map((_, i) => i + 1))
   })
 
-  it('uses the same code on a case study’s next card', () => {
+  it('uses the same number on a case study’s next stop', () => {
     for (const slug of ['beachbus', 'el-nido-guide-ph', 'connecta-ph']) {
       if (!projects.some((p) => p.slug === slug)) continue
-      const next = codes(renderToStaticMarkup(ProjectPage({ params: { slug } })), /<li class="rack-slot/)
+      const next = codes(renderToStaticMarkup(ProjectPage({ params: { slug } })), PLATE)
       for (const [s, code] of Array.from(next)) expect(code, `${slug} -> ${s}`).toBe(index.get(s))
     }
   })
@@ -71,8 +70,7 @@ describe('project counts', () => {
   it('states the shipped count the hero claims, and the staging one, on /projects', () => {
     const claim = heroContent.proofPoints.find((p) => p.endsWith('projects shipped'))!
     expect(Number(splitProofPoint(claim).value)).toBe(shipped)
-    const html = renderProjects()
-    expect(html).toContain(`${projects.length} projects · ${shipped} shipped${staging ? `, ${staging} in staging` : ''}`)
+    expect(renderProjects()).toContain(`${projects.length} projects · ${shipped} shipped${staging ? `, ${staging} in staging` : ''}`)
   })
 
   it('counts a filtered view against the whole inventory', () => {
@@ -87,22 +85,5 @@ describe('/projects eyebrow', () => {
     const sites = renderProjects('sites')
     expect(sites).toContain(`>${projectsPageContent.bandEyebrow.replace('{band}', 'Sites')}</p>`)
     expect(sites).not.toContain(`>${projectsPageContent.eyebrow}</p>`)
-  })
-})
-
-describe('filter tabs', () => {
-  it('sit in one row that scrolls sideways, never wrapping off the lip', () => {
-    const html = renderToStaticMarkup(<BoardFilter active={null} />)
-    const row = html.match(/<ul class="([^"]*)"/)?.[1] ?? ''
-    expect(row).toContain('overflow-x-auto')
-    expect(row).not.toContain('flex-wrap')
-    // A focus ring inside a scroller is drawn inward, so the scroller cannot clip it.
-    expect(html).toContain('focus-visible:outline-offset-[-3px]')
-  })
-
-  it('scroll the current tab into the row on load', () => {
-    const html = renderToStaticMarkup(<BoardFilter active="Sites" />)
-    const current = html.match(/<li class="([^"]*)"><a [^>]*aria-current="true"/)?.[1] ?? ''
-    expect(current).toContain('[scroll-initial-target:nearest]')
   })
 })

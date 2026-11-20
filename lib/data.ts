@@ -576,6 +576,8 @@ export const projectsPageContent = {
   bandEyebrow: 'Projects · {band}',
   title: 'Everything I have shipped',
   description: 'Products of my own, custom systems, and client work, each with its live status.',
+  // Under the /projects map: how many of the projects shown have no pin.
+  unpinned: 'Projects that name no single place are in the list only ({count} here).',
 }
 
 export const recommendations: Recommendation[] = [

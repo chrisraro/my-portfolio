@@ -587,15 +587,31 @@
 /* /ProjectShot */
 
 /*
+ * The /projects map pan (spec §4, "pan"): a filter frames the band's pins.
+ * The layer is the whole map inside a clipping frame, moved and scaled by
+ * transform from the --pan-* the server writes (lib/map-pan.ts). On a client
+ * navigation the same element takes the new values and glides; on a full
+ * load it is simply there. Transform only, and only where motion is allowed.
+ */
+.map-pan {
+	transform-origin: 0 0;
+	transform: translate(var(--pan-x, 0%), var(--pan-y, 0%)) scale(var(--pan-s, 1));
+}
+@media (prefers-reduced-motion: no-preference) {
+	.map-pan { transition: transform var(--dur-slow) var(--ease-smooth); }
+}
+/* /Map pan */
+
+/*
  * Catalog view transitions (components/ui/view-transitions.tsx). A /projects
- * filter change names every card and tier heading (.vt-filter on <html>, for
- * the length of the change) so they glide from old place to new; a project
+ * filter change names every plate and band heading (.vt-filter on <html>, for
+ * the length of the change) so they glide from old place to new; the map pan, in the root, plays live under them; a project
  * link morphs the clicked screenshot into the case study's header shot. The
  * rest of the page is the root, and cross-fades quickly. Timing is the motion
  * tokens; the overlay never takes a click.
  */
-.vt-filter .rack-slot { view-transition-name: var(--vt-card); }
-.vt-filter .rack-shelf > :is(h2, h3) { view-transition-name: var(--vt-tier); }
+.vt-filter .project-plate { view-transition-name: var(--vt-plate); }
+.vt-filter .plate-band > h2 { view-transition-name: var(--vt-band); }
 [data-vt-shot] { view-transition-class: shot; }
 ::view-transition { pointer-events: none; }
 ::view-transition-group(*) {
@@ -642,8 +658,8 @@
 	animation-timing-function: var(--ease-sharp);
 	animation-fill-mode: both;
 }
-/* A 9:16 card shot and a 3:4 header shot both show the top of the page: keep
- * the top fixed and crop, never stretch, while the frame changes shape. */
+/* A plate's shot and the header shot both show the top of the page at 3:4:
+ * keep the top fixed and crop, never stretch, while the frame changes size. */
 ::view-transition-old(*.shot),
 ::view-transition-new(*.shot) {
 	height: 100%;

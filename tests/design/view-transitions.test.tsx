@@ -6,13 +6,14 @@ import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { projects } from '@/lib/data'
 import { fullShotFor, screenshotsFor } from '@/lib/project-page'
-import { cardTransitionName, planTransition, shotTransitionName, type ClickLike } from '@/lib/view-transition'
+import { bandTransitionName, planTransition, plateTransitionName, shotTransitionName, type ClickLike } from '@/lib/view-transition'
+import { BAND_ORDER } from '@/types'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
-// Lobby Rack refinement D2, plan Task 4: the /projects filter re-lays its cards
-// out (FLIP, through a view transition) and a project card morphs into its
-// case study's screenshot. One client island intercepts the clicks; the pages
-// stay server-rendered and work as plain links without JavaScript.
+// Spec §4: the /projects filter re-lays its plates out (FLIP, through a view
+// transition) while the map pans, and a project plate's screenshot morphs into
+// the project page's header shot. One client island intercepts the clicks;
+// the pages stay server-rendered and work as plain links without JavaScript.
 const css = readFileSync('app/globals.css', 'utf8')
 const rules = parseCssRules(css)
 const island = readFileSync('components/ui/view-transitions.tsx', 'utf8')
@@ -31,9 +32,14 @@ describe('planTransition', () => {
     expect(planTransition(click, link('/projects/giya'), at('/projects/latag'))).toEqual({ kind: 'project', href: '/projects/giya', slug: 'giya' })
   })
 
-  it('re-lays out /projects when a filter tab changes the band', () => {
+  it('re-lays out /projects when a legend key changes the band', () => {
     expect(planTransition(click, link('/projects?band=sites'), at('/projects'))).toEqual({ kind: 'filter', href: '/projects?band=sites' })
     expect(planTransition(click, link('/projects'), at('/projects', '?band=sites'))).toEqual({ kind: 'filter', href: '/projects' })
+  })
+
+  it('leaves a map pin’s jump to a plate on the same page to the browser', () => {
+    expect(planTransition(click, link('/projects#plate-latag'), at('/projects'))).toBeNull()
+    expect(planTransition(click, link('/projects?band=sites#plate-azalea-baguio'), at('/projects', '?band=sites'))).toBeNull()
   })
 
   it('leaves modified and non-primary clicks to the browser (new tab, new window, download)', () => {
@@ -59,11 +65,12 @@ describe('planTransition', () => {
 })
 
 describe('transition names', () => {
-  it('are valid, unique custom idents per slug', () => {
+  it('are valid, unique custom idents per slug and per band', () => {
     const shots = projects.map((p) => shotTransitionName(p.slug))
-    const cards = projects.map((p) => cardTransitionName(p.slug))
-    for (const name of [...shots, ...cards]) expect(name).toMatch(/^[a-z][a-z0-9-]*$/)
-    expect(new Set([...shots, ...cards]).size).toBe(projects.length * 2)
+    const plates = projects.map((p) => plateTransitionName(p.slug))
+    const bands = BAND_ORDER.map((b) => bandTransitionName(b))
+    for (const name of [...shots, ...plates, ...bands]) expect(name).toMatch(/^[a-z][a-z0-9-]*$/)
+    expect(new Set([...shots, ...plates, ...bands]).size).toBe(projects.length * 2 + BAND_ORDER.length)
   })
 
   it('names exactly one element on a project page: its header screenshot', () => {
@@ -75,21 +82,22 @@ describe('transition names', () => {
     }
   })
 
-  it('names nothing statically on the homepage’s work or /projects (the island names the clicked shot)', () => {
+  it('names nothing statically on the homepage’s products or /projects (the island names the clicked shot)', () => {
     for (const html of [renderToStaticMarkup(<OwnProducts />), renderToStaticMarkup(ProjectsPage({ searchParams: {} }))]) {
       expect(html).not.toMatch(/view-transition-name/)
-      // Every screenshot that can be the source of a morph says which project it is.
       const marked = Array.from(html.matchAll(/data-vt-shot="([^"]+)"/g)).map((m) => m[1])
       expect(marked.length).toBeGreaterThan(0)
       for (const slug of marked) expect(projects.some((p) => p.slug === slug), slug).toBe(true)
     }
   })
 
-  it('gives every /projects card a unique card name for the filter re-layout', () => {
+  it('gives every /projects plate and band a unique name for the filter re-layout', () => {
     const html = renderToStaticMarkup(ProjectsPage({ searchParams: {} }))
-    const cards = Array.from(html.matchAll(/--vt-card:([a-z0-9-]+)/g)).map((m) => m[1])
-    expect(cards).toHaveLength(projects.length)
-    expect(new Set(cards).size).toBe(projects.length)
+    const plates = Array.from(html.matchAll(/--vt-plate:([a-z0-9-]+)/g)).map((m) => m[1])
+    expect(plates).toHaveLength(projects.length)
+    expect(new Set(plates).size).toBe(projects.length)
+    const bands = Array.from(html.matchAll(/--vt-band:([a-z0-9-]+)/g)).map((m) => m[1])
+    expect(bands).toEqual(BAND_ORDER.map((b) => bandTransitionName(b)))
   })
 })
 
@@ -101,7 +109,6 @@ describe('the view-transition island', () => {
   })
 
   it('feature-detects startViewTransition before using it', () => {
-    expect(island).toMatch(/'startViewTransition' in document/)
     const detect = island.indexOf("'startViewTransition' in document")
     expect(detect).toBeGreaterThan(-1)
     expect(island.indexOf('document.startViewTransition(')).toBeGreaterThan(detect)
@@ -127,7 +134,6 @@ describe('the view-transition island', () => {
   })
 })
 
-// Refinement gate R5: a11y P2 1-3, critique bugs 4-5.
 describe('the island, hardened', () => {
   it('falls back to a full navigation if the client push fails, and never leaves a rejection unhandled', () => {
     expect(island).toMatch(/window\.location\.assign\(/)
@@ -137,22 +143,19 @@ describe('the island, hardened', () => {
   it('lets only the latest transition navigate, clean up its names or move focus (rapid clicks)', () => {
     expect(island).toMatch(/const token = tracker\.begin\(\)/)
     expect(island).toMatch(/if \(!tracker\.isLatest\(token\)\) return/)
-    // The token logic itself is unit-tested in view-transition-commit.test.ts.
   })
 
   it('scrolls and focuses only on a committed route: in the frame, or after a late commit', () => {
     expect(island).toMatch(/if \(!landed \|\| plan\.kind !== 'project' \|\| !tracker\.isLatest\(token\)\) return/)
     expect(island).toMatch(/const late = plan\.kind === 'project' \? landOnCaseStudy : undefined/)
-    // A frame with nothing committed is dropped, not faded into itself.
     expect(island).toMatch(/if \(!landed\) transition\.skipTransition/)
   })
 
-  it('prefetches project pages on hover or focus, and the filter tabs in full', () => {
+  it('prefetches project pages on hover or focus, and the legend keys in full', () => {
     expect(island).toMatch(/router\.prefetch\(/)
     expect(island).toMatch(/addEventListener\('pointerover'/)
     expect(island).toMatch(/addEventListener\('focusin'/)
-    const filter = readFileSync('components/ui/board-filter.tsx', 'utf8')
-    expect(filter).toMatch(/^\s*prefetch$/m)
+    expect(readFileSync('components/ui/legend-filter.tsx', 'utf8')).toMatch(/^\s*prefetch$/m)
   })
 
   it('morphs only to a header shot that is in the viewport, and lands at the top', () => {
@@ -161,7 +164,7 @@ describe('the island, hardened', () => {
     expect(island).toMatch(/scrollTo\(\{ top: 0, left: 0, behavior: 'instant' \}\)/)
   })
 
-  it('moves focus to the case study’s h1 after a card navigation', () => {
+  it('moves focus to the project page’s h1 after a plate navigation', () => {
     expect(island).toMatch(/focus\(\{ preventScroll: true \}\)/)
     expect(readFileSync('components/case-study/project-header.tsx', 'utf8')).toMatch(/<h1 tabIndex=\{-1\}/)
   })
@@ -179,7 +182,7 @@ describe('root cross-fade', () => {
     expect(fresh?.body).toMatch(/animation-fill-mode:\s*both/)
   })
 
-  it('never dips the page on a filter change: the fades are scoped away from .vt-filter, whose root swaps in place', () => {
+  it('never dips the page on a filter change: its root swaps in place, so the live map pan shows through', () => {
     for (const r of live.filter((x) => /vt-fade/.test(x.body))) expect(r.selector, r.selector).toMatch(/^:root:not\(\.vt-filter\)::/)
     const filterOld = live.find((r) => r.selector === '.vt-filter::view-transition-old(root)')
     const filterNew = live.find((r) => r.selector === '.vt-filter::view-transition-new(root)')
@@ -225,11 +228,29 @@ describe('view-transition CSS', () => {
     for (const r of off) expect(r.body).toMatch(/animation-duration:\s*0s/)
   })
 
-  it('names cards and tiers only during a filter change', () => {
-    const card = rules.find((r) => r.selector === '.vt-filter .rack-slot')
-    expect(card?.body).toMatch(/view-transition-name:\s*var\(--vt-card\)/)
-    const tier = rules.find((r) => /\.vt-filter \.rack-shelf/.test(r.selector))
-    expect(tier?.body).toMatch(/view-transition-name:\s*var\(--vt-tier\)/)
-    expect(css).not.toMatch(/(^|\n)\s*\.rack-slot \{[^}]*view-transition-name/)
+  it('names plates and band headings only during a filter change', () => {
+    const plate = rules.find((r) => r.selector === '.vt-filter .project-plate')
+    expect(plate?.body).toMatch(/view-transition-name:\s*var\(--vt-plate\)/)
+    const band = rules.find((r) => r.selector === '.vt-filter .plate-band > h2')
+    expect(band?.body).toMatch(/view-transition-name:\s*var\(--vt-band\)/)
+    expect(css).not.toMatch(/(^|\n)\s*\.project-plate \{[^}]*view-transition-name/)
+  })
+})
+
+describe('the map pan', () => {
+  it('moves the map layer by transform from the server’s custom properties, origin top left', () => {
+    const pan = rules.find((r) => r.selector === '.map-pan' && /transform:/.test(r.body))
+    expect(pan?.body).toMatch(/transform-origin:\s*0 0/)
+    expect(pan?.body).toMatch(/transform:\s*translate\(var\(--pan-x, 0%\), var\(--pan-y, 0%\)\) scale\(var\(--pan-s, 1\)\)/)
+  })
+
+  it('glides only where motion is allowed, on tokens, never on scroll', () => {
+    const glide = rules.filter((r) => /\.map-pan/.test(r.selector) && /transition/.test(r.body))
+    expect(glide.length).toBeGreaterThan(0)
+    for (const r of glide) {
+      expect(r.ancestors).toContain('@media (prefers-reduced-motion: no-preference)')
+      expect(r.body).toMatch(/transition:\s*transform var\(--dur-slow\) var\(--ease-smooth\)/)
+    }
+    for (const r of rules.filter((x) => /\.map-pan/.test(x.selector))) expect(r.body).not.toMatch(/animation-timeline|view-timeline/)
   })
 })

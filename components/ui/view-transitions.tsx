@@ -56,7 +56,7 @@ function landOnCaseStudy() {
   document.querySelector<HTMLElement>('main h1[tabindex="-1"]')?.focus({ preventScroll: true })
 }
 
-/** Remove every name this island set (a source shot, the filter's card names). */
+/** Remove every name this island set (a source shot, the filter's plate names). */
 function clearNames() {
   document.documentElement.classList.remove('vt-filter')
   for (const el of Array.from(document.querySelectorAll<HTMLElement>('[data-vt-source]'))) {
@@ -67,9 +67,11 @@ function clearNames() {
 
 /**
  * Runs catalog navigations as view transitions: a /projects filter change
- * re-lays the cards out (each card and tier is named for the length of the
- * change, so the browser animates them from old to new place), and a project
- * link morphs the clicked screenshot into the case study's header shot while
+ * re-lays the plates out (each plate and band heading is named for the length
+ * of the change, so the browser animates them from old to new place) while the
+ * map pans under them (a CSS transition in the live root, app/globals.css
+ * .map-pan), and a project link morphs the clicked screenshot into the project
+ * page's header shot while
  * the rest cross-fades. Renders nothing.
  *
  * Clicks are read in the capture phase, before next/link's handler; a planned
