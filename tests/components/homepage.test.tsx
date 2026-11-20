@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs'
 import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
+import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { Trailhead } from '@/components/sections/trailhead'
-import { heroContent } from '@/lib/data'
+import { heroContent, navigationItems, sectionContent } from '@/lib/data'
+import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
 // The Isarog Trail Map homepage (spec §5): one describe per section, in page
@@ -14,6 +16,7 @@ const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').r
 // Every new section, for the checks that hold for all of them.
 const SECTIONS: [string, ReactElement][] = [
   ['Trailhead', <Trailhead key="trailhead" />],
+  ['ElevationStrip', <ElevationStrip key="elevation" />],
 ]
 
 describe('Trailhead', () => {
@@ -56,6 +59,42 @@ describe('Trailhead', () => {
   it('draws the trail out of the plate on load, over the contours', () => {
     expect(html).toContain('class="trail-draw trail-draw--load"')
     expect(html).toMatch(/<svg aria-hidden="true"[^>]*class="[^"]*text-contour/)
+  })
+})
+
+describe('ElevationStrip', () => {
+  const html = renderToStaticMarkup(<ElevationStrip />)
+  const strip = html.match(/<div aria-hidden="true" class="relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
+
+  it('is the #timeline section the legend’s Experience link lands on, its heading from data', () => {
+    expect(html).toMatch(/^<section id="timeline" aria-labelledby="timeline-title"/)
+    expect(navigationItems.find((n) => n.label === 'Experience')?.href).toBe('#timeline')
+    expect(html).toContain(`>${sectionContent.timeline.eyebrow}</p>`)
+    expect(html).toMatch(new RegExp(`<h2 id="timeline-title" class="text-section[^"]*">${escape(sectionContent.timeline.title)}</h2>`))
+  })
+
+  it('marks each proof figure as a spot height, counted from the data', () => {
+    for (const f of elevationFigures()) {
+      expect(html).toContain(`>${f.value}</span>`)
+      expect(html).toContain(`>${f.label}</span>`)
+    }
+  })
+
+  it('lists every role and degree with its dates, newest first', () => {
+    let last = -1
+    for (const e of buildElevationStrip().entries) {
+      const at = html.indexOf(`>${escape(e.title)}</p>`)
+      expect(at, e.title).toBeGreaterThan(last)
+      last = at
+      expect(html).toContain(`>${escape(e.subtitle)}</p>`)
+      expect(html).toContain(`>${e.date}</p>`)
+    }
+  })
+
+  it('draws the strip from the first year to now, the marker resting at now', () => {
+    expect(strip).toContain('>2020</span>')
+    expect(strip).toContain('class="elevation-marker')
+    expect(strip).toContain(`>${sectionContent.timeline.here}</span>`)
   })
 })
 

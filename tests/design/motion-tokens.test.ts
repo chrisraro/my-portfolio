@@ -62,9 +62,9 @@ describe('motion tokens', () => {
       (r) => /\.reveal-[\w-]+/.test(r.selector) && /animation\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
     )
     const variants = new Set(animated.flatMap((r) => r.selector.match(/\.reveal-[\w-]+/g) ?? []))
-    // The contract's choreography, less the product flap and leaf (settled in
-    // the R5 fix batch: their scroll scrub broke the crease seam).
-    expect(variants.size).toBeGreaterThanOrEqual(8)
+    // S2 retires the Lobby Rack reveals; the rack's stagger, the case-study
+    // fold and the cover rise (the trail journals) remain.
+    expect(variants.size).toBeGreaterThanOrEqual(3)
     const off = rules
       .filter((r) => r.ancestors.includes('@media (prefers-reduced-motion: reduce)') && /animation\s*:\s*none/.test(r.body))
       .map((r) => r.selector)

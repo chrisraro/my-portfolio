@@ -4,14 +4,11 @@ import { CaseStudies } from '@/components/sections/case-studies'
 import { FieldLog } from '@/components/sections/field-log'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
-import { RouteLine } from '@/components/sections/route-line'
 import { Stack } from '@/components/sections/stack'
 import { noPreviewCopy } from '@/components/ui/no-preview-tag'
 import { groupForHomepage } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
 import {
-  education,
-  experience,
   galleryContent,
   galleryImages,
   projects,
@@ -216,22 +213,6 @@ describe('Field log', () => {
   it('never leaves a single card alone on the last three-column row', () => {
     const entries = buildFieldLog(galleryImages, recommendations, projects)
     if (entries.length % 3 === 1) expect(html).toContain('lg:col-span-3')
-  })
-})
-
-describe('Route line', () => {
-  const html = renderToStaticMarkup(<RouteLine />)
-
-  it('keeps the #changelog anchor and its heading from lib/data.ts', () => {
-    expect(html).toContain('id="changelog"')
-    expect(html).toMatch(new RegExp(`<h2 id="changelog-title"[^>]*>${escape(sectionContent.changelog.title)}<`))
-  })
-
-  it('stops at every role and every degree, in two lanes', () => {
-    for (const e of experience) expect(html).toContain(escape(e.title))
-    for (const e of education) expect(html).toContain(escape(e.degree))
-    expect(html).toContain('>Work<')
-    expect(html).toContain('>Education<')
   })
 })
 

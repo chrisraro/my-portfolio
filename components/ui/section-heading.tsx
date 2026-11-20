@@ -11,13 +11,13 @@ interface SectionHeadingProps {
   className?: string
 }
 
-// The heading stack every homepage section shares: eyebrow, 12px, h2, 40px.
+// The heading stack every homepage section shares: eyebrow, 12px, the h2 in the section-title style, 40px.
 // Copy comes from lib/data.ts.
 export function SectionHeading({ id, eyebrow, title, aside, className }: SectionHeadingProps) {
   return (
     <div className={cn('mb-10', className)}>
       <p className="eyebrow mb-3">{eyebrow}</p>
-      <h2 id={id} className="text-fluid-h2 text-ink">
+      <h2 id={id} className="text-section text-ink">
         {title}
         {aside && (
           <span aria-hidden="true" className="edge-code ml-4 align-middle text-sm font-medium text-muted [font-variation-settings:'wdth'_100]">

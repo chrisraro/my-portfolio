@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { endOfRange, parseDateToken } from '@/lib/dates'
+import { endOfRange, parseDateToken, startOfRange } from '@/lib/dates'
 
 const NOW = new Date('2026-09-10T00:00:00Z')
 
@@ -50,5 +50,19 @@ describe('endOfRange', () => {
 
   it('splits on a non-breaking hyphen (U+2011)', () => {
     expect(endOfRange('July 2023 ‑ August 2023')).toBe(Date.UTC(2023, 7, 1))
+  })
+})
+
+describe('startOfRange', () => {
+  it('takes the start of an en-dashed range', () => {
+    expect(startOfRange('March 2025 – August 2025')).toBe(Date.UTC(2025, 2, 1))
+  })
+
+  it('takes the start of an open-ended range', () => {
+    expect(startOfRange('November 2024 – Present', NOW)).toBe(Date.UTC(2024, 10, 1))
+  })
+
+  it('handles a single date with no range', () => {
+    expect(startOfRange('June 2026')).toBe(Date.UTC(2026, 5, 1))
   })
 })

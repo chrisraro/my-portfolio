@@ -32,7 +32,7 @@ describe('trail map type utilities', () => {
   const css = readFileSync('app/globals.css', 'utf8')
 
   it('sets display and map labels condensed and uppercase', () => {
-    for (const cls of ['text-display', 'map-label']) {
+    for (const cls of ['text-display', 'text-section', 'map-label']) {
       const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
       expect(body, cls).toBeDefined()
       expect(body, cls).toMatch(/font-stretch:\s*(?:6\d|7\d)%/)
@@ -41,7 +41,7 @@ describe('trail map type utilities', () => {
   })
 
   it('resets the old width-axis settings so font-stretch wins', () => {
-    for (const cls of ['text-display', 'map-label', 'eyebrow']) {
+    for (const cls of ['text-display', 'text-section', 'map-label', 'eyebrow']) {
       const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
       expect(body, cls).toBeDefined()
       expect(body, cls).toMatch(/font-variation-settings:\s*normal/)

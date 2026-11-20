@@ -38,3 +38,9 @@ export function endOfRange(dates: string, now: Date = new Date()): number {
   const parts = dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
   return parseDateToken(parts[parts.length - 1] ?? '', now)
 }
+
+/** A human date range's START (its first non-empty part), for placing it on a strip. */
+export function startOfRange(dates: string, now: Date = new Date()): number {
+  const parts = dates.split(/\s*[–—‑-]\s*/).filter((part) => part !== '')
+  return parseDateToken(parts[0] ?? '', now)
+}

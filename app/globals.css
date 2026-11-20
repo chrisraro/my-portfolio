@@ -91,7 +91,7 @@
 		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
 		scroll-padding-top: 5rem;
 	}
-	/* An anchor section (#work, #changelog, #contact) keeps a little air above
+	/* An anchor section (#work, #timeline, #contact) keeps a little air above
 	 * its eyebrow once it lands under the bar. */
 	section[id] {
 		scroll-margin-top: 0.5rem;
@@ -222,6 +222,18 @@
 		line-height: 0.9;
 		letter-spacing: -0.01em;
 		font-size: clamp(3rem, 1.6rem + 6vw, 7.5rem);
+		text-wrap: balance;
+	}
+	/* Section titles: the display voice at section scale. */
+	.text-section {
+		font-family: var(--font-display);
+		font-stretch: 75%;
+		font-variation-settings: normal;
+		font-weight: 800;
+		text-transform: uppercase;
+		line-height: 0.95;
+		letter-spacing: -0.005em;
+		font-size: clamp(2.25rem, 1.5rem + 3vw, 4.25rem);
 		text-wrap: balance;
 	}
 	/* Map labels: place names, waypoint titles, legend keys. */
@@ -595,10 +607,6 @@
 			from { transform: rotateX(-22deg); }
 			to { transform: none; }
 		}
-		@keyframes reveal-pop {
-			from { transform: scale(0.6); }
-			to { transform: none; }
-		}
 		.reveal-postcard {
 			animation: reveal-slide var(--dur-normal) var(--ease-smooth) both;
 			animation-timeline: view();
@@ -659,24 +667,7 @@
 			animation-timeline: view();
 			animation-range: entry 10% cover 30%;
 		}
-		/* The route line draws across its own section; stops pop as it passes. */
-		.route { view-timeline-name: --route; }
-		.reveal-route {
-			transform-origin: left center;
-			animation: reveal-draw-x var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: --route;
-			animation-range: entry 20% entry 100%;
-		}
-		.reveal-stop {
-			animation: reveal-pop var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: --route;
-			animation-range: entry calc(30% + var(--i, 0) * 20%) entry 100%;
-		}
 		@media (max-width: 767px) {
-			.reveal-route {
-				transform-origin: center top;
-				animation-name: reveal-draw-y;
-			}
 			.reveal-perf {
 				transform-origin: left center;
 				animation-name: reveal-draw-x;
@@ -777,7 +768,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-route, .reveal-stop, .reveal-fold) {
+	:is(.reveal-postcard, .reveal-stagger, .reveal-cover, .reveal-reply, .reveal-perf, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;

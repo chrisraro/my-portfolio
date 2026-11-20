@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { CaseStudies } from '@/components/sections/case-studies'
 import { ContactConsole } from '@/components/sections/contact-console'
+import { ElevationStrip } from '@/components/sections/elevation-strip'
 import { FieldLog } from '@/components/sections/field-log'
 import { Products } from '@/components/sections/products'
 import { Rack } from '@/components/sections/rack'
-import { RouteLine } from '@/components/sections/route-line'
 import { Stack } from '@/components/sections/stack'
 import { Trailhead } from '@/components/sections/trailhead'
 
@@ -19,11 +19,11 @@ export default function HomePage() {
   return (
     <>
       <Trailhead />
+      <ElevationStrip />
       <Products />
       <Rack />
       <CaseStudies />
       <FieldLog />
-      <RouteLine />
       <Stack />
       <ContactConsole />
     </>

@@ -489,7 +489,7 @@ export const contactInfo: ContactInfo = {
 // (tests/design/nav-anchors.test.ts checks every route has a page).
 export const navigationItems: NavigationItem[] = [
   { label: 'Work', href: '/projects' },
-  { label: 'Experience', href: '#changelog' },
+  { label: 'Experience', href: '#timeline' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -505,7 +505,19 @@ export const sectionContent = {
     eyebrow: 'Case studies',
     title: 'From the brief to launch',
   },
-  changelog: { eyebrow: 'Changelog', title: "Where I've worked" },
+  timeline: {
+    eyebrow: 'Elevation · the route so far',
+    title: "Where I've worked",
+    // The marker at now on the strip.
+    here: 'You are here',
+    // Labels for the spot heights; the numbers come from lib/elevation.ts.
+    figures: {
+      products: 'products of my own',
+      shipped: 'projects shipped',
+      caseStudies: 'case studies',
+      places: 'places on the field map',
+    },
+  },
   stack: { eyebrow: 'Stack', title: 'What I ship with' },
   contact: { eyebrow: 'Contact', title: 'Start a project' },
 }
