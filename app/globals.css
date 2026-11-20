@@ -131,7 +131,7 @@
 @layer components {
 	/* The legend card (spec §3): the one frosted surface on the site. */
 	.legend-glass {
-		background: oklch(var(--panel) / 0.78);
+		background: oklch(var(--panel) / 0.96);
 		-webkit-backdrop-filter: blur(14px) saturate(1.2);
 		backdrop-filter: blur(14px) saturate(1.2);
 		box-shadow: var(--shadow-overlay);

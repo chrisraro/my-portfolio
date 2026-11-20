@@ -32,6 +32,10 @@ describe('legend navigation', () => {
     expect(css).toMatch(/\.legend-glass \{[^}]*backdrop-filter:\s*blur\(/)
   })
 
+  it('marks the current page by more than colour', () => {
+    expect(src).toContain('aria-[current=page]:underline')
+  })
+
   it('lists Work first and keeps Contact', () => {
     expect(navigationItems[0]).toEqual({ label: 'Work', href: '/projects' })
     expect(navigationItems.map((n) => n.label)).toContain('Contact')

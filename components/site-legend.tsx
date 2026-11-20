@@ -93,7 +93,7 @@ export function SiteLegend() {
                   <Link
                     href={href}
                     aria-current={current ? 'page' : undefined}
-                    className="map-label inline-flex min-h-[44px] items-center whitespace-nowrap px-1.5 text-muted-strong transition-colors sm:px-2 duration-[var(--dur-fast)] ease-[var(--ease-sharp)] hover:text-ink aria-[current=page]:text-trail"
+                    className="map-label inline-flex min-h-[44px] items-center whitespace-nowrap px-1.5 text-muted-strong max-sm:tracking-[0.02em] transition-colors sm:px-2 duration-[var(--dur-fast)] ease-[var(--ease-sharp)] hover:text-ink aria-[current=page]:text-trail aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]"
                   >
                     {item.label}
                   </Link>
