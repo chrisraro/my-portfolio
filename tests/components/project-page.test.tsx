@@ -395,4 +395,13 @@ describe('the trail journal', () => {
       }
     }
   })
+
+  // F16: the closing row floated after ~300px of empty paper beside the shots.
+  it('closes a short page in its prose column, straight under the stack', () => {
+    const html = render('latag')
+    expect(html).toMatch(/<\/ul><div class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3"><a class="press button-primary" href="\/#contact">/)
+    // Once in the header's side card, once here: no second closing row after the spread.
+    expect(html.match(/>Start a project</g)).toHaveLength(2)
+    expect(html).toMatch(/<\/a><\/div><\/div><\/div><\/div><\/article>$/)
+  })
 })

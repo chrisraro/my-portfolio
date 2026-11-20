@@ -38,28 +38,34 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const project = projects.find((p) => p.slug === params.slug)
   if (!project) notFound()
   const study = getCaseStudy(project.slug)
+  const closing = (
+    <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <Link href="/#contact" className="press button-primary">
+        {ctaLabels.startProject}
+        <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
+      </Link>
+      <TrailLink href="/projects" text={ctaLabels.allProjects} />
+    </div>
+  )
 
   return (
     <article>
       <JsonLd data={graphFor(projectHref(project))} />
       <ProjectHeader project={project} role={study?.role} isCaseStudy={Boolean(study)} />
       {/* A flagship walks its journal from the brief; below 1024px its screenshot rail follows the brief. */}
+      {/* A short page closes in its prose column, under Stack, beside the shots
+       * rather than after them; a flagship closes under its whole journal. */}
       {study ? (
-        <CaseStudyBody study={study} project={project} screenshots={<ProjectScreenshots project={project} />} />
+        <>
+          <CaseStudyBody study={study} project={project} screenshots={<ProjectScreenshots project={project} />} />
+          <div className={cn(SECTION, 'pb-16 md:pb-24')}>{closing}</div>
+        </>
       ) : (
         <ReadSpread rail={<ProjectScreenshots project={project} />}>
           <ProjectSummary project={project} />
+          {closing}
         </ReadSpread>
       )}
-      <div className={cn(SECTION, 'pb-16 pt-14 md:pb-24')}>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Link href="/#contact" className="press button-primary">
-            {ctaLabels.startProject}
-            <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
-          </Link>
-          <TrailLink href="/projects" text={ctaLabels.allProjects} />
-        </div>
-      </div>
     </article>
   )
 }
