@@ -1,0 +1,98 @@
+import type { ReactElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { describe, expect, it } from 'vitest'
+import ServicesPage, { metadata } from '@/app/services/page'
+import ServicePage, { dynamicParams, generateMetadata, generateStaticParams } from '@/app/services/[slug]/page'
+import { ToastProvider } from '@/components/ui/toaster'
+import { ctaLabels, projects, servicePages, servicesPageContent } from '@/lib/data'
+
+// PlanTheRoute (the form every service page ends in) needs the toast provider.
+const render = (node: ReactElement) => renderToStaticMarkup(<ToastProvider>{node}</ToastProvider>)
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
+
+describe('/services', () => {
+  const html = render(<ServicesPage />)
+
+  it('opens with its answer under the one h1', () => {
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
+    expect(html).toContain(`>${escape(servicesPageContent.heading)}</h1>`)
+    const answer = html.indexOf(`>${escape(servicesPageContent.answer)}</p>`)
+    expect(answer).toBeGreaterThan(html.indexOf('</h1>'))
+    expect(answer).toBeLessThan(html.indexOf('<h2'))
+  })
+
+  it('lists each service once, by name, with one way in', () => {
+    for (const s of servicePages) {
+      expect(html).toContain(`>${escape(s.name)}</h2>`)
+      expect(html).toContain(escape(s.summary))
+      expect(html.match(new RegExp(`href="/services/${s.slug}"`, 'g'))).toHaveLength(1)
+      expect(html).toContain(`<span class="sr-only"> about ${escape(s.name)}</span>`)
+    }
+  })
+
+  it('jumps its primary action to the form it ends in', () => {
+    expect(html).toContain('<a href="#contact" class="press button-primary">')
+    expect(html.indexOf('<section id="contact"')).toBeGreaterThan(html.lastIndexOf('href="/services/'))
+  })
+
+  it('is titled and canonical', () => {
+    expect(metadata.title).toBe(servicesPageContent.title)
+    expect(metadata.description).toBe(servicesPageContent.answer)
+    expect(metadata.alternates?.canonical).toBe('/services')
+  })
+})
+
+describe('/services/[slug]', () => {
+  it('builds a page for each service and no other', () => {
+    expect(generateStaticParams()).toEqual(servicePages.map((s) => ({ slug: s.slug })))
+    expect(dynamicParams).toBe(false)
+  })
+
+  it.each(servicePages)('$slug carries the spec title, its answer as description, and its canonical', (s) => {
+    const m = generateMetadata({ params: { slug: s.slug } })
+    expect(m.title).toBe(s.title)
+    expect(m.description).toBe(s.answer)
+    expect(m.alternates?.canonical).toBe(`/services/${s.slug}`)
+  })
+
+  it.each(servicePages)('$slug opens with its answer, then asks its questions as h2s', (s) => {
+    const html = render(ServicePage({ params: { slug: s.slug } }))
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
+    expect(html).toContain(`>${escape(s.name)}</h1>`)
+    const answer = html.indexOf(`>${escape(s.answer)}</p>`)
+    expect(answer).toBeGreaterThan(html.indexOf('</h1>'))
+    expect(answer).toBeLessThan(html.indexOf('<h2'))
+    s.sections.forEach((q, i) => {
+      expect(html).toContain(`<h2 id="question-${i + 1}" class="text-title text-ink">${escape(q.question)}</h2>`)
+      for (const p of q.answer) expect(html).toContain(`>${escape(p)}</p>`)
+    })
+  })
+
+  it.each(servicePages)('$slug stands each proving project as a plate, in order, and no other', (s) => {
+    const html = render(ServicePage({ params: { slug: s.slug } }))
+    const plates = Array.from(html.matchAll(/<li id="plate-([^"]+)"/g)).map((m) => m[1])
+    expect(plates).toEqual(s.projectIds.map((id) => projects.find((p) => p.id === id)!.slug))
+  })
+
+  it.each(servicePages)('$slug jumps to the form it ends in, and leads back to every service', (s) => {
+    const html = render(ServicePage({ params: { slug: s.slug } }))
+    expect(html).toContain('<a href="#contact" class="press button-primary">')
+    expect(html).toContain(`>${ctaLabels.allServices}</span>`)
+    expect(html).toContain('href="/services"')
+    expect(html.indexOf('<section id="contact"')).toBeGreaterThan(html.lastIndexOf('<li id="plate-'))
+  })
+
+  it('sets each comparison as a real table: a caption, column and row headers, a focusable scroll region', () => {
+    for (const s of servicePages.filter((x) => x.comparison)) {
+      const html = render(ServicePage({ params: { slug: s.slug } }))
+      const c = s.comparison!
+      expect(html).toContain(`<div role="region" aria-label="${escape(c.caption)}" tabindex="0"`)
+      expect(html).toContain(`>${escape(c.caption)}</caption>`)
+      expect(html.match(/<th scope="col"/g)).toHaveLength(3)
+      expect(html.match(/<th scope="row"/g)).toHaveLength(c.rows.length)
+      for (const row of c.rows) {
+        for (const id of row.projectIds) expect(html).toContain(escape(projects.find((p) => p.id === id)!.title))
+      }
+    }
+  })
+})
