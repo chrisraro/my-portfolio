@@ -26,6 +26,12 @@ describe('Trailhead', () => {
     expect(html.indexOf(heroContent.eyebrow)).toBeLessThan(html.indexOf('<h1'))
   })
 
+  it('gives the portrait plate wrapper its own width, so the plate cannot collapse in the grid', () => {
+    const wrapper = html.match(/<div class="([^"]*\bmd:justify-self-end\b[^"]*)"/)?.[1] ?? ''
+    expect(wrapper).toMatch(/\bw-full\b/)
+    expect(wrapper).toContain('max-w-[22rem]')
+  })
+
   it('sets the headline one authored line per span, read as one sentence', () => {
     expect(h1.match(/class="trailhead-line"/g)).toHaveLength(heroContent.headlineLines.length)
     expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.headline)

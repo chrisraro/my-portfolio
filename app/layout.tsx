@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
+import { Suspense, type CSSProperties } from 'react'
 import { Archivo } from 'next/font/google'
 import './globals.css'
 import { JsonLd } from '@/components/json-ld'
@@ -25,6 +25,12 @@ const archivo = Archivo({
   fallback: ['Arial', 'sans-serif'],
 })
 
+// The condensed display face falls back to a narrower, scaled face (globals.css
+// 'Archivo Display Fallback'), not to plain Arial like body text: Arial is ~46%
+// wider and would push the headline out of its column until Archivo arrives.
+const archivoFamily = archivo.style.fontFamily.split(',')[0].trim()
+const displayStack = `${archivoFamily}, 'Archivo Display Fallback', sans-serif`
+
 export const metadata: Metadata = buildSiteMetadata(SITE_URL)
 
 export default function RootLayout({
@@ -33,7 +39,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={archivo.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={archivo.variable}
+      style={{ '--font-display': displayStack } as CSSProperties}
+    >
       <body>
         <JsonLd data={graph(personSchema(), serviceSchema(), websiteSchema())} />
         <ThemeProvider attribute="class" defaultTheme="light">

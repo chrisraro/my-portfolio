@@ -51,9 +51,9 @@ export function Trailhead() {
           </div>
         </div>
 
-        <div className="md:justify-self-end md:pt-2">
+        <div className="w-full max-w-[22rem] md:justify-self-end md:pt-2">
           {/* alt="" on the image: the lightbox button around it carries the name. */}
-          <ImageLightbox src={PORTRAIT} alt={heroContent.portraitAlt} className="survey-plate w-full max-w-[22rem]">
+          <ImageLightbox src={PORTRAIT} alt={heroContent.portraitAlt} className="survey-plate w-full">
             <span className="relative block aspect-[4/5] overflow-hidden">
               {/* priority on its own line: tests/design/performance.test.ts finds it there. */}
               <Image

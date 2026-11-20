@@ -51,4 +51,12 @@ describe('trail map type utilities', () => {
   it('gives numerals tabular figures', () => {
     expect(css).toMatch(/\.tabular \{[^}]*font-variant-numeric:\s*tabular-nums/)
   })
+
+  it('sizes a fallback face for display type so the condensed headline fits before Archivo loads', () => {
+    const css = readFileSync('app/globals.css', 'utf8')
+    const face = css.match(/@font-face\s*\{[^}]*'Archivo Display Fallback'[^}]*\}/)?.[0] ?? ''
+    expect(face).toMatch(/size-adjust:\s*70%/)
+    const rule = css.match(/\.text-display\s*\{[^}]*\}/)?.[0] ?? ''
+    expect(rule).toMatch(/font-family:\s*var\(--font-display\)/)
+  })
 })

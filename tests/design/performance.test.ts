@@ -90,6 +90,13 @@ describe('type family', () => {
     expect(layout).not.toMatch(/Figtree|localFont|anybody/i)
     expect(existsSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2')).toBe(false)
   })
+
+  it('sets the display stack from the loaded family, ahead of the narrow fallback and never Arial', () => {
+    const layout = readFileSync('app/layout.tsx', 'utf8')
+    expect(layout).toContain('archivo.style.fontFamily')
+    expect(layout).toContain("'Archivo Display Fallback'")
+    expect(layout).toContain("'--font-display'")
+  })
 })
 
 describe('font swap', () => {

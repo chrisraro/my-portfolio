@@ -72,6 +72,16 @@
 	--status-internal: 0.6400 0.0250 125;
 }
 
+/* Display fallback (S1 final review, Important 6): until Archivo arrives, the
+ * condensed headline would set in plain Arial, ~46% wider, and overflow its
+ * column. A narrower face, scaled down, holds the line; size-adjust shrinks the
+ * glyphs only, so line boxes and the layout do not move when Archivo swaps in. */
+@font-face {
+	font-family: 'Archivo Display Fallback';
+	src: local('Arial Narrow'), local('ArialNarrow'), local('Arial');
+	size-adjust: 70%;
+}
+
 @layer base {
 	html {
 		scroll-behavior: smooth;
@@ -121,9 +131,10 @@
 		outline: 2px solid oklch(var(--accent));
 		outline-offset: 3px;
 	}
-	/* Focus on a filled plane draws in the plane's own ink. Only the project
-	 * header (components/case-study/project-header.tsx) still has one; S3
-	 * removes this rule with it. */
+	/* Focus on a filled plane draws in the plane's own ink. The project header
+	 * (components/case-study/project-header.tsx) and the contact console
+	 * (components/sections/contact-console.tsx) still use it; the rule goes when
+	 * those are rebuilt. */
 	.on-plane :focus-visible {
 		outline-color: oklch(var(--on-accent));
 	}
@@ -203,7 +214,7 @@
 	}
 	/* Display: condensed uppercase headlines (trailhead, section titles). */
 	.text-display {
-		font-family: var(--font-sans);
+		font-family: var(--font-display);
 		font-stretch: 70%;
 		font-variation-settings: normal;
 		font-weight: 800;
@@ -344,7 +355,7 @@
 /*
  * Homepage (Lobby Rack, .impeccable/surfaces/app-page-tsx.md). Paper that
  * unfolds when you pay attention: three verbs, unfold, lift and slide.
- * Layout pieces first (always on), then the hero's load sequence and the
+ * Layout pieces first (always on), then the Trailhead's load sequence and the
  * scroll reveals, each behind its gates. Outside the gates every piece sits at
  * rest, fully visible.
  */
@@ -422,7 +433,7 @@
 /*
  * Sections far below the fold skip style, layout and paint until they near the
  * viewport, so the first layout (and the relayout when the web fonts arrive)
- * covers the hero and the work, not the whole page. Containment clips paint
+ * covers the Trailhead and the first section, not the whole page. Containment clips paint
  * to the box, so .defer-render goes only on sections whose content never
  * paints outside it. The intrinsic size is a placeholder until a section has
  * rendered once; `auto` then remembers its real height.
