@@ -74,6 +74,15 @@ describe('/services/[slug]', () => {
     expect(plates).toEqual(s.projectIds.map((id) => projects.find((p) => p.id === id)!.slug))
   })
 
+  it.each(servicePages)('$slug loads the first row of proof plates at once and the rest lazily', (s) => {
+    const html = render(ServicePage({ params: { slug: s.slug } }))
+    const plates = html.match(/<li id="plate-[\s\S]*?<\/li>/g) ?? []
+    plates.forEach((plate, i) => {
+      if (plate.includes('<img')) expect(plate).toContain(i < 3 ? 'loading="eager"' : 'loading="lazy"')
+    })
+    expect(plates.slice(0, 3).some((plate) => plate.includes('loading="eager"'))).toBe(true)
+  })
+
   it.each(servicePages)('$slug jumps to the form it ends in, and leads back to every service', (s) => {
     const html = render(ServicePage({ params: { slug: s.slug } }))
     expect(html).toContain('<a href="#contact" class="press button-primary">')

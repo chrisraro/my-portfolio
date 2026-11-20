@@ -14,6 +14,8 @@ interface ProjectPlateProps {
   code: string
   /** Read before the name, e.g. "Next case study", when the plate stands for more than itself. */
   labelPrefix?: string
+  /** The plate is in the first row of its grid: its shot loads now, not lazily. */
+  eager?: boolean
 }
 
 /**
@@ -26,7 +28,7 @@ interface ProjectPlateProps {
  * prefix, name, status and summary; code and domain are aria-hidden. Hover lifts it like every catalog card (.lift-card). The li carries the
  * id a map pin jumps to and the name a filter change glides (.vt-filter).
  */
-export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) {
+export function ProjectPlate({ project, code, labelPrefix, eager = false }: ProjectPlateProps) {
   const shot = fullShotFor(project)
   const domain = canLinkLive(project) && project.links.live ? extractDomain(project.links.live) : undefined
   const id = `plate-${project.slug}`
@@ -48,6 +50,7 @@ export function ProjectPlate({ project, code, labelPrefix }: ProjectPlateProps) 
             src={shot}
             label={project.title}
             decorative
+            eager={eager}
             slug={project.slug}
             sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, calc(100vw - 58px)"
             className="w-full"

@@ -24,6 +24,17 @@ describe('/projects: the list', () => {
   const plates = platesOf(html)
   const plateFor = (p: Project) => plates.find((c) => c.startsWith(`<li id="plate-${p.slug}"`)) ?? ''
 
+  it('loads the first row of the first band at once and the rest lazily', () => {
+    const first = plates.slice(0, 2)
+    for (const plate of first) {
+      expect(plate).toContain('loading="eager"')
+      expect(plate).not.toContain('loading="lazy"')
+    }
+    const withShot = plates.slice(2).filter((c) => c.includes('<img'))
+    expect(withShot.length).toBeGreaterThan(0)
+    for (const plate of withShot) expect(plate).toContain('loading="lazy"')
+  })
+
   it('takes its heading from lib/data.ts, with one h1', () => {
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
     expect(html).toContain(`>${projectsPageContent.title}</h1>`)

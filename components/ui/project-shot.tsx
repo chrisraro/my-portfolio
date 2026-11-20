@@ -21,6 +21,12 @@ interface ProjectShotProps {
   /** next/image sizes hint. */
   sizes?: string
   /**
+   * Load now, not when the frame nears the viewport: for the first row of a
+   * grid, which is on screen at once and stood empty for a moment as a lazy
+   * image. The hero's own preload hint stays with the hero alone.
+   */
+  eager?: boolean
+  /**
    * Inside a plate that is already the link (a /projects plate): render a silent frame,
    * with no link, focus stop, name or hover of its own. The plate's hover
    * (.lift-card) scales the shot inside it.
@@ -49,7 +55,7 @@ interface ProjectShotProps {
 export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]'
 
 /**
- * A still screenshot in the frame every screenshot shares (SHOT_ASPECT) (one scale, spec §3): the top of a project's full-page
+ * A still screenshot in the frame every screenshot shares (SHOT_ASPECT), one scale (spec §3): the top of a project's full-page
  * shot. Nothing scrolls. As a link it takes the catalog hover
  * (.lift-card in app/globals.css): on a fine pointer it lifts 2px, its border
  * turns ink and the shot scales to 1.02 inside the clipping frame.
@@ -61,6 +67,7 @@ export function ProjectShot({
   href,
   sizes = '(min-width: 1024px) 480px, 100vw',
   decorative = false,
+  eager = false,
   duplicateLink = false,
   slug,
   morphTarget = false,
@@ -87,7 +94,7 @@ export function ProjectShot({
     : {}
   const inner = (
     <span className="project-shot__frame absolute inset-0 overflow-hidden rounded-md">
-      <Image src={src} alt="" fill sizes={sizes} quality={50} className="lift-card__shot object-cover object-top" />
+      <Image src={src} alt="" fill sizes={sizes} quality={50} loading={eager ? 'eager' : undefined} className="lift-card__shot object-cover object-top" />
     </span>
   )
 

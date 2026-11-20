@@ -82,7 +82,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
         </SurveyPlate>
 
         <div className="grid min-w-0 gap-16">
-          {groupByBand(visible, hasFullShot).map((group) => {
+          {groupByBand(visible, hasFullShot).map((group, bandIndex) => {
             const id = bandTransitionName(group.heading)
             return (
               <section
@@ -98,8 +98,9 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
                   <span className="tabular text-muted"> · {group.projects.length}</span>
                 </h2>
                 <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
-                  {group.projects.map((p) => (
-                    <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} />
+                  {group.projects.map((p, i) => (
+                    // The first band's first row (two columns) is on screen at load.
+                    <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} eager={bandIndex === 0 && i < 2} />
                   ))}
                 </ul>
               </section>

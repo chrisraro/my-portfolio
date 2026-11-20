@@ -122,8 +122,9 @@ export default function ServicePage({ params }: ServicePageProps) {
       <section aria-labelledby="proof-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
         <SectionHeading id="proof-title" title={proof.title} />
         <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {service.projectIds.map(byId).map((p) => (
-            <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} />
+          {service.projectIds.map(byId).map((p, i) => (
+            // The first row (three columns from 1024px) loads at once.
+            <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} eager={i < 3} />
           ))}
         </ul>
       </section>
