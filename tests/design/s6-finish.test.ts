@@ -165,3 +165,10 @@ describe('the first viewport reads at the contract’s scale (F1, F2, F21)', () 
     expect(rule('.eyebrow')).toMatch(/text-wrap:\s*balance/)
   })
 })
+
+describe('one display voice (F5)', () => {
+  it('sets the inner-page h1 condensed and uppercase, like the homepage h1 and the section titles', () => {
+    expect(rule('.text-page-h1')).toMatch(/text-transform:\s*uppercase/)
+    expect(rule('.text-page-h1')).toMatch(/font-stretch:\s*75%/)
+  })
+})

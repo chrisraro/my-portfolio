@@ -145,14 +145,16 @@
 			background: oklch(var(--panel));
 		}
 	}
-	/* Read pages (/projects, a project, the 404): the H1 at the smaller end. */
+	/* Read pages (/projects, a project, the 404): the H1 at the smaller end,
+	 * in the display voice (condensed uppercase), like the homepage h1. */
 	.text-page-h1 {
 		font-family: var(--font-display), system-ui, sans-serif;
 		font-stretch: 75%;
 		font-size: clamp(2.75rem, 2rem + 3.5vw, 5rem);
 		line-height: 0.92;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.01em;
 		font-weight: 800;
+		text-transform: uppercase;
 	}
 	/* Card names and h3s. */
 	.text-title {
