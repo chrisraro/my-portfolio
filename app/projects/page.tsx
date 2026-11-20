@@ -92,7 +92,8 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
                 // Names the band heading while a filter re-lays the list out (.vt-filter).
                 style={{ '--vt-band': id } as CSSProperties}
               >
-                <h2 id={id} className="map-label mb-5 text-ink">
+                {/* At the title step under the page's h1, the count tabular and muted. */}
+                <h2 id={id} className="text-title mb-5 text-ink">
                   {group.heading}
                   <span className="tabular text-muted"> · {group.projects.length}</span>
                 </h2>

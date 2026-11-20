@@ -51,6 +51,14 @@ describe('/projects: the list', () => {
     }
   })
 
+  // F7 (finish review): 13px band names under an 80px h1 jumped from display to caption.
+  it('sets each band name at the title step, not as a caption', () => {
+    for (const band of BAND_ORDER) {
+      expect(html).toMatch(new RegExp(`<h2 [^>]*class="text-title mb-5 text-ink">${band}<`))
+    }
+    expect(html).not.toMatch(/<h2 [^>]*class="map-label/)
+  })
+
   it('always states the status in words, through StatusBadge', () => {
     for (const p of projects) {
       expect(plateFor(p), p.slug).toContain('data-status=')
