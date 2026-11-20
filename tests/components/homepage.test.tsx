@@ -99,6 +99,11 @@ describe('ElevationStrip', () => {
     }
   })
 
+  it('sets the counts as the strip’s legend, not a big-number row', () => {
+    expect(html).not.toContain('text-numeral')
+    for (const f of elevationFigures()) expect(html).toContain(`<span class="text-title tabular text-ink">${f.value}</span>`)
+  })
+
   it('lists every role and degree with its dates, newest first', () => {
     let last = -1
     for (const e of buildElevationStrip().entries) {
@@ -132,6 +137,11 @@ describe('Fork', () => {
     expect(cards).toHaveLength(2)
     expect(cards[0]).toContain(`>${fork.business.title}</h3>`)
     expect(cards[1]).toContain(`>${fork.team.title}</h3>`)
+  })
+
+  it('draws the fork as a route that splits over open paper, not two boxed cards', () => {
+    expect(html).toMatch(/<svg aria-hidden="true" focusable="false"[^>]*class="fork-route/)
+    for (const card of cards) expect(card).not.toMatch(/\bbg-panel\b|\brounded\b/)
   })
 
   it('names every payment gateway on the business path, from the data', () => {

@@ -31,7 +31,7 @@ function Lane({ entries, className }: { entries: StripEntry[]; className: string
 }
 
 /**
- * The elevation strip (spec §5): the proof figures as spot heights, then the
+ * The elevation strip (spec §5): the proof counts as the strip's legend of spot heights, then the
  * route from 2020 to now as a ridge with each role (ink) and degree
  * (line-strong) as a span along it, and the "you are here" marker at now. The
  * drawn strip is decorative; the dated list under it carries the facts. The
@@ -47,13 +47,12 @@ export function ElevationStrip() {
   return (
     <section id="timeline" aria-labelledby="timeline-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="timeline-title" title={timeline.title} />
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+      {/* The strip's legend: each count beside its spot height, the way a map prints one. */}
+      <ul className="flex flex-wrap gap-x-10 gap-y-4 border-y border-line py-5">
         {figures.map((f) => (
-          <li key={f.label} className="flex flex-col gap-2 border-t border-line pt-3">
-            <span className="flex items-center gap-2">
-              <SpotHeight />
-              <span className="text-numeral text-ink">{f.value}</span>
-            </span>
+          <li key={f.label} className="flex items-baseline gap-2">
+            <SpotHeight />
+            <span className="text-title tabular text-ink">{f.value}</span>
             <span className="text-sm leading-snug text-muted-strong">{f.label}</span>
           </li>
         ))}

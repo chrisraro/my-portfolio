@@ -5,12 +5,30 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { resumeUrl, sectionContent } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
-const CARD = 'flex flex-col rounded border border-line bg-panel p-6 sm:p-8'
+/** The split: one leg up from the trailhead dividing in two, one over each path (decorative). */
+function ForkRoute() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 100 48"
+      preserveAspectRatio="none"
+      className="fork-route mb-2 hidden h-12 w-full text-ink md:block"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeDasharray="6 5"
+    >
+      <path d="M50 0 V14 C50 30 25 30 25 48" vectorEffect="non-scaling-stroke" />
+      <path d="M50 14 C50 30 75 30 75 48" vectorEffect="non-scaling-stroke" />
+    </svg>
+  )
+}
 
 /**
  * The fork (spec §5): two paths up from the trailhead, one for a business and
  * one for a hiring team. The business path opens /services; the team path
- * opens /hire, the résumé beside it. Outline buttons: the trail-red primary stays the trailhead's.
+ * opens /hire, the résumé beside it. Two legs on open paper under the drawn split; outline buttons, since the trail-red primary stays the trailhead's.
  */
 export function Fork() {
   const { fork } = sectionContent
@@ -18,8 +36,9 @@ export function Fork() {
   return (
     <section id="fork" aria-labelledby="fork-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
       <SectionHeading id="fork-title" title={fork.title} />
-      <ul className="grid gap-6 md:grid-cols-2">
-        <li className={CARD}>
+      <ForkRoute />
+      <ul className="grid gap-12 md:grid-cols-2 md:gap-16">
+        <li className="flex flex-col border-t-2 border-ink pt-6">
           <h3 className="text-title text-ink">{fork.business.title}</h3>
           <p className="mt-4 max-w-[46ch] leading-relaxed text-muted-strong">{fork.business.body}</p>
           <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-8">
@@ -29,7 +48,7 @@ export function Fork() {
             </Link>
           </div>
         </li>
-        <li className={CARD}>
+        <li className="flex flex-col border-t-2 border-ink pt-6">
           <h3 className="text-title text-ink">{fork.team.title}</h3>
           <p className="mt-4 max-w-[46ch] leading-relaxed text-muted-strong">{fork.team.body}</p>
           <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-8">
