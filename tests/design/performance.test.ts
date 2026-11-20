@@ -108,7 +108,7 @@ describe('font swap', () => {
 
 describe('reveals', () => {
   it('move by transform only, so text is never painted or measured faded', () => {
-    for (const name of ['reveal-rise', 'reveal-cover']) {
+    for (const name of ['reveal-cover']) {
       const body = css.match(new RegExp(String.raw`@keyframes ${name} \{([\s\S]*?)\n\t\t\}`))?.[1]
       expect(body, name).toBeDefined()
       expect(body, name).not.toContain('opacity')

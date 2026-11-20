@@ -43,7 +43,7 @@ interface ProjectShotProps {
  * A still screenshot in the 3:4 frame every screenshot shares (one scale, spec §3): the top of a project's full-page
  * shot. Nothing scrolls. As a link it takes the catalog hover
  * (.lift-card in app/globals.css): on a fine pointer it lifts 2px, its border
- * turns accent and the shot scales to 1.02 inside the clipping frame.
+ * turns ink and the shot scales to 1.02 inside the clipping frame.
  */
 export function ProjectShot({
   src,

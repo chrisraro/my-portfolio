@@ -84,8 +84,8 @@ export function projectCount(visible: Project[], all: Project[], filtered: boole
 }
 
 /**
- * A card's edge code: a running index over the whole rack plus a label, so
- * the page reads as one numbered strip ("04 / 18 · Products").
+ * A plate's catalog code: a running index over the whole inventory plus a
+ * label, so the list reads as one numbered survey ("04 / 18 · Products").
  */
 export function edgeCode(position: number, total: number, label: string): string {
   const pad = (n: number) => String(n).padStart(String(total).length, '0')

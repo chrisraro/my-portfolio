@@ -111,15 +111,15 @@
 		background: oklch(var(--ink));
 		color: oklch(var(--bg));
 	}
-	/* Anybody does the shouting: headings condensed at wdth 75, titles at 85. */
+	/* Headings set condensed: h1 and h2 at 75%, h3 and h4 a little wider. */
 	h1, h2 {
 		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-stretch: 75%;
 		text-wrap: balance;
 	}
 	h3, h4 {
 		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 85;
+		font-stretch: 85%;
 		text-wrap: balance;
 	}
 	a { text-underline-offset: 0.2em; }
@@ -152,7 +152,7 @@
 	/* Read pages (/projects, a project, the 404): the H1 at the smaller end. */
 	.text-page-h1 {
 		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-stretch: 75%;
 		font-size: clamp(2.75rem, 2rem + 3.5vw, 5rem);
 		line-height: 0.92;
 		letter-spacing: -0.02em;
@@ -161,14 +161,14 @@
 	/* Card names and h3s. */
 	.text-title {
 		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 85;
+		font-stretch: 85%;
 		font-size: 1.5rem;
 		line-height: 1.05;
 		font-weight: 700;
 	}
 	.text-numeral {
 		font-family: var(--font-display), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 75;
+		font-stretch: 75%;
 		font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
 		line-height: 0.9;
 		font-weight: 800;
@@ -177,18 +177,6 @@
 	.text-lede {
 		font-size: 1.1875rem;
 		line-height: 1.55;
-	}
-	/*
-	 * Edge codes: dates, domains, counts, running indexes. There is no mono
-	 * family; the display face at its normal width with tabular numerals does
-	 * the job. Eyebrows are edge-code labels in sentence case.
-	 */
-	.edge-code {
-		font-family: var(--font-sans), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 100;
-		font-weight: 500;
-		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.04em;
 	}
 	.eyebrow {
 		font-family: var(--font-sans);
@@ -248,7 +236,7 @@
 	}
 	.button-label {
 		font-family: var(--font-sans), system-ui, sans-serif;
-		font-variation-settings: 'wdth' 100;
+		font-stretch: 100%;
 		font-size: 1rem;
 		font-weight: 650;
 		line-height: 1;
@@ -334,22 +322,6 @@
 }
 .typing-dot {
 	animation: typing-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-/* Scroll-driven reveal: CSS only. Outside both gates content is simply visible. */
-@supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
-		/* Transform only: text is never painted (or measured for contrast) faded. */
-		@keyframes reveal-rise {
-			from { transform: translateY(24px); }
-			to { transform: none; }
-		}
-		.reveal {
-			animation: reveal-rise var(--dur-normal) var(--ease-smooth) both;
-			animation-timeline: view();
-			animation-range: entry 10% cover 30%;
-		}
-	}
 }
 
 /*
@@ -465,7 +437,7 @@
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		/* Transform only, like reveal-rise: a case study is never read faded. */
+		/* Transform only: a case study is never read faded. */
 		@keyframes reveal-cover {
 			from { transform: translateY(24px); }
 			to { transform: none; }
@@ -480,8 +452,8 @@
 /* /Homepage */
 
 /* ProjectShot (components/ui/project-shot.tsx): a still screenshot. A frame
- * away from the viewport (below the fold, or scrolled out of a rack strip)
- * skips rendering, so its full-page shot, a lazy image, is not even requested
+ * away from the viewport (below the fold) skips rendering, so its full-page
+ * shot, a lazy image, is not even requested
  * until the frame comes near. The frame's size never depends on its content
  * (absolutely inset in an aspect-ratio box), so nothing shifts, and it already
  * clips its content. The containment sits on the frame, not the link around
@@ -537,8 +509,8 @@
 	animation-timing-function: var(--ease-sharp);
 	animation-fill-mode: both;
 }
-/* A filter change: the heading, tabs and bar are the same page, so the root
- * swaps in place (no dip) and only the named cards and tiers glide. */
+/* A filter change: the heading, legend and map frame are the same page, so the
+ * root swaps in place (no dip) and only the named plates and band headings glide. */
 .vt-filter::view-transition-old(root) {
 	animation: none;
 	opacity: 0;
@@ -579,7 +551,6 @@
 /* /Catalog view transitions */
 
 @media (prefers-reduced-motion: reduce) {
-	.reveal { animation: none !important; opacity: 1; transform: none; }
 	/* The island already navigates without a transition; this covers any other. */
 	::view-transition-group(*),
 	::view-transition-old(*),

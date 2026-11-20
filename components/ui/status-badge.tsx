@@ -43,7 +43,7 @@ export function StatusBadge({ status, compact = false, className }: StatusBadgeP
   return (
     <span
       data-status={display}
-      className={cn('inline-flex items-center gap-1.5 edge-code text-xs text-muted', className)}
+      className={cn('inline-flex items-center gap-1.5 tabular text-xs font-medium text-muted', className)}
     >
       <StatusGlyph status={display} />
       <span className={compact ? 'sr-only' : undefined}>{DISPLAY_STATUS_LABEL[display]}</span>

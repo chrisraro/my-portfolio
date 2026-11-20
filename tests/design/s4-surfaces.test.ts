@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 // allows it (the primary button through its class, the current position).
 const PAGES = ['app/services/page.tsx', 'app/services/[slug]/page.tsx', 'app/about/page.tsx', 'app/hire/page.tsx']
 const S4 = [...PAGES, 'app/not-found.tsx', 'components/ui/page-intro.tsx', 'components/ui/work-history.tsx', 'components/site-legend.tsx']
-const FOREIGN = /\b(?:text|bg|border|outline|ring|fill|stroke)-(?:accent|accent-plane|on-accent)\b|\bon-plane\b|\bedge-code\b|crease-|rounded-xl/
+const FOREIGN = /\bon-plane\b|\bedge-code\b|crease-|rounded-xl/
 const TRAIL = /\b(?:bg|text|border|fill|stroke|ring|decoration)-trail\b/
 
 describe('S4 surfaces', () => {

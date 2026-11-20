@@ -11,12 +11,12 @@ const LEGACY = new RegExp(
     'card|card-foreground|popover|popover-foreground|muted-foreground|accent-foreground|border|input)' +
     '(?![\\w-])',
 )
-// --font-display came back in Lobby Rack as the Anybody display face, so it is
+// --font-display came back in Portfolio 4.0 as its display face, so it is
 // no longer legacy; --font-mono stays retired.
 const LEGACY_VAR = /var\(--(?:background|foreground|primary|primary-rgb|secondary|card|popover|border|input|font-mono)\b/
 
-// B3 Signal (retired by Lobby Rack) set labels in Recursive's MONO axis. The new
-// world has no mono family: edge codes use .edge-code. Tailwind no longer
+// B3 Signal (retired in Portfolio 4.0) set labels in Recursive's MONO axis. The
+// trail map has no mono family: codes use .tabular. Tailwind no longer
 // defines a mono key, so a stray `font-mono` would silently fall back to the
 // system monospace, a second typeface.
 const B3_TYPE = /(?<![\w-])font-mono(?![\w-])|['"]MONO['"]|Recursive\(/

@@ -56,3 +56,30 @@ describe('the browser surfaces wear the trail map', () => {
     expect(css).toMatch(/accent-color: oklch\(var\(--ink\)\)/)
   })
 })
+
+const OLD_WORDS = /\b(?:Anybody|Figtree|Lobby Rack|lagoon|amber|postcards?|rack)\b/i
+
+describe('the Portfolio 4.0 utilities and words are gone', () => {
+  it('catches the old words, so the guard can fail', () => {
+    for (const s of ['Anybody does the shouting', 'a rack strip', 'the amber plane', 'postcards 2px', 'Lobby Rack mark']) {
+      expect(s).toMatch(OLD_WORDS)
+    }
+    expect('a contour track').not.toMatch(OLD_WORDS)
+  })
+
+  it('has no .edge-code, .reveal or reveal-rise rule, and no component uses edge-code', () => {
+    expect(css).not.toMatch(/\.edge-code\b/)
+    expect(css).not.toMatch(/\.reveal(?![\w-])/)
+    expect(css).not.toMatch(/reveal-rise/)
+    for (const { f, src } of sources) expect(src, f).not.toMatch(/\bedge-code\b/)
+  })
+
+  it('sets every width through font-stretch, never the old width-axis setting', () => {
+    expect(css).not.toMatch(/font-variation-settings:\s*'wdth'/)
+  })
+
+  it('describes the trail map, not the retired worlds', () => {
+    for (const { f, src } of sources) expect(src, f).not.toMatch(OLD_WORDS)
+    expect(tailwind).not.toMatch(OLD_WORDS)
+  })
+})

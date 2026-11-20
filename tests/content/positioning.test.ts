@@ -66,7 +66,6 @@ describe('positioning', () => {
 
   it('gives every section a heading', () => {
     for (const section of Object.values(sectionContent)) {
-      // Lobby Rack eyebrows are edge-code labels; the B3 "// " comment prefix is retired.
       expect(section.eyebrow.trim()).not.toBe('')
       expect(section.eyebrow).not.toMatch(/^\/\//)
       expect(section.title.trim()).not.toBe('')

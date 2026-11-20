@@ -2,8 +2,8 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 // The surfaces S3 rebuilt wear the Isarog Trail Map only: no Portfolio 4.0
-// amber (accent, accent-plane, on-accent), no edge-code labels, no creases,
-// no rounded-xl paper. (The transitional tokens themselves go in S6.)
+// amber plane (on-plane), no edge-code labels, no creases, no rounded-xl paper.
+// (The accent aliases are held out of every source by s6-finish.test.ts.)
 const S3 = [
   'app/projects/page.tsx',
   'app/projects/[slug]/page.tsx',
@@ -17,7 +17,7 @@ const S3 = [
   'components/ui/project-shot.tsx',
   'components/ui/no-preview-tag.tsx',
 ]
-const FOREIGN = /\b(?:text|bg|border|outline|ring|fill|stroke)-(?:accent|accent-plane|on-accent)\b|\bon-plane\b|\bedge-code\b|crease-|rounded-xl/
+const FOREIGN = /\bon-plane\b|\bedge-code\b|crease-|rounded-xl/
 
 describe('S3 surfaces', () => {
   it.each(S3)('%s uses only trail-map classes', (f) => {

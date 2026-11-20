@@ -36,7 +36,7 @@ const WELCOME =
 const SUGGESTIONS = ['Tell me about Christian', 'Skills and tech stack', 'Contact info']
 
 const CHIP =
-  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 edge-code text-xs text-muted-strong transition-colors hover:border-ink hover:text-ink'
+  'inline-flex min-h-[32px] items-center rounded border border-line-strong px-3 tabular text-xs text-muted-strong transition-colors hover:border-ink hover:text-ink'
 
 // The status dot is ink, never green: green means a live system and
 // nothing else, and the widget cannot know the assistant is online until a
@@ -267,7 +267,7 @@ export function ChatWidget() {
                   className="hidden cursor-pointer rounded-lg border border-line bg-panel px-4 py-2 shadow-overlay sm:block"
                   onClick={() => setIsOpen(true)}
                 >
-                  <span className="whitespace-nowrap edge-code text-xs text-ink">Ask Chunks about my work</span>
+                  <span className="whitespace-nowrap tabular text-xs text-ink">Ask Chunks about my work</span>
                 </m.div>
               )}
             </AnimatePresence>
@@ -313,8 +313,8 @@ export function ChatWidget() {
                   className={cn('h-2 w-2 rounded-full', isOffline ? DOT_OFFLINE : DOT_READY)}
                 />
                 <div>
-                  <h3 id="chat-title" className="edge-code text-sm text-ink">~/ask chunks</h3>
-                  <p className="edge-code text-xs text-muted">
+                  <h3 id="chat-title" className="map-label text-ink">Ask Chunks</h3>
+                  <p className="tabular text-xs text-muted">
                     {isOffline ? 'offline · set replies only' : 'AI assistant · answers about my work'}
                   </p>
                 </div>
@@ -350,7 +350,7 @@ export function ChatWidget() {
                     transition={fade}
                     className={mine ? 'flex flex-col items-end' : 'flex flex-col items-start'}
                   >
-                    <p className="mb-1 edge-code text-xs text-muted">
+                    <p className="mb-1 tabular text-xs text-muted">
                       {mine ? 'you' : 'chunks'} · {formatTime(message.timestamp)}
                     </p>
                     <div
@@ -367,7 +367,7 @@ export function ChatWidget() {
               })}
 
               {isTyping && (
-                <div className="flex items-center gap-2 edge-code text-xs text-muted">
+                <div className="flex items-center gap-2 tabular text-xs text-muted">
                   <span>chunks is typing</span>
                   <span aria-hidden="true" className="flex items-center gap-1">
                     <span className="typing-dot h-1.5 w-1.5 rounded-full bg-muted" />
@@ -418,7 +418,7 @@ export function ChatWidget() {
                   <Send className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
-              <p className="mt-2 text-center edge-code text-xs text-muted">Powered by AI · portfolio questions only</p>
+              <p className="mt-2 text-center tabular text-xs text-muted">Powered by AI · portfolio questions only</p>
             </div>
           </m.div>
         )}

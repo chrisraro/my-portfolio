@@ -33,7 +33,7 @@ describe('trail map type utilities', () => {
 
   it('keeps UI labels on the body stack, not the condensed display face', () => {
     // Before Archivo loads the display fallback renders at 70%: a 12px badge at ~8.4px.
-    for (const cls of ['button-label', 'edge-code']) {
+    for (const cls of ['button-label']) {
       const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
       expect(body, cls).toBeDefined()
       expect(body, cls).not.toContain('var(--font-display)')

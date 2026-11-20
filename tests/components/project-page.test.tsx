@@ -145,19 +145,19 @@ describe('/projects/[slug]', () => {
       const html = render(slug)
       const cls = html.match(/<a [^>]*class="([^"]*)"[^>]*>Open live site/)?.[1] ?? ''
       expect(cls).toContain('button-secondary')
-      expect(cls).not.toMatch(/bg-(?:trail|accent)/)
+      expect(cls).not.toMatch(/bg-trail/)
       // The header's Start a project and the page foot's.
       expect(html.match(/class="press button-primary/g)).toHaveLength(2)
     }
   })
 
   it('draws no amber flap: no plane, no fold', () => {
-    // (The LivePreview trigger inside the header loses its accent hover in Task 9.)
+    // (Accent utilities are held out of every source file by tests/design/s6-finish.test.ts.)
     for (const p of projects) {
       const html = render(p.slug)
       const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'))
       expect(header.length, p.slug).toBeGreaterThan(0)
-      expect(header, p.slug).not.toMatch(/on-plane|accent-plane|on-accent|crease-/)
+      expect(header, p.slug).not.toMatch(/on-plane|crease-/)
     }
   })
 
@@ -369,9 +369,8 @@ describe('the trail journal', () => {
   it('folds nothing and reads nothing in amber', () => {
     for (const p of projects) {
       const html = render(p.slug)
-      // (StatusBadge still carries edge-code until S6; the guard here is the page's own classes.
-      // A hover:text-accent on LivePreview's opener is amber as ink on interaction, not a reading colour.)
-      expect(html, p.slug).not.toMatch(/reveal-fold|crease-|(?<![:\w-])text-accent/)
+      // (Accent utilities are held out of every source file by tests/design/s6-finish.test.ts.)
+      expect(html, p.slug).not.toMatch(/reveal-fold|crease-/)
     }
   })
 

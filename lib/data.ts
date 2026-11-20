@@ -47,7 +47,6 @@ export const heroContent = {
   title: 'Mid-level full-stack developer',
   // The homepage's <title> (spec §6, titles table).
   pageTitle: 'Christian Raro · Full-Stack Developer in the Philippines',
-  location: 'Naga City',
   // The hero photo: the trailhead's plate, and the Person's image in the JSON-LD.
   portrait: '/assets/images/about/profile-hiking.jpg',
   // The hero photo, described for the portrait's labelled button.
