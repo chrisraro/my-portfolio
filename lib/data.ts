@@ -700,7 +700,7 @@ export const notFoundContent = {
 export const services: string[] = [
   'Full-stack web application development (Next.js, React, Node.js)',
   'WordPress website development and customisation',
-  'E-commerce with WooCommerce and Philippine payment gateways',
+  'E-commerce with WooCommerce, PayPal and Philippine payment gateways',
   'Custom internal tools and hardware integrations',
   'API integrations',
   'AI automation with n8n, LLM APIs and retrieval (RAG)',
@@ -792,7 +792,7 @@ export const servicePages: ServicePage[] = [
     slug: 'wordpress-woocommerce',
     title: 'WordPress & WooCommerce Developer · PayMongo, Maya, Xendit, PayPal',
     name: 'WordPress and WooCommerce',
-    summary: `WordPress sites for hotels, tours and review centres, with WooCommerce checkout through ${gatewaySentence}.`,
+    summary: `WordPress sites for hotels, tours and review centres, and WooCommerce checkout through ${gatewaySentence}.`,
     keyword: 'WordPress and WooCommerce developer',
     // Sites band sectors; paymentGateways; El Nido and BeachBus outcomes ("I still maintain").
     answer: `Christian Raro is a WordPress and WooCommerce developer in Naga City, Philippines. He builds sites for hotels, tour operators, review centres and restaurants, and WooCommerce booking and checkout with ${gatewaySentence}, the gateways Filipino buyers and international travellers pay with. He built and still maintains El Nido Guide PH and BeachBus Palawan.`,
@@ -805,7 +805,7 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
-        question: 'Which Philippine payment gateways have I integrated?',
+        question: 'Which payment gateways have I integrated?',
         answer: [
           // El Nido, BeachBus and ACAD1 decisions.
           `${gatewaySentence}, each through WooCommerce. PayPal serves international travellers, PayMongo and Maya serve Filipino buyers who pay by card or e-wallet, and Xendit went in where the client already had a merchant account.`,
@@ -829,7 +829,7 @@ export const servicePages: ServicePage[] = [
       },
     ],
     comparison: {
-      caption: 'The Philippine payment gateways I have integrated',
+      caption: 'The payment gateways I have integrated',
       columns: ['Gateway', 'Chosen for', 'Used on'],
       rows: paymentGateways.map((g) => ({ need: g, choice: gatewayUse[g], projectIds: idsUsing(g) })),
     },
@@ -856,7 +856,7 @@ export const servicePages: ServicePage[] = [
         question: 'Where do I put LLMs in a product?',
         answer: [
           // iskotify description; Giya case study (AI reads the receipt, then the fraud review); Chunks on Groq.
-          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt before a fraud review checks it. Chunks, this site’s assistant, answers questions about my work through Groq.',
+          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt, with a fraud review still being built to check it. Chunks, this site’s assistant, answers questions about my work through Groq.',
         ],
       },
       {
@@ -883,7 +883,7 @@ export const servicesPageContent: ServicesPageContent = {
   eyebrow: 'Services',
   heading: 'What I build',
   get answer(): string {
-    return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the projects that prove it, and each page ends in a contact form.`
+    return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with PayPal and Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the projects that prove it, and each page ends in a contact form.`
   },
   proof: { eyebrow: 'Proof', title: 'Projects that prove it' },
 }
@@ -945,7 +945,7 @@ export const hirePageContent: HirePageContent = {
         // skills: AI & automation; the fork's team body ("in daily use"); experience: n8n.
         { title: 'AI coding tools', body: 'Claude Code, Codex and Qwen Code are in daily use. At Online Creative Solutions I also run the team’s n8n automation stack.' },
         // every case study's role; El Nido and BeachBus outcomes.
-        { title: 'Brief to launch', body: `I was the sole developer on all ${numberWord(caseStudies.length)} case studies, from the brief to launch, and I still maintain El Nido Guide PH and BeachBus Palawan.` },
+        { title: 'Brief to launch', body: `I was the sole developer on all ${numberWord(caseStudies.length)} case studies, from the brief onward, and I still maintain El Nido Guide PH and BeachBus Palawan.` },
       ]
     },
     aiLead: 'In use:',
