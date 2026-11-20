@@ -30,3 +30,19 @@ export const elevationProfile = {
   d: 'M0 50 C90 48 150 40 230 42 S380 30 470 34 S640 18 730 24 S900 8 1000 12 S1110 4 1152 2',
   viewBox: '0 0 1152 56',
 }
+
+// The 404's empty map square (app/not-found.tsx): contours on a 400 x 400
+// field, clear of its centre, where "you are here" sits; and a faint route
+// from there to the edge. Decorative only.
+export const offTrail = {
+  contours: [
+    'M0 330 C80 310 140 262 200 262 S330 312 400 292',
+    'M0 300 C70 280 130 240 200 240 S320 280 400 262',
+    'M0 160 C50 140 110 82 200 82 S290 110 400 110',
+    'M0 120 C45 100 100 40 200 40 S280 62 400 66',
+    'M260 400 C270 350 330 330 400 340',
+    'M300 400 C305 370 350 360 400 366',
+  ],
+  route: 'M200 200 C176 250 120 292 40 372',
+  viewBox: '0 0 400 400',
+}

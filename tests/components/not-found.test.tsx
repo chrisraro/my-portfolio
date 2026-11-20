@@ -1,10 +1,14 @@
+import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import NotFound from '@/app/not-found'
+import { offTrail } from '@/lib/contours'
 import { notFoundContent } from '@/lib/data'
 
-describe('404 page', () => {
+// Spec §5: "Off the trail", an empty map square with a route home.
+describe('404: off the trail', () => {
   const html = renderToStaticMarkup(<NotFound />)
+  const plate = html.slice(html.indexOf('class="survey-plate'), html.indexOf('<h1'))
 
   it('sits on the one grid with an eyebrow and a single h1', () => {
     const outer = (html.match(/^<div class="([^"]*)"/)?.[1] ?? '').split(' ')
@@ -15,9 +19,24 @@ describe('404 page', () => {
     expect(html).toContain(notFoundContent.description)
   })
 
-  it('offers a way back to the projects and the homepage', () => {
-    expect(html).toContain('href="/projects"')
-    expect(html).toContain('href="/"')
+  it('draws an empty map square on a survey plate: contours, a route, no pins', () => {
+    expect(plate).toContain('aspect-square')
+    expect(plate).toMatch(/<svg aria-hidden="true"[^>]*class="[^"]*text-contour/)
+    expect(plate.match(/<path /g)?.length).toBe(offTrail.contours.length + 1)
+    expect(plate).toContain(`d="${offTrail.route}"`)
+    expect(plate).not.toContain('<a ')
+    expect(plate).toContain(`>${notFoundContent.here}</span>`)
+  })
+
+  it('routes home first: the primary goes to /, then every project', () => {
+    const home = html.match(/<a [^>]*href="\/"[^>]*>/)?.[0] ?? ''
+    expect(home).toContain('class="press button-primary"')
+    expect(html.indexOf('href="/"')).toBeLessThan(html.indexOf('href="/projects"'))
+  })
+
+  it('keeps trail red to the "you are here" dot', () => {
+    const src = readFileSync('app/not-found.tsx', 'utf8')
+    expect(src.match(/\b(?:bg|text|border|fill|stroke|ring|decoration)-trail\b/g)).toEqual(['bg-trail'])
   })
 
   it('keeps its copy free of em-dashes', () => {

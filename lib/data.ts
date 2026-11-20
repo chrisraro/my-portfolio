@@ -684,11 +684,13 @@ export const caseStudyContent = {
   },
 }
 
-// app/not-found.tsx: any unknown address, including an unknown /projects/<slug>.
+// app/not-found.tsx: any unknown address, including an unknown /projects/<slug>
+// or /services/<slug>. Spec §5: "Off the trail".
 export const notFoundContent = {
-  eyebrow: '404',
-  title: 'Nothing lives at this address',
-  description: 'The link may be old or mistyped. Every project I have shipped is on the projects page.',
+  eyebrow: '404 · Off the trail',
+  title: 'Off the trail',
+  description: 'Nothing lives at this address: the link may be old or mistyped. The way home starts here, and every project I have shipped is on the projects page.',
+  here: sectionContent.timeline.here,
 }
 
 // What Christian offers. The chat prompt, the ProfessionalService structured
