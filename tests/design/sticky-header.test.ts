@@ -30,7 +30,7 @@ describe('sticky header never hides focus or an anchor target', () => {
 // jump, the top bar renders them for real.
 describe('in-page jumps land on their target', () => {
   it('can switch deferred rendering off for the length of a jump', () => {
-    expect(css).toMatch(/\.render-all \.defer-render,\s*\.render-all \.defer-render-lift \{\s*content-visibility: visible;/)
+    expect(css).toMatch(/\.render-all \.defer-render \{\s*content-visibility: visible;/)
   })
 
   it('does so before a same-page hash link scrolls, on a hash load and after a route change', () => {

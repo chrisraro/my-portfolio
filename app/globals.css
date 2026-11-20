@@ -25,8 +25,6 @@
 	--stagger-line: 70ms;
 	--ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 	--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
-	/* A rack row's once-only entrance: each column starts this much later. */
-	--stagger-card: 60ms;
 	--bg: 0.9450 0.0150 125;
 	--panel: 0.9900 0.0040 120;
 	--ink: 0.2300 0.0200 130;
@@ -414,22 +412,10 @@
 	content-visibility: auto;
 	contain-intrinsic-size: auto 600px;
 }
-/* A rack tier: a hovered card's lift and shadow paint a little past the tier's
- * box, so the tier lets paint run 3rem out. Where overflow-clip-margin is
- * unsupported the tier simply renders as usual. */
-@supports (overflow-clip-margin: 1px) {
-	.defer-render-lift {
-		content-visibility: auto;
-		contain-intrinsic-size: auto 900px;
-		overflow-clip-margin: 3rem;
-	}
-}
-
 /* For the length of an in-page jump (components/site-legend.tsx) every deferred
  * section renders for real, so the jump is measured against real heights, not
  * the estimates; `auto` then remembers them. */
-.render-all .defer-render,
-.render-all .defer-render-lift {
+.render-all .defer-render {
 	content-visibility: visible;
 }
 
@@ -450,8 +436,8 @@
 .trailhead-line { display: block; white-space: nowrap; }
 
 /*
- * Catalog card hover (.lift-card): rack cards, a product's screenshot and the
- * case-study covers. On a fine pointer, with motion allowed, the card lifts
+ * Catalog hover (.lift-card): /projects plates, a product's screenshot and the
+ * journal covers. On a fine pointer, with motion allowed, the card lifts
  * 2px, its border turns accent and its screenshot (.lift-card__shot, inside a
  * clipping frame) scales to 1.02, fast/smooth. The shadow is a pseudo-element
  * faded in by opacity, so no box-shadow is ever animated. Keyboard focus gets
@@ -515,8 +501,7 @@
  * view, not as it crosses the bottom edge (the gate's critique found reveals
  * finished before anyone saw them), and distances use the larger tokens (lg
  * 24px, xl 40px). Rows stagger by starting later in the range (--i), since a
- * time delay means nothing on a scroll timeline. The stagger is the
- * exception: a scroll trigger plays it once, in time (.reveal-stagger).
+ * time delay means nothing on a scroll timeline.
  */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
@@ -528,37 +513,6 @@
 		@keyframes reveal-fold {
 			from { transform: rotateX(-22deg); }
 			to { transform: none; }
-		}
-		/*
-		 * The rack's grid: each card rises its last 16px once, as it enters the
-		 * viewport, its visible column --stagger-card after the one before
-		 * (three columns from 640px, four from 1024px). A scroll trigger
-		 * starts a time-based animation (it is not scrubbed, and play-forwards
-		 * never reverses). The trigger fires only while a card is entering,
-		 * and nothing is filled before it fires, so a card already in view at
-		 * load, or after a filter change, never moves. From 640px only: below
-		 * it the cards sit in a sideways strip, a scroller of their own, whose
-		 * view() would never fire. Without trigger support the cards simply
-		 * sit at rest.
-		 */
-		@keyframes reveal-stagger {
-			from { transform: translateY(16px); }
-			to { transform: none; }
-		}
-		@supports (timeline-trigger: --card view()) {
-			@media (min-width: 640px) {
-				.reveal-stagger {
-					timeline-trigger: --card view() entry 0% entry 100%;
-					animation: reveal-stagger var(--dur-normal) var(--ease-smooth);
-					/* A delayed column holds its start rather than jumping to it. */
-					animation-fill-mode: backwards;
-					animation-delay: calc(var(--c3, 0) * var(--stagger-card));
-					animation-trigger: --card play-forwards;
-				}
-				@media (min-width: 1024px) {
-					.reveal-stagger { animation-delay: calc(var(--c4, 0) * var(--stagger-card)); }
-				}
-			}
 		}
 		.reveal-cover {
 			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
@@ -683,7 +637,7 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	:is(.reveal-stagger, .reveal-cover, .reveal-fold) {
+	:is(.reveal-cover, .reveal-fold) {
 		animation: none !important;
 		opacity: 1;
 		transform: none;

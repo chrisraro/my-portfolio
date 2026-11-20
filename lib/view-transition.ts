@@ -6,16 +6,6 @@ export function shotTransitionName(slug: string): string {
   return `shot-${slug}`
 }
 
-/** A /projects card's name while a filter change re-lays the rack out. */
-export function cardTransitionName(slug: string): string {
-  return `card-${slug}`
-}
-
-/** A /projects tier heading's name while a filter change re-lays the rack out. */
-export function tierTransitionName(heading: string): string {
-  return `tier-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
-}
-
 /** A /projects plate's name while a filter change re-lays the list out. */
 export function plateTransitionName(slug: string): string {
   return `plate-${slug}`

@@ -13,8 +13,8 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 // agree, and a filtered /projects says which band it shows.
 
 const CODE = /(\d+ \/ \d+ · [^<]+)</
-// A plate on /projects. Until Task 6 a case study's next stop is still a rack card.
-const PLATE = /<li (?:id="plate-|class="rack-slot)/
+// A plate, on /projects and as a case study's next stop.
+const PLATE = /<li id="plate-/
 
 /** slug -> catalog number, for every chunk of markup (a plate or a product) that links one project and prints a number. */
 function codes(html: string, splitter: RegExp): Map<string, string> {

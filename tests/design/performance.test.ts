@@ -68,8 +68,6 @@ describe('first layout', () => {
     // On the frame, not the link: containment would clip the hover shadow.
     expect(css).toMatch(/\.project-shot__frame \{[^}]*content-visibility:\s*auto/)
     expect(css).toMatch(/\.defer-render \{[^}]*content-visibility:\s*auto;[^}]*contain-intrinsic-size:\s*auto/)
-    // A hovered rack card's shadow paints past its tier: the tier defers only where it can let paint out.
-    expect(css).toMatch(/@supports \(overflow-clip-margin: 1px\) \{\s*\.defer-render-lift \{[^}]*overflow-clip-margin/)
   })
 
   it('never defers the first viewport, the field map (#work), the journals or the contact form', () => {

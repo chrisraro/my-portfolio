@@ -21,8 +21,8 @@ interface ProjectShotProps {
   /** next/image sizes hint. */
   sizes?: string
   /**
-   * Inside a card that is already the link (the rack): render a silent frame,
-   * with no link, focus stop, name or hover of its own. The card's hover
+   * Inside a plate that is already the link (a /projects plate): render a silent frame,
+   * with no link, focus stop, name or hover of its own. The plate's hover
    * (.lift-card) scales the shot inside it.
    */
   decorative?: boolean
@@ -41,7 +41,7 @@ interface ProjectShotProps {
 
 /**
  * A still screenshot in the 3:4 frame every screenshot shares (one scale, spec §3): the top of a project's full-page
- * shot. Nothing scrolls. As a link it takes the catalog's card hover
+ * shot. Nothing scrolls. As a link it takes the catalog hover
  * (.lift-card in app/globals.css): on a fine pointer it lifts 2px, its border
  * turns accent and the shot scales to 1.02 inside the clipping frame.
  */
