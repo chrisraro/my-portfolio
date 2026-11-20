@@ -222,3 +222,97 @@ export interface CaseStudy {
   /** Other project slugs told as part of this story, e.g. the BeachBus NFC system. */
   related?: string[]
 }
+
+/** An eyebrow and an h2: the heading stack every section shares. */
+export interface SectionCopy {
+  eyebrow: string
+  title: string
+}
+
+/** A question-style section on a service page (spec §6, citability). */
+export interface ServiceSection {
+  question: string
+  /** Short paragraphs, first person. */
+  answer: string[]
+}
+
+/** One row of a service page's comparison table. */
+export interface ServiceComparisonRow {
+  /** The row's header cell: what the job needs, or a gateway's name. */
+  need: string
+  choice: string
+  /** The projects that show it, as `Project.id`s; the page prints their titles. */
+  projectIds: string[]
+}
+
+export interface ServiceComparison {
+  caption: string
+  columns: [string, string, string]
+  rows: ServiceComparisonRow[]
+}
+
+export type ServiceSlug = 'full-stack-development' | 'wordpress-woocommerce' | 'ai-automation'
+
+/** A page under /services (spec §5), its copy drawn only from the data. */
+export interface ServicePage {
+  slug: ServiceSlug
+  /** The page's <title>, from the spec's titles table. */
+  title: string
+  /** The h1, and the service's name on /services. */
+  name: string
+  /** One line for the /services list. */
+  summary: string
+  /** The search phrase the page answers (tests/content/new-pages.test.ts). */
+  keyword: string
+  /** The 40-60 word answer that opens the page, third person. */
+  answer: string
+  sections: ServiceSection[]
+  comparison?: ServiceComparison
+  /** The projects that prove the service, as `Project.id`s, strongest first. */
+  projectIds: string[]
+}
+
+export interface ServicesPageContent {
+  /** The page's <title>. */
+  title: string
+  eyebrow: string
+  /** The h1. */
+  heading: string
+  readonly answer: string
+  /** The heading over each service page's proving projects. */
+  proof: SectionCopy
+}
+
+export interface AboutPageContent {
+  title: string
+  eyebrow: string
+  heading: string
+  keyword: string
+  readonly answer: string
+  story: SectionCopy & { readonly paragraphs: string[] }
+  timeline: SectionCopy
+  testimonials: SectionCopy
+}
+
+export interface HireNote {
+  title: string
+  body: string
+}
+
+export interface HireLink {
+  label: string
+  href?: string
+}
+
+export interface HirePageContent {
+  title: string
+  eyebrow: string
+  heading: string
+  keyword: string
+  readonly answer: string
+  facts: { title: string; labels: { availability: string; base: string; code: string } }
+  /** Core: skill ids that run in projects on this site; the rest of `skills` follows by category. */
+  stack: SectionCopy & { coreLabel: string; coreNote: string; coreIds: string[]; moreLabel: string }
+  howIWork: SectionCopy & { readonly notes: HireNote[]; aiLead: string; aiInUse: HireLink[] }
+  history: SectionCopy
+}

@@ -7,7 +7,6 @@ import {
   projects,
   resumeUrl,
   sectionContent,
-  skills,
 } from '@/lib/data'
 import { displayStatus } from '@/lib/display-status'
 import { buildSiteMetadata } from '@/lib/site-metadata'
@@ -56,11 +55,6 @@ describe('positioning', () => {
     ])
     expect(heroContent.specialism).toBe(`${liveSites.length} live sites · hotels, tours, restaurants, review centres`)
     expect(heroContent.specialism).toBe('11 live sites · hotels, tours, restaurants, review centres')
-  })
-
-  it('only names stack chips that exist in the skills list', () => {
-    const ids = skills.map((s) => s.id)
-    for (const id of heroContent.stack) expect(ids).toContain(id)
   })
 
   it('states availability and gives it to the assistant', () => {

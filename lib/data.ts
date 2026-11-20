@@ -1,4 +1,6 @@
 import { Project, ProjectPlace, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
+import type { AboutPageContent, HirePageContent, ServicePage, ServicesPageContent } from '@/types'
+import { caseStudies } from '@/lib/case-studies'
 import { numberWord } from '@/lib/proof'
 
 // The four gateways actually integrated across the WooCommerce projects. The
@@ -47,18 +49,6 @@ export const heroContent = {
   },
   title: 'Mid-level full-stack developer',
   location: 'Naga City',
-  // Plain text under the title; the tools match the AI & automation skills.
-  aiLine: 'AI-enabled engineer and automations: Claude Code, Codex, Qwen Code, n8n',
-  // Proof for the AI line, from facts the site already holds: the chat
-  // assistant (components/ui/chat-widget.tsx) runs on Groq (app/api/chat), and
-  // the Connecta PH case study says it was built with AI coding help.
-  aiProof: {
-    lead: 'In use:',
-    items: [
-      { label: "Chunks, this site's assistant (Groq)" },
-      { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
-    ] as { label: string; href?: string }[],
-  },
   // The hero photo, described for the portrait's labelled button.
   portraitAlt: 'Portrait of Christian Raro hiking',
   lede: 'I build websites for hotels, tour operators and restaurants, with online booking and payments where they need them, plus products of my own.',
@@ -73,8 +63,6 @@ export const heroContent = {
       .map((sector) => sectorLabels[sector])
     return `${sites.length} live sites · ${sectors.join(', ')}`
   },
-  // Skill ids for the hero chips; tests/content/positioning.test.ts checks each exists.
-  stack: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
   proofPoints: [
     'Four products of my own',
     'Nineteen projects shipped',
@@ -507,9 +495,11 @@ export const ctaLabels = {
   readMore: 'Read more',
   backHome: 'Back to the homepage',
   downloadResume: 'Download résumé',
+  viewServices: 'See the services',
+  allServices: 'All services',
 } as const
 
-// Headings and copy for each homepage section. `galleryContent` waits for /about (S4).
+// Headings and copy for each homepage section. `galleryContent` heads the photos on /about.
 export const sectionContent = {
   ownProducts: { eyebrow: 'Own products', title: 'Products of my own' },
   fieldMap: {
@@ -712,3 +702,255 @@ export const services: string[] = [
   'AI automation with n8n, LLM APIs and retrieval (RAG)',
   'Mobile apps with React Native and Expo',
 ]
+
+// --- S4 pages: /services, /about, /hire ---------------------------------------
+// DRAFT COPY FOR CHRISTIAN'S REVIEW (S4 plan, Task 1). Every fact traces to
+// this file, lib/case-studies.ts or the spec. The opening answers are third
+// person and 40-60 words (spec §6, citability); the rest is first person.
+// tests/content/new-pages.test.ts holds the counts, the keywords and every
+// proving project to its own data.
+
+/** When the copy on /services, /about and /hire was last checked; each page shows it. */
+export const pagesUpdated = '2026-11-20'
+
+const ownProductTitles = () => projects.filter((p) => p.band === 'Products').map((p) => p.title)
+const listSentence = (items: string[]) => `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
+const idsUsing = (technology: string) => projects.filter((p) => p.technologies.indexOf(technology) !== -1).map((p) => p.id)
+
+// Who each gateway was chosen for, from the case studies' decisions (El Nido
+// Guide PH and BeachBus Palawan for PayPal, PayMongo and Maya; ACAD1 for Xendit).
+const gatewayUse: Record<string, string> = {
+  PayPal: 'International travellers and tourists',
+  PayMongo: 'Filipino riders paying by card or e-wallet',
+  Maya: 'Filipino travellers paying by card or e-wallet',
+  Xendit: 'The client’s existing merchant account',
+}
+
+export const servicePages: ServicePage[] = [
+  {
+    slug: 'full-stack-development',
+    title: 'Full-Stack Web Developer (Next.js, React) · Philippines, remote',
+    name: 'Full-stack development',
+    summary: 'Web apps in Next.js, React, TypeScript and Supabase, from the first screen to the database.',
+    keyword: 'full-stack developer Philippines',
+    // Aman Group Web App (loan calculator), Giya (receipt rewards), Connecta PH (NFC cards, no app).
+    answer:
+      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has shipped a real estate showcase with a loan calculator, a receipt-scanning rewards app and NFC business cards with no app to install, and is open to client projects and full-time remote roles.',
+    sections: [
+      {
+        question: 'What do I build with Next.js and React?',
+        answer: [
+          // Project descriptions: aman-webapp, naga-perks-giya-app, lunad.
+          'Web apps with screens a template cannot give. The Aman Group Web App compares Pag-IBIG, bank and in-house financing in a loan calculator. Giya turns scanned receipts into points at partner businesses. Lunad plans jeepney trips around Naga City, and is in pre-launch while reviewers check its route data.',
+          // connecta-ph description.
+          'Connecta PH opens a professional profile from an NFC or QR card on any phone, with no app to install, and sends every enquiry back to the card owner.',
+        ],
+      },
+      {
+        question: 'Which backend do I choose?',
+        answer: [
+          // Giya and Connecta PH decisions (Supabase); Aman decision (Upstash Redis, Vercel KV).
+          'Supabase when an app needs Postgres, sign-in and file storage in one service, as Giya and Connecta PH do; its row-level security keeps Giya’s customer, business and admin data apart. Upstash Redis through Vercel KV when an app only stores small key-value data, as the Aman Group Web App does.',
+          // lunad technologies.
+          'Lunad runs on Neon Postgres with PostGIS.',
+        ],
+      },
+      {
+        question: 'How do I ship it?',
+        answer: [
+          // lunad technologies (Playwright); this repo's CI (.github/workflows/ci.yml).
+          'In TypeScript, with tests and a pipeline. Lunad is tested with Playwright, and this portfolio runs type checks, lint, its tests and a production build on every push and pull request to main.',
+        ],
+      },
+      {
+        question: 'Do I build mobile apps too?',
+        answer: [
+          // skimcare description.
+          'Yes. SkimCare, my team’s entry to the AppBuildersPH Hackathon 2026, built with Glenn Viola, is an Android and web app in React Native and Expo. It reads an agreement on the device and explains its key terms in plain English or Filipino.',
+        ],
+      },
+    ],
+    // The case studies' decisions: El Nido (WordPress over a custom app), Aman
+    // (Next.js over WordPress; Upstash over Supabase), Giya and Connecta PH (Supabase).
+    comparison: {
+      caption: 'WordPress or a custom app: what I reach for',
+      columns: ['When the job needs', 'I reach for', 'As on'],
+      rows: [
+        { need: 'Owners and staff editing pages, listings and bookings without a developer', choice: 'WordPress and WooCommerce', projectIds: ['elnido'] },
+        { need: 'Custom interactive screens, such as a loan calculator', choice: 'A Next.js app', projectIds: ['aman-webapp'] },
+        { need: 'Sign-in, a database and file storage, shipped fast by one developer', choice: 'Next.js with Supabase', projectIds: ['naga-perks-giya-app', 'connecta-ph'] },
+        { need: 'Small key-value data such as listings, settings and leads', choice: 'Upstash Redis through Vercel KV', projectIds: ['aman-webapp'] },
+      ],
+    },
+    projectIds: ['aman-webapp', 'naga-perks-giya-app', 'connecta-ph', 'lunad', 'skimcare'],
+  },
+  {
+    slug: 'wordpress-woocommerce',
+    title: 'WordPress & WooCommerce Developer · PayMongo, Maya, Xendit, PayPal',
+    name: 'WordPress and WooCommerce',
+    summary: `WordPress sites for hotels, tours and review centres, with WooCommerce checkout through ${gatewaySentence}.`,
+    keyword: 'WordPress and WooCommerce developer',
+    // Sites band sectors; paymentGateways; El Nido and BeachBus outcomes ("I still maintain").
+    answer: `Christian Raro is a WordPress and WooCommerce developer in Naga City, Philippines. He builds sites for hotels, tour operators, review centres and restaurants, and WooCommerce booking and checkout with ${gatewaySentence}, the gateways Filipino buyers and international travellers pay with. He built and still maintains El Nido Guide PH and BeachBus Palawan.`,
+    sections: [
+      {
+        question: 'What kinds of WordPress sites do I build?',
+        answer: [
+          // Sites band entries and their technologies.
+          'Sites for hotels, tour operators, review centres, restaurants and directories, among them Azalea Baguio, Azalea Boracay, Graceland Bicolano Dining, Review Masters Bicol and Naga City Guide. Most run on GeneratePress and GenerateBlocks; Naga City Guide runs on a custom theme and plug-in.',
+        ],
+      },
+      {
+        question: 'Which Philippine payment gateways have I integrated?',
+        answer: [
+          // El Nido, BeachBus and ACAD1 decisions.
+          `${gatewaySentence}, each through WooCommerce. PayPal serves international travellers, PayMongo and Maya serve Filipino buyers who pay by card or e-wallet, and Xendit went in where the client already had a merchant account.`,
+        ],
+      },
+      {
+        question: 'Can a WooCommerce site take bookings and deposits?',
+        answer: [
+          // El Nido and ACAD1 case studies.
+          'Yes. El Nido Guide PH is a booking marketplace on WooCommerce and Dokan where each tour operator runs its own store and every booking pays the operator directly. ACAD1 Review Center reserves a slot with a 50% downpayment through Xendit, and the student settles the balance before the first session.',
+          // BeachBus case study (online pass sales are paused, so nothing here says they sell online).
+          'BeachBus Palawan’s storefront lists 1, 3 and 5 day passes and monthly passes, and local Partner Hubs sell or redeem them for a commission.',
+        ],
+      },
+      {
+        question: 'Who runs the site after launch?',
+        answer: [
+          // El Nido decision; El Nido and BeachBus outcomes.
+          'The client does: WordPress and WooCommerce let owners, staff and operators edit pages, listings and prices without a developer. I still maintain El Nido Guide PH and BeachBus Palawan.',
+        ],
+      },
+    ],
+    comparison: {
+      caption: 'The Philippine payment gateways I have integrated',
+      columns: ['Gateway', 'Chosen for', 'Used on'],
+      rows: paymentGateways.map((g) => ({ need: g, choice: gatewayUse[g], projectIds: idsUsing(g) })),
+    },
+    projectIds: ['elnido', 'beachbus', 'acad1', 'upcat-review-plus', 'azalea-baguio', 'azalea-boracay', 'graceland', 'naga-city-guide'],
+  },
+  {
+    slug: 'ai-automation',
+    title: 'AI Automation Engineer · n8n, LLM workflows, MCP',
+    name: 'AI automation',
+    summary: 'n8n workflows, LLM features inside products, and tooling over MCP.',
+    keyword: 'AI automation engineer',
+    // experience: ocs-webdev (title, n8n stack, the control panel over MCP).
+    answer:
+      'Christian Raro is an AI automation engineer in Naga City, Philippines, working as Web Developer and AI Automation Specialist at Online Creative Solutions. He set up and runs the team’s self-hosted n8n stack for Google Workspace and LLM workflows, built a dashboard that manages client WordPress sites over MCP, and ships AI features in his own products.',
+    sections: [
+      {
+        question: 'What do I automate?',
+        answer: [
+          // experience: ocs-webdev responsibilities.
+          'At Online Creative Solutions I set up and run the team’s self-hosted n8n automation stack for Google Workspace and LLM workflows. I also built the OCS WP Control Panel, a Next.js and Supabase dashboard that manages client WordPress sites over MCP.',
+        ],
+      },
+      {
+        question: 'Where do I put LLMs in a product?',
+        answer: [
+          // iskotify description; Giya case study (AI reads the receipt, then the fraud review); Chunks on Groq.
+          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt before a fraud review checks it. Chunks, this site’s assistant, answers questions about my work through Groq.',
+        ],
+      },
+      {
+        question: 'Can AI run without the cloud?',
+        answer: [
+          // skimcare description.
+          'Yes. SkimCare runs text recognition and a small language model on the phone, so the agreement a person is about to sign is never uploaded.',
+        ],
+      },
+      {
+        question: 'Which AI tools do I build with?',
+        answer: [
+          // skills: AI & automation.
+          'Claude Code, Codex and Qwen Code for writing code, n8n for workflows, and Groq and other LLM APIs inside products.',
+        ],
+      },
+    ],
+    projectIds: ['ocs-wp-control', 'iskotify', 'naga-perks-giya-app', 'skimcare'],
+  },
+]
+
+export const servicesPageContent: ServicesPageContent = {
+  title: 'Services · Christian Raro',
+  eyebrow: 'Services',
+  heading: 'What I build',
+  get answer(): string {
+    return `Christian Raro is a full-stack developer in Naga City, Philippines, offering ${numberWord(servicePages.length)} services: full-stack web apps in Next.js and React, WordPress and WooCommerce sites with Philippine payment gateways, and AI automation with n8n, LLM APIs and MCP. Each service lists the shipped projects that prove it, and each page ends in a contact form.`
+  },
+  proof: { eyebrow: 'Proof', title: 'Projects that prove it' },
+}
+
+export const aboutPageContent: AboutPageContent = {
+  title: 'About Christian Raro · Web Developer in Naga City, Bicol',
+  eyebrow: 'About',
+  heading: 'Based in Naga City',
+  keyword: 'web developer Naga City Bicol',
+  // education, experience (ocs-webdev start), the hero subheadline's claims.
+  get answer(): string {
+    return `Christian Raro is a web developer in Naga City, Camarines Sur, in the Bicol region of the Philippines. He studied computer science at Bicol University, has worked at Online Creative Solutions since November 2024, and builds booking and payment sites for travel businesses, AI automation for teams and ${numberWord(ownProductTitles().length)} products of his own.`
+  },
+  story: {
+    eyebrow: 'Story',
+    title: 'Built in Bicol',
+    get paragraphs(): string[] {
+      return [
+        // education; experience: ocs-webdev.
+        'I studied computer science at Bicol University Polangui Campus from 2020 to 2024. That November I joined Online Creative Solutions in Naga City as a web developer, and I still build and maintain WordPress and WooCommerce sites for its clients and run the team’s n8n automation there.',
+        // experience: enjoy-it; Aman case study outcome.
+        'From March to August 2025 I also worked full-time as IT staff and web developer at Enjoy Realty and Development Corporation. There I built the Aman Group Web App and presented it at the company’s brokers’ meeting.',
+        // places on the field map; the Products band; Connecta PH description.
+        `Much of the client work runs far from Naga: tour bookings in El Nido, a beach shuttle in El Nido, hotels in Baguio and Boracay. Closer to home I build products of my own: ${listSentence(ownProductTitles())}. Connecta PH launches in Naga first.`,
+      ]
+    },
+  },
+  timeline: { eyebrow: 'Route', title: sectionContent.timeline.title },
+  testimonials: { eyebrow: 'From the field', title: 'What clients and colleagues say' },
+}
+
+export const hirePageContent: HirePageContent = {
+  title: 'Hire a Mid-Level Full-Stack Developer · Remote, Philippines',
+  eyebrow: 'Hire',
+  heading: ctaLabels.hireForRole,
+  keyword: 'mid-level full-stack developer remote',
+  // heroContent.title, the fork's team body, the elevation strip's counts.
+  get answer(): string {
+    const shipped = projects.filter((p) => p.status !== 'staging').length
+    return `Christian Raro is a mid-level full-stack developer in Naga City, Philippines, open to full-time remote roles. He works in Next.js, TypeScript, Supabase and WordPress, with tests, CI and AI coding tools in daily use, and has shipped ${numberWord(shipped)} projects, ${numberWord(ownProductTitles().length)} of them his own products, with ${numberWord(caseStudies.length)} written up as case studies.`
+  },
+  facts: { title: 'At a glance', labels: { availability: 'Availability', base: 'Base', code: 'Code' } },
+  stack: {
+    eyebrow: 'Stack',
+    title: 'Stack, by depth',
+    coreLabel: 'Core',
+    coreNote: 'Each one runs in projects on this site.',
+    // Moved from heroContent.stack (S4).
+    coreIds: ['nextjs', 'typescript', 'supabase', 'wordpress', 'woocommerce'],
+    moreLabel: 'Also in use',
+  },
+  howIWork: {
+    eyebrow: 'Practice',
+    title: 'How I work',
+    get notes() {
+      return [
+        // this repo's CI; lunad technologies.
+        { title: 'Tests and CI', body: 'This portfolio runs type checks, lint, its tests and a production build on every push and pull request to main. Lunad is tested with Playwright.' },
+        // skills: AI & automation; the fork's team body ("in daily use"); experience: n8n.
+        { title: 'AI coding tools', body: 'Claude Code, Codex and Qwen Code are in daily use. At Online Creative Solutions I also run the team’s n8n automation stack.' },
+        // every case study's role; El Nido and BeachBus outcomes.
+        { title: 'Brief to launch', body: `I was the sole developer on all ${numberWord(caseStudies.length)} case studies, from the brief to launch, and I still maintain El Nido Guide PH and BeachBus Palawan.` },
+      ]
+    },
+    aiLead: 'In use:',
+    // Moved from heroContent.aiProof (S4): Chunks runs on Groq (app/api/chat);
+    // the Connecta PH case study says it was built with AI coding help.
+    aiInUse: [
+      { label: 'Chunks, this site’s assistant (Groq)' },
+      { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
+    ],
+  },
+  history: { eyebrow: 'Route', title: 'Work history' },
+}
