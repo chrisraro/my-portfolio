@@ -27,7 +27,7 @@ describe('homepage direction contract', () => {
   })
 
   it('closes on the FINISH line, verbatim', () => {
-    expect(contract.trimEnd().split('\n').filter((l) => l.startsWith('FINISH:'))).toEqual([FINISH])
+    expect(contract.trimEnd().split(/\r?\n/).filter((l) => l.startsWith('FINISH:'))).toEqual([FINISH])
   })
 
   it('no longer carries the Lobby Rack contract', () => {
