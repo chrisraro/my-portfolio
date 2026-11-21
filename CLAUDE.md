@@ -41,7 +41,7 @@ routes and tooling). `tests/design/` asserts design invariants:
 - `view-transitions` (click planning, transition names `shot-`/`plate-`/`band-`, the map pan, the island: feature detection, reduced motion, capture-phase interception, commit timeout, fallback, cleanup; the root cross-fade and the zeroed reduced-motion block)
 - `motion-tokens` (TS tokens mirrored as CSS vars; reveals and the trailhead sequence behind their gates and off under reduce; trailhead under 2 s), `motion-visibility` (reveal ranges), `trail-motion` (the trail draws once on load; each trail segment draws on a named view timeline on its `<svg>`; the elevation marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll), `font-budget` (after a build: one preloaded Archivo file, at most 95 KB)
 - `no-framer-motion`, `no-inline-motion` (no numeric `duration`/`ease`/`delay` literals in `.tsx`)
-- `s6-finish` (no `accent` token, key or utility; no 4.0 catalog-code class, bare reveal class or 4.0 width setting; no word of the retired worlds in the source; browser surfaces in the trail palette; the launcher clear of the footer; `SHOT_ASPECT`; no eyebrow on a section heading; these docs), `s6-motion` (the line-by-line rise, the contour shift, plates that appear once), `meta-descriptions` (every route 50-160 characters through `metaDescription`; the long answers stay for the AI files), `cn-type-utilities` (`cn` keeps a type utility beside a text colour)
+- `s6-finish` (no `accent` token, key or utility; no 4.0 catalog-code class, bare reveal class or 4.0 width setting; no word of the retired worlds in the source; browser surfaces in the trail palette; the launcher clear of the footer; `SHOT_ASPECT`; no eyebrow on a section heading; these docs), `s6-motion` (the line-by-line rise, the contour shift, no plate rise), `meta-descriptions` (every route 50-160 characters through `metaDescription`; the long answers stay for the AI files), `cn-type-utilities` (`cn` keeps a type utility beside a text colour)
 - `performance` (image priority only on first-viewport images, shots at quality 50, `LazyMotion` + `m.*` with a lazy feature chunk, no `useAnimate`, the size-adjusted Arial body fallback, the portrait at quality 70, `content-visibility` deferral, transform-only reveals)
 
 `tests/components/` renders components with `react-dom/server` and checks their
@@ -278,9 +278,9 @@ homepage and `/projects` on the server; do not raise it.
 ## Animation
 
 Three verbs only (spec §4): *draw* (trails, contours and routes stroke in),
-*rise* (lines and plates lift into place, once), *pan* (the map and the page
+*rise* (the headline's lines lift into place, once), *pan* (the map and the page
 glide to a waypoint). Screenshots are stills: nothing about a screenshot is
-scrubbed by scroll; a plate rises once as it enters. The choreography is in
+scrubbed by scroll, and a plate does not rise on entry. The choreography is in
 `DESIGN.md` (Motion) and the direction contract.
 
 - **Tokens:** durations, easings, distances and springs live in
@@ -288,7 +288,7 @@ scrubbed by scroll; a plate rises once as it enters. The choreography is in
   `--ease-smooth|sharp` in `globals.css`; `tests/design/motion-tokens.test.ts`
   keeps the two in step. Never write a numeric `duration`, `ease` or `delay` in a
   `.tsx` file (`tests/design/no-inline-motion.test.ts`); a literal 0 is allowed.
-- **CSS first.** Trailhead sequence, the trail draws, scroll reveals, the contour shift, the plate rise, the card hover and
+- **CSS first.** Trailhead sequence, the trail draws, scroll reveals, the contour shift, the card hover and
   the hover grammar are all CSS in `globals.css`. Animate transform and opacity
   only; a shadow is a pseudo-element whose opacity fades.
 - **Scroll-driven reveals** (`.reveal-cover`, the journal rows)
@@ -307,13 +307,11 @@ scrubbed by scroll; a plate rises once as it enters. The choreography is in
   the half the pointer rests on (`.trailhead:has(.trailhead-copy:hover)` /
   `:has(.trailhead-plate:hover)`), on `--dur-crawl`. CSS only; nothing on touch;
   the trail does not move (`tests/design/s6-motion.test.ts`).
-- **Plates appear once (`.plate-rise`):** every `/projects` plate, own-product
-  plate and case-study shot rises its last 16px once on a scroll trigger
-  (`timeline-trigger` + `animation-trigger: play-forwards`) inside
-  `@supports (timeline-trigger: --plate view())` and no-preference; no fill,
-  so a plate waiting for its trigger sits at rest (the finished state), and a
-  plate already in view, at load or after a filter change, never moves and is
-  never held offset; without support, plates sit at rest (`s6-motion`).
+- **Plates are stills.** No plate or screenshot rises or follows scroll. An
+  appear-once rise was tried in S6 and removed: a trigger-held animation sits
+  paused at its first keyframe, so plates rested offset, and the production
+  minifier collapses the trigger's range to zero length. `s6-motion` keeps the
+  trigger properties and that class out of the source.
 - **Trail:** `TrailPath mode="load"` draws once on load; `mode="view"` (the
   `TrailSegment`s between sections) draws on its own named view timeline.
   The elevation "you are here" marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll (`plate-motion`, `trail-motion`).
@@ -344,7 +342,7 @@ scrubbed by scroll; a plate rises once as it enters. The choreography is in
   chat typing dots (`.typing-dot`) and the "Sending" spinner run only while a
   request is pending. No count-ups, scroll parallax or continuous animation.
 - **Reduced motion:** the gates switch off every reveal and the trailhead
-  sequence; the contour shift, the plate rise and the pins' glide are off; and the `reduce` block resets them explicitly; hover transforms go
+  sequence; the contour shift and the pins' glide are off; and the `reduce` block resets them explicitly; hover transforms go
   (colour, the ink border and underlines still change, instantly); the
   island navigates without a transition and any view-transition animation is
   zeroed; the pulse is removed; every animation and transition

@@ -208,12 +208,6 @@ describe('the leftovers (14b)', () => {
     expect(layout).toMatch(/size-adjusted/)
   })
 
-  it('describes the plate rise as unfilled: an un-fired plate rests, never held offset', () => {
-    expect(css).not.toMatch(/held at its start until the trigger fires/)
-    expect(css).toMatch(/There is no\s+\* fill: before its trigger fires a plate sits at rest/)
-    expect(css).toMatch(/never held offset/)
-  })
-
   it('keeps break-words on a case-study figure and no doubled parentheses in the shot doc', () => {
     expect(readFileSync('components/case-study/case-study-body.tsx', 'utf8')).toMatch(/text-title tabular break-words text-ink/)
     expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).not.toMatch(/\)\s*\(/)
@@ -223,7 +217,7 @@ describe('the leftovers (14b)', () => {
 describe('the docs describe the trail map that shipped', () => {
   it('DESIGN.md is the Isarog Trail Map, written from the code', () => {
     const doc = readFileSync('DESIGN.md', 'utf8')
-    for (const name of ['Isarog Trail Map', '--trail', '--contour', 'survey-plate', 'legend-glass', 'Archivo', 'font-stretch', 'plate-rise', 'map-pin__mark', 'trailhead-contours', 'SHOT_ASPECT', 'app/og/']) {
+    for (const name of ['Isarog Trail Map', '--trail', '--contour', 'survey-plate', 'legend-glass', 'Archivo', 'font-stretch', 'map-pin__mark', 'trailhead-contours', 'SHOT_ASPECT', 'app/og/']) {
       expect(doc, name).toContain(name)
     }
     expect(doc).not.toMatch(/Lobby Rack|--accent|accent-plane|on-accent|edge-code|opengraph-image|on-plane|postcard|lagoon|amber/i)
@@ -243,7 +237,7 @@ describe('the docs describe the trail map that shipped', () => {
   it('CLAUDE.md drops the amber and the 4.0 utilities and names the S6 pieces', () => {
     const doc = readFileSync('CLAUDE.md', 'utf8')
     expect(doc).not.toMatch(/accent-plane|on-accent|Two ambers|edge-code|removed in S6|Lobby Rack|\.reveal(?![\w-])|lagoon|plain Arial|adjustFontFallback: false/)
-    for (const name of ['plate-rise', 'map-pin__mark', 'trailhead-contours', 's6-finish', 's6-motion', 'metaDescription', 'SHOT_ASPECT', 'MapKey', 'adjustFontFallback: true']) {
+    for (const name of ['map-pin__mark', 'trailhead-contours', 's6-finish', 's6-motion', 'metaDescription', 'SHOT_ASPECT', 'MapKey', 'adjustFontFallback: true']) {
       expect(doc, name).toContain(name)
     }
   })

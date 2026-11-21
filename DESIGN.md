@@ -212,7 +212,7 @@ red. The palette is near-monochrome on purpose; colour is spent on where you
 are and what to do next.
 
 Motion has three verbs only: **draw** (trails, contours and routes stroke
-in), **rise** (lines and plates lift into place, once), **pan** (the map and
+in), **rise** (the headline's lines lift into place, once), **pan** (the map and
 the page glide to a waypoint). Everything is CSS first and progressive: outside
 its gates the trail is fully drawn, nothing is offset, and the server HTML is
 the finished page.
@@ -321,7 +321,7 @@ A floating map-legend card (`SiteLegend`, `.legend-glass`), sticky 12px from the
 The frame every photo, screenshot and map sits in. The only place the class is written. The portrait sits on one at the trailhead (4:5 inside), the field map on one as a figure, the plan-the-route form on one.
 
 ### Project plates (`ProjectPlate`)
-A waypoint in the `/projects` list and a case study's next stop: one plate, one link. The still (`ProjectShot`, the top of the full-page shot, quality 50, `SHOT_ASPECT`) or the printed no-preview reason (`NoPreviewTag`) in the same frame; then the catalog number, the name, `StatusBadge`, the summary and the domain. Hover lifts it (`.lift-card`). It rises once on entry (`.plate-rise`).
+A waypoint in the `/projects` list and a case study's next stop: one plate, one link. The still (`ProjectShot`, the top of the full-page shot, quality 50, `SHOT_ASPECT`) or the printed no-preview reason (`NoPreviewTag`) in the same frame; then the catalog number, the name, `StatusBadge`, the summary and the domain. Hover lifts it (`.lift-card`). It is a still and does not move on entry.
 
 ### Status (`StatusBadge`)
 Status is never colour alone: a glyph shape plus a text label. Live: a green dot with a bounded pulse. Early access: a violet ring. Private: a lock. Internal: a filled square. Staging: an outlined square.
@@ -352,14 +352,14 @@ One card per page at the page's path under `/og`, 1200 × 630, in the day palett
 Tokens live in `lib/motion-tokens.ts`, mirrored as CSS variables: `--dur-fast` 0.18s, `--dur-normal` 0.35s, `--dur-slow` 0.6s, `--dur-crawl` 1.2s, `--dur-draw` 1.6s; `--ease-smooth` `cubic-bezier(0.22, 1, 0.36, 1)`, `--ease-sharp` `cubic-bezier(0.4, 0, 0.2, 1)`; `--stagger-line` 70ms. Transform, opacity and stroke only.
 
 - **Draw.** The trailhead's trail draws out of the portrait plate once on load (`.trail-draw--load`, from 300ms over `--dur-draw`). Short trail segments between homepage sections draw on their own named view timeline on their `<svg>` (`.trail-draw--view`, `entry 10% cover 45%`). The trail never loops and never follows the page's scroll.
-- **Rise.** The trailhead, on load, once, under 2 s: the headline's authored lines rise `0.35em` in turn (`--stagger-line` apart), the copy and buttons rise 16px at 250ms. Plates appear once (`.plate-rise`): every `/projects` plate, own-product plate and case-study shot rises its last 16px as it enters, on a scroll trigger (`timeline-trigger` with `animation-trigger: play-forwards`), with no fill, so a plate waiting for its trigger sits at rest (the finished state) and a plate already in view, at load or after a filter change, never moves and is never held offset; without trigger support plates sit at rest. Journal rows rise 24px on a view timeline (`.reveal-cover`). Nothing fades; the server HTML is the finished page.
+- **Rise.** The trailhead, on load, once, under 2 s: the headline's authored lines rise `0.35em` in turn (`--stagger-line` apart), the copy and buttons rise 16px at 250ms. Screenshots are stills and plates do not rise. The appear-once rise on plates was tried in S6 and removed: a trigger-held animation sits paused at its first keyframe, so plates rested offset, and the production minifier collapses the trigger's range to zero length. Journal rows rise 24px on a view timeline (`.reveal-cover`). Nothing fades; the server HTML is the finished page.
 - **Contour shift** (`.trailhead-contours`): on a fine pointer with hover, the hero contours drift 8px toward the half the pointer rests on (`.trailhead:has(.trailhead-copy:hover)` / `:has(.trailhead-plate:hover)`) on `--dur-crawl`. CSS only; nothing on touch; the trail stays put, so the land moves under a fixed route.
 - **The elevation marker** travels on its own `--elevation` view timeline as the strip comes into view and rests at now.
 - **Pan.** On `/projects` a legend key glides the map to the band's pins (`.map-pan`, `--pan-x/--pan-y/--pan-s` from `lib/map-pan.ts`, `--dur-slow`, smooth), pins counter-scaling with it; a pin glides the page to its plate.
 - **View transitions.** A filter change glides plates and band headings to their new places while the map pans; a project link morphs the clicked screenshot into the project page's shot while the rest cross-fades. Feature-detected, off under reduced motion, plain links without JS.
 - **Hover.** `.lift-card`: lift 2px, border to ink, shot to 1.02 inside its clipping frame, the lift shadow faded in; fine pointer and no-preference only. Keyboard focus gets the ink border with no travel.
 - **Bounds.** Nothing moves for more than five seconds: the live pulse fades twice (2.4 s each) and stops; the typing dots and the sending spinner run only while a request is pending. No count-ups, scroll parallax or continuous animation.
-- **Reduced motion.** Every reveal, the trailhead sequence, the contour shift, the plate rise and the pins' glide are off; the trail is drawn at first paint; hover transforms go while colours, the ink border and underlines still change, instantly; view transitions are zeroed; the pulse is removed.
+- **Reduced motion.** Every reveal, the trailhead sequence, the contour shift and the pins' glide are off; the trail is drawn at first paint; hover transforms go while colours, the ink border and underlines still change, instantly; view transitions are zeroed; the pulse is removed.
 
 ## Do's and Don'ts
 

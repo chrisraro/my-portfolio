@@ -21,7 +21,7 @@ describe('ProjectPlate', () => {
   it('is a list item the map pins and the filter transition can find', () => {
     const html = render(withShot)
     expect(html).toContain(
-      `<li id="plate-${withShot.slug}" class="project-plate plate-rise min-w-0 scroll-mt-28" style="--vt-plate:${plateTransitionName(withShot.slug)}">`,
+      `<li id="plate-${withShot.slug}" class="project-plate min-w-0 scroll-mt-28" style="--vt-plate:${plateTransitionName(withShot.slug)}">`,
     )
   })
 

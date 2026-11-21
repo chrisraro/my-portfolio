@@ -25,7 +25,7 @@ position; nothing auto-moves longer than 5 s; CSS-first motion that is
 progressive enhancement; fewer than 10 client components.
 Replaces: Lobby Rack (Portfolio 4.0). Spec:
 `docs/superpowers/specs/2026-11-20-portfolio-v5-revamp-design.md`.
-Resolved in S6: the contour pointer shift (.trailhead-contours) and screenshot appear-once (.plate-rise).
+Resolved in S6: the contour pointer shift (.trailhead-contours). The screenshot appear-once rise was tried in S6 and removed: a trigger-held animation rests offset and the minifier collapses the trigger range; screenshots are stills.
 
 ## Direction contract
 
@@ -37,7 +37,7 @@ map honest: a pin only where a project's own words name the place.
 OWN-WORLD: "Isarog Trail Map". Pale green-grey survey paper by day, dark field
 paper by night, near-black ink, olive contour linework, and one trail red that
 marks only the primary action and where you are. Survey plates: every photo
-and screenshot sits in a pale frame at one scale on one baseline. Archivo only:
+and screenshot sits in a plate at one scale on one baseline: pale paper by day, and at night dark paper one step up from the ground. Archivo only:
 condensed uppercase for display and map labels, normal width for reading,
 tabular numerals for dates and counts. Recognisable with the content removed:
 contours, a solid red trail, ringed and dotted pins, spot heights, a frosted
@@ -82,9 +82,7 @@ one at a time), pan (/projects: a legend key glides the map to the band's pins; 
   pointer rests on (`.trailhead:has(.trailhead-copy:hover)` /
   `:has(.trailhead-plate:hover)`), on `--dur-crawl`. CSS only; nothing on touch;
   the trail does not move.
-- Plates appear once (`.plate-rise`): every `/projects` plate, own-product plate
-  and case-study shot rises its last 16px once on a scroll trigger
-  (`timeline-trigger` + `animation-trigger: play-forwards`) inside
-  `@supports (timeline-trigger: --plate view())` and no-preference; held at its
-  start until the trigger fires; without support, plates sit at rest.
+- Plates are stills: nothing about a plate or screenshot rises or follows scroll.
+  The appear-once rise was tried in S6 and removed (a trigger-held animation
+  rests offset; the minifier collapses the trigger range).
 - Outside the gates the trail is fully drawn and nothing is offset.

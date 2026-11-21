@@ -30,7 +30,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
   if (!full && !shots.desktop) {
     // A printed tag, not a picture-sized hole: it keeps the plate without pretending.
     return (
-      <SurveyPlate className={`plate-rise ${FRAME}`}>
+      <SurveyPlate className={FRAME}>
         <NoPreviewTag project={project} className={`${SHOT_ASPECT} w-full`} />
       </SurveyPlate>
     )
@@ -77,7 +77,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
       {shots.mobile && (
         // Below sm the plate already fills the screen; the phone shot would only repeat it.
         // At plate scale (180px), beside the plate from 640px and under it from 1024px.
-        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="plate-rise hidden w-[11.25rem] shrink-0 sm:block">
+        <ImageLightbox src={shots.mobile} alt={`Mobile screenshot of ${name}`} className="hidden w-[11.25rem] shrink-0 sm:block">
           <SurveyPlate as="span">
             <Image src={shots.mobile} alt="" width={390} height={844} sizes="180px" className="h-auto w-full" />
           </SurveyPlate>

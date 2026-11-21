@@ -27,7 +27,7 @@ function Plate({ project, code }: { project: Project; code: string }) {
   const titleId = `product-${project.slug}`
 
   return (
-    <article aria-labelledby={titleId} className="plate-rise flex flex-col">
+    <article aria-labelledby={titleId} className="flex flex-col">
       <SurveyPlate>
         {shot ? (
           <ProjectShot
