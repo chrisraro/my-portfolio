@@ -208,9 +208,10 @@ describe('the leftovers (14b)', () => {
     expect(layout).toMatch(/size-adjusted/)
   })
 
-  it('describes the plate rise as filled backwards until its trigger fires', () => {
-    expect(css).not.toMatch(/nothing is filled before it fires/)
-    expect(css).toMatch(/held at its start until the trigger fires/)
+  it('describes the plate rise as unfilled: an un-fired plate rests, never held offset', () => {
+    expect(css).not.toMatch(/held at its start until the trigger fires/)
+    expect(css).toMatch(/There is no\s+\* fill: before its trigger fires a plate sits at rest/)
+    expect(css).toMatch(/never held offset/)
   })
 
   it('keeps break-words on a case-study figure and no doubled parentheses in the shot doc', () => {

@@ -53,8 +53,26 @@ describe('screenshots appear once as they enter view', () => {
     const body = rise.map((r) => r.body).join(';')
     expect(body).toMatch(/timeline-trigger:\s*--plate view\(\) entry 0% entry 100%/)
     expect(body).toMatch(/animation-trigger:\s*--plate play-forwards/)
-    expect(body).toMatch(/animation-fill-mode:\s*backwards/)
     expect(body).not.toMatch(/animation-timeline/)
+    for (const r of rise) {
+      const at = r.ancestors.join(' ')
+      expect(at).toContain('@supports (timeline-trigger: --plate view())')
+      expect(at).toContain('(prefers-reduced-motion: no-preference)')
+    }
+  })
+
+  // A plate that mounts already in view (after a filter change) never crosses
+  // its entry range, so its trigger may never fire. A backwards fill would hold
+  // it 16px low forever; with no fill an un-fired plate rests where it belongs.
+  it('never rest offset: no backwards fill, the at-rest state is the finished one', () => {
+    const body = rise.map((r) => r.body).join(';')
+    expect(body).not.toMatch(/animation-fill-mode:\s*(backwards|both)/)
+    expect(body).not.toMatch(/animation:[^;]*\b(backwards|both)\b/)
+    const frames = css.match(/@keyframes plate-rise \{([\s\S]*?)\n\t\t\}/)?.[1]
+    expect(frames).toMatch(/to \{ transform: none; \}/)
+  })
+
+  it('keep both gates on every rise rule', () => {
     for (const r of rise) {
       const at = r.ancestors.join(' ')
       expect(at).toContain('@supports (timeline-trigger: --plate view())')

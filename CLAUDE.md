@@ -310,9 +310,10 @@ scrubbed by scroll; a plate rises once as it enters. The choreography is in
 - **Plates appear once (`.plate-rise`):** every `/projects` plate, own-product
   plate and case-study shot rises its last 16px once on a scroll trigger
   (`timeline-trigger` + `animation-trigger: play-forwards`) inside
-  `@supports (timeline-trigger: --plate view())` and no-preference; filled
-  backwards, so a plate is held at its start until its trigger fires, and a
-  plate already in view never moves; without support, plates sit at rest (`s6-motion`).
+  `@supports (timeline-trigger: --plate view())` and no-preference; no fill,
+  so a plate waiting for its trigger sits at rest (the finished state), and a
+  plate already in view, at load or after a filter change, never moves and is
+  never held offset; without support, plates sit at rest (`s6-motion`).
 - **Trail:** `TrailPath mode="load"` draws once on load; `mode="view"` (the
   `TrailSegment`s between sections) draws on its own named view timeline.
   The elevation "you are here" marker travels on its own `--elevation` view timeline and rests at now; nothing follows the page scroll (`plate-motion`, `trail-motion`).
