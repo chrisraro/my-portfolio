@@ -1,38 +1,30 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { parseCssRules } from '@/tests/helpers/css-rules'
 
-// SP2 gate fix B: the motion a visitor is meant to see must stay inside its
-// bounds and still sit behind the reduced-motion and support gates. (The
-// scroll-linked previews it once covered were removed in the Lobby Rack
-// refinement; tests/design/catalog-motion.test.ts guards that.)
-const css = readFileSync('app/globals.css', 'utf8')
-
-/** The body of the first `@supports (animation-timeline: view())` block holding `needle`. */
-function gatedBlock(needle: string): string {
-  let from = 0
-  for (;;) {
-    const start = css.indexOf('@supports (animation-timeline: view())', from)
-    if (start === -1) return ''
-    let depth = 0
-    let i = css.indexOf('{', start)
-    const open = i
-    for (; i < css.length; i++) {
-      if (css[i] === '{') depth++
-      else if (css[i] === '}' && --depth === 0) break
-    }
-    const body = css.slice(open, i)
-    if (body.includes(needle)) return body
-    from = i
-  }
-}
+// The motion a visitor is meant to see must stay inside its bounds and still
+// sit behind the reduced-motion and support gates. First Light has two scroll
+// animations: rows rising into place (a view timeline) and the dawn rising
+// behind the land (the root scroll timeline). Neither touches a screenshot.
+const rules = parseCssRules(readFileSync('app/globals.css', 'utf8'))
 
 describe('scroll reveals', () => {
-  const block = gatedBlock('reveal-cover')
+  const rise = rules.find((r) => r.selector === '.rise-in')
 
-  it('play while the element is in view (the contract’s range), not as it crosses the edge', () => {
-    for (const cls of ['reveal-cover']) {
-      const rule = block.match(new RegExp(String.raw`\.${cls}[^{]*\{[^}]*\}`))?.[0] ?? ''
-      expect(rule, cls).toMatch(/animation-range:\s*entry (?:calc\()?10%[^;]*cover 30%/)
-    }
+  it('rise in while the row crosses the viewport’s edge: the entry range, once', () => {
+    expect(rise?.body).toMatch(/animation-range:\s*entry 0% entry 100%/)
+    expect(rise?.body).toMatch(/animation-timeline:\s*view\(\)/)
+  })
+
+  it('end at the finished page: the rise settles, never fades', () => {
+    expect(rise?.body).toMatch(/animation:\s*rise-in linear both/)
+    const keyframes = rules.filter((r) => r.ancestors.some((a) => a === '@keyframes rise-in'))
+    expect(keyframes.length).toBe(2)
+    for (const k of keyframes) expect(k.body).not.toMatch(/opacity/)
+  })
+
+  it('sit inside both gates', () => {
+    expect(rise?.ancestors.join(' | ')).toContain('animation-timeline: view()')
+    expect(rise?.ancestors).toContain('@media (prefers-reduced-motion: no-preference)')
   })
 })

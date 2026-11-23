@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 // One primary button across every page: .button-primary in globals.css, a
-// trail-red fill with on-trail text, beside an ink-outline .button-secondary.
+// ember fill with on-trail text, a pill, beside a clear-glass .button-secondary.
 // Nothing composes its own primary.
 function tsxFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
@@ -16,9 +16,14 @@ const css = readFileSync('app/globals.css', 'utf8')
 const sources = ['app', 'components'].flatMap(tsxFiles).map((f) => ({ f, src: readFileSync(f, 'utf8') }))
 
 describe('primary button', () => {
-  it('is defined once: trail fill with on-trail text, plus an ink-outline secondary', () => {
-    expect(css).toMatch(/\.button-primary \{[^}]*bg-trail[^}]*text-on-trail/)
-    expect(css).toMatch(/\.button-secondary \{[^}]*border-ink[^}]*text-ink/)
+  it('is defined once: trail fill with on-trail text, plus a clear-glass secondary', () => {
+    expect(css.match(/\.button-primary \{/g)).toHaveLength(1)
+    expect(css).toMatch(/\.button-primary \{[^}]*rounded-full[^}]*bg-trail[^}]*text-on-trail/)
+    expect(css.match(/\.button-secondary \{/g)).toHaveLength(1)
+    expect(css).toMatch(/\.button-secondary \{[^}]*rounded-full[^}]*text-ink[^}]*background: oklch\(var\(--panel\)/)
+    // Both are 44px or more, the pointer target size.
+    expect(css).toMatch(/\.button-primary \{[^}]*min-h-\[46px\]/)
+    expect(css).toMatch(/\.button-secondary \{[^}]*min-h-\[46px\]/)
   })
 
   it('is used by every primary call to action', () => {
@@ -32,8 +37,8 @@ describe('primary button', () => {
       const tag = Math.max(...['<Link', '<a\n', '<a\r', '<a ', '<button'].map((t) => src.lastIndexOf(t, i)))
       return src.slice(Math.max(0, tag), i)
     }
-    expect(uses('components/sections/trailhead.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
-    expect(uses('components/sections/trailhead.tsx', '{ctaLabels.hireForRole}')).toContain('button-secondary')
+    expect(uses('components/sections/intro.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
+    expect(uses('components/sections/intro.tsx', '{ctaLabels.hireForRole}')).toContain('button-secondary')
     expect(uses('components/case-study/project-header.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
     expect(uses('app/projects/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')
     expect(uses('app/projects/[slug]/page.tsx', '{ctaLabels.startProject}')).toContain('button-primary')

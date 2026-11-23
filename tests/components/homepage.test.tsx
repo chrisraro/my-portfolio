@@ -1,351 +1,296 @@
 import { existsSync, readFileSync } from 'node:fs'
-import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import HomePage from '@/app/page'
-import { ElevationStrip } from '@/components/sections/elevation-strip'
-import { FieldMap } from '@/components/sections/field-map'
-import { Fork } from '@/components/sections/fork'
-import { OwnProducts } from '@/components/sections/own-products'
+import { Experience } from '@/components/sections/experience'
+import { Intro } from '@/components/sections/intro'
+import { NowBuilding } from '@/components/sections/now-building'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
-import { TrailJournals } from '@/components/sections/trail-journals'
-import { Trailhead } from '@/components/sections/trailhead'
+import { StackTable } from '@/components/sections/stack-table'
+import { CaseStudyList, MORE_ROWS, WorkList } from '@/components/sections/work-list'
+import { Places, WorkWithMe } from '@/components/sections/work-with-me'
 import { ToastProvider } from '@/components/ui/toaster'
-import { noPreviewCopy } from '@/components/ui/no-preview-tag'
-import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, briefLead, getCaseStudy } from '@/lib/case-studies'
-import { heroContent, paymentGateways, projects, resumeUrl, sectionContent } from '@/lib/data'
-import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
-import { MAP_VIEWBOX, project as toMap } from '@/lib/geo'
-import { phOutline } from '@/lib/ph-outline'
-import { placeGroups, unplacedProjects } from '@/lib/places'
-import { canLinkLive, fullShotFor, hasFullShot, isEmbeddable } from '@/lib/project-page'
-import { parseCssRules } from '@/tests/helpers/css-rules'
+import {
+  availability,
+  contactInfo,
+  ctaLabels,
+  experience,
+  heroContent,
+  paymentGateways,
+  projects,
+  resumeUrl,
+  sectionContent,
+  servicePages,
+} from '@/lib/data'
+import { elevationFigures } from '@/lib/elevation'
+import { placeGroups } from '@/lib/places'
+import { canLinkLive } from '@/lib/project-page'
 
-// The Isarog Trail Map homepage (spec §5): one describe per section, in page
-// order. Each S2 task adds its section here and to SECTIONS.
-const css = readFileSync('app/globals.css', 'utf8')
+// The First Light homepage: one reading column of nine sections, in this order
+// (the direction contract). One describe per section, then the page.
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
 
-// Every new section, for the checks that hold for all of them.
-const SECTIONS: [string, ReactElement][] = [
-  ['Trailhead', <Trailhead key="trailhead" />],
-  ['ElevationStrip', <ElevationStrip key="elevation" />],
-  ['Fork', <Fork key="fork" />],
-  ['FieldMap', <FieldMap key="field-map" />],
-  ['OwnProducts', <OwnProducts key="own-products" />],
-  ['TrailJournals', <TrailJournals key="journals" />],
-  ['PlanTheRoute', <ToastProvider key="plan"><PlanTheRoute /></ToastProvider>],
-]
+// Every section, for the checks that hold for all of them.
+const SECTIONS = [
+  ['Intro', <Intro key="intro" />],
+  ['NowBuilding', <NowBuilding key="building" />],
+  ['Experience', <Experience key="experience" />],
+  ['CaseStudyList', <CaseStudyList key="journals" />],
+  ['WorkList', <WorkList key="work" />],
+  ['Places', <Places key="places" />],
+  ['WorkWithMe', <WorkWithMe key="fork" />],
+  ['StackTable', <StackTable key="stack" />],
+  [
+    'PlanTheRoute',
+    <ToastProvider key="plan">
+      <PlanTheRoute />
+    </ToastProvider>,
+  ],
+] as const
 
-describe('Trailhead', () => {
-  const html = renderToStaticMarkup(<Trailhead />)
-  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ''
+describe('Intro', () => {
+  const html = renderToStaticMarkup(<Intro />)
 
-  it('is the #top section, the eyebrow above the headline', () => {
-    expect(html).toMatch(/^<section id="top" aria-labelledby="trailhead-title"/)
+  it('is the #top section, named by its one h1: his name', () => {
+    expect(html).toMatch(/^<section id="top" aria-labelledby="intro-title"/)
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
+    expect(html).toContain(`<h1 id="intro-title" class="text-name text-ink">${heroContent.name}</h1>`)
     expect(html).toContain(`>${heroContent.eyebrow}</p>`)
-    expect(html.indexOf(heroContent.eyebrow)).toBeLessThan(html.indexOf('<h1'))
   })
 
-  it('gives the portrait plate wrapper its own width, so the plate cannot collapse in the grid', () => {
-    const wrapper = html.match(/<div class="([^"]*\bmd:justify-self-end\b[^"]*)"/)?.[1] ?? ''
-    expect(wrapper).toMatch(/\bw-full\b/)
-    expect(wrapper).toContain('max-w-[22rem]')
-  })
-
-  it('sets the headline one authored line per span, read as one sentence', () => {
-    expect(h1.match(/class="trailhead-line"/g)).toHaveLength(heroContent.headlineLines.length)
-    expect(h1.replace(/<[^>]+>/g, '')).toBe(heroContent.headline)
-  })
-
-  it('says what he builds and for whom, from data', () => {
-    expect(html).toContain(`>${escape(heroContent.subheadline)}</p>`)
+  it('says what he builds and for whom, from data, and claims no products of his own', () => {
+    expect(html).toContain(`>${heroContent.headline}</p>`)
+    expect(html).toContain(`>${heroContent.subheadline}</p>`)
+    expect(html).not.toMatch(/products? of my own/i)
   })
 
   it('offers both paths: Start a project to the form, then Hire me for a role to /hire', () => {
-    const primary = html.search(/<a href="#contact" class="press button-primary">Start a project/)
-    const secondary = html.search(/<a [^>]*href="\/hire"[^>]*>Hire me for a role/)
-    expect(primary).toBeGreaterThan(-1)
-    expect(secondary).toBeGreaterThan(primary)
-    expect(html.match(/<a [^>]*href="\/hire"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
+    expect(html).toContain('href="#contact"')
+    expect(html).toContain(ctaLabels.startProject)
+    expect(html).toContain(`<a class="press button-secondary" href="/hire">${ctaLabels.hireForRole}</a>`)
+    expect(html).toContain(`>${availability}</p>`)
+    expect(html.match(/class="press button-primary/g)).toHaveLength(1)
   })
 
-  it('sets the portrait on a survey plate around the lightbox, named once', () => {
-    expect(html).toMatch(new RegExp(`<div class="survey-plate"><button type="button" aria-label="View larger image: ${heroContent.portraitAlt}" class="[^"]*w-full`))
-    expect(html).not.toMatch(/<img[^>]*alt="(Christian Raro|Portrait of)/)
+  it('carries the portrait in the lightbox, loaded at once, and the résumé as a named icon link', () => {
+    expect(html).toContain(`aria-label="View larger image: ${escape(heroContent.portraitAlt)}"`)
+    expect(html).toContain('fetchpriority="high"')
+    expect(html).toContain(`href="${resumeUrl}"`)
+    expect(html).toContain(`${ctaLabels.downloadResume} (PDF, opens in a new tab)`)
   })
 
-  it('draws the trail out of the plate on load, over the contours', () => {
-    expect(html).toContain('class="trail-draw trail-draw--load"')
-    expect(html).toMatch(/<svg aria-hidden="true"[^>]*class="[^"]*text-contour/)
+  it('rises its three lines of copy in turn, by --i, on load', () => {
+    expect(html.match(/class="rise[ "]/g)).toHaveLength(3)
+    for (const i of [0, 1, 2]) expect(html).toContain(`style="--i:${i}"`)
+  })
+
+  it('shows the three figures counted from the data, each a link to what it counts', () => {
+    const figures = elevationFigures()
+    expect(figures).toHaveLength(3)
+    for (const f of figures) {
+      expect(html).toContain(`<a class="group block min-h-[44px]" href="${f.href}">`)
+      expect(html).toContain(`<span class="text-figure block text-ink">${f.value}</span>`)
+      expect(html).toContain(`>${f.label}</span>`)
+    }
   })
 })
 
-describe('ElevationStrip', () => {
-  const html = renderToStaticMarkup(<ElevationStrip />)
-  const strip = html.match(/<div aria-hidden="true" class="elevation-track relative mt-12[\s\S]*?<\/div><ol/)?.[0] ?? ''
+describe('NowBuilding', () => {
+  const html = renderToStaticMarkup(<NowBuilding />)
+  const building = projects.filter((p) => p.status === 'in-development')
+
+  it('shows every project in development, and only those', () => {
+    expect(building.map((p) => p.id)).toEqual(['iskotify'])
+    expect(html.match(/<article /g)).toHaveLength(building.length)
+    for (const p of building) {
+      expect(html).toContain(`>${escape(p.title)}</h2>`)
+      expect(html).toContain(escape(sectionContent.building.lines[p.id]))
+    }
+    for (const p of projects.filter((x) => x.status !== 'in-development')) expect(html, p.slug).not.toContain(`>${escape(p.title)}</h2>`)
+  })
+
+  it('is the #building section, labelled from data', () => {
+    expect(html).toMatch(/^<section id="building" aria-label="In development"/)
+    expect(html).toContain(`aria-label="${sectionContent.building.title}"`)
+  })
+
+  it('badges it In development in words, never as live', () => {
+    expect(html).toContain('data-status="in-development"')
+    expect(html).toContain('<span>In development</span>')
+    expect(html).not.toContain('bg-live')
+    expect(html).not.toContain('live-pulse')
+  })
+
+  it('links the project’s page and its live site, which opens in a new tab', () => {
+    expect(html).toContain('href="/projects/iskotify"')
+    expect(html).toContain(sectionContent.building.more)
+    const iskotify = projects.find((p) => p.id === 'iskotify')!
+    expect(canLinkLive(iskotify)).toBe(true)
+    expect(html).toContain(`<a href="${iskotify.links.live}" target="_blank" rel="noopener noreferrer"`)
+  })
+
+  it('sets the banner on glass with its screenshot as decoration', () => {
+    expect(html).toContain('class="banner glass')
+    expect(html).toMatch(/<div aria-hidden="true" class="banner__shot/)
+  })
+
+  it('renders nothing when nothing is in development', () => {
+    expect(readFileSync('components/sections/now-building.tsx', 'utf8')).toContain('if (building.length === 0) return null')
+  })
+})
+
+describe('Experience', () => {
+  const html = renderToStaticMarkup(<Experience />)
 
   it('is the #timeline section, its heading from data, no eyebrow', () => {
     expect(html).toMatch(/^<section id="timeline" aria-labelledby="timeline-title"/)
     expect(html).not.toContain('class="eyebrow')
-    expect(html).toMatch(new RegExp(`<h2 id="timeline-title" class="text-section[^"]*">${escape(sectionContent.timeline.title)}</h2>`))
+    expect(html).toMatch(new RegExp(`<h2 id="timeline-title" class="text-list text-ink">${escape(sectionContent.timeline.title)}</h2>`))
   })
 
-  it('marks each proof figure as a spot height, counted from the data', () => {
-    for (const f of elevationFigures()) {
-      expect(html).toContain(`>${f.value}</span>`)
-      expect(html).toContain(`>${f.label}</span>`)
-    }
+  it('lists every role and degree with its dates, the degree last', () => {
+    const titles = [...experience.map((e) => e.title), 'B.S. in Computer Science']
+    for (const t of titles) expect(html, t).toContain(escape(t))
+    expect(html.match(/<li class="rise-in border-b/g)).toHaveLength(titles.length)
+    expect(html.indexOf('Online Creative Solutions')).toBeLessThan(html.indexOf('Bicol University'))
+    expect(html).toContain('November 2024 – Present')
   })
 
-  it('sets the counts as the strip’s legend, not a big-number row', () => {
-    expect(html).not.toContain('text-numeral')
-    for (const f of elevationFigures()) expect(html).toContain(`<span class="text-title tabular text-ink">${f.value}</span>`)
-  })
-
-  it('lists every role and degree with its dates, newest first', () => {
-    let last = -1
-    for (const e of buildElevationStrip().entries) {
-      const at = html.indexOf(`>${escape(e.title)}</p>`)
-      expect(at, e.title).toBeGreaterThan(last)
-      last = at
-      expect(html).toContain(`>${escape(e.subtitle)}</p>`)
-      expect(html).toContain(`>${e.date}</p>`)
-    }
-  })
-
-  it('draws the strip from the first year to now, the marker resting at now', () => {
-    expect(strip).toContain('>2020</span>')
-    expect(strip).toContain('class="elevation-marker')
-    expect(strip).toContain(`>${sectionContent.timeline.here}</span>`)
+  it('keeps every responsibility in the server HTML: the first shown, the rest in a native disclosure', () => {
+    for (const e of experience) for (const r of e.responsibilities) expect(html, r).toContain(escape(r))
+    expect(html).toContain('<details class="more">')
+    expect(html).toContain(sectionContent.timeline.less)
+    expect(html).not.toContain('<details open')
   })
 })
 
-describe('Fork', () => {
-  const html = renderToStaticMarkup(<Fork />)
-  const { fork } = sectionContent
-  const cards = html.match(/<li[\s\S]*?<\/li>/g) ?? []
+describe('CaseStudyList', () => {
+  const html = renderToStaticMarkup(<CaseStudyList />)
 
-  it('is the #fork section with its heading from data, no eyebrow', () => {
-    expect(html).toMatch(/^<section id="fork" aria-labelledby="fork-title"/)
-    expect(html).not.toContain('class="eyebrow')
-    expect(html).toMatch(new RegExp(`<h2 id="fork-title"[^>]*>${escape(fork.title)}</h2>`))
-  })
-
-  it('offers two paths, business first', () => {
-    expect(cards).toHaveLength(2)
-    expect(cards[0]).toContain(`>${fork.business.title}</h3>`)
-    expect(cards[1]).toContain(`>${fork.team.title}</h3>`)
-  })
-
-  it('draws the fork as a route that splits over open paper, not two boxed cards', () => {
-    expect(html).toMatch(/<svg aria-hidden="true" focusable="false"[^>]*class="fork-route/)
-    for (const card of cards) expect(card).not.toMatch(/\bbg-panel\b|\brounded\b/)
-  })
-
-  it('names every payment gateway on the business path, from the data', () => {
-    for (const gateway of paymentGateways) expect(fork.business.body).toContain(gateway)
-    expect(cards[0]).toContain(escape(fork.business.body))
-  })
-
-  it('sends the business path to /services', () => {
-    expect(cards[0]?.match(/<a [^>]*href="\/services"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
-    expect(cards[0]).toContain(`>${fork.business.cta}`)
-    expect(cards[0]).not.toContain('href="#contact"')
-  })
-
-  it('sends the team path to /hire, the résumé beside it', () => {
-    expect(cards[1].match(/<a [^>]*href="\/hire"[^>]*>/)?.[0]).toContain('class="press button-secondary"')
-    expect(cards[1]).toContain(`>${fork.team.cta}`)
-    expect(cards[1]).toContain(`href="${resumeUrl}"`)
-    expect(cards[1]).toContain('(PDF, opens in a new tab)')
-  })
-})
-
-describe('FieldMap', () => {
-  const html = renderToStaticMarkup(<FieldMap />)
-  const svg = html.slice(html.indexOf('<svg'), html.indexOf('</svg>'))
-  const list = html.slice(html.indexOf('</svg>'))
-  const groups = placeGroups(projects)
-  const { fieldMap } = sectionContent
-
-  it('is the #work section with its heading from data, no eyebrow', () => {
-    expect(html).toMatch(/^<section id="work" aria-labelledby="work-title"/)
-    expect(html).not.toContain('class="eyebrow')
-    expect(html).toMatch(new RegExp(`<h2 id="work-title"[^>]*>${escape(fieldMap.title)}</h2>`))
-  })
-
-  it('draws the Philippines outline in the projection the pins use', () => {
-    expect(svg).toContain(`viewBox="${MAP_VIEWBOX}"`)
-    expect(svg).toContain(`d="${phOutline.slice(0, 60)}`)
-  })
-
-  it('pins every place as a real link to its first project: a ring for a region, a dot for a city', () => {
-    for (const g of groups) {
-      const pin = svg.match(new RegExp(`<a href="/projects/${g.projects[0].slug}" tabindex="-1" aria-hidden="true" class="map-pin">([\\s\\S]*?)</a>`))?.[1]
-      expect(pin, g.name).toBeDefined()
-      const { x, y } = toMap(g.lat, g.lng)
-      expect(pin, g.name).toContain(`cx="${x}" cy="${y}"`)
-      expect(pin, g.name).toContain(`class="${g.precision === 'region' ? 'map-ring' : 'map-dot'} `)
-      expect(pin, g.name).toContain(`>${g.name}</text>`)
-    }
-    expect(svg.match(/<a /g)).toHaveLength(groups.length)
-  })
-
-  it('fits its phone budget: tighter padding and gaps on a phone, min-w-0 on the place list, the way back out at 640px', () => {
-    // At a true 390px the section measured 1,786px (budget 1,700). Saved on a phone:
-    // bottom padding 72 to 32 (40), heading margin 40 to 32 (8), stacking gap 40 to 32 (8),
-    // two row gaps 24 to 16 (16), three row tops 12 to 8 (12), "No fixed point" 40 to 32 (8),
-    // the closing link 32 to 24 (8): 100px.
-    expect(html).toMatch(/^<section [^>]*class="[^"]* pb-8 md:pb-\[112px\]"/)
-    expect(html).toMatch(/<h2 id="work-title" class="[^"]* mb-8 md:mb-10"/)
-    expect(html).toMatch(/class="grid gap-8 [^"]*lg:gap-12"/)
-    expect(html).toMatch(/<ol class="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-6"/)
-    expect(html.match(/<li class="min-w-0 border-t border-line pt-2 sm:pt-3"/g)).toHaveLength(groups.length)
-    expect(html).toMatch(/<h3 class="map-label mt-8 text-ink sm:mt-10">/)
-    expect(html).toMatch(/class="[^"]* mt-6 sm:mt-8"/)
-  })
-
-  it('lists each place with its projects as map-label links, the way in for keyboard and screen readers', () => {
-    for (const g of groups) {
-      expect(list).toContain(`>${g.name}</span>`)
-      for (const p of g.projects) {
-        expect(list, p.slug).toContain(`href="/projects/${p.slug}"`)
-        expect(list, p.slug).toContain(`<span class="link-draw">${escape(p.title)}</span>`)
-      }
-    }
-    expect(list.match(/class="map-label inline-flex/g)!.length).toBeGreaterThanOrEqual(projects.length)
-  })
-
-  it('never pins a project without a verified place: it is listed under No fixed point', () => {
-    const unplaced = unplacedProjects(projects)
-    expect(unplaced.length).toBeGreaterThan(0)
-    expect(list).toContain(`>${fieldMap.unplacedHeading}</h3>`)
-    for (const p of unplaced) {
-      expect(svg, p.slug).not.toContain(`/projects/${p.slug}"`)
-      expect(list, p.slug).toContain(`href="/projects/${p.slug}"`)
-    }
-  })
-
-  it('links every project from the homepage, and leads on to /projects', () => {
-    for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
-    expect(html).toContain('href="/projects"')
-  })
-})
-
-describe('OwnProducts', () => {
-  const html = renderToStaticMarkup(<OwnProducts />)
-  const plates = html.match(/<article[\s\S]*?<\/article>/g) ?? []
-  const order = catalogOrder(projects, hasFullShot)
-  const own = order.filter((p) => p.band === 'Products')
-
-  it('is the #products section with its heading from data, no eyebrow', () => {
-    expect(html).toMatch(/^<section id="products" aria-labelledby="products-title"/)
-    expect(html).not.toContain('class="eyebrow')
-    expect(html).toMatch(new RegExp(`<h2 id="products-title"[^>]*>${escape(sectionContent.ownProducts.title)}</h2>`))
-  })
-
-  it('sets one survey plate per own product, in catalog order', () => {
-    expect(plates).toHaveLength(own.length)
-    own.forEach((p, i) => {
-      expect(plates[i], p.slug).toContain(`>${p.title}</h3>`)
-      expect(plates[i], p.slug).toContain('class="survey-plate"')
-    })
-  })
-
-  it('carries each product’s catalog number, the one /projects shows', () => {
-    own.forEach((p, i) => expect(plates[i], p.slug).toContain(`>${projectCode(p, order)}</p>`))
-  })
-
-  it('names, summarises and badges each product before its detail', () => {
-    own.forEach((p, i) => {
-      const at = (needle: string) => plates[i].indexOf(needle)
-      expect(at(`>${escape(p.summary)}</p>`)).toBeGreaterThan(at(`>${p.title}</h3>`))
-      expect(at('data-status=')).toBeGreaterThan(at(`>${escape(p.summary)}</p>`))
-      expect(at(escape(p.description.slice(0, 40)))).toBeGreaterThan(at('data-status='))
-    })
-  })
-
-  it('links each product to its page, and to the live site a visitor can open', () => {
-    own.forEach((p, i) => {
-      expect(plates[i]).toContain(`href="/projects/${p.slug}"`)
-      if (canLinkLive(p) && p.links.live) expect(plates[i]).toContain(`href="${p.links.live}"`)
-    })
-  })
-
-  it('shows the real site as a still with one link to its page, or says why there is no picture', () => {
-    own.forEach((p, i) => {
-      if (fullShotFor(p)) {
-        expect(plates[i]).toContain('project-shot__frame')
-        expect(plates[i]).toMatch(/<a [^>]*tabindex="-1"[^>]*aria-hidden="true"[^>]*class="project-shot lift-card /)
-      } else {
-        expect(plates[i]).toContain(escape(noPreviewCopy(p)))
-      }
-    })
-  })
-
-  it('offers a live preview on every product a visitor can open: live where it frames, a capture elsewhere', () => {
-    own.forEach((p, i) => {
-      expect(plates[i].includes('aria-haspopup="dialog"'), p.slug).toBe(canLinkLive(p))
-      if (canLinkLive(p)) expect(plates[i], p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
-    })
-  })
-})
-
-describe('TrailJournals', () => {
-  const html = renderToStaticMarkup(<TrailJournals />)
-
-  it('is the #journals section with its heading from data, no eyebrow', () => {
+  it('is the #journals section with its heading from data and the count of studies', () => {
     expect(html).toMatch(/^<section id="journals" aria-labelledby="journals-title"/)
-    expect(html).not.toContain('class="eyebrow')
-    expect(html).toMatch(new RegExp(`<h2 id="journals-title"[^>]*>${escape(sectionContent.journals.title)}</h2>`))
+    expect(html).toMatch(new RegExp(`<h2 id="journals-title" class="text-list text-ink">${escape(sectionContent.journals.title)}</h2>`))
+    expect(html).toContain(`<span class="tabular text-sm text-muted">${FLAGSHIP_SLUGS.length}</span>`)
   })
 
-  it('opens a journal for every flagship, in reading order, with its role, brief and place', () => {
+  it('lists a row for every case study, in reading order, with the brief’s first sentence', () => {
+    expect(FLAGSHIP_SLUGS).toHaveLength(4)
     let last = -1
     for (const slug of FLAGSHIP_SLUGS) {
-      const study = getCaseStudy(slug)!
-      const project = projects.find((p) => p.slug === slug)!
       const at = html.indexOf(`href="/projects/${slug}"`)
       expect(at, slug).toBeGreaterThan(last)
       last = at
-      expect(html).toContain(escape(study.role))
-      expect(html).toContain(escape(briefLead(study)))
-      if (project.place) expect(html, slug).toContain(`>${project.place.name} · `)
+      expect(html).toContain(escape(briefLead(getCaseStudy(slug)!)))
     }
+    expect(html.match(/<li id="plate-/g)).toHaveLength(FLAGSHIP_SLUGS.length)
   })
 
-  it('opens one journal per flagship, so a missing study cannot silently drop a cover', () => {
-    expect(html.match(/<li class="reveal-cover[ "]/g)).toHaveLength(FLAGSHIP_SLUGS.length)
-    expect(html.match(/href="\/projects\/[^"]+"/g)).toHaveLength(FLAGSHIP_SLUGS.length)
-  })
-
-  it('opens the first journal on the panel and shelves the other five as ruled rows', () => {
-    expect(html).toMatch(/^<section[^>]*>[\s\S]*?<ol class="[^"]*lg:grid-cols-\[7fr_5fr\]/)
-    expect(html.match(/class="lift-card /g)).toHaveLength(1)
-    expect(html.match(/<li class="reveal-cover border-t border-line"/g)).toHaveLength(FLAGSHIP_SLUGS.length - 1)
-    const lead = html.slice(html.indexOf('<li'), html.indexOf('</li>'))
-    expect(lead).toContain(`href="/projects/${FLAGSHIP_SLUGS[0]}"`)
-    expect(lead).toContain('bg-panel')
-  })
-
-  it('keeps the open cover at its own height and in view beside the rows at lg', () => {
-    const lead = html.slice(html.indexOf('<li'), html.indexOf('>', html.indexOf('<li')))
-    expect(lead).toContain('lg:self-start')
-    expect(lead).toContain('lg:sticky')
-    expect(lead).toContain('lg:top-24')
-  })
-
-  it('names each cover by its visible text (WCAG 2.5.3): the h3 sits inside a link with no aria-labelledby', () => {
+  it('names each row by its visible text (WCAG 2.5.3): the h3 inside one link, no aria-label', () => {
     for (const slug of FLAGSHIP_SLUGS) {
       const project = projects.find((p) => p.slug === slug)!
       const start = html.indexOf(`href="/projects/${slug}"`)
-      expect(start, slug).toBeGreaterThan(-1)
       const link = html.slice(html.lastIndexOf('<a ', start), html.indexOf('</a>', start))
       expect(link, slug).not.toMatch(/aria-labelledby|aria-label=/)
       expect(link, slug).toMatch(new RegExp(`<h3 class="[^"]*">${escape(project.title)}</h3>`))
     }
+  })
+})
+
+describe('WorkList', () => {
+  const html = renderToStaticMarkup(<WorkList />)
+  const rowSlugs = Array.from(html.matchAll(/<li id="plate-([a-z0-9-]+)"/g)).map((m) => m[1])
+
+  it('is the #work section with its heading from data', () => {
+    expect(html).toMatch(/^<section id="work" aria-labelledby="work-title"/)
+    expect(html).toMatch(new RegExp(`<h2 id="work-title" class="text-list text-ink">${escape(sectionContent.work.title)}</h2>`))
+  })
+
+  it('shows at most six rows, none a case study, an in-development project or a custom system', () => {
+    expect(MORE_ROWS).toBe(6)
+    expect(rowSlugs).toHaveLength(MORE_ROWS)
+    for (const slug of rowSlugs) {
+      const p = projects.find((x) => x.slug === slug)!
+      expect(FLAGSHIP_SLUGS, slug).not.toContain(slug)
+      expect(p.status, slug).not.toBe('in-development')
+      expect(p.band, slug).not.toBe('Custom systems')
+    }
+  })
+
+  it('leads on to every project: a secondary button to /projects', () => {
+    expect(html).toContain(`<a class="press button-secondary" href="/projects">${sectionContent.work.cta}`)
+  })
+})
+
+describe('Places', () => {
+  const html = renderToStaticMarkup(<Places />)
+  const groups = placeGroups(projects)
+
+  it('is the #places section with its heading from data and the count of places', () => {
+    expect(html).toMatch(/^<section id="places" aria-labelledby="places-title"/)
+    expect(html).toMatch(new RegExp(`<h2 id="places-title" class="text-list text-ink">${escape(sectionContent.fieldMap.title)}</h2>`))
+    expect(html).toContain(`<span class="tabular text-sm text-muted">${groups.length}</span>`)
+  })
+
+  it('pins every place as a link to its first project’s page, hidden from the keyboard and screen readers', () => {
+    expect(html.match(/<a href="\/projects\/[^"]+" tabindex="-1" aria-hidden="true" class="map-pin">/g)).toHaveLength(groups.length)
+    for (const g of groups) expect(html, g.name).toContain(`<a href="/projects/${g.projects[0].slug}" tabindex="-1" aria-hidden="true" class="map-pin">`)
+  })
+
+  it('lists each place with its projects as links, the way in for keyboard and screen readers', () => {
+    for (const g of groups) {
+      expect(html, g.name).toContain(`<span class="text-row">${escape(g.name)}</span>`)
+      for (const p of g.projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+    }
+  })
+
+  it('names the map’s rule and its key, and pins nothing for a project without a place', () => {
+    expect(html).toContain(escape(sectionContent.fieldMap.caption))
+    expect(html).toContain(sectionContent.fieldMap.key.city)
+    expect(html).toContain(sectionContent.fieldMap.key.region)
+    for (const p of projects.filter((x) => !x.place)) {
+      expect(html, p.slug).not.toContain(`<a href="/projects/${p.slug}" tabindex="-1"`)
+    }
+  })
+})
+
+describe('WorkWithMe', () => {
+  const html = renderToStaticMarkup(<WorkWithMe />)
+  const { fork } = sectionContent
+
+  it('is the #fork section with its heading from data, no eyebrow', () => {
+    expect(html).toMatch(/^<section id="fork" aria-labelledby="fork-title"/)
+    expect(html).not.toContain('class="eyebrow')
+    expect(html).toMatch(new RegExp(`<h2 id="fork-title" class="text-list text-ink">${escape(fork.title)}</h2>`))
+  })
+
+  it('offers two rows, business first: /services, then /hire', () => {
+    expect(html.indexOf('href="/services"')).toBeGreaterThan(-1)
+    expect(html.indexOf('href="/services"')).toBeLessThan(html.indexOf('href="/hire"'))
+    expect(html).toContain(`>${fork.business.title}</h3>`)
+    expect(html).toContain(`>${fork.team.title}</h3>`)
+    expect(html).toContain(escape(fork.business.body))
+    expect(html).toContain(escape(fork.team.body))
+  })
+
+  it('names every payment gateway on the business path, from the data', () => {
+    for (const g of paymentGateways) expect(fork.business.body).toContain(g)
+  })
+
+  it('links each of the three services as a chip', () => {
+    expect(servicePages).toHaveLength(3)
+    for (const s of servicePages) expect(html).toContain(`<a class="press chip" href="/services/${s.slug}">${escape(s.name)}</a>`)
+  })
+})
+
+describe('StackTable', () => {
+  const html = renderToStaticMarkup(<StackTable />)
+
+  it('is the #stack section, a definition list with a row per category and one for the gateways', () => {
+    expect(html).toMatch(/^<section id="stack" aria-labelledby="stack-title"/)
+    expect(html).toContain('<dl>')
+    expect(html).toContain(`>${sectionContent.stack.gateways}</dt>`)
+    for (const g of paymentGateways) expect(html).toContain(g)
   })
 })
 
@@ -409,28 +354,16 @@ describe('PlanTheRoute', () => {
     expect(html).not.toMatch(/<a href="mailto:[^>]*><span class="link-draw"/)
   })
 
-  // F9: stretched to the left column, the form plate left ~150px of empty panel.
-  it('sizes the form plate to the form, not to the left column', () => {
-    expect(html).toMatch(/<div class="survey-plate [^"]*\bmd:self-start\b[^"]*"><form/)
+  // One column now: the form sits on a pane of glass of its own, under the copy.
+  it('sets the form on a glass plate, not boxed in a panel colour', () => {
+    expect(html).toMatch(/<div class="survey-plate glass [^"]*"><form/)
+    expect(html).not.toContain('bg-panel')
   })
 })
 
 describe('proof renders visible without JavaScript', () => {
   it.each(SECTIONS)('%s ships no opacity:0 entrance', (_name, node) => {
     expect(renderToStaticMarkup(node)).not.toMatch(/opacity:\s*0/)
-  })
-
-  // Text is never painted (or measured for contrast) faded: every keyframe
-  // moves by transform or stroke, except the overlays' fades and the live pulse.
-  it('fades nothing on the page: keyframes move by transform or stroke only', () => {
-    const FADES = new Set(['live-pulse', 'typing-fade', 'vt-fade-out', 'vt-fade-in'])
-    const frames = parseCssRules(css).filter((r) => r.ancestors.some((a) => a.startsWith('@keyframes ')))
-    expect(frames.length).toBeGreaterThan(0)
-    for (const r of frames) {
-      const name = r.ancestors.find((a) => a.startsWith('@keyframes '))!.slice('@keyframes '.length)
-      if (FADES.has(name)) continue
-      expect(r.body, name).not.toMatch(/opacity/)
-    }
   })
 })
 
@@ -441,40 +374,52 @@ describe('HomePage', () => {
     </ToastProvider>,
   )
 
-  it('runs the seven sections in the spec’s order', () => {
+  it('runs the nine sections in the direction contract’s order', () => {
     const ids = Array.from(html.matchAll(/<section id="([^"]+)"/g)).map((m) => m[1])
-    expect(ids).toEqual(['top', 'timeline', 'fork', 'work', 'products', 'journals', 'contact'])
+    expect(ids).toEqual(['top', 'building', 'timeline', 'journals', 'work', 'places', 'fork', 'stack', 'contact'])
   })
 
-  it('sits every trail segment between two sections', () => {
-    const marks = Array.from(
-      html.matchAll(/<section id="|<div aria-hidden="true" class="relative mx-auto h-20 max-w-6xl md:h-28"/g),
-    ).map((m) => (m[0].startsWith('<section') ? 'section' : 'segment'))
-    expect(marks.filter((m) => m === 'segment').length).toBeGreaterThan(0)
-    expect(marks[0]).toBe('section')
-    expect(marks[marks.length - 1]).toBe('section')
-    marks.forEach((m, i) => {
-      if (m === 'segment') {
-        expect(marks[i - 1]).toBe('section')
-        expect(marks[i + 1]).toBe('section')
-      }
-    })
+  it('has one h1', () => {
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
   })
 
-  it('threads the trail: drawn out of the plate on load, then a segment between each section below the strip', () => {
-    expect(html.match(/class="trail-draw trail-draw--load"/g)).toHaveLength(1)
-    expect(html.match(/class="trail-draw trail-draw--view"/g)).toHaveLength(5)
+  it('points every labelled section at a heading that exists', () => {
+    const labelled = Array.from(html.matchAll(/<section id="([^"]+)" aria-labelledby="([^"]+)"/g))
+    expect(labelled.length).toBeGreaterThanOrEqual(8)
+    for (const [, id, heading] of labelled) expect(html, id).toContain(`id="${heading}"`)
   })
 
-  it('links every project page', () => {
-    for (const p of projects) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+  it('shows all the work in the server HTML: the experience, the case studies, the places and the stack', () => {
+    for (const e of experience) expect(html).toContain(escape(e.title))
+    for (const slug of FLAGSHIP_SLUGS) expect(html, slug).toContain(`href="/projects/${slug}"`)
+    for (const g of placeGroups(projects)) expect(html, g.name).toContain(escape(g.name))
+    for (const g of paymentGateways) expect(html).toContain(g)
   })
 
-  it('keeps two primary buttons: the trailhead’s and the form’s', () => {
+  it('links the in-development project, every pinned project and the services', () => {
+    expect(html).toContain('href="/projects/iskotify"')
+    for (const p of placeGroups(projects).flatMap((g) => g.projects)) expect(html, p.slug).toContain(`href="/projects/${p.slug}"`)
+    for (const s of servicePages) expect(html).toContain(`href="/services/${s.slug}"`)
+  })
+
+  it('keeps two primary buttons: the intro’s and the form’s', () => {
     expect(html.match(/class="press button-primary/g)).toHaveLength(2)
+  })
+
+  it('draws nothing of the retired world: no trail, contours, plates, catalog codes or strip', () => {
+    for (const gone of ['trail-draw', 'contour-field', 'trailhead-contours', 'survey-plate lift-card', 'elevation', 'reveal-cover', 'trailhead', 'lift-card']) {
+      expect(html, gone).not.toContain(gone)
+    }
+    expect(html).not.toMatch(/\d{1,2} \/ \d{1,2} · /)
+    expect(existsSync('components/sections/own-products.tsx')).toBe(false)
   })
 
   it('ships no opacity:0 entrance', () => {
     expect(html).not.toMatch(/opacity:\s*0/)
+  })
+
+  it('shows the public email and no phone', () => {
+    expect(html).toContain(`mailto:${contactInfo.email}`)
+    expect(html).not.toMatch(/tel:|\+63|\b09\d{9}\b/)
   })
 })

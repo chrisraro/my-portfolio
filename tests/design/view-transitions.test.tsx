@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { OwnProducts } from '@/components/sections/own-products'
+import { WorkList } from '@/components/sections/work-list'
 import ProjectsPage from '@/app/projects/page'
 import ProjectPage from '@/app/projects/[slug]/page'
 import { projects } from '@/lib/data'
@@ -28,8 +28,8 @@ const link = (href: string, extra: Partial<{ target: string; download: boolean }
 
 describe('planTransition', () => {
   it('morphs a click on a project link into its page', () => {
-    expect(planTransition(click, link('/projects/latag'), at('/'))).toEqual({ kind: 'project', href: '/projects/latag', slug: 'latag' })
-    expect(planTransition(click, link('/projects/giya'), at('/projects/latag'))).toEqual({ kind: 'project', href: '/projects/giya', slug: 'giya' })
+    expect(planTransition(click, link('/projects/skimcare'), at('/'))).toEqual({ kind: 'project', href: '/projects/skimcare', slug: 'skimcare' })
+    expect(planTransition(click, link('/projects/iskotify'), at('/projects/skimcare'))).toEqual({ kind: 'project', href: '/projects/iskotify', slug: 'iskotify' })
   })
 
   it('re-lays out /projects when a legend key changes the band', () => {
@@ -38,28 +38,28 @@ describe('planTransition', () => {
   })
 
   it('leaves a map pin’s jump to a plate on the same page to the browser', () => {
-    expect(planTransition(click, link('/projects#plate-latag'), at('/projects'))).toBeNull()
+    expect(planTransition(click, link('/projects#plate-skimcare'), at('/projects'))).toBeNull()
     expect(planTransition(click, link('/projects?band=sites#plate-azalea-baguio'), at('/projects', '?band=sites'))).toBeNull()
   })
 
   it('leaves modified and non-primary clicks to the browser (new tab, new window, download)', () => {
     for (const key of ['metaKey', 'ctrlKey', 'shiftKey', 'altKey'] as const) {
-      expect(planTransition({ ...click, [key]: true }, link('/projects/latag'), at('/')), key).toBeNull()
+      expect(planTransition({ ...click, [key]: true }, link('/projects/skimcare'), at('/')), key).toBeNull()
     }
-    expect(planTransition({ ...click, button: 1 }, link('/projects/latag'), at('/'))).toBeNull()
-    expect(planTransition({ ...click, button: 2 }, link('/projects/latag'), at('/'))).toBeNull()
-    expect(planTransition({ ...click, defaultPrevented: true }, link('/projects/latag'), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/latag', { target: '_blank' }), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/latag', { download: true }), at('/'))).toBeNull()
+    expect(planTransition({ ...click, button: 1 }, link('/projects/skimcare'), at('/'))).toBeNull()
+    expect(planTransition({ ...click, button: 2 }, link('/projects/skimcare'), at('/'))).toBeNull()
+    expect(planTransition({ ...click, defaultPrevented: true }, link('/projects/skimcare'), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/skimcare', { target: '_blank' }), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/skimcare', { download: true }), at('/'))).toBeNull()
   })
 
   it('leaves other origins, the same page, in-page anchors and every other route alone', () => {
-    expect(planTransition(click, link('https://latag.ph/projects/latag'), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/latag'), at('/projects/latag'))).toBeNull()
+    expect(planTransition(click, link('https://skimcare-app.vercel.app/projects/skimcare'), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/skimcare'), at('/projects/skimcare'))).toBeNull()
     expect(planTransition(click, link('/projects?band=sites'), at('/projects', '?band=sites'))).toBeNull()
     expect(planTransition(click, link('/#contact'), at('/'))).toBeNull()
     expect(planTransition(click, link('/'), at('/projects'))).toBeNull()
-    expect(planTransition(click, link('/projects'), at('/projects/latag'))).toBeNull()
+    expect(planTransition(click, link('/projects'), at('/projects/skimcare'))).toBeNull()
     expect(planTransition(click, link('/projects'), at('/'))).toBeNull()
   })
 })
@@ -82,8 +82,8 @@ describe('transition names', () => {
     }
   })
 
-  it('names nothing statically on the homepage’s products or /projects (the island names the clicked shot)', () => {
-    for (const html of [renderToStaticMarkup(<OwnProducts />), renderToStaticMarkup(ProjectsPage({ searchParams: {} }))]) {
+  it('names nothing statically on the homepage’s work or /projects (the island names the clicked shot)', () => {
+    for (const html of [renderToStaticMarkup(<WorkList />), renderToStaticMarkup(ProjectsPage({ searchParams: {} }))]) {
       expect(html).not.toMatch(/view-transition-name/)
       const marked = Array.from(html.matchAll(/data-vt-shot="([^"]+)"/g)).map((m) => m[1])
       expect(marked.length).toBeGreaterThan(0)

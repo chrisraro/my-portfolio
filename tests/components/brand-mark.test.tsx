@@ -44,6 +44,6 @@ describe('Legend mark', () => {
     const link = bar.match(/<a[^>]*href="\/"[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? ''
     expect(link).toContain('<svg')
     expect(link).toContain('aria-hidden="true"')
-    expect(link).toContain('>Christian Raro<')
+    expect(link).toContain('>Christian Raro')
   })
 })

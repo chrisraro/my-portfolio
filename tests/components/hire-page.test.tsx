@@ -7,7 +7,7 @@ import { availability, contactInfo, experience, hirePageContent, resumeUrl, skil
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;')
 const re = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const tag = (html: string, href: string) => html.match(new RegExp(`<a [^>]*href="${re(href)}"[^>]*>`))?.[0] ?? ''
-const CHIP = 'class="map-label rounded-sm border border-line-strong px-3 py-2 text-ink"'
+const CHIP = 'class="chip"'
 
 describe('/hire', () => {
   const html = renderToStaticMarkup(

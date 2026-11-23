@@ -6,7 +6,7 @@ import type { ProjectStatus } from '@/types'
 const CASES: [ProjectStatus, string][] = [
   ['live', 'Live'],
   ['ua-gated', 'Live'],
-  ['early-access', 'Early access'],
+  ['in-development', 'In development'],
   ['auth-gated', 'Private'],
   ['internal', 'Internal'],
   ['staging', 'Staging'],
@@ -42,6 +42,6 @@ describe('StatusBadge', () => {
 
   it('pulses only the live glyph', () => {
     expect(renderToStaticMarkup(<StatusBadge status="live" />)).toContain('live-pulse')
-    expect(renderToStaticMarkup(<StatusBadge status="early-access" />)).not.toContain('live-pulse')
+    expect(renderToStaticMarkup(<StatusBadge status="in-development" />)).not.toContain('live-pulse')
   })
 })

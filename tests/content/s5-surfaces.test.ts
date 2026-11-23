@@ -207,8 +207,8 @@ describe('S5: the chat prompt names every project page and no gated live link', 
     for (const p of open) expect(SYSTEM_PROMPT, p.slug).toContain(p.links.live as string)
   })
 
-  it('counts shipped projects in the offline reply as the elevation strip does', () => {
-    const shipped = elevationFigures()[1].value
+  it('counts shipped projects in the offline reply as the homepage figures do', () => {
+    const shipped = elevationFigures()[0].value
     expect(OFFLINE_REPLY).toContain(`${numberToWords(shipped)} projects shipped`)
   })
 })

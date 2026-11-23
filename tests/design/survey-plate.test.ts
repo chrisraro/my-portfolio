@@ -3,15 +3,12 @@ import { join } from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { createElement } from 'react'
 import { describe, expect, it } from 'vitest'
-import { FieldMap } from '@/components/sections/field-map'
-import { OwnProducts } from '@/components/sections/own-products'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
-import { Trailhead } from '@/components/sections/trailhead'
 import { ToastProvider } from '@/components/ui/toaster'
 
-// Spec §3: every photo, screenshot and map sits in one plate frame, every
-// screenshot at one scale. S2 final review, carry-over 2: the homepage's four
-// hand-rolled plates go through SurveyPlate.
+// A framed photo, a screenshot rail and the contact form sit in one plate
+// frame, every screenshot at one scale. The frame is written once, by
+// SurveyPlate; the homepage's list rows frame nothing, they use a thumbnail.
 function tsxFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry)
@@ -31,14 +28,15 @@ describe('survey plates', () => {
     expect(offenders).toEqual([])
   })
 
-  it('frame the portrait, the field map, each own product and the form', () => {
-    const sections = [
-      createElement(Trailhead),
-      createElement(FieldMap),
-      createElement(OwnProducts),
-      createElement(ToastProvider, null, createElement(PlanTheRoute)),
-    ]
-    for (const node of sections) expect(renderToStaticMarkup(node)).toContain('class="survey-plate')
+  it('frame the contact form, as glass', () => {
+    const html = renderToStaticMarkup(createElement(ToastProvider, null, createElement(PlanTheRoute)))
+    expect(html).toContain('class="survey-plate glass')
+  })
+
+  it('frame the about page’s photos and the project page’s screenshot rail, and nothing else writes one', () => {
+    for (const f of ['app/about/page.tsx', 'components/case-study/project-screenshots.tsx']) {
+      expect(readFileSync(f, 'utf8'), f).toContain('<SurveyPlate')
+    }
   })
 })
 

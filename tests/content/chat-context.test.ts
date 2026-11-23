@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { OFFLINE_REPLY, SYSTEM_PROMPT, buildCaseStudyContext, buildPortfolioContext, numberToWords } from '@/lib/chat-context'
 import { experience, projects, servicePages, services, skills } from '@/lib/data'
+import { isShipped } from '@/lib/proof'
 import { SITE_URL } from '@/lib/site-metadata'
 import type { CaseStudy } from '@/types'
 
@@ -86,14 +87,12 @@ describe('system prompt', () => {
 
 describe('offline reply', () => {
   it('derives its counts from the data rather than hand-typed digits', () => {
-    // If a project (or a Products-band project) is added to lib/data.ts,
-    // these expectations recompute from the same source and would catch a
-    // stale hand-typed count.
-    const productCount = projects.filter((p) => p.band === 'Products').length
-    // Shipped excludes the staging site, as the elevation strip does.
-    const projectCount = projects.filter((p) => p.status !== 'staging').length
-    expect(OFFLINE_REPLY).toContain(`${numberToWords(productCount)} products of his own`)
+    // If a project is added to lib/data.ts, this expectation recomputes from
+    // the same source and would catch a stale hand-typed count.
+    // Shipped excludes staging and in development, as the homepage figures do.
+    const projectCount = projects.filter(isShipped).length
     expect(OFFLINE_REPLY).toContain(`${numberToWords(projectCount)} projects shipped`)
+    expect(OFFLINE_REPLY).not.toMatch(/products of his own/i)
   })
 
   it('renders the counts as words, not digits', () => {
@@ -148,7 +147,7 @@ describe('privacy and factual guards apply to every shipped string', () => {
 
 describe('case study context', () => {
   const study: CaseStudy = {
-    slug: 'giya',
+    slug: 'iskotify',
     role: 'Sole developer',
     brief: ['The brief paragraph.'],
     built: ['What was built.'],
@@ -163,7 +162,7 @@ describe('case study context', () => {
 
   it('states every section of a case study under its project title', () => {
     const text = buildCaseStudyContext([study])
-    for (const s of ['Giya', 'Sole developer', 'The brief paragraph.', 'What was built.', 'A over B. Why: reason one', 'Next.js: server rendering', 'It shipped.', '10+ partners']) {
+    for (const s of ['Iskotify', 'Sole developer', 'The brief paragraph.', 'What was built.', 'A over B. Why: reason one', 'Next.js: server rendering', 'It shipped.', '10+ partners']) {
       expect(text).toContain(s)
     }
   })

@@ -5,7 +5,6 @@ import { placeGroups, unplacedProjects } from '@/lib/places'
 // Spec §5, the map data rule: a pin needs a place the project's own data
 // names. Projects without one are listed beside the map, never guessed.
 const PINNED: Record<string, string> = {
-  'connecta-ph': 'Naga City',
   'beachbus-nfc': 'Palawan',
   lunad: 'Naga City',
   graceland: 'Bicol',
@@ -79,15 +78,13 @@ describe('placeGroups', () => {
 
   it('keeps each place’s projects in data order', () => {
     const naga = placeGroups(projects).find((g) => g.name === 'Naga City')!
-    expect(naga.projects.map((p) => p.id)).toEqual(['connecta-ph', 'lunad', 'naga-city-guide'])
+    expect(naga.projects.map((p) => p.id)).toEqual(['lunad', 'naga-city-guide'])
   })
 
   it('lists every other project as unplaced, in data order', () => {
     expect(unplacedProjects(projects).map((p) => p.id)).toEqual([
-      'iskotify',
-      'naga-perks-giya-app',
-      'latag',
       'ocs-wp-control',
+      'iskotify',
       'aman-webapp',
       'skimcare',
       'acad1',

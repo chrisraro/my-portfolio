@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { SECTION } from '@/components/ui/grid'
+import { SECTION, SECTION_WIDE } from '@/components/ui/grid'
 
 // CLAUDE.md, Styling: one grid. Every section and read-page block centres on
 // the same class string, stated once (S2 final review, carry-over 8).
@@ -14,8 +14,12 @@ function tsxFiles(dir: string): string[] {
 }
 
 describe('the one grid', () => {
-  it('is one constant: centred, 6xl wide, 20px gutters, 32px from 640px', () => {
-    expect(SECTION).toBe('mx-auto max-w-6xl px-5 sm:px-8')
+  it('is one constant: centred, a 49rem reading column, 20px gutters, 32px from 640px', () => {
+    expect(SECTION).toBe('mx-auto w-full max-w-[49rem] px-5 sm:px-8')
+  })
+
+  it('has one wide twin for the project pages and the list: 66rem, the same gutters', () => {
+    expect(SECTION_WIDE).toBe('mx-auto w-full max-w-[66rem] px-5 sm:px-8')
   })
 
   it('lives where Tailwind looks for classes', () => {
@@ -34,7 +38,7 @@ describe('the one grid', () => {
 
   it('is used by every homepage section, the footer and the read pages', () => {
     const users = [
-      ...['trailhead', 'elevation-strip', 'field-map', 'fork', 'own-products', 'plan-the-route', 'trail-journals'].map(
+      ...['intro', 'now-building', 'experience', 'work-list', 'work-with-me', 'stack-table', 'plan-the-route'].map(
         (s) => `components/sections/${s}.tsx`,
       ),
       'components/footer.tsx',

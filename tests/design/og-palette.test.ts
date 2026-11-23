@@ -2,17 +2,17 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ogPalette, type OgToken } from '@/lib/og-palette'
 
-// The cards cannot read CSS variables, so they carry hex copies of the day
-// theme, the site's default. Convert each `:root` oklch triplet in
-// globals.css to sRGB hex and hold the copies to it, so a palette change
-// cannot leave the cards behind.
-function dayTriplet(token: OgToken): [number, number, number] {
+// The cards cannot read CSS variables, so they carry hex copies of the night
+// theme, the site's default (ThemeProvider defaultTheme="dark"). Convert each
+// `.dark` oklch triplet in globals.css to sRGB hex and hold the copies to it,
+// so a palette change cannot leave the cards behind.
+function nightTriplet(token: OgToken): [number, number, number] {
   const css = readFileSync('app/globals.css', 'utf8')
-  const start = css.indexOf(':root {')
-  const day = css.slice(start, css.indexOf('}', start))
-  const line = day.split('\n').find((l) => l.trim().startsWith(`--${token}:`))
+  const start = css.indexOf('.dark {')
+  const night = css.slice(start, css.indexOf('}', start))
+  const line = night.split('\n').find((l) => l.trim().startsWith(`--${token}:`))
   const match = line?.match(/:\s*([\d.]+)\s+([\d.]+)\s+([\d.]+);/)
-  if (!match) throw new Error(`--${token} not found in :root`)
+  if (!match) throw new Error(`--${token} not found in .dark`)
   return [Number(match[1]), Number(match[2]), Number(match[3])]
 }
 
@@ -36,7 +36,7 @@ function oklchToHex([L, C, H]: [number, number, number]): string {
 }
 
 describe('link-preview card palette', () => {
-  it.each(Object.keys(ogPalette) as OgToken[])('%s matches the day theme token', (token) => {
-    expect(ogPalette[token]).toBe(oklchToHex(dayTriplet(token)))
+  it.each(Object.keys(ogPalette) as OgToken[])('%s matches the night theme token', (token) => {
+    expect(ogPalette[token]).toBe(oklchToHex(nightTriplet(token)))
   })
 })

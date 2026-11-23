@@ -11,7 +11,7 @@ import {
   servicesPageContent,
   skills,
 } from '@/lib/data'
-import { numberWord } from '@/lib/proof'
+import { isShipped, numberWord } from '@/lib/proof'
 import { hasPhone } from '@/tests/helpers/privacy'
 import type { ServicePage } from '@/types'
 
@@ -150,11 +150,12 @@ describe('/about copy', () => {
     answersKeyword(aboutPageContent.keyword, aboutPageContent.answer)
   })
 
-  it('counts the products of my own from the data', () => {
-    const own = projects.filter((p) => p.band === 'Products')
-    expect(aboutPageContent.answer).toContain(`${numberWord(own.length)} products of his own`)
+  it('claims no products of his own, and names the work the story points to', () => {
+    expect(projects.some((p) => p.band === ('Products' as string))).toBe(false)
+    expect(aboutPageContent.answer).not.toMatch(/products? of (his|my) own|his own products/i)
     const story = aboutPageContent.story.paragraphs.join(' ')
-    for (const p of own) expect(story, p.title).toContain(p.title)
+    expect(story).not.toMatch(/products? of (his|my) own/i)
+    for (const title of ['Naga City Guide', 'Lunad', 'Iskotify']) expect(story, title).toContain(title)
   })
 })
 
@@ -166,10 +167,9 @@ describe('/hire copy', () => {
   })
 
   it('counts what has shipped from the data', () => {
-    const shipped = projects.filter((p) => p.status !== 'staging').length
-    const own = projects.filter((p) => p.band === 'Products').length
+    const shipped = projects.filter(isShipped).length
     expect(hirePageContent.answer).toContain(`shipped ${numberWord(shipped)} projects`)
-    expect(hirePageContent.answer).toContain(`${numberWord(own)} of them his own products`)
+    expect(hirePageContent.answer).not.toMatch(/his own products?/i)
     expect(hirePageContent.answer).toContain(`${numberWord(caseStudies.length)} written up as case studies`)
   })
 

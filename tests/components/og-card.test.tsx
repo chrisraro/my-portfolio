@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { GET, runtime } from '@/app/og/[[...path]]/route'
-import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
+import { DAWN, PAD_X, RIDGE, TEXT_WIDTH } from '@/lib/og-linework'
 import { OG_SIZE, ogImage } from '@/lib/site-metadata'
 import { siteRoutes } from '@/lib/site-routes'
 
@@ -46,7 +46,7 @@ describe('link-preview cards', () => {
   // font is served from disk.
   it.skipIf(process.platform === 'win32')('render a 1200×630 PNG for the homepage, a service and a project', async () => {
     vi.stubGlobal('fetch', async (url: URL) => new Response(readFileSync(fileURLToPath(url))))
-    for (const path of [undefined, ['services', 'ai-automation'], ['projects', 'giya']]) {
+    for (const path of [undefined, ['services', 'ai-automation'], ['projects', 'iskotify']]) {
       const response = await call(path)
       expect(response.status).toBe(200)
       const png = Buffer.from(await response.arrayBuffer())
@@ -58,14 +58,32 @@ describe('link-preview cards', () => {
 })
 
 describe('the card’s layout', () => {
-  // S5 controller look: the trail and contours ran behind the site URL at the
-  // bottom right, and the headline's word gap read wide.
-  const xs = (d: string) => (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number).filter((_, i) => i % 2 === 0)
+  // The land is Isarog's ridge along the foot of the card, with first light as
+  // a dither behind the summit. The dither stays right of the words' column;
+  // the ridge may run under the name and the URL but never up into the title.
+  const points = (d: string) => (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number)
+  const pairs = (d: string) => {
+    const n = points(d)
+    return Array.from({ length: Math.floor(n.length / 2) }, (_, i) => [n[2 * i], n[2 * i + 1]] as const)
+  }
 
-  it('keeps every line of the linework right of the words’ column', () => {
+  it('keeps first light right of the words’ column', () => {
     const right = PAD_X + TEXT_WIDTH
-    for (const d of [...CONTOURS, TRAIL]) expect(Math.min(...xs(d)), d).toBeGreaterThan(right)
-    expect(HERE.cx - HERE.r).toBeGreaterThan(right)
+    const squares = DAWN.split(' ').filter((t) => t.startsWith('M')).map((t) => Number(t.slice(1).match(/^-?\d+/)![0]))
+    expect(squares.length).toBeGreaterThan(50)
+    expect(Math.min(...squares)).toBeGreaterThan(right)
+  })
+
+  it('keeps the ridge in the foot of the card where the words are: low under the column', () => {
+    const right = PAD_X + TEXT_WIDTH
+    const under = pairs(RIDGE).filter(([x, y]) => x <= right && y < 630)
+    expect(under.length).toBeGreaterThan(10)
+    expect(Math.min(...under.map(([, y]) => y))).toBeGreaterThan(440)
+  })
+
+  it('draws no trail, contours or you-are-here ring any more', async () => {
+    const mod = (await import('@/lib/og-linework')) as Record<string, unknown>
+    for (const gone of ['CONTOURS', 'TRAIL', 'HERE']) expect(mod[gone], gone).toBeUndefined()
   })
 
   it('sets the name and the URL inside that column, and the title word by word', () => {

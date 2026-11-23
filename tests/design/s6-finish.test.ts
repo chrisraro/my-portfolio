@@ -2,13 +2,13 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_SLUGS } from '@/lib/case-studies'
-import { trailheadContours } from '@/lib/contours'
 import { projects } from '@/lib/data'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
-// Sprint 6 retires what Portfolio 4.0 left behind (master plan, S6): the
-// transitional amber aliases, the 4.0 utilities and the words that described
-// them. One describe per finished removal; each shows its pattern can fail.
+// Sprint 6 retired what Portfolio 4.0 left behind: the transitional amber
+// aliases, the 4.0 utilities and the words that described them. First Light
+// holds those removals and retires the Isarog Trail Map's own words. One
+// describe per finished removal; each shows its pattern can fail.
 function files(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry)
@@ -52,8 +52,8 @@ describe('the transitional accent aliases are gone', () => {
   })
 })
 
-describe('the browser surfaces wear the trail map', () => {
-  it('rings focus and draws the caret in trail red (where you are), selects in ink', () => {
+describe('the browser surfaces wear first light', () => {
+  it('rings focus and draws the caret in ember (where you are), selects in ink', () => {
     expect(css).toMatch(/:focus-visible \{[^}]*outline: 2px solid oklch\(var\(--trail\)\)/)
     expect(css).toMatch(/caret-color: oklch\(var\(--trail\)\)/)
     expect(css).toMatch(/::selection \{[^}]*background: oklch\(var\(--ink\)\);[^}]*color: oklch\(var\(--bg\)\)/)
@@ -61,11 +61,11 @@ describe('the browser surfaces wear the trail map', () => {
   })
 })
 
-const OLD_WORDS = /\b(?:Anybody|Figtree|Lobby Rack|lagoon|amber|postcards?|rack)\b/i
+const OLD_WORDS = /\b(?:Anybody|Figtree|Archivo|Lobby Rack|lagoon|amber|postcards?|rack)\b/i
 
-describe('the Portfolio 4.0 utilities and words are gone', () => {
+describe('the retired worlds’ utilities and words are gone', () => {
   it('catches the old words, so the guard can fail', () => {
-    for (const s of ['Anybody does the shouting', 'a rack strip', 'the amber plane', 'postcards 2px', 'Lobby Rack mark']) {
+    for (const s of ['Anybody does the shouting', 'a rack strip', 'the amber plane', 'postcards 2px', 'Lobby Rack mark', 'Archivo wdth']) {
       expect(s).toMatch(OLD_WORDS)
     }
     expect('a contour track').not.toMatch(OLD_WORDS)
@@ -78,11 +78,12 @@ describe('the Portfolio 4.0 utilities and words are gone', () => {
     for (const { f, src } of sources) expect(src, f).not.toMatch(/\bedge-code\b/)
   })
 
-  it('sets every width through font-stretch, never the old width-axis setting', () => {
+  it('sets no width axis at all: one family, one width', () => {
     expect(css).not.toMatch(/font-variation-settings:\s*'wdth'/)
+    expect(css).not.toMatch(/font-stretch/)
   })
 
-  it('describes the trail map, not the retired worlds', () => {
+  it('describes first light, not the retired worlds', () => {
     for (const { f, src } of sources) expect(src, f).not.toMatch(OLD_WORDS)
     expect(tailwind).not.toMatch(OLD_WORDS)
   })
@@ -100,27 +101,20 @@ describe('the chat launcher never covers a target', () => {
 
 describe('phone pacing', () => {
   // /projects was 15,094px tall at 390 wide: twenty 3:4 shots in one column.
-  // F18 (finish review): at 1440 a 3:4 product plate stood about 680px tall,
-  // so from 1024px the frame is a 4:3 crop of the top of the page again.
+  // From 1024px the frame is a 4:3 crop of the top of the page again.
   it('frames every screenshot 4:3 on a phone, 3:4 from 640px and 4:3 again from 1024px: one scale per width', () => {
     const shot = readFileSync('components/ui/project-shot.tsx', 'utf8')
     expect(shot).toContain("export const SHOT_ASPECT = 'aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]'")
-    for (const f of [
-      'components/ui/project-plate.tsx',
-      'components/sections/own-products.tsx',
-      'components/case-study/project-screenshots.tsx',
-    ]) {
-      const src = readFileSync(f, 'utf8')
-      expect(src, f).not.toContain('aspect-[3/4]')
-      expect(src, f).toContain('SHOT_ASPECT')
-    }
+    const src = readFileSync('components/case-study/project-screenshots.tsx', 'utf8')
+    expect(src).not.toContain('aspect-[3/4]')
+    expect(src).toContain('SHOT_ASPECT')
   })
 
-  // The field map section was 2,253px tall at 390 wide.
-  it('sets the field map’s places two to a row on a phone, under a narrower map', () => {
-    const src = readFileSync('components/sections/field-map.tsx', 'utf8')
-    expect(src).toContain('grid grid-cols-2 gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-6')
-    expect(src).toContain('max-w-[18rem] sm:max-w-md')
+  it('keeps a list row a compact thumbnail beside its words, not a frame of its own', () => {
+    const row = readFileSync('components/ui/project-row.tsx', 'utf8')
+    expect(row).toContain('grid-cols-[6.5rem_1fr]')
+    expect(row).toContain('aspect-[8/5]')
+    expect(row).not.toContain('SHOT_ASPECT')
   })
 })
 
@@ -131,118 +125,77 @@ describe('section headings carry their own weight', () => {
   })
 })
 
-// The finish review's visual findings (.superpowers/sdd/s6-finish-findings.md),
-// held where CSS or source can hold them.
+// The finish review's findings, held where CSS or source can hold them.
 const rules = parseCssRules(css)
 const rule = (selector: string) => rules.find((r) => r.selector === selector)?.body ?? ''
 
-describe('the first viewport reads at the contract’s scale (F1, F2, F21)', () => {
-  const trailhead = readFileSync('components/sections/trailhead.tsx', 'utf8')
-
-  // At 1440 the grid is 1088px wide (max-w-6xl less px-8). The headline is
-  // 13cqi of the copy column; a 7fr/5fr split gave about 79px (contract 80-110px).
-  it('sets the headline near 88px at 1440: the copy column takes all but the 22rem plate from 1024px', () => {
-    expect(trailhead).toContain('lg:grid-cols-[minmax(0,1fr)_22rem]')
-    const cqi = Number(rule('.trailhead-title').match(/clamp\([^,]+,\s*([\d.]+)cqi/)?.[1])
-    const column = 1088 - 48 - 352
-    const size = (cqi / 100) * column
-    expect(size).toBeGreaterThanOrEqual(84)
-    expect(size).toBeLessThanOrEqual(96)
-  })
-
-  // The sticky legend takes about 65px; the plate's top sat at about 217.
-  it('lifts the portrait plate to about y 150 and keeps the copy where it was', () => {
-    expect(trailhead).toMatch(/md:gap-12 md:pb-20 md:pt-20 /)
-    expect(trailhead).toMatch(/className="trailhead-copy min-w-0 md:pt-16"/)
-    expect(trailhead).not.toContain('md:pt-36')
-  })
-
-  it('draws contours under the left column too, not only around the plate', () => {
-    const minX = (d: string) => {
-      const n = (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number)
-      return Math.min(...n.filter((_, i) => i % 2 === 0))
-    }
-    expect(trailheadContours.filter((d) => minX(d) < 480).length).toBeGreaterThanOrEqual(4)
-  })
-
-  it('balances the eyebrow, so no word is left alone on a line', () => {
-    expect(rule('.eyebrow')).toMatch(/text-wrap:\s*balance/)
-  })
-})
-
-describe('one display voice (F5)', () => {
-  it('sets the inner-page h1 condensed and uppercase, like the homepage h1 and the section titles', () => {
-    expect(rule('.text-page-h1')).toMatch(/text-transform:\s*uppercase/)
-    expect(rule('.text-page-h1')).toMatch(/font-stretch:\s*75%/)
-  })
-})
-
-describe('every route sits on the same grid and fills the window (F10)', () => {
+describe('every route sits on the same grid and fills the window', () => {
   it('reserves the scrollbar gutter, so a short page does not shift sideways', () => {
     expect(rule('html')).toMatch(/scrollbar-gutter:\s*stable/)
   })
 
-  it('lets main grow, so the footer meets the window’s bottom', () => {
+  it('lets main grow, so the footer meets the window’s bottom, beside the fixed panel from 1024px', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout).toContain('<div className="flex min-h-screen flex-col bg-canvas text-ink">')
+    expect(layout).toContain('<div className="relative flex min-h-screen flex-col text-ink lg:pl-[17.5rem]">')
     expect(layout).toContain('<main id="main" className="flex-1">')
   })
 })
 
-describe('the headline fits at 320px (14b)', () => {
-  it('floors the trailhead title at 2.25rem, sized to its column up to 7.5rem', () => {
-    expect(rule('.trailhead-title')).toMatch(/font-size:\s*clamp\(2\.25rem,\s*13cqi,\s*7\.5rem\)/)
+describe('the name fits at 320px', () => {
+  it('floors the name at 2rem and tops it at 2.5rem, so it never overflows or shouts', () => {
+    expect(rule('.text-name')).toMatch(/font-size:\s*clamp\(2rem,\s*[^,]+,\s*2\.5rem\)/)
   })
 })
 
-describe('the leftovers (14b)', () => {
-  it('gives the chat labels the weight edge-code had', () => {
+describe('the leftovers', () => {
+  it('gives the chat labels their weight', () => {
     const chat = readFileSync('components/ui/chat-widget.tsx', 'utf8')
     expect(chat).toMatch(/\bfont-medium\b/)
     for (const line of chat.split('\n').filter((l) => /\btabular\b/.test(l))) expect(line).toMatch(/\bfont-medium\b/)
   })
 
-  it('says body text falls back to the size-adjusted Archivo face, not plain Arial', () => {
+  it('says body text falls back to the size-adjusted face, not plain Arial', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
     expect(layout).not.toMatch(/Body text falls back to Arial/i)
     expect(layout).toMatch(/size-adjusted/)
   })
 
   it('keeps break-words on a case-study figure and no doubled parentheses in the shot doc', () => {
-    expect(readFileSync('components/case-study/case-study-body.tsx', 'utf8')).toMatch(/text-title tabular break-words text-ink/)
+    expect(readFileSync('components/case-study/case-study-body.tsx', 'utf8')).toMatch(/break-words/)
     expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).not.toMatch(/\)\s*\(/)
   })
 })
 
-describe('the docs describe the trail map that shipped', () => {
-  it('DESIGN.md is the Isarog Trail Map, written from the code', () => {
+// These read DESIGN.md, PRODUCT.md and CLAUDE.md, which are written from the
+// built site; a stale doc fails here.
+describe('the docs describe the first light that shipped', () => {
+  it('DESIGN.md is First Light, written from the code', () => {
     const doc = readFileSync('DESIGN.md', 'utf8')
-    for (const name of ['Isarog Trail Map', '--trail', '--contour', 'survey-plate', 'legend-glass', 'Archivo', 'font-stretch', 'map-pin__mark', 'trailhead-contours', 'SHOT_ASPECT', 'app/og/']) {
+    for (const name of ['First Light', '--trail', '--contour', 'survey-plate', '.glass', 'Instrument Sans', '--land-far', 'SHOT_ASPECT', 'app/og/']) {
       expect(doc, name).toContain(name)
     }
-    expect(doc).not.toMatch(/Lobby Rack|--accent|accent-plane|on-accent|edge-code|opengraph-image|on-plane|postcard|lagoon|amber/i)
+    expect(doc).not.toMatch(/Lobby Rack|--accent|accent-plane|on-accent|edge-code|opengraph-image|on-plane|postcard|lagoon|amber|Archivo|legend-glass|trailhead-contours/i)
   })
 
-  it('PRODUCT.md counts the inventory the data holds', () => {
+  it('PRODUCT.md counts the inventory the data holds, and claims no products of Christian’s own', () => {
     const doc = readFileSync('PRODUCT.md', 'utf8')
-    const own = projects.filter((p) => p.band === 'Products').length
+    expect(projects.some((p) => (p.band as string) === 'Products')).toBe(false)
     expect(doc).toContain(`${projects.length} projects`)
-    expect(doc).toContain(`${own} own products`)
     expect(doc).toContain(`${FLAGSHIP_SLUGS.length} case studies`)
     expect(doc).toContain('/services')
     expect(doc).toContain('/hire')
-    expect(doc).not.toMatch(/\b15 projects\b|three products|Portfolio 4\.0 redesign is built/)
+    expect(doc).not.toMatch(/\b15 projects\b|\b20 projects\b|four own products|three products|Portfolio 4\.0 redesign is built/)
   })
 
-  it('CLAUDE.md drops the amber and the 4.0 utilities and names the S6 pieces', () => {
+  it('CLAUDE.md drops the amber and the retired worlds and names the First Light pieces', () => {
     const doc = readFileSync('CLAUDE.md', 'utf8')
-    expect(doc).not.toMatch(/accent-plane|on-accent|Two ambers|edge-code|removed in S6|Lobby Rack|\.reveal(?![\w-])|lagoon|plain Arial|adjustFontFallback: false/)
-    for (const name of ['map-pin__mark', 'trailhead-contours', 's6-finish', 's6-motion', 'metaDescription', 'SHOT_ASPECT', 'MapKey', 'adjustFontFallback: true']) {
+    expect(doc).not.toMatch(/accent-plane|on-accent|Two ambers|edge-code|removed in S6|Lobby Rack|\.reveal(?![\w-])|lagoon|plain Arial|adjustFontFallback: false|Archivo/)
+    for (const name of ['metaDescription', 'SHOT_ASPECT', 'MapKey', 'scene']) {
       expect(doc, name).toContain(name)
     }
   })
 
-  it('the direction contract no longer lists S6 work as unresolved', () => {
+  it('the direction contract no longer lists the retired contour shift as unresolved', () => {
     expect(readFileSync('.impeccable/surfaces/app-page-tsx.md', 'utf8')).not.toMatch(/Unresolved: the contour pointer shift/)
   })
 })

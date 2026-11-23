@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { heroContent, projects } from '@/lib/data'
-import { numberWord } from '@/lib/proof'
 
-// Spec §6: the trailhead copy. The own-products count is derived from the
-// Products band, never typed by hand.
-describe('trailhead copy', () => {
+// The intro's copy. There are no products of Christian's own on the site: the
+// subheadline names client work and nothing else.
+describe('intro copy', () => {
   it('names the role and the base in the eyebrow', () => {
     expect(heroContent.eyebrow).toBe('Full-stack developer · Naga City, Philippines')
   })
@@ -14,12 +13,12 @@ describe('trailhead copy', () => {
     expect(heroContent.headline).toBe('Built in Bicol. Running across the Philippines.')
   })
 
-  it('derives the own-products count in the subheadline from the Products band', () => {
-    const count = projects.filter((p) => p.band === 'Products').length
-    expect(heroContent.subheadline).toContain(`and ${numberWord(count)} products of my own.`)
+  it('names client work and availability, and claims no products of his own', () => {
     expect(heroContent.subheadline).toBe(
-      'Booking and payment sites for travel businesses, AI automation for teams, and four products of my own. Open to client projects and to full-time remote roles.',
+      'Booking and payment sites for travel businesses, web apps and AI automation for teams. Open to client projects and to full-time remote roles.',
     )
+    expect(projects.some((p) => p.band === ('Products' as string))).toBe(false)
+    expect(heroContent.subheadline).not.toMatch(/products? of my own|my own products?/i)
   })
 
   it('keeps the title the JSON-LD reads as jobTitle', () => {

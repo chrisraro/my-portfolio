@@ -1,48 +1,36 @@
 import { describe, expect, it } from 'vitest'
 import { caseStudies } from '@/lib/case-studies'
 import { projects } from '@/lib/data'
-import { buildElevationStrip, elevationFigures } from '@/lib/elevation'
+import { elevationFigures } from '@/lib/elevation'
 import { placeGroups } from '@/lib/places'
+import { isShipped } from '@/lib/proof'
 
-// Spec §5: the elevation strip is the 2020-to-now timeline, with the proof
-// figures as spot heights, every number counted from the data.
-const NOW = new Date(Date.UTC(2026, 10, 20))
-const strip = buildElevationStrip(NOW)
-
-describe('elevation strip', () => {
-  it('runs from January of the earliest start year to now, a tick per year', () => {
-    expect(strip.years[0]).toEqual({ year: 2020, at: 0 })
-    expect(strip.years.map((y) => y.year)).toEqual([2020, 2021, 2022, 2023, 2024, 2025, 2026])
-    for (const y of strip.years) expect(y.at).toBeLessThan(1)
-  })
-
-  it('places every role and degree inside the strip, starting before it ends', () => {
-    expect(strip.entries).toHaveLength(3)
-    for (const e of strip.entries) {
-      expect(e.start, e.title).toBeGreaterThanOrEqual(0)
-      expect(e.end, e.title).toBeLessThanOrEqual(1)
-      expect(e.start, e.title).toBeLessThan(e.end)
-    }
-  })
-
-  it('runs the current role to now, and starts the degree in 2020', () => {
-    expect(strip.entries.find((e) => e.subtitle === 'Online Creative Solutions')?.end).toBe(1)
-    const degree = strip.entries.find((e) => e.type === 'education')!
-    expect(degree.start).toBeGreaterThan(0)
-    expect(degree.start).toBeLessThan(strip.years[1].at)
-  })
-})
-
+// The homepage's figures: three counts taken from the data, each linking to
+// where the thing it counts is listed. The strip itself is gone.
 describe('elevation figures', () => {
   it('counts each figure from the data', () => {
-    const [own, shipped, studies, places] = elevationFigures()
-    expect(own.value).toBe(projects.filter((p) => p.band === 'Products').length)
-    expect(shipped.value).toBe(projects.filter((p) => p.status !== 'staging').length)
+    const [shipped, studies, places] = elevationFigures()
+    expect(shipped.value).toBe(projects.filter(isShipped).length)
     expect(studies.value).toBe(caseStudies.length)
     expect(places.value).toBe(placeGroups(projects).length)
   })
 
+  it('gives exactly three figures, none of them a count of products of his own', () => {
+    const figures = elevationFigures()
+    expect(figures).toHaveLength(3)
+    for (const f of figures) expect(f.label).not.toMatch(/products/i)
+  })
+
+  it('links each figure to the page or section that lists what it counts', () => {
+    expect(elevationFigures().map((f) => f.href)).toEqual(['/projects', '#journals', '#places'])
+  })
+
   it('states today’s figures', () => {
-    expect(elevationFigures().map((f) => f.value)).toEqual([4, 19, 6, 6])
+    expect(elevationFigures().map((f) => f.value)).toEqual([15, 4, 6])
+  })
+
+  it('leaves the 2020-to-now strip builder retired', async () => {
+    const mod = (await import('@/lib/elevation')) as Record<string, unknown>
+    expect(mod.buildElevationStrip).toBeUndefined()
   })
 })

@@ -11,12 +11,10 @@ import { elevationFigures } from '@/lib/elevation'
 // heroContent.proofPoints was retired in S5: the elevation strip's figures,
 // counted from the data, are the proof, and the chat prompt reads them too.
 describe('proof figures', () => {
-  it('count the products and shipped projects the inventory holds', () => {
-    const [products, shipped] = elevationFigures()
-    expect(products.value).toBe(projects.filter((p) => p.band === 'Products').length)
-    expect(products.value).toBe(4)
-    expect(shipped.value).toBe(projects.filter((p) => p.status !== 'staging').length)
-    expect(shipped.value).toBe(19)
+  it('count the shipped projects the inventory holds, not staging and not in development', () => {
+    const [shipped] = elevationFigures()
+    expect(shipped.value).toBe(projects.filter((p) => p.status !== 'staging' && p.status !== 'in-development').length)
+    expect(shipped.value).toBe(15)
   })
 
   it('reach the chat assistant as the same figures', () => {

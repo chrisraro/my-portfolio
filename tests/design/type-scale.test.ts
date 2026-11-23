@@ -10,10 +10,10 @@ function tsxFiles(dir: string): string[] {
   })
 }
 
-// The display styles (.text-title, .text-numeral, the fluid headings) carry the
-// contract's type scale. An arbitrary size on top of one of them is an
+// The type styles (.text-name, .text-page-h1, .text-section, .text-title, ...)
+// carry the type scale. An arbitrary size on top of one of them is an
 // off-scale size (the confirm critique found four).
-const scaled = /className="[^"]*\btext-(?:title|numeral|fluid-h1|fluid-h2|page-h1)\b[^"]*"/g
+const scaled = /className="[^"]*\btext-(?:name|page-h1|section|title|list|row|figure|lede)\b[^"]*"/g
 const arbitrary = /\btext-\[\d*\.?\d+(?:rem|px)\]/
 
 describe('type scale', () => {
@@ -28,45 +28,50 @@ describe('type scale', () => {
   })
 })
 
-describe('trail map type utilities', () => {
+describe('first light type utilities', () => {
   const css = readFileSync('app/globals.css', 'utf8')
+  const body = (cls: string) => css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
+  const STYLES = ['text-name', 'text-page-h1', 'text-section', 'text-title', 'text-list', 'text-row', 'text-figure', 'text-lede', 'map-label']
 
-  it('keeps UI labels on the body stack, not the condensed display face', () => {
-    // Before Archivo loads the display fallback renders at 70%: a 12px badge at ~8.4px.
-    for (const cls of ['button-label']) {
-      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
-      expect(body, cls).toBeDefined()
-      expect(body, cls).not.toContain('var(--font-display)')
-      expect(body, cls).toContain('var(--font-sans)')
+  it('sets every style in rem or a rem clamp, so the browser’s text size is honoured', () => {
+    for (const cls of STYLES) {
+      const b = body(cls)
+      expect(b, cls).toBeDefined()
+      expect(b, cls).toMatch(/font-size:\s*(?:clamp\([^)]*rem[^)]*\)|[\d.]+rem)/)
+      expect(b, cls).not.toMatch(/font-size:[^;]*\bpx\b/)
     }
   })
 
-  it('sets display and map labels condensed and uppercase', () => {
-    for (const cls of ['text-display', 'text-section', 'map-label']) {
-      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
-      expect(body, cls).toBeDefined()
-      expect(body, cls).toMatch(/font-stretch:\s*(?:6\d|7\d)%/)
-      expect(body, cls).toMatch(/text-transform:\s*uppercase/)
+  it('sets headings with weight and tracking, never condensed or uppercase', () => {
+    for (const cls of STYLES) {
+      const b = body(cls)!
+      expect(b, cls).not.toMatch(/text-transform|font-stretch|font-variation-settings|font-family/)
+    }
+    for (const cls of ['text-name', 'text-page-h1', 'text-section', 'text-title', 'text-list', 'text-row', 'text-figure']) {
+      expect(body(cls), cls).toMatch(/font-weight:\s*\d{3}/)
+      expect(body(cls), cls).toMatch(/letter-spacing:\s*-/)
     }
   })
 
-  it('resets the old width-axis settings so font-stretch wins', () => {
-    for (const cls of ['text-display', 'text-section', 'map-label', 'eyebrow']) {
-      const body = css.match(new RegExp(String.raw`\.${cls} \{([^}]*)\}`))?.[1]
-      expect(body, cls).toBeDefined()
-      expect(body, cls).toMatch(/font-variation-settings:\s*normal/)
-    }
+  it('keeps the smallest label at 14px (0.875rem), the floor for text', () => {
+    expect(body('map-label')).toMatch(/font-size:\s*0\.875rem/)
+    const sizes = STYLES.map((c) => Number(body(c)!.match(/font-size:\s*([\d.]+)rem/)?.[1] ?? 1.5))
+    expect(Math.min(...sizes)).toBeGreaterThanOrEqual(0.875)
+  })
+
+  it('has no condensed face, display stack or width-axis setting anywhere', () => {
+    expect(css).not.toMatch(/font-stretch|font-variation-settings|--font-display|Display Fallback|text-transform:\s*uppercase/)
+    expect(css).not.toMatch(/\.(text-display|eyebrow)\b/)
+  })
+
+  it('uses the one family for sans and display in Tailwind', () => {
+    const tw = readFileSync('tailwind.config.js', 'utf8')
+    expect(tw).not.toMatch(/\bmono\b|[^-]serif\b/)
+    expect(tw.match(/var\(--font-sans\)/g)?.length).toBeGreaterThanOrEqual(1)
+    expect(tw).not.toContain('--font-display')
   })
 
   it('gives numerals tabular figures', () => {
     expect(css).toMatch(/\.tabular \{[^}]*font-variant-numeric:\s*tabular-nums/)
-  })
-
-  it('sizes a fallback face for display type so the condensed headline fits before Archivo loads', () => {
-    const css = readFileSync('app/globals.css', 'utf8')
-    const face = css.match(/@font-face\s*\{[^}]*'Archivo Display Fallback'[^}]*\}/)?.[0] ?? ''
-    expect(face).toMatch(/size-adjust:\s*70%/)
-    const rule = css.match(/\.text-display\s*\{[^}]*\}/)?.[0] ?? ''
-    expect(rule).toMatch(/font-family:\s*var\(--font-display\)/)
   })
 })

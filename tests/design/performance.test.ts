@@ -21,7 +21,7 @@ describe('image priority', () => {
     const withPriority = sources
       .filter(({ src }) => /^\s*priority\b/m.test(src) || /fetchPriority=/.test(src))
       .map(({ f }) => f.replace(/\\/g, '/'))
-    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/trailhead.tsx'])
+    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/intro.tsx'])
   })
 
   it('never prioritises a full-page project shot', () => {
@@ -54,19 +54,18 @@ describe('motion stays off the first load', () => {
 })
 
 describe('first layout', () => {
-  // S2 and S4 traces: the body re-wrapped when Archivo swapped in (CLS 0.094 on
-  // /, 0.096 on /about). Next sizes Arial to Archivo's metrics (size-adjust
-  // 98.70%, ascent 88.96%, descent 21.28%), so the swap moves nothing.
-  it('falls back to Arial size-adjusted to Archivo, so the font swap re-wraps nothing', () => {
+  // The body re-wrapped when the web font swapped in (CLS 0.094 on /). Next
+  // sizes Arial to the family's metrics, so the swap moves nothing.
+  it('falls back to Arial size-adjusted to Instrument Sans, so the font swap re-wraps nothing', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
     expect(layout.match(/adjustFontFallback: true/g)).toHaveLength(1)
     expect(layout).not.toContain('adjustFontFallback: false')
   })
 
-  it('loads the trailhead portrait, the first viewport’s largest paint, at quality 70', () => {
-    const trailhead = readFileSync('components/sections/trailhead.tsx', 'utf8')
-    expect(trailhead).toContain('quality={70}')
-    expect(trailhead).not.toContain('quality={85}')
+  it('loads the intro portrait, the first viewport’s largest paint, at quality 70', () => {
+    const intro = readFileSync('components/sections/intro.tsx', 'utf8')
+    expect(intro).toMatch(/priority\s+sizes="[^"]*"\s+quality=\{70\}/)
+    expect(intro).not.toContain('quality={85}')
   })
 
   it('does not run next-themes’ transition suppression on every load', () => {
@@ -80,8 +79,8 @@ describe('first layout', () => {
     expect(css).toMatch(/\.defer-render \{[^}]*content-visibility:\s*auto;[^}]*contain-intrinsic-size:\s*auto/)
   })
 
-  it('never defers the first viewport, the field map (#work), the journals or the contact form', () => {
-    for (const f of ['trailhead', 'elevation-strip', 'field-map', 'own-products', 'trail-journals', 'plan-the-route']) {
+  it('never defers the first viewport, the work lists, the places or the contact form', () => {
+    for (const f of ['intro', 'now-building', 'experience', 'work-list', 'work-with-me', 'plan-the-route']) {
       const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
       expect(src, f).not.toMatch(/<section[^>]*defer-render/)
     }
@@ -89,39 +88,32 @@ describe('first layout', () => {
 })
 
 describe('type family', () => {
-  // One variable family on its width axis: condensed for display and map
-  // labels, normal width for reading. Anybody and Figtree are retired.
-  it('loads Archivo with its wdth axis and nothing else', () => {
+  // One variable family, no width axis, no second face: Instrument Sans.
+  it('loads Instrument Sans and nothing else', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout).toMatch(/import \{ Archivo \} from 'next\/font\/google'/)
-    expect(layout).toMatch(/axes: \['wdth'\]/)
-    expect(layout).not.toMatch(/Figtree|localFont|anybody/i)
+    expect(layout).toMatch(/import \{ Instrument_Sans \} from 'next\/font\/google'/)
+    expect(layout.match(/from 'next\/font\//g)).toHaveLength(1)
+    expect(layout).not.toMatch(/Archivo|Figtree|localFont|anybody|axes:/i)
+    expect(layout).toContain("variable: '--font-sans'")
     expect(existsSync('app/fonts/anybody-latin-wght400-800-wdth75-100.woff2')).toBe(false)
   })
 
-  it('sets the display stack from the loaded family, ahead of the narrow fallback and never Arial', () => {
+  it('sets no display stack: no --font-display, no narrow fallback face', () => {
     const layout = readFileSync('app/layout.tsx', 'utf8')
-    expect(layout).toContain('archivo.style.fontFamily')
-    expect(layout).toContain("'Archivo Display Fallback'")
-    expect(layout).toContain("'--font-display'")
-  })
-})
-
-describe('font swap', () => {
-  // R6: in Arial the old hero's "Full-stack" broke at its hyphen into a third
-  // line that collapsed when the web font arrived (CLS 0.23). The trailhead's
-  // headline is authored lines, each held on one line in every font.
-  it('never re-wraps a headline line, so the H1 keeps its line count across the swap', () => {
-    expect(css).toMatch(/\.trailhead-line \{[^}]*white-space:\s*nowrap/)
+    expect(layout).not.toContain('--font-display')
+    expect(layout).not.toMatch(/Display Fallback/)
+    expect(css).not.toMatch(/--font-display|Display Fallback|font-stretch|'wdth'/)
   })
 })
 
 describe('reveals', () => {
   it('move by transform only, so text is never painted or measured faded', () => {
-    for (const name of ['reveal-cover']) {
-      const body = css.match(new RegExp(String.raw`@keyframes ${name} \{([\s\S]*?)\n\t\t\}`))?.[1]
+    for (const name of ['rise', 'rise-in']) {
+      const body = css.match(new RegExp(String.raw`@keyframes ${name} \{([\s\S]*?)
+	+\}`))?.[1]
       expect(body, name).toBeDefined()
       expect(body, name).not.toContain('opacity')
+      expect(body, name).toContain('transform')
     }
   })
 })

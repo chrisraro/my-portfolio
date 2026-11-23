@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { MapKey } from '@/components/map/map-key'
 import { PLACE_MARK, Pin } from '@/components/map/pin'
-import { FieldMap } from '@/components/sections/field-map'
+import { Places } from '@/components/sections/work-with-me'
 import { projects, sectionContent } from '@/lib/data'
 import { project as toMap } from '@/lib/geo'
 import { placeGroups } from '@/lib/places'
@@ -69,7 +69,7 @@ describe('the map key', () => {
   })
 
   it('sits in the homepage map’s caption and in /projects’ map caption', () => {
-    const home = renderToStaticMarkup(<FieldMap />)
+    const home = renderToStaticMarkup(<Places />)
     expect(home.slice(home.indexOf('<figcaption'), home.indexOf('</figcaption>'))).toContain(sectionContent.fieldMap.key.city)
     expect(readFileSync('app/projects/page.tsx', 'utf8')).toMatch(/<MapKey className="mt-2" \/>\s*<\/figcaption>/)
   })

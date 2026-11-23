@@ -44,82 +44,48 @@ describe('motion tokens', () => {
     expect(cssVar('--stagger-line')).toBe('70ms')
   })
 
-  it('keeps every .reveal animation inside both gates', () => {
+  it('keeps .rise-in inside both gates', () => {
     const rules = parseRules(css)
-    const reveals = rules.filter((r) => r.selector.includes('.reveal'))
+    const reveals = rules.filter((r) => r.selector === '.rise-in')
     expect(reveals.length).toBeGreaterThan(0)
-    const animated = reveals.filter((r) => /animation(-timeline|-range)?\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body))
-    expect(animated.length).toBeGreaterThan(0)
-    for (const r of animated) {
-      expect(r.ancestors, `${r.selector} needs @supports`).toContain('@supports (animation-timeline: view())')
+    for (const r of reveals) {
+      expect(r.body, r.selector).toMatch(/animation-timeline:\s*view\(\)/)
+      expect(r.ancestors.join(' | '), `${r.selector} needs @supports`).toContain('animation-timeline: view()')
       expect(r.ancestors, `${r.selector} needs no-preference`).toContain('@media (prefers-reduced-motion: no-preference)')
     }
   })
 
-  it('switches every reveal variant off under prefers-reduced-motion: reduce', () => {
-    const rules = parseRules(css)
-    const animated = rules.filter(
-      (r) => /\.reveal-[\w-]+/.test(r.selector) && /animation\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
-    )
-    const variants = new Set(animated.flatMap((r) => r.selector.match(/\.reveal-[\w-]+/g) ?? []))
-    // S3 retires the rack's stagger and the case-study fold; the cover rise
-    // (the trail journals) remains.
-    expect(variants.size).toBeGreaterThanOrEqual(1)
-    const off = rules
-      .filter((r) => r.ancestors.includes('@media (prefers-reduced-motion: reduce)') && /animation\s*:\s*none/.test(r.body))
-      .map((r) => r.selector)
-      .join(' ')
-    for (const v of Array.from(variants)) expect(off, `${v} is not switched off under reduce`).toMatch(new RegExp(`${v.replace('.', '\\.')}(?![\\w-])`))
-  })
-
-  it('runs the trailhead sequence only under no-preference, and switches it off under reduce', () => {
-    const rules = parseRules(css)
-    const animated = rules.filter(
-      (r) => /\.trailhead-[\w-]+|\.trail-draw--load/.test(r.selector) && /animation(-name)?\s*:/.test(r.body) && !/animation\s*:\s*none/.test(r.body),
-    )
-    expect(animated.length).toBeGreaterThanOrEqual(3)
-    for (const r of animated) {
+  it('runs the line rise (.rise) only under no-preference', () => {
+    const rises = parseRules(css).filter((r) => r.selector === '.rise')
+    expect(rises.length).toBeGreaterThan(0)
+    for (const r of rises) {
+      expect(r.body).toMatch(/animation:\s*rise var\(--dur-slow\) var\(--ease-smooth\) both/)
+      expect(r.body).toContain('var(--stagger-line)')
       expect(r.ancestors, `${r.selector} needs no-preference`).toContain('@media (prefers-reduced-motion: no-preference)')
     }
-    const off = rules.find(
+  })
+
+  it('switches every rise and the dawn off under prefers-reduced-motion: reduce', () => {
+    const off = parseRules(css).find(
       (r) =>
         r.ancestors.includes('@media (prefers-reduced-motion: reduce)') &&
         /animation\s*:\s*none/.test(r.body) &&
-        ['.trailhead-line', '.trailhead-rise', '.trail-draw--load'].every((s) => r.selector.includes(s)),
+        ['.rise', '.rise-in', '.scene-dawn'].every((s) => r.selector.includes(s)),
     )
     expect(off).toBeDefined()
+    expect(off!.body).toMatch(/transform:\s*none/)
+    expect(off!.body).toMatch(/opacity:\s*1/)
   })
 
-  it('keeps the trailhead sequence under two seconds', () => {
+  it('keeps the arrival under two seconds: the last line has risen by then', () => {
     const ms = (name: string) => {
       const m = css.match(new RegExp(String.raw`${name}:\s*(\d+)ms;`))
       if (!m) throw new Error(`missing ${name}`)
       return Number(m[1])
     }
-    const dur = motionTokens.duration
+    // The headline's lines stagger on --stagger-line, each over the slow duration.
     const lines = heroContent.headlineLines.length
-    // Every part of the sequence ends by 2 s, not just the latest-starting one.
-    const ends = {
-      // Headline lines: staggered, each over the slow duration.
-      lines: (lines - 1) * ms('--stagger-line') + dur.slow * 1000,
-      // Subheadline and buttons.
-      rise: ms('--t-lede') + dur.normal * 1000,
-      // The trail draws out of the plate.
-      trail: ms('--t-trail') + dur.draw * 1000,
-    }
-    for (const [part, end] of Object.entries(ends)) {
-      expect(end, part).toBeLessThan(2000)
-    }
-  })
-
-  it('switches .reveal off under prefers-reduced-motion: reduce', () => {
-    const off = parseRules(css).find(
-      (r) =>
-        r.selector.includes('.reveal') &&
-        r.ancestors.includes('@media (prefers-reduced-motion: reduce)') &&
-        /animation\s*:\s*none/.test(r.body),
-    )
-    expect(off).toBeDefined()
+    expect((lines - 1) * ms('--stagger-line') + motionTokens.duration.slow * 1000).toBeLessThan(2000)
   })
 })
 

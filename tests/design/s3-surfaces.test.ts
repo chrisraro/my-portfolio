@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
-// The surfaces S3 rebuilt wear the Isarog Trail Map only: no Portfolio 4.0
+// The surfaces S3 rebuilt wear First Light only: no Portfolio 4.0
 // amber plane (on-plane), no edge-code labels, no creases, no rounded-xl paper.
 // (The accent aliases are held out of every source by s6-finish.test.ts.)
 const S3 = [
@@ -9,7 +9,7 @@ const S3 = [
   'app/projects/[slug]/page.tsx',
   ...readdirSync('components/case-study').map((f) => `components/case-study/${f}`),
   ...readdirSync('components/map').map((f) => `components/map/${f}`),
-  'components/ui/project-plate.tsx',
+  'components/ui/project-row.tsx',
   'components/ui/legend-filter.tsx',
   'components/ui/survey-plate.tsx',
   'components/ui/trail-link.tsx',

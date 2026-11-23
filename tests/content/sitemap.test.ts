@@ -21,7 +21,7 @@ describe('sitemap', () => {
     expect(priority('/services')).toBeGreaterThan(priority('/projects'))
     expect(priority('/hire')).toBeGreaterThan(priority('/projects'))
     expect(priority(`/projects/${FLAGSHIP_SLUGS[0]}`)).toBe(0.7)
-    expect(priority('/projects/latag')).toBe(0.5)
+    expect(priority('/projects/skimcare')).toBe(0.5)
   })
 
   it('lists every route in lib/site-routes.ts once, in its order', () => {

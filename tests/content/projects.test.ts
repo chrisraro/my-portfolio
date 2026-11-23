@@ -44,9 +44,13 @@ describe('project taxonomy', () => {
     expect(graceland?.links.live).toBe('https://graceland.ph')
   })
 
-  it('points Giya at giya.ph', () => {
-    const giya = projects.find((p) => p.slug === 'giya')
-    expect(giya?.links.live).toBe('https://giya.ph')
+  it('points Iskotify at its live site, as an Online Creative Solutions project in development', () => {
+    const iskotify = projects.find((p) => p.slug === 'iskotify')!
+    expect(iskotify.links.live).toBe('https://iskotify.ph')
+    expect(iskotify.band).toBe('Applications')
+    expect(iskotify.sector).toBe('education')
+    expect(iskotify.status).toBe('in-development')
+    expect(`${iskotify.description} ${iskotify.metaDescription}`).toContain('Online Creative Solutions')
   })
 
   it('uses the live brand name Review Masters Bicol', () => {
@@ -95,26 +99,23 @@ describe('project summaries', () => {
 })
 
 describe('project inventory', () => {
-  it('holds exactly twenty projects', () => {
-    expect(projects).toHaveLength(20)
+  it('holds exactly seventeen projects', () => {
+    expect(projects).toHaveLength(17)
   })
 
-  it('distributes them across the four bands as designed', () => {
+  it('distributes them across the three bands as designed', () => {
     const count = (band: string) => projects.filter((p) => p.band === band).length
-    expect(count('Products')).toBe(4)
+    expect(count('Products')).toBe(0)
     expect(count('Custom systems')).toBe(2)
-    expect(count('Applications')).toBe(3)
+    expect(count('Applications')).toBe(4)
     expect(count('Sites')).toBe(11)
   })
 
   it('carries the full inventory by slug', () => {
     expect(projects.map((p) => p.slug)).toEqual([
-      'iskotify',
-      'giya',
-      'latag',
-      'connecta-ph',
       'beachbus-nfc-card-system',
       'ocs-wp-control-panel',
+      'iskotify',
       'aman-group-web-app',
       'skimcare',
       'lunad',
@@ -132,8 +133,8 @@ describe('project inventory', () => {
     ])
   })
 
-  it('features exactly six projects', () => {
-    expect(projects.filter((p) => p.featured)).toHaveLength(6)
+  it('features exactly four projects', () => {
+    expect(projects.filter((p) => p.featured)).toHaveLength(4)
   })
 
   it('gives every project a live link unless it is internal', () => {

@@ -13,8 +13,9 @@ const unapproved: CaseStudyMetric = { value: '1', label: 'x', clientApproved: fa
 void unapproved
 
 describe('case studies', () => {
-  it('names six flagships, each a real project', () => {
-    expect(FLAGSHIP_SLUGS).toHaveLength(6)
+  it('names four flagships, each a real project', () => {
+    expect(FLAGSHIP_SLUGS).toHaveLength(4)
+    expect(caseStudies).toHaveLength(4)
     for (const slug of FLAGSHIP_SLUGS) expect(slugs).toContain(slug)
   })
 
@@ -80,14 +81,17 @@ describe('case studies', () => {
     expect(s.outcome.join(' ')).toContain('every booking pays the operator directly')
   })
 
-  it('say "partly live" once in the Giya study', () => {
-    const text = caseStudyText(getCaseStudy('giya')!).join(' ')
-    expect(text.split('partly live')).toHaveLength(2)
+  it('keeps the three removed projects out of the case studies', () => {
+    for (const slug of ['giya', 'latag', 'connecta-ph']) {
+      expect(getCaseStudy(slug), slug).toBeUndefined()
+      expect(FLAGSHIP_SLUGS).not.toContain(slug)
+    }
+    for (const s of caseStudies) expect(caseStudyText(s).join(' ')).not.toMatch(/\b(giya|latag|connecta)\b/i)
   })
 
   it('find the case study a related project belongs to', () => {
     expect(caseStudyFor('beachbus-nfc-card-system')?.slug).toBe('beachbus-palawan')
-    expect(caseStudyFor('latag')).toBeUndefined()
+    expect(caseStudyFor('skimcare')).toBeUndefined()
   })
 
   it('has a case study for every flagship', () => {

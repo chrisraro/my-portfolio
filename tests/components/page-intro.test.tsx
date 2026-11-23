@@ -9,16 +9,16 @@ const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').r
 
 describe('PageIntro', () => {
   const html = renderToStaticMarkup(
-    <PageIntro eyebrow="Services" title="What I build" answer="The answer." updated="2026-11-20">
+    <PageIntro title="What I build" answer="The answer." updated="2026-11-20">
       <a href="#contact">Go</a>
     </PageIntro>,
   )
 
-  it('opens on the one grid: the eyebrow, one h1, then the answer', () => {
-    expect(html).toMatch(/^<header class="mx-auto max-w-6xl px-5 sm:px-8 /)
+  it('opens on the one grid: one h1 first, with no eyebrow over it, then the answer', () => {
+    expect(html).toMatch(/^<header class="mx-auto w-full max-w-\[49rem\] px-5 sm:px-8 /)
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
-    expect(html).toMatch(/<p class="eyebrow[^"]*">Services<\/p>/)
-    expect(html.indexOf('>Services</p>')).toBeLessThan(html.indexOf('<h1'))
+    expect(html).toMatch(/^<header[^>]*><h1 /)
+    expect(html).not.toContain('eyebrow')
     expect(html).toMatch(/<\/h1><p class="text-lede[^"]*">The answer\.<\/p>/)
   })
 
@@ -31,7 +31,7 @@ describe('PageIntro', () => {
   })
 
   it('renders no empty action row when there are none', () => {
-    const bare = renderToStaticMarkup(<PageIntro eyebrow="E" title="T" answer="A." updated="2026-11-20" />)
+    const bare = renderToStaticMarkup(<PageIntro title="T" answer="A." updated="2026-11-20" />)
     expect(bare).not.toContain('flex-wrap')
   })
 })

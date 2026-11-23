@@ -153,7 +153,7 @@ describe('page nodes', () => {
 
   it('types software a visitor runs as SoftwareApplication, and sites and custom systems as CreativeWork', () => {
     for (const p of projects) {
-      const expected = p.band === 'Products' || p.band === 'Applications' ? 'SoftwareApplication' : 'CreativeWork'
+      const expected = p.band === 'Applications' ? 'SoftwareApplication' : 'CreativeWork'
       expect(projectSchemaType(p), p.slug).toBe(expected)
       const [node] = typed(graphFor(`/projects/${p.slug}`), expected)
       expect(node).toMatchObject({ '@id': `${SITE_URL}/projects/${p.slug}#work`, name: p.title, creator: { '@id': PERSON_ID } })
@@ -162,9 +162,9 @@ describe('page nodes', () => {
   })
 
   it('links a project live only when it can (canLinkLive)', () => {
-    const giya = projects.find((p) => p.slug === 'giya')!
-    expect(projectSchema(giya).sameAs).toBe(giya.links.live)
-    expect(projectSchema({ ...giya, status: 'internal', links: {} }).sameAs).toBeUndefined()
+    const live = projects.find((p) => p.slug === 'el-nido-guide-ph')!
+    expect(projectSchema(live).sameAs).toBe(live.links.live)
+    expect(projectSchema({ ...live, status: 'internal', links: {} }).sameAs).toBeUndefined()
   })
 
   it('names the site, published by the Person', () => {

@@ -38,13 +38,14 @@ describe('/projects/[slug]', () => {
   it('states status in words and links back to all projects', () => {
     for (const p of projects) {
       const html = render(p.slug)
-      expect(html).toMatch(/>(Live|Early access|Private|Internal|Staging)</)
+      expect(html).toMatch(/>(Live|In development|Private|Internal|Staging)</)
       expect(html).toContain('href="/projects"')
     }
   })
 
   it('offers the live site only where a visitor can open it', () => {
-    expect(render('latag')).toContain('Open live site')
+    expect(render('skimcare')).toContain('Open live site')
+    expect(render('iskotify')).toContain('Open live site')
     expect(render('downtown-district-hotel')).toContain('Open live site')
     expect(render('ocs-wp-control-panel')).not.toContain('Open live site')
     expect(render('beachbus-nfc-card-system')).not.toContain('Open live site')
@@ -65,12 +66,12 @@ describe('/projects/[slug]', () => {
 
   it('keeps the sticky rail plate at least 16rem wide on a short screen', () => {
     // 100vh minus 35rem reaches 0 at a 560px-tall window; the floor holds the plate at 16rem.
-    expect(render('latag')).toContain('lg:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]')
+    expect(render('skimcare')).toContain('xl:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]')
   })
 
   it('labels screenshots for what they show', () => {
-    expect(render('latag')).toContain('aria-label="Screenshot of latag.vercel.app"')
-    expect(render('latag')).toContain('aria-label="View larger image: Mobile screenshot of latag.vercel.app"')
+    expect(render('skimcare')).toContain('aria-label="Screenshot of skimcare-app.vercel.app"')
+    expect(render('skimcare')).toContain('aria-label="View larger image: Mobile screenshot of skimcare-app.vercel.app"')
   })
 
   it('shows the top of the full-page shot where there is one, else the desktop shot', () => {
@@ -80,10 +81,8 @@ describe('/projects/[slug]', () => {
       if (fullShotFor(p)) expect(rail, p.slug).toContain('aria-label="Screenshot of ')
       else if (p.image) expect(rail, p.slug).toContain('Desktop screenshot of ')
     }
-    // Connecta's full shot was recaptured under reduced motion (its scroll
-    // reveals had captured blank), so it shows like every other product.
-    expect(fullShotFor(projects.find((p) => p.slug === 'connecta-ph')!)).toBeDefined()
-    expect(render('connecta-ph')).toContain('aria-label="Screenshot of ')
+    expect(fullShotFor(projects.find((p) => p.slug === 'iskotify')!)).toBeDefined()
+    expect(render('iskotify')).toContain('aria-label="Screenshot of ')
   })
 
   it('offers a live preview on every project a visitor can open: live where it frames, a capture elsewhere', () => {
@@ -92,24 +91,24 @@ describe('/projects/[slug]', () => {
       expect(html.includes('aria-haspopup="dialog"'), p.slug).toBe(canLinkLive(p))
       if (canLinkLive(p)) expect(html, p.slug).toContain(`data-preview="${isEmbeddable(p) ? 'live' : 'capture'}"`)
     }
-    // The ones Christian named: Giya, Connecta PH, the WordPress sites, staging Eastwind.
-    // Each has a preview; which mode depends on whether the site now lets the portfolio frame it.
-    for (const slug of ['giya', 'connecta-ph', 'el-nido-guide-ph', 'eastwind-beach-villas']) {
+    // Iskotify, the WordPress sites, Eastwind: each has a preview; which mode
+    // depends on whether the site now lets the portfolio frame it.
+    for (const slug of ['iskotify', 'el-nido-guide-ph', 'eastwind-beach-villas']) {
       expect(render(slug), slug).toMatch(/data-preview="(live|capture)"/)
     }
   })
 
   it('shows a short page its description and stack, with no invented sections', () => {
-    const latag = projects.find((p) => p.slug === 'latag')!
-    const html = render('latag')
-    expect(html).toContain(latag.description)
-    for (const t of latag.technologies) expect(html).toContain(`>${t}<`)
+    const skim = projects.find((p) => p.slug === 'skimcare')!
+    const html = render('skimcare')
+    expect(html).toContain(skim.description.replace(/'/g, '&#x27;'))
+    for (const t of skim.technologies) expect(html).toContain(`>${t}<`)
     expect(html).not.toContain(`>${caseStudyContent.headings.decisions}</h2>`)
   })
 
   it('titles each page for its project', () => {
-    const md = generateMetadata({ params: { slug: 'latag' } })
-    expect(String(md.title)).toMatch(/^Latag · /)
+    const md = generateMetadata({ params: { slug: 'skimcare' } })
+    expect(String(md.title)).toMatch(/^SkimCare · /)
   })
 
   it('gives a flagship its own link preview and canonical URL, described by its short line', () => {
@@ -122,22 +121,22 @@ describe('/projects/[slug]', () => {
   })
 
   it('names a link-preview card from app/og', () => {
-    const md = generateMetadata({ params: { slug: 'latag' } })
-    expect(md.openGraph).toMatchObject({ images: [ogImage('/projects/latag')] })
-    expect(md.twitter).toMatchObject({ images: [ogImage('/projects/latag')] })
+    const md = generateMetadata({ params: { slug: 'skimcare' } })
+    expect(md.openGraph).toMatchObject({ images: [ogImage('/projects/skimcare')] })
+    expect(md.twitter).toMatchObject({ images: [ogImage('/projects/skimcare')] })
   })
 
   it('describes a short page by its short line, not the summary fragment', () => {
-    const latag = projects.find((p) => p.slug === 'latag')!
-    const md = generateMetadata({ params: { slug: 'latag' } })
-    expect(md.description).toBe(latag.metaDescription)
-    expect(md.alternates?.canonical).toBe('/projects/latag')
-    expect(md.openGraph).toMatchObject({ type: 'article', description: latag.metaDescription, url: '/projects/latag' })
-    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: latag.metaDescription })
+    const skim = projects.find((p) => p.slug === 'skimcare')!
+    const md = generateMetadata({ params: { slug: 'skimcare' } })
+    expect(md.description).toBe(skim.metaDescription)
+    expect(md.alternates?.canonical).toBe('/projects/skimcare')
+    expect(md.openGraph).toMatchObject({ type: 'article', description: skim.metaDescription, url: '/projects/skimcare' })
+    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: skim.metaDescription })
   })
 
   it('omits the sector from the header meta when it just repeats the band', () => {
-    expect(render('latag')).not.toContain('Products · product')
+    expect(render('skimcare')).not.toContain('Applications · product')
     expect(render('el-nido-guide-ph')).toContain('Sites · tours')
   })
 
@@ -146,7 +145,7 @@ describe('/projects/[slug]', () => {
   })
 
   it('offers the live site as the outlined secondary, beside the page’s trail-red primaries', () => {
-    for (const slug of ['latag', 'el-nido-guide-ph']) {
+    for (const slug of ['skimcare', 'el-nido-guide-ph']) {
       const html = render(slug)
       const cls = html.match(/<a [^>]*class="([^"]*)"[^>]*>Open live site/)?.[1] ?? ''
       expect(cls).toContain('button-secondary')
@@ -172,25 +171,25 @@ describe('/projects/[slug]', () => {
       const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'))
       if (p.place) expect(header, p.slug).toContain(`<li>Place: ${p.place.name}</li>`)
       else expect(header, p.slug).not.toContain('Place: ')
-      expect(header, p.slug).toMatch(/<ul class="map-label /)
+      expect(header, p.slug).toMatch(/<ul class="grid gap-1 text-sm text-muted-strong/)
     }
   })
 
   it('pads the footer "Start a project" button, not only its min-height', () => {
-    const cls = render('latag').match(/<a [^>]*class="([^"]*)"[^>]*>Start a project/)?.[1] ?? ''
+    const cls = render('skimcare').match(/<a [^>]*class="([^"]*)"[^>]*>Start a project/)?.[1] ?? ''
     // .button-primary (globals.css) carries the fill and the py-2.5 padding.
     expect(cls).toContain('button-primary')
   })
 
   it('shows the mobile screenshot only from the sm breakpoint up', () => {
-    const cls = render('latag').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1]
+    const cls = render('skimcare').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1]
     expect(cls).toBeDefined()
     expect(cls!.split(' ')).toContain('hidden')
     expect(cls!.split(' ')).toContain('sm:block')
   })
 
   it('holds read-mode prose to a measure of about 70 characters', () => {
-    for (const slug of ['latag', 'el-nido-guide-ph']) {
+    for (const slug of ['skimcare', 'el-nido-guide-ph']) {
       const html = render(slug)
       expect(html).toContain('max-w-[36rem]')
       expect(html).not.toContain('max-w-[68ch]')
@@ -198,11 +197,11 @@ describe('/projects/[slug]', () => {
   })
 
   it('lets the heading label the short page stack list', () => {
-    expect(render('latag')).not.toContain('aria-label="Stack"')
+    expect(render('skimcare')).not.toContain('aria-label="Stack"')
   })
 
   it('keeps screenshots above the body on a short page', () => {
-    const html = render('latag')
+    const html = render('skimcare')
     expect(html.indexOf('Screenshot of')).toBeGreaterThan(-1)
     expect(html.indexOf('Screenshot of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
   })
@@ -221,7 +220,6 @@ describe('flagship case studies', () => {
       const at = [h.brief, h.built, h.decisions, h.stack, h.outcome].map((t) => html.indexOf(`>${t}</h2>`))
       for (const i of at) expect(i).toBeGreaterThan(-1)
       expect(at.slice().sort((a, b) => a - b)).toEqual(at)
-      expect(html).toContain(caseStudyContent.eyebrow.caseStudy)
       expect(html).toContain(s.role)
     }
   })
@@ -321,7 +319,7 @@ describe('related work', () => {
 
   it('gives other pages no related line and no part-of link', () => {
     expect(render('el-nido-guide-ph')).not.toContain(`>${h.related}<`)
-    expect(render('latag')).not.toContain(caseStudyContent.partOf.split('{title}')[0])
+    expect(render('skimcare')).not.toContain(caseStudyContent.partOf.split('{title}')[0])
   })
 })
 
@@ -335,39 +333,45 @@ describe('project page JSON-LD', () => {
     expect(ldTypes('el-nido-guide-ph')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'CreativeWork'])
   })
 
-  it('gives a product a SoftwareApplication, case study or not', () => {
-    expect(ldTypes('latag')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'SoftwareApplication'])
+  it('gives an application a SoftwareApplication, case study or not', () => {
+    expect(ldTypes('skimcare')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'SoftwareApplication'])
   })
 })
 
-describe('the trail journal', () => {
+describe('the case-study journal', () => {
   const h = caseStudyContent.headings
-  const steps = (html: string) =>
-    Array.from(html.matchAll(/<span aria-hidden="true" class="journal-step[^"]*">(\d+)<\/span>/g)).map((m) => Number(m[1]))
 
-  it('walks a flagship as numbered waypoints: brief, build, decisions, stack, outcome, then the client', () => {
+  it('walks a flagship as plain sections: brief, build, decisions, stack, outcome, then the client', () => {
     for (const s of caseStudies) {
       const project = projects.find((p) => p.slug === s.slug)!
       const quoted = recommendations.some((r) => r.projectId === project.id)
       const html = render(s.slug)
-      const n = quoted ? 6 : 5
-      expect(steps(html), s.slug).toEqual(Array.from({ length: n }, (_, i) => i + 1))
+      const entries = Array.from(html.matchAll(/<section aria-labelledby="([a-z]+)" class="journal-entry[^"]*">/g)).map((m) => m[1])
+      expect(entries, s.slug).toEqual(quoted ? ['brief', 'built', 'decisions', 'stack', 'outcome', 'client'] : ['brief', 'built', 'decisions', 'stack', 'outcome'])
       for (const [id, title] of [['brief', h.brief], ['built', h.built], ['decisions', h.decisions], ['stack', h.stack], ['outcome', h.outcome]]) {
-        expect(html, `${s.slug} ${id}`).toMatch(new RegExp(`<section aria-labelledby="${id}" class="journal-entry[^"]*"><span aria-hidden="true" class="journal-step[^"]*">\\d+</span><h2 id="${id}"[^>]*>${title}</h2>`))
+        expect(html, `${s.slug} ${id}`).toContain(`<h2 id="${id}" class="text-title text-ink">${title}</h2>`)
       }
     }
   })
 
-  it('leaves short pages without waypoints', () => {
-    expect(steps(render('latag'))).toEqual([])
+  it('numbers nothing: no waypoint steps, no trail between the entries', () => {
+    for (const s of caseStudies) {
+      const html = render(s.slug)
+      expect(html, s.slug).not.toContain('journal-step')
+      expect(html, s.slug).not.toContain('trail-draw')
+    }
   })
 
-  it('sets the screenshot rail on a survey plate at the shared 3:4 scale', () => {
+  it('leaves short pages without journal entries', () => {
+    expect(render('skimcare')).not.toContain('journal-entry')
+  })
+
+  it('sets the screenshot rail on a survey plate at the one shared frame', () => {
     for (const p of projects) {
       const html = render(p.slug)
       const rail = html.slice(html.indexOf('</header>'))
       expect(rail, p.slug).toContain('class="survey-plate')
-      if (fullShotFor(p) || !p.image) expect(rail, p.slug).toContain('aspect-[3/4]')
+      if (fullShotFor(p) || !p.image) expect(rail, p.slug).toContain('aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]')
     }
   })
 
@@ -380,8 +384,8 @@ describe('the trail journal', () => {
   })
 
   it('sets a short page’s stack as map-label chips', () => {
-    const latag = projects.find((p) => p.slug === 'latag')!
-    for (const t of latag.technologies) expect(render('latag')).toMatch(new RegExp(`<li class="map-label [^"]*">${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</li>`))
+    const skim = projects.find((p) => p.slug === 'skimcare')!
+    for (const t of skim.technologies) expect(render('skimcare')).toContain(`<li class="chip">${t}</li>`)
   })
 
   // F13 (finish review): a lone big number in its own card is the hero-metric
@@ -403,7 +407,7 @@ describe('the trail journal', () => {
 
   // F16: the closing row floated after ~300px of empty paper beside the shots.
   it('closes a short page in its prose column, straight under the stack', () => {
-    const html = render('latag')
+    const html = render('skimcare')
     expect(html).toMatch(/<\/ul><div class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3"><a class="press button-primary" href="\/#contact">/)
     // Once in the header's side card, once here: no second closing row after the spread.
     expect(html.match(/>Start a project</g)).toHaveLength(2)
@@ -412,7 +416,7 @@ describe('the trail journal', () => {
 
   // F17: at 96px the phone shot was too small to read.
   it('shows the phone shot at plate scale, at least 180px wide', () => {
-    const cls = render('latag').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1] ?? ''
+    const cls = render('skimcare').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1] ?? ''
     expect(cls.split(' ')).toContain('w-[11.25rem]')
     expect(cls).not.toMatch(/(?:^|\s)(?:lg:)?w-(?:24|32)(?:\s|$)/)
   })

@@ -8,7 +8,7 @@ import { COMMIT_WAIT, createCommitTracker, routeKey } from '@/lib/view-transitio
 describe('routeKey', () => {
   it('keys a route by path and query, ignoring hash, origin and a trailing slash', () => {
     expect(routeKey('/projects?band=sites')).toBe('/projects?band=sites')
-    expect(routeKey('https://example.com/projects/latag/#top')).toBe('/projects/latag')
+    expect(routeKey('https://example.com/projects/skimcare/#top')).toBe('/projects/skimcare')
     expect(routeKey('/projects?')).toBe('/projects')
     expect(routeKey('/')).toBe('/')
   })
@@ -29,11 +29,11 @@ describe('createCommitTracker', () => {
     const t = createCommitTracker()
     const token = t.begin()
     const late = vi.fn()
-    const done = t.wait(token, '/projects/latag', COMMIT_WAIT, late)
-    t.committed('/projects/latag')
+    const done = t.wait(token, '/projects/skimcare', COMMIT_WAIT, late)
+    t.committed('/projects/skimcare')
     await expect(done).resolves.toBe(true)
     vi.advanceTimersByTime(COMMIT_WAIT * 2)
-    t.committed('/projects/latag')
+    t.committed('/projects/skimcare')
     expect(late).not.toHaveBeenCalled()
   })
 
@@ -41,24 +41,24 @@ describe('createCommitTracker', () => {
     const t = createCommitTracker()
     const token = t.begin()
     const late = vi.fn()
-    const done = t.wait(token, '/projects/latag', COMMIT_WAIT, late)
+    const done = t.wait(token, '/projects/skimcare', COMMIT_WAIT, late)
     vi.advanceTimersByTime(COMMIT_WAIT)
     await expect(done).resolves.toBe(false)
     expect(late).not.toHaveBeenCalled()
-    t.committed('/projects/latag')
+    t.committed('/projects/skimcare')
     expect(late).toHaveBeenCalledTimes(1)
-    t.committed('/projects/latag')
+    t.committed('/projects/skimcare')
     expect(late).toHaveBeenCalledTimes(1)
   })
 
   it('drops a late action if a different route lands first (e.g. the back button)', async () => {
     const t = createCommitTracker()
     const late = vi.fn()
-    const done = t.wait(t.begin(), '/projects/latag', COMMIT_WAIT, late)
+    const done = t.wait(t.begin(), '/projects/skimcare', COMMIT_WAIT, late)
     vi.advanceTimersByTime(COMMIT_WAIT)
     await done
     t.committed('/')
-    t.committed('/projects/latag')
+    t.committed('/projects/skimcare')
     expect(late).not.toHaveBeenCalled()
   })
 
@@ -66,7 +66,7 @@ describe('createCommitTracker', () => {
     const t = createCommitTracker()
     const first = t.begin()
     const firstLate = vi.fn()
-    const a = t.wait(first, '/projects/latag', COMMIT_WAIT, firstLate)
+    const a = t.wait(first, '/projects/skimcare', COMMIT_WAIT, firstLate)
     const second = t.begin()
     // The superseded wait is released at once, as not committed.
     await expect(a).resolves.toBe(false)
@@ -75,12 +75,12 @@ describe('createCommitTracker', () => {
 
     const secondLate = vi.fn()
     let settled: boolean | undefined
-    const b = t.wait(second, '/projects/giya', COMMIT_WAIT, secondLate).then((ok) => (settled = ok))
-    t.committed('/projects/latag')
+    const b = t.wait(second, '/projects/iskotify', COMMIT_WAIT, secondLate).then((ok) => (settled = ok))
+    t.committed('/projects/skimcare')
     await Promise.resolve()
     expect(settled).toBeUndefined()
     expect(firstLate).not.toHaveBeenCalled()
-    t.committed('/projects/giya')
+    t.committed('/projects/iskotify')
     await b
     expect(settled).toBe(true)
   })
@@ -89,6 +89,6 @@ describe('createCommitTracker', () => {
     const t = createCommitTracker()
     const stale = t.begin()
     t.begin()
-    await expect(t.wait(stale, '/projects/latag', COMMIT_WAIT)).resolves.toBe(false)
+    await expect(t.wait(stale, '/projects/skimcare', COMMIT_WAIT)).resolves.toBe(false)
   })
 })

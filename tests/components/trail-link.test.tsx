@@ -22,22 +22,22 @@ describe('TrailLink', () => {
   })
 
   it('is a label: map-label type, no arrow, a 32px hit area from 640px', () => {
-    const html = renderToStaticMarkup(<TrailLink href="/projects/latag" text="Latag" kind="label" />)
+    const html = renderToStaticMarkup(<TrailLink href="/projects/skimcare" text="SkimCare" kind="label" />)
     expect(html).toMatch(/class="map-label inline-flex min-h-\[44px\] items-center gap-1\.5 text-ink sm:min-h-\[32px\]"/)
-    expect(html).toContain('<span class="link-draw">Latag</span></a>')
+    expect(html).toContain('<span class="link-draw">SkimCare</span></a>')
   })
 
   it('opens an external link in a new tab, says so, and points up and out', () => {
-    const html = renderToStaticMarkup(<TrailLink href="https://latag.ph" text="latag.ph" kind="label" external />)
-    expect(html).toMatch(/^<a href="https:\/\/latag\.ph" target="_blank" rel="noopener noreferrer"/)
+    const html = renderToStaticMarkup(<TrailLink href="https://skimcare-app.vercel.app" text="skimcare-app.vercel.app" kind="label" external />)
+    expect(html).toMatch(/^<a href="https:\/\/skimcare-app.vercel.app" target="_blank" rel="noopener noreferrer"/)
     expect(html).toContain('<span class="sr-only">(opens in a new tab)</span>')
     expect(html).toContain('<svg')
     expect(html).not.toContain('arrow-nudge')
   })
 
   it('reads extra words to screen readers only, after the text', () => {
-    const html = renderToStaticMarkup(<TrailLink href="/projects/latag" text="Read more" srText=" about Latag" />)
-    expect(html).toContain('<span class="link-draw">Read more</span><span class="sr-only"> about Latag</span>')
+    const html = renderToStaticMarkup(<TrailLink href="/projects/skimcare" text="Read more" srText=" about SkimCare" />)
+    expect(html).toContain('<span class="link-draw">Read more</span><span class="sr-only"> about SkimCare</span>')
   })
 
   it('merges a caller class over its own', () => {
@@ -59,12 +59,17 @@ describe('TrailLink', () => {
 })
 
 describe('the homepage link idiom', () => {
-  it('goes through TrailLink: no hand-rolled link-draw link or ProjectLink left', () => {
-    for (const f of ['field-map', 'own-products', 'trail-journals']) {
+  it('goes through TrailLink: no hand-rolled ProjectLink, Pin, PlaceGlyph or LABELS in a section', () => {
+    for (const f of ['intro', 'now-building', 'experience', 'work-list', 'work-with-me', 'stack-table']) {
       const src = readFileSync(`components/sections/${f}.tsx`, 'utf8')
-      expect(src, f).not.toContain('className="link-draw"')
       expect(src, f).not.toMatch(/function (ProjectLink|Pin|PlaceGlyph)\b|const LABELS\b/)
     }
+  })
+
+  it('draws the places’ links, the one list of bare text links, with TrailLink and no link-draw span of its own', () => {
+    const src = readFileSync('components/sections/work-with-me.tsx', 'utf8')
+    expect(src).toContain('<TrailLink')
+    expect(src).not.toContain('className="link-draw"')
   })
 
   it('goes through TrailLink on the project pages too', () => {

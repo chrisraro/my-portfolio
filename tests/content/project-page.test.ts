@@ -8,20 +8,20 @@ import type { Project, ProjectStatus } from '@/types'
 
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)!
 const withStatus = (status: ProjectStatus, live?: string): Project => ({
-  ...bySlug('giya'),
+  ...bySlug('el-nido-guide-ph'),
   status,
   links: live ? { live } : {},
 })
 
 describe('project page helpers', () => {
   it('addresses each project by slug, not id', () => {
-    expect(projectHref(bySlug('giya'))).toBe('/projects/giya')
+    expect(projectHref(bySlug('iskotify'))).toBe('/projects/iskotify')
     expect(projectHref(bySlug('el-nido-guide-ph'))).toBe('/projects/el-nido-guide-ph')
   })
 
   it('links live only for systems a visitor can open', () => {
     expect(canLinkLive(withStatus('live', 'https://x.test'))).toBe(true)
-    expect(canLinkLive(withStatus('early-access', 'https://x.test'))).toBe(true)
+    expect(canLinkLive(withStatus('in-development', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('ua-gated', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('staging', 'https://x.test'))).toBe(true)
     expect(canLinkLive(withStatus('auth-gated', 'https://x.test'))).toBe(false)
@@ -52,7 +52,7 @@ describe('project page helpers', () => {
 
   it('attaches a client quote to the project it names', () => {
     expect(recommendationFor(bySlug('beachbus-palawan'))?.authorName).toBe('Alec Santos')
-    expect(recommendationFor(bySlug('latag'))).toBeUndefined()
+    expect(recommendationFor(bySlug('skimcare'))).toBeUndefined()
   })
 
   it('names every sector and explains every missing preview', () => {
@@ -86,7 +86,7 @@ describe('preview assets and embeddability', () => {
       const exists = existsSync(join(process.cwd(), 'public', path))
       expect(fullShotFor(p)).toBe(exists ? path : undefined)
     }
-    expect(fullShotFor({ ...bySlug('giya'), id: 'no-such-project' })).toBeUndefined()
+    expect(fullShotFor({ ...bySlug('iskotify'), id: 'no-such-project' })).toBeUndefined()
   })
 
   it('never calls an auth-gated, internal or unknown project embeddable', () => {

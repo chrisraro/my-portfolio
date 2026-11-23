@@ -3,9 +3,10 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { parseCssRules } from '@/tests/helpers/css-rules'
 
-// Screenshots are stills (CLAUDE.md, Animation): nothing about a screenshot,
-// a plate or the map follows scroll; a plate answers attention with the
-// catalog hover (.lift-card). Carried over from the retired catalog-motion test.
+// Screenshots are stills: nothing about a screenshot, a row or the map follows
+// scroll; a row answers attention with its hover (.row), a linked shot with the
+// catalog hover (.lift-card). The one thing that follows the page is first
+// light behind the land (.scene-dawn).
 const css = readFileSync('app/globals.css', 'utf8')
 const rules = parseCssRules(css)
 
@@ -28,14 +29,21 @@ describe('screenshots are stills', () => {
   it('drives nothing about a screenshot, a plate or the map from scroll', () => {
     for (const r of rules) {
       if (!/animation-timeline|view-timeline/.test(r.body)) continue
-      expect(r.selector, r.selector).not.toMatch(/project-plate|project-shot|lift-card|survey-plate|map-pan|img/)
+      expect(r.selector, r.selector).not.toMatch(/project-plate|project-shot|lift-card|survey-plate|map-pan|row|thumb|banner|img/)
     }
   })
 
-  it('follows no page scroll anywhere: no scroll(root), no object-position animation', () => {
-    for (const r of rules) expect(r.body, r.selector).not.toMatch(/scroll\(root/)
+  it('follows the page scroll in one place only: .scene-dawn, on scroll(root block), no object-position animation', () => {
+    const followers = rules.filter((r) => /scroll\(/.test(r.body))
+    expect(followers.map((r) => r.selector)).toEqual(['.scene-dawn'])
+    expect(followers[0].body).toMatch(/animation-timeline:\s*scroll\(root block\)/)
+    const at = followers[0].ancestors.join(' ')
+    expect(at).toContain('animation-timeline: scroll()')
+    expect(at).toContain('(prefers-reduced-motion: no-preference)')
     expect(css).not.toMatch(/transition[^;]*object-position/)
-    expect(css).not.toMatch(/@keyframes[^{]*\{[^@]*?object-position/)
+    const keyframes = rules.filter((r) => r.ancestors.some((a) => a.startsWith('@keyframes')))
+    expect(keyframes.length).toBeGreaterThan(0)
+    for (const k of keyframes) expect(k.body, k.ancestors.join(' ')).not.toContain('object-position')
   })
 })
 
@@ -88,11 +96,33 @@ describe('plate hover', () => {
     }
   })
 
-  it('is the same hover on plates, product screenshots and journal covers', () => {
-    expect(readFileSync('components/ui/project-plate.tsx', 'utf8')).toContain('lift-card')
+  it('is the same hover on a linked screenshot, and the project row has its own', () => {
     expect(readFileSync('components/ui/project-shot.tsx', 'utf8')).toContain('lift-card')
-    const covers = readFileSync('components/sections/trail-journals.tsx', 'utf8')
-    expect(covers).toContain('lift-card')
-    expect(covers).not.toMatch(/className="press /)
+    expect(readFileSync('components/ui/project-row.tsx', 'utf8')).toContain('className="row group ')
+    expect(existsSync('components/ui/project-plate.tsx')).toBe(false)
+  })
+})
+
+describe('row hover', () => {
+  const at = (r: { ancestors: string[] }) => r.ancestors.join(' ')
+
+  it('shows a glass backing by opacity on hover and keyboard focus, in every mode', () => {
+    const shown = rules.find((r) => r.selector === '.row:is(:hover, :focus-visible)::before')
+    expect(shown?.body).toMatch(/opacity:\s*1/)
+    const base = rules.find((r) => r.selector === '.row::before')
+    expect(base?.body).toMatch(/opacity:\s*0/)
+    expect(base?.body).not.toMatch(/box-shadow:[^;]*(?<!inset )\d+px \d+px \d+px/)
+  })
+
+  it('moves only inside the fine-pointer query and the no-preference query, on tokens, never box-shadow', () => {
+    const moving = rules.filter((r) => /^\.row(__shot|:hover|:is)/.test(r.selector) && /transform|transition/.test(r.body))
+    expect(moving.length).toBeGreaterThan(0)
+    for (const r of moving) {
+      expect(at(r), r.selector).toContain('(hover: hover)')
+      expect(at(r), r.selector).toContain('(pointer: fine)')
+      expect(at(r), r.selector).toContain('(prefers-reduced-motion: no-preference)')
+      expect(r.body, r.selector).not.toMatch(/transition:[^;]*box-shadow/)
+      expect(r.body, r.selector).not.toMatch(/\d+(\.\d+)?m?sb/)
+    }
   })
 })

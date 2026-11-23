@@ -1,15 +1,19 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { parseCssRules } from '@/tests/helpers/css-rules'
 
-// Isarog Trail Map tokens: raw oklch "L C H" triplets, one per line, in
-// app/globals.css. :root is the day survey (default), .dark the night survey.
+// First Light tokens: raw oklch "L C H" triplets, one per line, in
+// app/globals.css. .dark is the night before first light and the default
+// theme; :root is the morning.
 const CSS = readFileSync('app/globals.css', 'utf8')
 
 const TOKENS = [
   'bg', 'panel', 'ink', 'muted', 'muted-strong', 'line', 'line-strong', 'contour',
   'trail', 'on-trail', 'field-border', 'live', 'status-early', 'status-private', 'status-internal',
 ] as const
-type Token = (typeof TOKENS)[number]
+// The land the page is fixed over (components/scene.tsx).
+const SCENE = ['land-far', 'land-near', 'land-lit', 'dawn'] as const
+type Token = (typeof TOKENS)[number] | (typeof SCENE)[number]
 type Triplet = [number, number, number]
 
 function block(selector: string): string {
@@ -21,7 +25,7 @@ function block(selector: string): string {
 function readTheme(selector: string): Record<Token, Triplet> {
   const body = block(selector)
   const theme = {} as Record<Token, Triplet>
-  for (const token of TOKENS) {
+  for (const token of [...TOKENS, ...SCENE]) {
     const match = body.match(new RegExp(`(?<![\\w-])--${token}:\\s*([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s*;`))
     if (!match) throw new Error(`--${token} is missing or not an "L C H" triplet in ${selector}`)
     theme[token] = [Number(match[1]), Number(match[2]), Number(match[3])]
@@ -53,12 +57,25 @@ function luminance(color: Triplet): number {
   return luminanceOf(linearRgb(color))
 }
 
-function contrast(x: Triplet, y: Triplet): number {
-  const [hi, lo] = [luminance(x), luminance(y)].sort((p, q) => q - p)
+function contrastOfLum(x: number, y: number): number {
+  const [hi, lo] = [x, y].sort((p, q) => q - p)
   return (hi + 0.05) / (lo + 0.05)
 }
 
-// WCAG 1.4.3: text 4.5:1. Trail red is text too (links, the active label).
+function contrast(x: Triplet, y: Triplet): number {
+  return contrastOfLum(luminance(x), luminance(y))
+}
+
+// Browsers composite in gamma-encoded sRGB, not in linear light.
+const encode = (c: number) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055)
+const decode = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+
+/** `top` at `alpha` over `under`, as the page paints it; the result as linear RGB. */
+function over(top: Rgb, alpha: number, under: Rgb): Rgb {
+  return top.map((c, i) => decode(alpha * encode(c) + (1 - alpha) * encode(under[i]))) as Rgb
+}
+
+// WCAG 1.4.3: text 4.5:1. Trail is text too (links, the active label).
 const TEXT_PAIRS: [Token, Token][] = [
   ['ink', 'bg'], ['ink', 'panel'],
   ['muted', 'bg'], ['muted', 'panel'],
@@ -78,8 +95,8 @@ const UI_PAIRS: [Token, Token][] = [
 ]
 
 describe.each([
-  ['day survey', ':root'],
-  ['night survey', '.dark'],
+  ['night (default)', '.dark'],
+  ['morning', ':root'],
 ])('%s palette', (_name, selector) => {
   const theme = readTheme(selector)
 
@@ -97,15 +114,23 @@ describe.each([
     expect(c).toBeLessThan(contrast(theme.muted, theme.bg))
   })
 
-  it('keeps the early-access violet at least 90 degrees of hue from trail red', () => {
+  it('keeps the in-development violet at least 90 degrees of hue from the ember', () => {
     const d = Math.abs(theme['status-early'][2] - theme.trail[2]) % 360
     expect(Math.min(d, 360 - d)).toBeGreaterThanOrEqual(90)
   })
 })
 
 describe('theme default', () => {
-  it('opens on the day survey', () => {
-    expect(readFileSync('app/layout.tsx', 'utf8')).toContain('defaultTheme="light"')
+  it('opens on the night, the site’s default', () => {
+    expect(readFileSync('app/layout.tsx', 'utf8')).toContain('defaultTheme="dark"')
+    expect(readFileSync('app/layout.tsx', 'utf8')).toContain('enableSystem={false}')
+  })
+
+  it('names the morning :root and the night .dark, each with the scene’s tokens', () => {
+    for (const selector of [':root', '.dark']) {
+      const theme = readTheme(selector)
+      for (const token of SCENE) expect(theme[token], `${selector} ${token}`).toHaveLength(3)
+    }
   })
 })
 
@@ -124,11 +149,26 @@ describe('field borders', () => {
   })
 })
 
-// The legend card is frosted: panel at --legend-glass alpha over whatever
-// scrolls beneath. Hold text contrast over the worst backdrops (the theme's
-// ink, and a pure white screenshot).
-describe('legend glass', () => {
-  const alpha = Number(CSS.match(/\.legend-glass \{[^}]*?background:\s*oklch\(var\(--panel\)\s*\/\s*([\d.]+)\)/)?.[1])
+const rules = parseCssRules(CSS)
+const alphaOf = (selector: string, ancestor?: string): number => {
+  const rule = rules.find(
+    (r) =>
+      r.selector === selector &&
+      /background:\s*oklch\(var\(--(?:panel|bg)\)\s*\/\s*[\d.]+\)/.test(r.body) &&
+      (ancestor ? r.ancestors.includes(ancestor) : r.ancestors.every((a) => a.startsWith('@layer'))),
+  )
+  const alpha = Number(rule?.body.match(/background:\s*oklch\(var\(--(?:panel|bg)\)\s*\/\s*([\d.]+)\)/)?.[1])
+  if (!Number.isFinite(alpha)) throw new Error(`No translucent background on ${selector}`)
+  return alpha
+}
+
+// Glass is the panel at --glass alpha over whatever the page is fixed over:
+// the scene, unscrimmed (the panel and the filter float outside the reading
+// column's scrim). Hold text over every backdrop the scene can show, in both
+// themes, composited the way a browser does (backdrop blur does not change a
+// flat colour).
+describe('glass over the scene', () => {
+  const alpha = alphaOf('.glass')
 
   it('reads its alpha from the stylesheet', () => {
     expect(alpha).toBeGreaterThan(0.5)
@@ -136,35 +176,119 @@ describe('legend glass', () => {
   })
 
   describe.each([
-    ['day survey', ':root'],
-    ['night survey', '.dark'],
+    ['night (default)', '.dark'],
+    ['morning', ':root'],
   ])('%s', (_name, selector) => {
     const theme = readTheme(selector)
-    const white: Triplet = [1, 0, 0]
-    const glasses = [
-      ['ink', theme.ink],
-      ['white', white],
-    ].map(([label, backdrop]) => {
-      const p = linearRgb(theme.panel)
-      const k = linearRgb(backdrop as Triplet)
-      const mixed = p.map((c, i) => alpha * c + (1 - alpha) * k[i]) as Rgb
-      return [label as string, luminanceOf(mixed)] as const
+    const backdrops = (['bg', ...SCENE] as const).map((token) => {
+      const glass = over(linearRgb(theme.panel), alpha, linearRgb(theme[token]))
+      return [token, luminanceOf(glass)] as const
     })
 
-    it.each(glasses)('ink text holds 4.5:1 over glass on %s', (_label, glassLum) => {
-      const [hi, lo] = [luminance(theme.ink), glassLum].sort((x, y) => y - x)
-      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(4.5)
+    it.each(backdrops)('ink text holds 4.5:1 over glass on %s', (token, glass) => {
+      expect(contrastOfLum(luminance(theme.ink), glass), `${token}`).toBeGreaterThanOrEqual(4.5)
     })
 
-    it.each(glasses)('muted-strong text holds 4.5:1 over glass on %s', (_label, glassLum) => {
-      const [hi, lo] = [luminance(theme['muted-strong']), glassLum].sort((x, y) => y - x)
-      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(4.5)
+    it.each(backdrops)('muted-strong text holds 4.5:1 over glass on %s', (token, glass) => {
+      expect(contrastOfLum(luminance(theme['muted-strong']), glass), `${token}`).toBeGreaterThanOrEqual(4.5)
     })
 
-    // WCAG 1.4.11: trail red is a graphic here (the current-page underline).
-    it.each(glasses)('trail graphic holds 3:1 over glass on %s', (_label, glassLum) => {
-      const [hi, lo] = [luminance(theme.trail), glassLum].sort((x, y) => y - x)
-      expect((hi + 0.05) / (lo + 0.05)).toBeGreaterThanOrEqual(3)
+    // WCAG 1.4.11: ember is a graphic here (the current-page dot, the focus ring).
+    it.each(backdrops)('trail graphic holds 3:1 over glass on %s', (token, glass) => {
+      expect(contrastOfLum(luminance(theme.trail), glass), `${token}`).toBeGreaterThanOrEqual(3)
     })
+  })
+
+  // The secondary button is clear glass at its own alpha: with its blur gone
+  // (no backdrop-filter, reduced transparency) its text must still read.
+  describe.each([
+    ['night (default)', '.dark'],
+    ['morning', ':root'],
+  ])('the secondary button, %s', (_name, selector) => {
+    const theme = readTheme(selector)
+    const buttonAlpha = alphaOf('.button-secondary')
+    for (const token of ['bg', ...SCENE] as const) {
+      it(`holds ink 4.5:1 on ${token}`, () => {
+        const lum = luminanceOf(over(linearRgb(theme.panel), buttonAlpha, linearRgb(theme[token])))
+        expect(contrastOfLum(luminance(theme.ink), lum)).toBeGreaterThanOrEqual(4.5)
+      })
+    }
+  })
+})
+
+// Under the reading column the land keeps its shape but loses its light: the
+// page's bg at --scene-scrim alpha over the lit ridge or the dawn, which are
+// what the column's text is set over.
+describe('text over the scene scrim', () => {
+  const desktop = alphaOf('.scene-scrim')
+  const phone = alphaOf('.scene-scrim', '@media (max-width: 1023px)')
+
+  it('reads both alphas from the stylesheet, the phone’s the heavier', () => {
+    expect(desktop).toBeGreaterThan(0.4)
+    expect(phone).toBeGreaterThan(desktop)
+  })
+
+  describe.each([
+    ['night (default)', '.dark'],
+    ['morning', ':root'],
+  ])('%s', (_name, selector) => {
+    const theme = readTheme(selector)
+    const cases = [
+      ...(['land-lit', 'dawn'] as const).flatMap((under) =>
+        (['ink', 'muted-strong', 'muted'] as const).flatMap((text) =>
+          [
+            ['column', desktop],
+            ['phone', phone],
+          ].map(([where, a]) => [text, under, where as string, a as number] as const),
+        ),
+      ),
+    ]
+
+    it.each(cases)('%s holds 4.5:1 over the scrim on %s (%s)', (text, under, _where, a) => {
+      const composite = over(linearRgb(theme.bg), a, linearRgb(theme[under]))
+      expect(contrastOfLum(luminance(theme[text]), luminanceOf(composite))).toBeGreaterThanOrEqual(4.5)
+    })
+  })
+})
+
+// Glass without its backdrop is opaque paper, so text on it never depends on
+// a blur that is not there (WCAG 1.4.3, and the visitor's own settings).
+describe('glass fallbacks', () => {
+  const blurred = rules.filter((r) => /backdrop-filter:\s*blur/.test(r.body) && r.ancestors.every((a) => a.startsWith('@layer')))
+
+  it('blurs only through .glass and the secondary button', () => {
+    expect(blurred.map((r) => r.selector).sort()).toEqual(['.button-secondary', '.glass'])
+  })
+
+  it('sets .glass opaque where the browser has no backdrop-filter', () => {
+    const fallback = rules.find((r) => r.selector === '.glass' && r.ancestors.some((a) => /^@supports not/.test(a)))
+    expect(fallback?.ancestors.join(' ')).toMatch(/backdrop-filter: blur\(1px\)/)
+    expect(fallback?.body).toMatch(/background:\s*oklch\(var\(--panel\)\)\s*;?\s*$/)
+  })
+
+  it('sets .glass opaque, with no blur, under reduced transparency and more contrast', () => {
+    const fallback = rules.find(
+      (r) => r.selector === '.glass' && r.ancestors.some((a) => a.includes('prefers-reduced-transparency: reduce') && a.includes('prefers-contrast: more')),
+    )
+    expect(fallback).toBeDefined()
+    expect(fallback!.body).toMatch(/background:\s*oklch\(var\(--panel\)\)/)
+    expect(fallback!.body).toMatch(/backdrop-filter:\s*none/)
+    expect(fallback!.body).toMatch(/-webkit-backdrop-filter:\s*none/)
+  })
+
+  it('gives the dense variant a heavier fill, not a lighter one', () => {
+    expect(alphaOf('.glass--dense')).toBeGreaterThan(alphaOf('.glass'))
+  })
+
+  it('prefixes every blur for Safari and holds the glass to one saturation', () => {
+    for (const r of blurred) {
+      expect(r.body, r.selector).toContain('-webkit-backdrop-filter')
+      expect(r.body, r.selector).toMatch(/blur\(\d+px\) saturate\([\d.]+\)/)
+    }
+  })
+
+  it('opens the phone menu on opaque paper, never glass on glass', () => {
+    const src = readFileSync('components/site-legend.tsx', 'utf8')
+    expect(src).toMatch(/aria-label="Primary" className="absolute [^"]*\bbg-panel\b/)
   })
 })

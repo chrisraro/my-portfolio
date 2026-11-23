@@ -7,12 +7,12 @@ import { LivePreview } from '@/components/ui/live-preview'
 // the trigger. Source guards pin the dialog behaviour a static render cannot reach.
 
 describe('LivePreview markup', () => {
-  const html = renderToStaticMarkup(<LivePreview url="https://latag.ph" title="Latag" />)
+  const html = renderToStaticMarkup(<LivePreview url="https://skimcare-app.vercel.app" title="SkimCare" />)
 
   it('renders only the trigger on the server', () => {
     expect(html).toMatch(/^<button[^>]*type="button"/)
     expect(html).toContain('Live preview')
-    expect(html).toContain('<span class="sr-only"> of Latag</span>')
+    expect(html).toContain('<span class="sr-only"> of SkimCare</span>')
     expect(html).toContain('aria-haspopup="dialog"')
     expect(html).not.toContain('<iframe')
     expect(html).not.toContain('role="dialog"')
@@ -21,11 +21,11 @@ describe('LivePreview markup', () => {
 
   it('marks a capture-mode trigger, with the same name and popup', () => {
     const capture = renderToStaticMarkup(
-      <LivePreview url="https://giya.ph" title="Giya" capture={{ desktop: '/a-full.webp', mobile: '/a-mobile.png' }} />,
+      <LivePreview url="https://iskotify.vercel.app" title="Iskotify" capture={{ desktop: '/a-full.webp', mobile: '/a-mobile.png' }} />,
     )
     expect(capture).toContain('data-preview="capture"')
     expect(capture).toContain('aria-haspopup="dialog"')
-    expect(capture).toContain('<span class="sr-only"> of Giya</span>')
+    expect(capture).toContain('<span class="sr-only"> of Iskotify</span>')
     expect(capture).not.toContain('<img')
   })
 })

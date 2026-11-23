@@ -74,13 +74,18 @@ describe('/services/[slug]', () => {
     expect(plates).toEqual(s.projectIds.map((id) => projects.find((p) => p.id === id)!.slug))
   })
 
-  it.each(servicePages)('$slug loads the first row of proof plates at once and the rest lazily', (s) => {
+  // The proof rows sit below the answer and its sections, never in the first
+  // viewport, so their thumbnails are all lazy.
+  it.each(servicePages)('$slug loads every proof thumbnail lazily: none is on screen at load', (s) => {
     const html = render(ServicePage({ params: { slug: s.slug } }))
     const plates = html.match(/<li id="plate-[\s\S]*?<\/li>/g) ?? []
-    plates.forEach((plate, i) => {
-      if (plate.includes('<img')) expect(plate).toContain(i < 3 ? 'loading="eager"' : 'loading="lazy"')
-    })
-    expect(plates.slice(0, 3).some((plate) => plate.includes('loading="eager"'))).toBe(true)
+    expect(plates.some((plate) => plate.includes('<img'))).toBe(true)
+    for (const plate of plates) {
+      if (plate.includes('<img')) {
+        expect(plate).toContain('loading="lazy"')
+        expect(plate).not.toContain('loading="eager"')
+      }
+    }
   })
 
   it.each(servicePages)('$slug jumps to the form it ends in, and leads back to every service', (s) => {
