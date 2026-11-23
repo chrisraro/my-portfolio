@@ -26,7 +26,7 @@ describe('elevation figures', () => {
   })
 
   it('states today’s figures', () => {
-    expect(elevationFigures().map((f) => f.value)).toEqual([15, 4, 6])
+    expect(elevationFigures().map((f) => f.value)).toEqual([14, 4, 6])
   })
 
   it('leaves the 2020-to-now strip builder retired', async () => {

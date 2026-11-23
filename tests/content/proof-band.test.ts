@@ -14,7 +14,7 @@ describe('proof figures', () => {
   it('count the shipped projects the inventory holds, not staging and not in development', () => {
     const [shipped] = elevationFigures()
     expect(shipped.value).toBe(projects.filter((p) => p.status !== 'staging' && p.status !== 'in-development').length)
-    expect(shipped.value).toBe(15)
+    expect(shipped.value).toBe(14)
   })
 
   it('reach the chat assistant as the same figures', () => {

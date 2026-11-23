@@ -106,12 +106,8 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
     <ul><li>Multi-operator tour booking marketplace where each operator runs its own store; custom child theme for product add-ons and bookings.</li></ul>
   </div>
   <div class="proj">
-    <div class="row"><span><b>Lunad</b> <span class="stack">| Next.js, React, TypeScript, Neon Postgres + PostGIS, Playwright</span></span><span class="date">Oct 2026 &ndash; pre-launch</span></div>
-    <ul><li>Commuter PWA for Naga City: jeepney trip planner, step-by-step guidance, community corrections and an admin review console; row-level security on every table and E2E tests.</li></ul>
-  </div>
-  <div class="proj">
-    <div class="row"><span><b>SkimCare</b> <span class="stack">| React Native, Expo, TypeScript, llama.cpp, ML Kit</span></span><span class="date">Oct 2026</span></div>
-    <ul><li>AppBuildersPH Hackathon 2026 entry (Local AI theme, with Glenn Viola): reads an agreement on-device and explains key terms in English or Filipino, linked to the source sentence. Web and Android.</li></ul>
+    <div class="row"><span><b>Iskotify</b> <span class="stack">| React Native, Expo, Next.js, TypeScript, Supabase</span></span><span class="date">Jun 2026 &ndash; in development</span></div>
+    <ul><li>Sole developer, for Online Creative Solutions: scholarship and exam-prep mobile app for Filipino students with AI flashcards and a study companion, a Next.js admin and a Supabase backend.</li></ul>
   </div>
   <div class="proj">
     <div class="row"><span><b>BUCS PolicyPulse</b> <span class="stack">| Next.js, Vercel AI SDK, LlamaIndex.TS, Supabase pgvector</span></span><span class="date">Jul 2026</span></div>

@@ -20,9 +20,9 @@ describe('isShipped', () => {
     expect(statuses.filter((status) => isShipped({ status }))).toEqual(['live', 'ua-gated', 'auth-gated', 'internal'])
   })
 
-  it('counts fifteen of the seventeen projects as shipped', () => {
-    expect(projects).toHaveLength(17)
-    expect(projects.filter(isShipped)).toHaveLength(15)
-    expect(projects.filter((p) => !isShipped(p)).map((p) => p.id).sort()).toEqual(['iskotify', 'lunad'])
+  it('counts fourteen of the fifteen projects as shipped', () => {
+    expect(projects).toHaveLength(15)
+    expect(projects.filter(isShipped)).toHaveLength(14)
+    expect(projects.filter((p) => !isShipped(p)).map((p) => p.id).sort()).toEqual(['iskotify'])
   })
 })

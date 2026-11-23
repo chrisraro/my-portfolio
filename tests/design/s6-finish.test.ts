@@ -184,7 +184,7 @@ describe('the docs describe the first light that shipped', () => {
     expect(doc).toContain(`${FLAGSHIP_SLUGS.length} case studies`)
     expect(doc).toContain('/services')
     expect(doc).toContain('/hire')
-    expect(doc).not.toMatch(/\b15 projects\b|\b20 projects\b|four own products|three products|Portfolio 4\.0 redesign is built/)
+    expect(doc).not.toMatch(/\b17 projects\b|\b20 projects\b|four own products|three products|Portfolio 4\.0 redesign is built/)
   })
 
   it('CLAUDE.md drops the amber and the retired worlds and names the First Light pieces', () => {

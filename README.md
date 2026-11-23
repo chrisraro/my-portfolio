@@ -1,7 +1,7 @@
 # Christian Raro — Portfolio
 
 The portfolio of Christian Raro, a full-stack developer in Naga City,
-Philippines. A homepage, a `/projects` map and list of 17 projects with a page
+Philippines. A homepage, a `/projects` map and list of 15 projects with a page
 per project, `/services` with three service pages, `/about`, `/hire`, two API
 routes, and no database: every fact on the site is static data in
 [`lib/data.ts`](lib/data.ts) and [`lib/case-studies.ts`](lib/case-studies.ts),

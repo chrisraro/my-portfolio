@@ -93,13 +93,13 @@ describe('band parameter', () => {
 describe('projectCount', () => {
   it('counts what is shipped, and names the rest as in progress', () => {
     const inProgress = projects.filter((p) => p.status === 'staging' || p.status === 'in-development').length
-    expect(inProgress).toBe(2)
+    expect(inProgress).toBe(1)
     expect(projectCount(projects, projects, false)).toBe(`${projects.length} projects · ${projects.length - inProgress} shipped, ${inProgress} in progress`)
   })
 
   it('never says staging for a band that holds an in-development project', () => {
     const apps = projects.filter((p) => p.band === 'Applications')
-    expect(projectCount(apps, projects, true)).toBe(`${apps.length} of ${projects.length} projects · 2 in progress`)
+    expect(projectCount(apps, projects, true)).toBe(`${apps.length} of ${projects.length} projects · 1 in progress`)
     expect(projectCount(projects, projects, false)).not.toMatch(/staging/)
   })
 

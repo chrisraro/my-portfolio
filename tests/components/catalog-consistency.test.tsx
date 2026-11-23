@@ -30,7 +30,7 @@ describe('project counts', () => {
     const sites = projects.filter((p) => p.band === 'Sites')
     expect(renderProjects('sites')).toContain(`${sites.length} of ${projects.length} projects`)
     const apps = projects.filter((p) => p.band === 'Applications')
-    expect(renderProjects('applications')).toContain(`${apps.length} of ${projects.length} projects · 2 in progress`)
+    expect(renderProjects('applications')).toContain(`${apps.length} of ${projects.length} projects · 1 in progress`)
   })
 
   it('counts the in-development project as in progress, not as shipped', () => {
@@ -42,7 +42,7 @@ describe('project counts', () => {
 describe('no catalog numbers on screen', () => {
   it('prints none on /projects or on a project page', () => {
     expect(renderProjects()).not.toMatch(/\d{1,2} \/ \d{1,2} · /)
-    for (const slug of ['el-nido-guide-ph', 'skimcare', 'iskotify']) {
+    for (const slug of ['el-nido-guide-ph', 'graceland-bicolano-dining', 'iskotify']) {
       expect(renderToStaticMarkup(ProjectPage({ params: { slug } })), slug).not.toMatch(/\d{1,2} \/ \d{1,2} · /)
     }
   })

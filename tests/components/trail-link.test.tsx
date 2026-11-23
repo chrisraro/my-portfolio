@@ -22,22 +22,22 @@ describe('TrailLink', () => {
   })
 
   it('is a label: map-label type, no arrow, a 32px hit area from 640px', () => {
-    const html = renderToStaticMarkup(<TrailLink href="/projects/skimcare" text="SkimCare" kind="label" />)
+    const html = renderToStaticMarkup(<TrailLink href="/projects/graceland-bicolano-dining" text="Graceland Bicolano Dining" kind="label" />)
     expect(html).toMatch(/class="map-label inline-flex min-h-\[44px\] items-center gap-1\.5 text-ink sm:min-h-\[32px\]"/)
-    expect(html).toContain('<span class="link-draw">SkimCare</span></a>')
+    expect(html).toContain('<span class="link-draw">Graceland Bicolano Dining</span></a>')
   })
 
   it('opens an external link in a new tab, says so, and points up and out', () => {
-    const html = renderToStaticMarkup(<TrailLink href="https://skimcare-app.vercel.app" text="skimcare-app.vercel.app" kind="label" external />)
-    expect(html).toMatch(/^<a href="https:\/\/skimcare-app.vercel.app" target="_blank" rel="noopener noreferrer"/)
+    const html = renderToStaticMarkup(<TrailLink href="https://graceland.ph" text="graceland.ph" kind="label" external />)
+    expect(html).toMatch(/^<a href="https:\/\/graceland.ph" target="_blank" rel="noopener noreferrer"/)
     expect(html).toContain('<span class="sr-only">(opens in a new tab)</span>')
     expect(html).toContain('<svg')
     expect(html).not.toContain('arrow-nudge')
   })
 
   it('reads extra words to screen readers only, after the text', () => {
-    const html = renderToStaticMarkup(<TrailLink href="/projects/skimcare" text="Read more" srText=" about SkimCare" />)
-    expect(html).toContain('<span class="link-draw">Read more</span><span class="sr-only"> about SkimCare</span>')
+    const html = renderToStaticMarkup(<TrailLink href="/projects/graceland-bicolano-dining" text="Read more" srText=" about Graceland Bicolano Dining" />)
+    expect(html).toContain('<span class="link-draw">Read more</span><span class="sr-only"> about Graceland Bicolano Dining</span>')
   })
 
   it('merges a caller class over its own', () => {

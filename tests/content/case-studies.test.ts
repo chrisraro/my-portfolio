@@ -91,7 +91,7 @@ describe('case studies', () => {
 
   it('find the case study a related project belongs to', () => {
     expect(caseStudyFor('beachbus-nfc-card-system')?.slug).toBe('beachbus-palawan')
-    expect(caseStudyFor('skimcare')).toBeUndefined()
+    expect(caseStudyFor('graceland-bicolano-dining')).toBeUndefined()
   })
 
   it('has a case study for every flagship', () => {

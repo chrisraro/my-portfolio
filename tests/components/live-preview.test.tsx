@@ -7,12 +7,12 @@ import { LivePreview } from '@/components/ui/live-preview'
 // the trigger. Source guards pin the dialog behaviour a static render cannot reach.
 
 describe('LivePreview markup', () => {
-  const html = renderToStaticMarkup(<LivePreview url="https://skimcare-app.vercel.app" title="SkimCare" />)
+  const html = renderToStaticMarkup(<LivePreview url="https://graceland.ph" title="Graceland Bicolano Dining" />)
 
   it('renders only the trigger on the server', () => {
     expect(html).toMatch(/^<button[^>]*type="button"/)
     expect(html).toContain('Live preview')
-    expect(html).toContain('<span class="sr-only"> of SkimCare</span>')
+    expect(html).toContain('<span class="sr-only"> of Graceland Bicolano Dining</span>')
     expect(html).toContain('aria-haspopup="dialog"')
     expect(html).not.toContain('<iframe')
     expect(html).not.toContain('role="dialog"')

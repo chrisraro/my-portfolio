@@ -46,7 +46,7 @@ describe('/projects/[slug]', () => {
   })
 
   it('offers the live site only where a visitor can open it', () => {
-    expect(render('skimcare')).toContain('Open live site')
+    expect(render('graceland-bicolano-dining')).toContain('Open live site')
     expect(render('iskotify')).toContain('Open live site')
     expect(render('downtown-district-hotel')).toContain('Open live site')
     expect(render('ocs-wp-control-panel')).not.toContain('Open live site')
@@ -78,12 +78,12 @@ describe('/projects/[slug]', () => {
 
   it('keeps the sticky rail plate at least 16rem wide on a short screen', () => {
     // 100vh minus 35rem reaches 0 at a 560px-tall window; the floor holds the plate at 16rem.
-    expect(render('skimcare')).toContain('xl:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]')
+    expect(render('graceland-bicolano-dining')).toContain('xl:max-w-[min(100%,max(16rem,calc((100vh_-_35rem)_*_1.33)))]')
   })
 
   it('labels screenshots for what they show', () => {
-    expect(render('skimcare')).toContain('aria-label="Screenshot of skimcare-app.vercel.app"')
-    expect(render('skimcare')).toContain('aria-label="View larger image: Mobile screenshot of skimcare-app.vercel.app"')
+    expect(render('graceland-bicolano-dining')).toContain('aria-label="Screenshot of graceland.ph"')
+    expect(render('graceland-bicolano-dining')).toContain('aria-label="View larger image: Mobile screenshot of graceland.ph"')
   })
 
   it('shows the top of the full-page shot where there is one, else the desktop shot', () => {
@@ -111,16 +111,16 @@ describe('/projects/[slug]', () => {
   })
 
   it('shows a short page its description and stack, with no invented sections', () => {
-    const skim = projects.find((p) => p.slug === 'skimcare')!
-    const html = render('skimcare')
-    expect(html).toContain(skim.description.replace(/'/g, '&#x27;'))
-    for (const t of skim.technologies) expect(html).toContain(`>${t}<`)
+    const shortPage = projects.find((p) => p.slug === 'graceland-bicolano-dining')!
+    const html = render('graceland-bicolano-dining')
+    expect(html).toContain(shortPage.description.replace(/'/g, '&#x27;'))
+    for (const t of shortPage.technologies) expect(html).toContain(`>${t}<`)
     expect(html).not.toContain(`>${caseStudyContent.headings.decisions}</h2>`)
   })
 
   it('titles each page for its project', () => {
-    const md = generateMetadata({ params: { slug: 'skimcare' } })
-    expect(String(md.title)).toMatch(/^SkimCare · /)
+    const md = generateMetadata({ params: { slug: 'graceland-bicolano-dining' } })
+    expect(String(md.title)).toMatch(/^Graceland Bicolano Dining · /)
   })
 
   it('gives a flagship its own link preview and canonical URL, described by its short line', () => {
@@ -133,22 +133,22 @@ describe('/projects/[slug]', () => {
   })
 
   it('names a link-preview card from app/og', () => {
-    const md = generateMetadata({ params: { slug: 'skimcare' } })
-    expect(md.openGraph).toMatchObject({ images: [ogImage('/projects/skimcare')] })
-    expect(md.twitter).toMatchObject({ images: [ogImage('/projects/skimcare')] })
+    const md = generateMetadata({ params: { slug: 'graceland-bicolano-dining' } })
+    expect(md.openGraph).toMatchObject({ images: [ogImage('/projects/graceland-bicolano-dining')] })
+    expect(md.twitter).toMatchObject({ images: [ogImage('/projects/graceland-bicolano-dining')] })
   })
 
   it('describes a short page by its short line, not the summary fragment', () => {
-    const skim = projects.find((p) => p.slug === 'skimcare')!
-    const md = generateMetadata({ params: { slug: 'skimcare' } })
-    expect(md.description).toBe(skim.metaDescription)
-    expect(md.alternates?.canonical).toBe('/projects/skimcare')
-    expect(md.openGraph).toMatchObject({ type: 'article', description: skim.metaDescription, url: '/projects/skimcare' })
-    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: skim.metaDescription })
+    const shortPage = projects.find((p) => p.slug === 'iskotify')!
+    const md = generateMetadata({ params: { slug: 'iskotify' } })
+    expect(md.description).toBe(shortPage.metaDescription)
+    expect(md.alternates?.canonical).toBe('/projects/iskotify')
+    expect(md.openGraph).toMatchObject({ type: 'article', description: shortPage.metaDescription, url: '/projects/iskotify' })
+    expect(md.twitter).toMatchObject({ card: 'summary_large_image', description: shortPage.metaDescription })
   })
 
   it('omits the sector from the header meta when it just repeats the band', () => {
-    expect(render('skimcare')).not.toContain('Applications · product')
+    expect(render('graceland-bicolano-dining')).not.toContain('Applications · product')
     expect(render('el-nido-guide-ph')).toContain('Sites · tours')
   })
 
@@ -157,7 +157,7 @@ describe('/projects/[slug]', () => {
   })
 
   it('offers the live site as the outlined secondary, beside the page’s trail-red primaries', () => {
-    for (const slug of ['skimcare', 'el-nido-guide-ph']) {
+    for (const slug of ['graceland-bicolano-dining', 'el-nido-guide-ph']) {
       const html = render(slug)
       const cls = html.match(/<a [^>]*class="([^"]*)"[^>]*>Open live site/)?.[1] ?? ''
       expect(cls).toContain('button-secondary')
@@ -188,20 +188,20 @@ describe('/projects/[slug]', () => {
   })
 
   it('pads the footer "Start a project" button, not only its min-height', () => {
-    const cls = render('skimcare').match(/<a [^>]*class="([^"]*)"[^>]*>Start a project/)?.[1] ?? ''
+    const cls = render('graceland-bicolano-dining').match(/<a [^>]*class="([^"]*)"[^>]*>Start a project/)?.[1] ?? ''
     // .button-primary (globals.css) carries the fill and the py-2.5 padding.
     expect(cls).toContain('button-primary')
   })
 
   it('shows the mobile screenshot only from the sm breakpoint up', () => {
-    const cls = render('skimcare').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1]
+    const cls = render('graceland-bicolano-dining').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1]
     expect(cls).toBeDefined()
     expect(cls!.split(' ')).toContain('hidden')
     expect(cls!.split(' ')).toContain('sm:block')
   })
 
   it('holds read-mode prose to a measure of about 70 characters', () => {
-    for (const slug of ['skimcare', 'el-nido-guide-ph']) {
+    for (const slug of ['graceland-bicolano-dining', 'el-nido-guide-ph']) {
       const html = render(slug)
       expect(html).toContain('max-w-[36rem]')
       expect(html).not.toContain('max-w-[68ch]')
@@ -209,11 +209,11 @@ describe('/projects/[slug]', () => {
   })
 
   it('lets the heading label the short page stack list', () => {
-    expect(render('skimcare')).not.toContain('aria-label="Stack"')
+    expect(render('graceland-bicolano-dining')).not.toContain('aria-label="Stack"')
   })
 
   it('keeps screenshots above the body on a short page', () => {
-    const html = render('skimcare')
+    const html = render('graceland-bicolano-dining')
     expect(html.indexOf('Screenshot of')).toBeGreaterThan(-1)
     expect(html.indexOf('Screenshot of')).toBeLessThan(html.indexOf(`>${caseStudyContent.headings.about}</h2>`))
   })
@@ -331,7 +331,7 @@ describe('related work', () => {
 
   it('gives other pages no related line and no part-of link', () => {
     expect(render('el-nido-guide-ph')).not.toContain(`>${h.related}<`)
-    expect(render('skimcare')).not.toContain(caseStudyContent.partOf.split('{title}')[0])
+    expect(render('graceland-bicolano-dining')).not.toContain(caseStudyContent.partOf.split('{title}')[0])
   })
 })
 
@@ -346,7 +346,7 @@ describe('project page JSON-LD', () => {
   })
 
   it('gives an application a SoftwareApplication, case study or not', () => {
-    expect(ldTypes('skimcare')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'SoftwareApplication'])
+    expect(ldTypes('iskotify')).toEqual(['Person', 'WebSite', 'BreadcrumbList', 'SoftwareApplication'])
   })
 })
 
@@ -375,7 +375,7 @@ describe('the case-study journal', () => {
   })
 
   it('leaves short pages without journal entries', () => {
-    expect(render('skimcare')).not.toContain('journal-entry')
+    expect(render('graceland-bicolano-dining')).not.toContain('journal-entry')
   })
 
   it('sets the screenshot rail on a survey plate at the one shared frame', () => {
@@ -396,8 +396,8 @@ describe('the case-study journal', () => {
   })
 
   it('sets a short page’s stack as map-label chips', () => {
-    const skim = projects.find((p) => p.slug === 'skimcare')!
-    for (const t of skim.technologies) expect(render('skimcare')).toContain(`<li class="chip">${t}</li>`)
+    const shortPage = projects.find((p) => p.slug === 'graceland-bicolano-dining')!
+    for (const t of shortPage.technologies) expect(render('graceland-bicolano-dining')).toContain(`<li class="chip">${t}</li>`)
   })
 
   // F13 (finish review): a lone big number in its own card is the hero-metric
@@ -419,7 +419,7 @@ describe('the case-study journal', () => {
 
   // F16: the closing row floated after ~300px of empty paper beside the shots.
   it('closes a short page in its prose column, straight under the stack', () => {
-    const html = render('skimcare')
+    const html = render('graceland-bicolano-dining')
     expect(html).toMatch(/<\/ul><div class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3"><a class="press button-primary" href="\/#contact">/)
     // Once in the header's side card, once here: no second closing row after the spread.
     expect(html.match(/>Start a project</g)).toHaveLength(2)
@@ -428,7 +428,7 @@ describe('the case-study journal', () => {
 
   // F17: at 96px the phone shot was too small to read.
   it('shows the phone shot at plate scale, at least 180px wide', () => {
-    const cls = render('skimcare').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1] ?? ''
+    const cls = render('graceland-bicolano-dining').match(/aria-label="View larger image: Mobile screenshot[^"]*" class="([^"]*)"/)?.[1] ?? ''
     expect(cls.split(' ')).toContain('w-[11.25rem]')
     expect(cls).not.toMatch(/(?:^|\s)(?:lg:)?w-(?:24|32)(?:\s|$)/)
   })

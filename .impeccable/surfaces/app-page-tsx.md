@@ -16,7 +16,7 @@ equally; each decides within one screen whether this is their developer and
 which path is theirs.
 Action: Start a project (`#contact`). Second path: Hire me for a role
 (`/hire`); "Work with me" opens `/services`.
-Proof: 17 projects (15 shipped, 4 case studies), verified client places on a
+Proof: 15 projects (14 shipped, 4 case studies), verified client places on a
 real map of the Philippines, a dated route from 2020 to now. No products of his
 own are claimed; Iskotify is an Online Creative Solutions project, shown as in
 development with its website live. Every claim derives from `lib/data.ts` /
@@ -29,8 +29,8 @@ progressive enhancement; fewer than 10 client components.
 Replaces: the Isarog Trail Map (Portfolio 5.0). Inspiration for the structure:
 marwieang.com (a floating side panel, one reading column, compact rows, a fixed
 dithered land), made his own: Mount Isarog over the Naga plain, first light,
-fireflies, liquid glass. The decisions were scored with JEV: Lunad and SkimCare
-stay in the inventory, night is the default theme, the Iskotify label is "In
+fireflies, liquid glass. The decisions were scored with JEV: night is the
+default theme, the Iskotify label is "In
 development".
 
 ## Direction contract

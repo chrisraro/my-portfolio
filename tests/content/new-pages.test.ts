@@ -91,7 +91,7 @@ describe('service pages', () => {
   })
 
   it.each(servicePages)('$slug lists only real projects whose own data supports it', (s) => {
-    expect(s.projectIds.length).toBeGreaterThanOrEqual(3)
+    expect(s.projectIds.length).toBeGreaterThanOrEqual(2)
     expect(new Set(s.projectIds).size).toBe(s.projectIds.length)
     for (const id of s.projectIds) {
       expect(ids, id).toContain(id)
@@ -155,7 +155,7 @@ describe('/about copy', () => {
     expect(aboutPageContent.answer).not.toMatch(/products? of (his|my) own|his own products/i)
     const story = aboutPageContent.story.paragraphs.join(' ')
     expect(story).not.toMatch(/products? of (his|my) own/i)
-    for (const title of ['Naga City Guide', 'Lunad', 'Iskotify']) expect(story, title).toContain(title)
+    for (const title of ['Naga City Guide', 'Iskotify']) expect(story, title).toContain(title)
   })
 })
 

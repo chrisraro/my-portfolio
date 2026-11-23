@@ -3,13 +3,13 @@ import { aboutPageContent, hirePageContent, servicePages, servicesPageContent } 
 import { buildRouteMetadata } from '@/lib/site-metadata'
 import { routeFor, siteRoutes } from '@/lib/site-routes'
 
-// S5 final review: /services*, /about, /hire and 11 of 20 project pages (17 now) sent
+// S5 final review: /services*, /about, /hire and 11 of 20 project pages (15 now) sent
 // 160-371 character descriptions; Google cuts snippets near 155.
 describe('meta descriptions', () => {
   const routes = siteRoutes()
 
   it('fit a snippet: 50 to 160 characters on every route', () => {
-    expect(routes.length).toBeGreaterThanOrEqual(25)
+    expect(routes.length).toBeGreaterThanOrEqual(23)
     for (const r of routes) {
       expect(r.metaDescription.length, r.path).toBeGreaterThanOrEqual(50)
       expect(r.metaDescription.length, r.path).toBeLessThanOrEqual(160)

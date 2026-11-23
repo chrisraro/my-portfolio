@@ -346,7 +346,7 @@ Round, because glass is round. `--radius` is 16px: glass, plates and the survey-
 - **Hover / press** (`.press`): lift 2px on hover, sink 1px and scale 0.98 on press, fast and sharp; the arrow inside slides 8px right (`.arrow-nudge`). Under reduced motion only the colours change.
 
 ### The panel (`SiteLegend`)
-A pane of glass, 16rem wide. Two lists share one lozenge each (`.lozenge`): a 44px pill of ink at 7% that rests behind the current page and glides, on `--dur-normal`, to whichever link the pointer or the keyboard is on, then back. The current page also takes an ember dot. Counts (17 projects, 3 services) sit at the far end of their rows.
+A pane of glass, 16rem wide. Two lists share one lozenge each (`.lozenge`): a 44px pill of ink at 7% that rests behind the current page and glides, on `--dur-normal`, to whichever link the pointer or the keyboard is on, then back. The current page also takes an ember dot. Counts (15 projects, 3 services) sit at the far end of their rows.
 
 ### Rows (`ProjectRow`, `.row`)
 One project, one link. Hover slides a pane of glass under the row (wider than the text, 6% ink with a top highlight) and zooms the thumbnail inside its frame; focus gets the same pane with no travel. The name carries `StatusBadge`; the kind of client sits at the right from 640px.

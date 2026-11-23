@@ -28,8 +28,8 @@ const link = (href: string, extra: Partial<{ target: string; download: boolean }
 
 describe('planTransition', () => {
   it('morphs a click on a project link into its page', () => {
-    expect(planTransition(click, link('/projects/skimcare'), at('/'))).toEqual({ kind: 'project', href: '/projects/skimcare', slug: 'skimcare' })
-    expect(planTransition(click, link('/projects/iskotify'), at('/projects/skimcare'))).toEqual({ kind: 'project', href: '/projects/iskotify', slug: 'iskotify' })
+    expect(planTransition(click, link('/projects/graceland-bicolano-dining'), at('/'))).toEqual({ kind: 'project', href: '/projects/graceland-bicolano-dining', slug: 'graceland-bicolano-dining' })
+    expect(planTransition(click, link('/projects/iskotify'), at('/projects/graceland-bicolano-dining'))).toEqual({ kind: 'project', href: '/projects/iskotify', slug: 'iskotify' })
   })
 
   it('re-lays out /projects when a legend key changes the band', () => {
@@ -38,28 +38,28 @@ describe('planTransition', () => {
   })
 
   it('leaves a map pin’s jump to a plate on the same page to the browser', () => {
-    expect(planTransition(click, link('/projects#plate-skimcare'), at('/projects'))).toBeNull()
+    expect(planTransition(click, link('/projects#plate-graceland-bicolano-dining'), at('/projects'))).toBeNull()
     expect(planTransition(click, link('/projects?band=sites#plate-azalea-baguio'), at('/projects', '?band=sites'))).toBeNull()
   })
 
   it('leaves modified and non-primary clicks to the browser (new tab, new window, download)', () => {
     for (const key of ['metaKey', 'ctrlKey', 'shiftKey', 'altKey'] as const) {
-      expect(planTransition({ ...click, [key]: true }, link('/projects/skimcare'), at('/')), key).toBeNull()
+      expect(planTransition({ ...click, [key]: true }, link('/projects/graceland-bicolano-dining'), at('/')), key).toBeNull()
     }
-    expect(planTransition({ ...click, button: 1 }, link('/projects/skimcare'), at('/'))).toBeNull()
-    expect(planTransition({ ...click, button: 2 }, link('/projects/skimcare'), at('/'))).toBeNull()
-    expect(planTransition({ ...click, defaultPrevented: true }, link('/projects/skimcare'), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/skimcare', { target: '_blank' }), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/skimcare', { download: true }), at('/'))).toBeNull()
+    expect(planTransition({ ...click, button: 1 }, link('/projects/graceland-bicolano-dining'), at('/'))).toBeNull()
+    expect(planTransition({ ...click, button: 2 }, link('/projects/graceland-bicolano-dining'), at('/'))).toBeNull()
+    expect(planTransition({ ...click, defaultPrevented: true }, link('/projects/graceland-bicolano-dining'), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/graceland-bicolano-dining', { target: '_blank' }), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/graceland-bicolano-dining', { download: true }), at('/'))).toBeNull()
   })
 
   it('leaves other origins, the same page, in-page anchors and every other route alone', () => {
-    expect(planTransition(click, link('https://skimcare-app.vercel.app/projects/skimcare'), at('/'))).toBeNull()
-    expect(planTransition(click, link('/projects/skimcare'), at('/projects/skimcare'))).toBeNull()
+    expect(planTransition(click, link('https://graceland.ph/projects/graceland-bicolano-dining'), at('/'))).toBeNull()
+    expect(planTransition(click, link('/projects/graceland-bicolano-dining'), at('/projects/graceland-bicolano-dining'))).toBeNull()
     expect(planTransition(click, link('/projects?band=sites'), at('/projects', '?band=sites'))).toBeNull()
     expect(planTransition(click, link('/#contact'), at('/'))).toBeNull()
     expect(planTransition(click, link('/'), at('/projects'))).toBeNull()
-    expect(planTransition(click, link('/projects'), at('/projects/skimcare'))).toBeNull()
+    expect(planTransition(click, link('/projects'), at('/projects/graceland-bicolano-dining'))).toBeNull()
     expect(planTransition(click, link('/projects'), at('/'))).toBeNull()
   })
 })

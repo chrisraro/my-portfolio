@@ -114,14 +114,15 @@ export const projects: Project[] = [
     id: 'iskotify',
     slug: 'iskotify',
     title: 'Iskotify',
-    description: 'Scholarship and exam-prep platform for Filipino students, a project of Online Creative Solutions: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw." In development, with the live website open to visit.',
+    description: 'Scholarship and exam-prep mobile app for Filipino students, a project of Online Creative Solutions: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw." In development, with the live website open to visit.',
     metaDescription: 'Online Creative Solutions project for Filipino students: scholarship deadlines, AI flashcards for UPCAT, ACET and DCAT, and an AI study companion.',
-    summary: 'Filipino students · scholarships, AI exam prep',
+    summary: 'Filipino students · mobile app, AI exam prep',
     band: 'Applications',
     sector: 'education',
     image: '/assets/images/projects/iskotify.png',
-    technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
+    technologies: ['React Native', 'Expo', 'Next.js', 'TypeScript', 'Supabase', 'AI'],
     links: { live: 'https://iskotify.ph' },
+    contribution: 'I build Iskotify alone, as its sole developer at Online Creative Solutions: the mobile app in React Native and Expo, the Next.js admin and the Supabase backend.',
     status: 'in-development',
     dates: 'June 2026',
     featured: true,
@@ -140,40 +141,6 @@ export const projects: Project[] = [
     links: { live: 'https://amangroup-webapp.enjoyrealty.com' },
     status: 'live',
     dates: 'March – April 2025',
-    featured: false,
-  },
-  {
-    id: 'skimcare',
-    slug: 'skimcare',
-    title: 'SkimCare',
-    description: "Team ESG's entry to the AppBuildersPH Hackathon 2026 (theme: Local AI), built with Glenn Viola. An Android and web app that reads an agreement you are about to sign, explains its key terms in plain English or Filipino, and links each one to the sentence it came from. Text recognition and a small language model run on the device, so nothing is uploaded.",
-    metaDescription: 'Android and web app that explains an agreement’s key terms in plain English or Filipino. Text recognition and a small language model run on the device.',
-    summary: 'Filipino signers · on-device agreement reader',
-    band: 'Applications',
-    sector: 'product',
-    image: '/assets/images/projects/skimcare.png',
-    technologies: ['React Native', 'Expo', 'TypeScript', 'llama.cpp', 'ML Kit'],
-    links: { live: 'https://skimcare-app.vercel.app', github: 'https://github.com/chrisraro/SkimCare' },
-    status: 'live',
-    dates: 'October 2026',
-    featured: false,
-  },
-
-  {
-    id: 'lunad',
-    slug: 'lunad',
-    title: 'Lunad',
-    description: 'Mobile-first commuter web app (PWA) for Naga City: a jeepney trip planner with step-by-step guidance, saved trips, community tips and corrections, private driver reports and an admin review console. Unknown fares and routes are shown as unknown, never guessed. Pre-launch while reviewers check the route data.',
-    metaDescription: 'Jeepney trip planner for Naga City commuters, with step-by-step guidance and saved trips. Unknown fares and routes are shown as unknown. Pre-launch.',
-    summary: 'Naga commuters · jeepney trip planner',
-    band: 'Applications',
-    sector: 'product',
-    image: '/assets/images/projects/lunad.png',
-    technologies: ['Next.js', 'React', 'TypeScript', 'Neon Postgres', 'PostGIS', 'PWA', 'Playwright'],
-    links: { live: 'https://para-naga.vercel.app', github: 'https://github.com/chrisraro/ParaNaga' },
-    status: 'staging',
-    place: { ...NAGA_CITY, evidence: 'Naga City' },
-    dates: 'October 2026',
     featured: false,
   },
   // --- Sites ---------------------------------------------------------------
@@ -360,6 +327,7 @@ export const experience: ExperienceItem[] = [
     responsibilities: [
       'Build and maintain WordPress and WooCommerce sites for agency clients, including Azalea Baguio, Azalea Boracay, Graceland and Review Masters Bicol',
       'Built the OCS WP Control Panel, a Next.js and Supabase dashboard that manages client WordPress sites over MCP',
+      'Build Iskotify, a mobile app for Filipino students in React Native and Expo, as its sole developer',
       'Built the Azalea e-Helpdesk, a hotel service-request desk shipped as a WordPress plugin with a PHP REST API and a React front end',
       'Set up and run the team’s self-hosted n8n automation stack for Google Workspace and LLM workflows',
       'Apply technical SEO and measurement briefs: redirect maps, JSON-LD schema, GA4 and Meta Pixel',
@@ -472,7 +440,7 @@ export const sectionContent = {
     title: 'In development',
     more: 'About the project',
     lines: {
-      iskotify: 'Scholarship deadlines, AI flashcards and a study companion for Filipino students. An Online Creative Solutions project; the website is live.',
+      iskotify: 'A mobile app for Filipino students: scholarship deadlines, AI flashcards and a study companion. I build it alone at Online Creative Solutions; the website is live.',
     } as Record<string, string>,
   },
   work: { title: 'More work', cta: ctaLabels.allProjects },
@@ -692,7 +660,7 @@ export const serviceArea: ServiceArea = {
 // proving project to its own data.
 
 /** When the copy on /services, /about and /hire was last checked; each page shows it. */
-export const pagesUpdated = '2026-11-23'
+export const pagesUpdated = '2026-11-24'
 
 const idsUsing = (technology: string) => projects.filter((p) => p.technologies.indexOf(technology) !== -1).map((p) => p.id)
 
@@ -713,55 +681,54 @@ export const servicePages: ServicePage[] = [
     name: 'Full-stack development',
     summary: 'Web apps in Next.js, React, TypeScript and Supabase, from the first screen to the database.',
     keyword: 'full-stack developer Philippines',
-    // Aman Group Web App (loan calculator), Lunad (jeepney trips), SkimCare (on-device reader).
+    // Aman Group Web App (loan calculator), iskotify contribution, ocs-wp-control.
     answer:
-      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has built a real estate showcase with a loan calculator, a jeepney trip planner for Naga City and an on-device agreement reader, and is open to client projects and full-time remote roles.',
+      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has built a real estate showcase with a loan calculator and a control panel for client WordPress sites, is sole developer of the Iskotify mobile app, and is open to client projects and full-time remote roles.',
     sections: [
       {
         question: 'What do I build with Next.js and React?',
         answer: [
-          // Project descriptions: aman-webapp, lunad.
-          'Web apps with screens a template cannot give. The Aman Group Web App compares Pag-IBIG, bank and in-house financing in a loan calculator. Lunad plans jeepney trips around Naga City, and is in pre-launch while reviewers check its route data.',
-          // iskotify description.
-          'Iskotify, a project of Online Creative Solutions, tracks scholarships with deadline reminders and makes exam-prep flashcards with AI. It is in development, and its website is live.',
+          // Project descriptions: aman-webapp, ocs-wp-control.
+          'Web apps with screens a template cannot give. The Aman Group Web App compares Pag-IBIG, bank and in-house financing in a loan calculator. The OCS WP Control Panel manages, secures and reports on client WordPress sites from one dashboard.',
+          // iskotify description and contribution.
+          'Iskotify, a project of Online Creative Solutions, tracks scholarships with deadline reminders and makes exam-prep flashcards with AI. I build it alone; it is in development, and its website is live.',
         ],
       },
       {
         question: 'Which backend do I choose?',
         answer: [
-          // iskotify technologies; Aman decision (Upstash Redis, Vercel KV); lunad technologies.
-          'Supabase for an app like Iskotify, which runs on Next.js and Supabase. Upstash Redis through Vercel KV when an app only stores small key-value data, as the Aman Group Web App does. Lunad runs on Neon Postgres with PostGIS.',
+          // iskotify contribution; Aman decision (Upstash Redis, Vercel KV).
+          'Supabase for an app with accounts and an admin, like Iskotify. Upstash Redis through Vercel KV when an app only stores small key-value data, as the Aman Group Web App does.',
         ],
       },
       {
         question: 'How do I ship it?',
         answer: [
-          // lunad technologies (Playwright); this repo's CI (.github/workflows/ci.yml).
-          'In TypeScript, with tests and a pipeline. Lunad is tested with Playwright, and this portfolio runs type checks, lint, its tests and a production build on every push and pull request to main.',
+          // this repo's CI (.github/workflows/ci.yml).
+          'In TypeScript, with tests and a pipeline. This portfolio runs type checks, lint, its tests and a production build on every push and pull request to main.',
         ],
       },
       {
         question: 'Do I build mobile apps too?',
         answer: [
-          // skimcare description.
-          'Yes. SkimCare, my team’s entry to the AppBuildersPH Hackathon 2026, built with Glenn Viola, is an Android and web app in React Native and Expo. It reads an agreement on the device and explains its key terms in plain English or Filipino.',
+          // iskotify contribution.
+          'Yes. Iskotify is a mobile app in React Native and Expo, with a Next.js admin and a Supabase backend. I am its sole developer at Online Creative Solutions.',
         ],
       },
     ],
     // The case studies' decisions: El Nido (WordPress over a custom app), Aman
-    // (Next.js over WordPress; Upstash over Supabase); iskotify and lunad technologies.
+    // (Next.js over WordPress; Upstash over Supabase); iskotify contribution.
     comparison: {
       caption: 'WordPress or a custom app: what I reach for',
       columns: ['When the job needs', 'I reach for', 'As on'],
       rows: [
         { need: 'Owners and staff editing pages, listings and bookings without a developer', choice: 'WordPress and WooCommerce', projectIds: ['elnido'] },
         { need: 'Custom interactive screens, such as a loan calculator', choice: 'A Next.js app', projectIds: ['aman-webapp'] },
-        { need: 'A student platform with AI features, as a PWA', choice: 'Next.js with Supabase', projectIds: ['iskotify'] },
-        { need: 'Map and route data', choice: 'Neon Postgres with PostGIS', projectIds: ['lunad'] },
+        { need: 'A mobile app with a web admin behind it', choice: 'React Native and Expo, with Next.js and Supabase', projectIds: ['iskotify'] },
         { need: 'Small key-value data such as listings, settings and leads', choice: 'Upstash Redis through Vercel KV', projectIds: ['aman-webapp'] },
       ],
     },
-    projectIds: ['aman-webapp', 'iskotify', 'lunad', 'skimcare'],
+    projectIds: ['aman-webapp', 'iskotify', 'ocs-wp-control'],
   },
   {
     slug: 'wordpress-woocommerce',
@@ -837,13 +804,6 @@ export const servicePages: ServicePage[] = [
         ],
       },
       {
-        question: 'Can AI run without the cloud?',
-        answer: [
-          // skimcare description.
-          'Yes. SkimCare runs text recognition and a small language model on the phone, so the agreement a person is about to sign is never uploaded.',
-        ],
-      },
-      {
         question: 'Which AI tools do I build with?',
         answer: [
           // skills: AI & automation.
@@ -851,7 +811,7 @@ export const servicePages: ServicePage[] = [
         ],
       },
     ],
-    projectIds: ['ocs-wp-control', 'iskotify', 'skimcare'],
+    projectIds: ['ocs-wp-control', 'iskotify'],
   },
 ]
 
@@ -885,8 +845,8 @@ export const aboutPageContent: AboutPageContent = {
         'I studied computer science at Bicol University Polangui Campus from 2020 to 2024. That November I joined Online Creative Solutions in Naga City as a web developer, and I still build and maintain WordPress and WooCommerce sites for its clients and run the team’s n8n automation there.',
         // experience: enjoy-it; Aman case study outcome.
         'From March to August 2025 I also worked full-time as IT staff and web developer at Enjoy Realty and Development Corporation. There I built the Aman Group Web App and presented it at the company’s brokers’ meeting.',
-        // places on the field map; naga-city-guide, lunad and iskotify descriptions.
-        `Much of the client work runs far from Naga: tour bookings in El Nido, a beach shuttle in El Nido, hotels in Baguio and Boracay. Closer to home are Naga City Guide, Lunad’s jeepney routes, and Iskotify, the student platform in development at Online Creative Solutions.`,
+        // places on the field map; naga-city-guide description; iskotify contribution.
+        `Much of the client work runs far from Naga: tour bookings in El Nido, a beach shuttle in El Nido, hotels in Baguio and Boracay. Closer to home are Naga City Guide and Iskotify, the student mobile app I build alone at Online Creative Solutions.`,
       ]
     },
   },
@@ -918,8 +878,8 @@ export const hirePageContent: HirePageContent = {
     title: 'How I work',
     get notes() {
       return [
-        // this repo's CI; lunad technologies.
-        { title: 'Tests and CI', body: 'This portfolio runs type checks, lint, its tests and a production build on every push and pull request to main. Lunad is tested with Playwright.' },
+        // this repo's CI.
+        { title: 'Tests and CI', body: 'This portfolio runs type checks, lint, its tests and a production build on every push and pull request to main.' },
         // skills: AI & automation; the fork's team body ("in daily use"); experience: n8n.
         { title: 'AI coding tools', body: 'Claude Code, Codex and Qwen Code are in daily use. At Online Creative Solutions I also run the team’s n8n automation stack.' },
         // every case study's role; El Nido and BeachBus outcomes.

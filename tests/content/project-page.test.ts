@@ -52,7 +52,7 @@ describe('project page helpers', () => {
 
   it('attaches a client quote to the project it names', () => {
     expect(recommendationFor(bySlug('beachbus-palawan'))?.authorName).toBe('Alec Santos')
-    expect(recommendationFor(bySlug('skimcare'))).toBeUndefined()
+    expect(recommendationFor(bySlug('graceland-bicolano-dining'))).toBeUndefined()
   })
 
   it('names every sector and explains every missing preview', () => {

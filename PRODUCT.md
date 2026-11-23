@@ -34,7 +34,7 @@ considered and rejected, because a narrow niche risks starving the pipeline in a
 regional market. That puts the whole differentiation burden on proof.
 
 The claim a neighbouring developer cannot truthfully copy: **work that runs in
-the places it names**, backed by 4 case studies and 15 shipped projects, and
+the places it names**, backed by 4 case studies and 14 shipped projects, and
 the range behind it — booking and payment sites for travel businesses in
 Palawan, Baguio and Boracay, **custom systems** (an NFC card system for
 BeachBus Palawan, an internal WordPress control panel for Online Creative
@@ -64,7 +64,7 @@ live, and the copy says whose it is.
 - Next.js 14 App Router, TypeScript, Tailwind CSS. All content lives in
   `lib/data.ts`; Vitest content tests assert every factual claim the site makes.
 - Surfaces: the homepage, one reading column from who he is to the contact form;
-  `/projects`, a map and a list of 17 projects in three bands (Custom systems,
+  `/projects`, a map and a list of 15 projects in three bands (Custom systems,
   Applications, Sites) with the `?band=` filter; a page per project at
   `/projects/[slug]`, the 4 case studies as trail journals and the rest as short
   pages built only from data they already have; `/services` with three service
@@ -90,7 +90,7 @@ live, and the copy says whose it is.
 
 ## Evidence on Hand
 
-- 17 projects, 16 with live URLs, with full-page screenshots in
+- 15 projects, 14 with live URLs, with full-page screenshots in
   `public/assets/images/projects/` where a public screen exists.
 - 4 case studies in `lib/case-studies.ts` (El Nido Guide PH, BeachBus Palawan,
   ACAD1 Review Center, the Aman Group Web App).

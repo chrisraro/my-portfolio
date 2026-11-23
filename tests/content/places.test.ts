@@ -6,7 +6,6 @@ import { placeGroups, unplacedProjects } from '@/lib/places'
 // names. Projects without one are listed beside the map, never guessed.
 const PINNED: Record<string, string> = {
   'beachbus-nfc': 'Palawan',
-  lunad: 'Naga City',
   graceland: 'Bicol',
   elnido: 'El Nido',
   beachbus: 'Palawan',
@@ -78,7 +77,7 @@ describe('placeGroups', () => {
 
   it('keeps each place’s projects in data order', () => {
     const naga = placeGroups(projects).find((g) => g.name === 'Naga City')!
-    expect(naga.projects.map((p) => p.id)).toEqual(['lunad', 'naga-city-guide'])
+    expect(naga.projects.map((p) => p.id)).toEqual(['naga-city-guide'])
   })
 
   it('lists every other project as unplaced, in data order', () => {
@@ -86,7 +85,6 @@ describe('placeGroups', () => {
       'ocs-wp-control',
       'iskotify',
       'aman-webapp',
-      'skimcare',
       'acad1',
       'downtown-district-hotel',
       'aralabroad',

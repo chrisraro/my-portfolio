@@ -9,12 +9,12 @@ import { buildLlmsFullTxt, buildLlmsTxt } from '@/lib/llms'
 import { siteRoutes } from '@/lib/site-routes'
 import { graphFor } from '@/lib/structured-data'
 
-// Giya, Latag and Connecta PH were taken off the portfolio on 2026-11-23: no
+// Giya, Latag and Connecta PH were taken off the portfolio on 2026-11-23, Lunad and SkimCare the day after: no
 // project, no case study, no image, no mention anywhere the site is built
 // from. Their old project addresses lead to the list. The one place their
 // slugs may still be written is next.config.js, which does the redirecting.
-const RETIRED = /giya|latag|connecta/i
-const SLUGS = ['giya', 'latag', 'connecta-ph']
+const RETIRED = /giya|latag|connecta|lunad|skimcare/i
+const SLUGS = ['giya', 'latag', 'connecta-ph', 'lunad', 'skimcare']
 
 function files(dir: string): string[] {
   return readdirSync(dir).flatMap((entry) => {
@@ -27,7 +27,7 @@ function files(dir: string): string[] {
 describe('the removed projects', () => {
   it('catches every spelling, so the guard can fail', () => {
     for (const s of ['Giya', 'giya.ph', 'latag.vercel.app', 'Latag', 'connecta-ph', 'Connecta PH']) expect(s).toMatch(RETIRED)
-    expect('Iskotify and SkimCare').not.toMatch(RETIRED)
+    expect('Iskotify and BeachBus').not.toMatch(RETIRED)
   })
 
   it('are in no source file of lib, components, app or scripts', () => {

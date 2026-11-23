@@ -120,7 +120,7 @@ describe('/projects: the list', () => {
   })
 
   it('counts what is shipped against what is in progress', () => {
-    expect(html).toContain('17 projects · 15 shipped, 2 in progress')
+    expect(html).toContain('15 projects · 14 shipped, 1 in progress')
     expect(html).not.toMatch(/in staging/)
   })
 })

@@ -2,8 +2,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ProjectShot } from '@/components/ui/project-shot'
 
-const src = '/assets/images/projects/skimcare-full.webp'
-const label = 'Screenshot of skimcare-app.vercel.app'
+const src = '/assets/images/projects/graceland-full.webp'
+const label = 'Screenshot of graceland.ph'
 
 describe('ProjectShot', () => {
   it('frames the shot, named but not a tab stop, when there is no link', () => {
@@ -35,8 +35,8 @@ describe('ProjectShot', () => {
   })
 
   it('drops out of the tab order and the tree when a visible link already goes there', () => {
-    const html = renderToStaticMarkup(<ProjectShot src={src} label={label} href="/projects/skimcare" duplicateLink />)
-    expect(html).toMatch(/<a [^>]*href="\/projects\/skimcare"/)
+    const html = renderToStaticMarkup(<ProjectShot src={src} label={label} href="/projects/graceland-bicolano-dining" duplicateLink />)
+    expect(html).toMatch(/<a [^>]*href="\/projects\/graceland-bicolano-dining"/)
     expect(html).toMatch(/<a [^>]*tabindex="-1"/i)
     expect(html).toMatch(/<a [^>]*aria-hidden="true"/)
     expect(html).not.toContain('aria-label')
@@ -45,9 +45,9 @@ describe('ProjectShot', () => {
   })
 
   it('becomes the link when an href is given, named by the label', () => {
-    const html = renderToStaticMarkup(<ProjectShot src={src} label={label} href="/projects/skimcare" />)
-    expect(html).toMatch(/<a [^>]*href="\/projects\/skimcare"/)
-    expect(html).toMatch(/<a [^>]*aria-label="Screenshot of skimcare-app.vercel.app, opens project page"/)
+    const html = renderToStaticMarkup(<ProjectShot src={src} label={label} href="/projects/graceland-bicolano-dining" />)
+    expect(html).toMatch(/<a [^>]*href="\/projects\/graceland-bicolano-dining"/)
+    expect(html).toMatch(/<a [^>]*aria-label="Screenshot of graceland.ph, opens project page"/)
     expect(html).not.toMatch(/tabindex="0"/i)
     expect(html).toContain('lift-card')
   })
