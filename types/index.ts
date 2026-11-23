@@ -1,10 +1,9 @@
-export type ProjectBand = 'Products' | 'Custom systems' | 'Applications' | 'Sites'
+export type ProjectBand = 'Custom systems' | 'Applications' | 'Sites'
 
 // Canonical display order. `Applications` and `Sites` are shown together on the
 // home page under "Client work"; they stay separate on /projects, where the
 // distinction is what a visitor is browsing by.
 export const BAND_ORDER: readonly ProjectBand[] = [
-  'Products',
   'Custom systems',
   'Applications',
   'Sites',
@@ -42,7 +41,7 @@ export const SECTOR_ORDER: readonly ProjectSector[] = [
 // is a pre-launch site: linked, but neither live nor shipped.
 export type ProjectStatus =
   | 'live'
-  | 'early-access'
+  | 'in-development'
   | 'auth-gated'
   | 'ua-gated'
   | 'internal'
@@ -50,7 +49,7 @@ export type ProjectStatus =
 
 // What a visitor sees. Six data statuses collapse to five: `ua-gated` sites are
 // live in any browser, and only the preview mechanism needs the distinction.
-export type DisplayStatus = 'live' | 'early-access' | 'private' | 'internal' | 'staging'
+export type DisplayStatus = 'live' | 'in-development' | 'private' | 'internal' | 'staging'
 
 /** How exact a pin is: a city's centre (a dot) or a whole region's (a ring). */
 export type PlacePrecision = 'city' | 'region'

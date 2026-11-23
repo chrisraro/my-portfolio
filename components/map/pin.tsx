@@ -33,7 +33,7 @@ export function Pin({ group, href }: { group: PlaceGroup; href: string }) {
         ) : (
           <circle cx={x} cy={y} r={6} className={`${PLACE_MARK.city} fill-ink`} />
         )}
-        <text x={Math.round(x + label.dx)} y={Math.round(y + label.dy)} textAnchor={label.anchor} className="map-label fill-ink text-[22px]">
+        <text x={Math.round(x + label.dx)} y={Math.round(y + label.dy)} textAnchor={label.anchor} className="map-label fill-ink text-[26px]">
           {group.name}
         </text>
       </g>

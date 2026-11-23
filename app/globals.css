@@ -3,80 +3,79 @@
 @tailwind utilities;
 
 /*
- * Design tokens: Isarog Trail Map (Portfolio 5.0). See
- * docs/superpowers/specs/2026-11-20-portfolio-v5-revamp-design.md §3.
+ * Design tokens: First Light (Portfolio 6.0). See DESIGN.md.
  *
  * Each colour is a raw oklch "L C H" triplet, one per line, so Tailwind can wrap
  * it as oklch(var(--x) / <alpha-value>). tests/design/contrast.test.ts parses
  * these lines; keep the format exact.
  *
- * :root is the day survey and the default theme; .dark is the night survey.
- * Trail red marks the primary action and the current position only.
+ * .dark is the night before first light and the default theme; :root is the
+ * morning. --trail (ember) marks the primary action and the current position.
  * Green (--live) means a live system and nothing else.
  */
 :root {
-	--font-display: var(--font-sans);
 	--dur-fast: 0.18s;
 	--dur-normal: 0.35s;
 	--dur-slow: 0.6s;
 	--dur-crawl: 1.2s;
 	--dur-draw: 1.6s;
-	/* Rising lines (spec §4, "rise"): each line starts this much after the one before. */
+	/* Rising lines: each line starts this much after the one before. */
 	--stagger-line: 70ms;
 	--ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 	--ease-sharp: cubic-bezier(0.4, 0, 0.2, 1);
-	--bg: 0.9450 0.0150 125;
-	--panel: 0.9900 0.0040 120;
-	--ink: 0.2300 0.0200 130;
-	--muted: 0.4700 0.0250 128;
-	--muted-strong: 0.3700 0.0250 128;
-	--line: 0.8700 0.0200 125;
-	--line-strong: 0.7800 0.0250 125;
-	--contour: 0.6600 0.0600 115;
-	--trail: 0.5000 0.1900 30;
-	--on-trail: 0.9900 0.0040 120;
-	--field-border: 0.5800 0.0300 125;
+	--bg: 0.9600 0.0080 220;
+	--panel: 0.9900 0.0040 220;
+	--ink: 0.2200 0.0200 245;
+	--muted: 0.4700 0.0200 240;
+	--muted-strong: 0.3700 0.0200 240;
+	--line: 0.8800 0.0120 230;
+	--line-strong: 0.7900 0.0180 230;
+	--contour: 0.6600 0.0350 215;
+	--trail: 0.5000 0.1500 38;
+	--on-trail: 0.9900 0.0040 80;
+	--field-border: 0.5800 0.0200 235;
 	--live: 0.5200 0.1400 152;
 	--status-early: 0.5200 0.1600 285;
-	--status-private: 0.5400 0.0250 128;
-	--status-internal: 0.5400 0.0250 128;
-	/* Paper is square-ish: plates, panels and buttons 6px (Tailwind sm 2px for
-	 * buttons, xl 10px for the dialog derive from this). */
-	--radius: 0.375rem;
-	/* The one in-flow shadow, only while a plate is lifted; overlays share its
-	 * hue, the ink's, so a shadow reads as paper over paper. */
-	--shadow-lift: 0 18px 30px -18px oklch(0.2 0.03 130 / 0.45);
-	--shadow-overlay: 0 24px 48px -12px oklch(0.2 0.03 130 / 0.4);
+	--status-private: 0.5400 0.0200 240;
+	--status-internal: 0.5400 0.0200 240;
+	/* The scene (components/scene.tsx). */
+	--land-far: 0.8900 0.0220 225;
+	--land-near: 0.8300 0.0280 215;
+	--land-lit: 0.9500 0.0150 90;
+	--dawn: 0.8400 0.0950 62;
+	--firefly: 0.7200 0.1300 75;
+	--shine: 1 0 0;
+	--shine-a: 0.9;
+	/* Glass, plates and dialogs 16px; buttons are pills. */
+	--radius: 1rem;
+	--shadow-lift: 0 18px 30px -18px oklch(0.2 0.03 240 / 0.35);
+	--shadow-overlay: 0 24px 48px -16px oklch(0.2 0.03 240 / 0.28);
 }
 
 .dark {
-	--bg: 0.2100 0.0180 135;
-	--panel: 0.2600 0.0200 135;
-	--ink: 0.9500 0.0120 120;
-	--muted: 0.7200 0.0250 125;
-	--muted-strong: 0.8400 0.0200 122;
-	--line: 0.3300 0.0220 135;
-	--line-strong: 0.4200 0.0250 135;
-	--contour: 0.4600 0.0500 120;
-	--trail: 0.6800 0.1800 32;
-	--on-trail: 0.1800 0.0180 135;
-	--field-border: 0.5600 0.0300 130;
+	--bg: 0.1650 0.0160 245;
+	--panel: 0.2150 0.0180 245;
+	--ink: 0.9550 0.0080 90;
+	--muted: 0.7000 0.0150 240;
+	--muted-strong: 0.8200 0.0120 235;
+	--line: 0.2850 0.0180 245;
+	--line-strong: 0.3700 0.0200 245;
+	--contour: 0.5000 0.0300 230;
+	--trail: 0.7800 0.1350 52;
+	--on-trail: 0.1800 0.0300 50;
+	--field-border: 0.5600 0.0200 240;
 	--live: 0.8000 0.1500 152;
 	--status-early: 0.7600 0.1200 285;
-	--status-private: 0.6400 0.0250 125;
-	--status-internal: 0.6400 0.0250 125;
-	--shadow-lift: 0 18px 30px -18px oklch(0.08 0.02 135 / 0.7);
-	--shadow-overlay: 0 24px 48px -12px oklch(0.08 0.02 135 / 0.65);
-}
-
-/* Display fallback (S1 final review, Important 6): until Archivo arrives, the
- * condensed headline would set in plain Arial, ~46% wider, and overflow its
- * column. A narrower face, scaled down, holds the line; size-adjust shrinks the
- * glyphs only, so line boxes and the layout do not move when Archivo swaps in. */
-@font-face {
-	font-family: 'Archivo Display Fallback';
-	src: local('Arial Narrow'), local('ArialNarrow'), local('Arial');
-	size-adjust: 70%;
+	--status-private: 0.6400 0.0200 240;
+	--status-internal: 0.6400 0.0200 240;
+	--land-far: 0.1350 0.0180 245;
+	--land-near: 0.1050 0.0140 245;
+	--land-lit: 0.3000 0.0300 235;
+	--dawn: 0.5800 0.1400 45;
+	--firefly: 0.8600 0.1500 98;
+	--shine-a: 0.1;
+	--shadow-lift: 0 18px 30px -18px oklch(0.06 0.02 245 / 0.8);
+	--shadow-overlay: 0 24px 48px -12px oklch(0.06 0.02 245 / 0.7);
 }
 
 @layer base {
@@ -87,8 +86,8 @@
 		/* A page shorter than the window keeps the scrollbar's room, so the
 		 * legend and the grid sit where they sit on every other route. */
 		scrollbar-gutter: stable;
-		/* The legend (components/site-legend.tsx) floats 12px down and is 56px
-		 * tall: focus and anchor targets scroll in below it (WCAG 2.4.11). */
+		/* On a phone the bar (components/site-legend.tsx) floats 12px down and is
+		 * 56px tall: targets scroll in below it (WCAG 2.4.11). */
 		scroll-padding-top: 5rem;
 		/* Focused controls also stop clear of the fixed chat launcher (WCAG 2.4.11). */
 		scroll-padding-bottom: 6rem;
@@ -96,7 +95,7 @@
 	/* An anchor section (#work the field map, #timeline, #contact) keeps a
 	 * little air above its eyebrow once it lands under the bar. */
 	section[id] {
-		scroll-margin-top: 0.5rem;
+		scroll-margin-top: -3rem;
 	}
 	body {
 		@apply bg-canvas text-ink;
@@ -110,17 +109,7 @@
 		background: oklch(var(--ink));
 		color: oklch(var(--bg));
 	}
-	/* Headings set condensed: h1 and h2 at 75%, h3 and h4 a little wider. */
-	h1, h2 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-stretch: 75%;
-		text-wrap: balance;
-	}
-	h3, h4 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-stretch: 85%;
-		text-wrap: balance;
-	}
+	h1, h2, h3, h4 { text-wrap: balance; }
 	a { text-underline-offset: 0.2em; }
 	/* A theme switch changes colours at once (components/site-legend.tsx). */
 	.theme-switching *,
@@ -128,7 +117,7 @@
 	.theme-switching *::after {
 		transition: none !important;
 	}
-	/* Focus is where the keyboard is: the current position, so trail red. */
+	/* Focus is where the keyboard is: the current position, so ember. */
 	:focus-visible {
 		outline: 2px solid oklch(var(--trail));
 		outline-offset: 3px;
@@ -136,116 +125,160 @@
 }
 
 @layer components {
-	/* The legend card (spec §3): the one frosted surface on the site. */
-	.legend-glass {
-		background: oklch(var(--panel) / 0.96);
-		-webkit-backdrop-filter: blur(14px) saturate(1.2);
-		backdrop-filter: blur(14px) saturate(1.2);
-		box-shadow: var(--shadow-overlay);
+	/*
+	 * Glass: the site's one material, for things that float over the land and
+	 * for controls. It blurs and saturates what is behind it, catches light on
+	 * its top edge, and carries a highlight that follows the pointer (--gx,
+	 * --gy, set by components/site-legend.tsx). Text blocks never sit on it
+	 * thin: panel paper shows through at 62%. Opaque where the browser has no
+	 * backdrop-filter or the visitor asked for less transparency.
+	 */
+	.glass {
+		position: relative;
+		border-radius: var(--radius);
+		background: oklch(var(--panel) / 0.62);
+		-webkit-backdrop-filter: blur(22px) saturate(1.7);
+		backdrop-filter: blur(22px) saturate(1.7);
+		box-shadow:
+			inset 0 0 0 1px oklch(var(--line-strong) / 0.55),
+			inset 0 1px 0 oklch(var(--shine) / var(--shine-a)),
+			var(--shadow-overlay);
+	}
+	.glass--dense { background: oklch(var(--panel) / 0.9); }
+	.panel { border-radius: 1.625rem; isolation: isolate; }
+	.panel::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-radius: inherit;
+		background: radial-gradient(14rem circle at var(--gx, 30%) var(--gy, 0px), oklch(var(--shine) / calc(var(--shine-a) * 0.7)), transparent 70%);
+		pointer-events: none;
+	}
+	/* A small control of the same glass: no blur of its own, it sits on glass or land. */
+	.glass-control {
+		@apply inline-flex items-center justify-center rounded-full text-muted-strong hover:text-ink;
+		background: oklch(var(--ink) / 0.05);
+		box-shadow:
+			inset 0 0 0 1px oklch(var(--line-strong) / 0.8),
+			inset 0 1px 0 oklch(var(--shine) / var(--shine-a));
+	}
+	.glass-control:hover { background: oklch(var(--ink) / 0.1); }
+	.lozenge {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 2.75rem;
+		border-radius: calc(var(--radius) - 4px);
+		background: oklch(var(--ink) / 0.07);
+		box-shadow: inset 0 1px 0 oklch(var(--shine) / var(--shine-a));
+		opacity: 0;
+	}
+	.lozenge[data-on='true'] { opacity: 1; }
+	.chip {
+		@apply inline-flex min-h-[36px] items-center rounded-full px-4 text-sm text-ink;
+		background: oklch(var(--ink) / 0.05);
+		box-shadow: inset 0 0 0 1px oklch(var(--line-strong) / 0.8);
 	}
 	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-		.legend-glass {
+		.glass { background: oklch(var(--panel)); }
+	}
+	@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+		.glass {
 			background: oklch(var(--panel));
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
 		}
 	}
-	/* Read pages (/projects, a project, the 404): the H1 at the smaller end,
-	 * in the display voice (condensed uppercase), like the homepage h1. */
-	.text-page-h1 {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-stretch: 75%;
-		font-size: clamp(2.75rem, 2rem + 3.5vw, 5rem);
-		line-height: 0.92;
-		letter-spacing: -0.01em;
-		font-weight: 800;
-		text-transform: uppercase;
+	/* The name, the page titles, section titles, list headings, rows, figures. */
+	.text-name {
+		font-size: clamp(2rem, 1.7rem + 1.2vw, 2.5rem);
+		line-height: 1.1;
+		letter-spacing: -0.025em;
+		font-weight: 650;
 	}
-	/* Card names and h3s. */
-	.text-title {
-		font-family: var(--font-display), system-ui, sans-serif;
-		font-stretch: 85%;
-		font-size: 1.5rem;
+	.text-page-h1 {
+		font-size: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
 		line-height: 1.05;
-		font-weight: 700;
+		letter-spacing: -0.03em;
+		font-weight: 650;
+	}
+	.text-section {
+		font-size: clamp(1.625rem, 1.5rem + 0.6vw, 2rem);
+		line-height: 1.15;
+		letter-spacing: -0.02em;
+		font-weight: 600;
+	}
+	.text-title {
+		font-size: 1.375rem;
+		line-height: 1.2;
+		letter-spacing: -0.015em;
+		font-weight: 600;
+	}
+	.text-list {
+		font-size: 1.125rem;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
+		font-weight: 600;
+	}
+	.text-row {
+		text-wrap: pretty;
+		font-size: 1.0625rem;
+		line-height: 1.35;
+		letter-spacing: -0.008em;
+		font-weight: 600;
+	}
+	.text-figure {
+		font-size: 2rem;
+		line-height: 1.15;
+		letter-spacing: -0.02em;
+		font-weight: 500;
 	}
 	.text-lede {
 		font-size: 1.1875rem;
 		line-height: 1.55;
 	}
-	.eyebrow {
-		font-family: var(--font-sans);
-		font-stretch: 100%;
-		font-variation-settings: normal;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		font-size: 0.8125rem;
-		color: oklch(var(--muted-strong));
-		/* A wrapped eyebrow splits evenly, never leaving one word alone. */
-		text-wrap: balance;
-	}
-	/* Display: condensed uppercase headlines (trailhead, section titles). */
-	.text-display {
-		font-family: var(--font-display);
-		font-stretch: 70%;
-		font-variation-settings: normal;
-		font-weight: 800;
-		text-transform: uppercase;
-		line-height: 0.9;
-		letter-spacing: -0.01em;
-		font-size: clamp(3rem, 1.6rem + 6vw, 7.5rem);
-		text-wrap: balance;
-	}
-	/* Section titles: the display voice at section scale. */
-	.text-section {
-		font-family: var(--font-display);
-		font-stretch: 75%;
-		font-variation-settings: normal;
-		font-weight: 800;
-		text-transform: uppercase;
-		line-height: 0.95;
-		letter-spacing: -0.005em;
-		font-size: clamp(2.25rem, 1.5rem + 3vw, 4.25rem);
-		text-wrap: balance;
-	}
-	/* Map labels: place names, waypoint titles, legend keys. */
+	/* Small labels: places, keys, captions. */
 	.map-label {
-		font-family: var(--font-sans);
-		font-stretch: 75%;
-		font-variation-settings: normal;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		font-size: 0.8125rem;
-		line-height: 1.2;
+		font-size: 0.875rem;
+		line-height: 1.3;
+		font-weight: 500;
 	}
 	.tabular {
 		font-variant-numeric: tabular-nums;
 	}
-	/* A survey plate (spec §3): the pale frame every photo and screenshot sits
-	 * in. Panel paper, a line-strong hairline, an 8px margin. */
+	/* The frame around a photo, a screenshot or a form. */
 	.survey-plate {
 		display: block;
+		overflow: clip;
+		border-radius: var(--radius);
 		background: oklch(var(--panel));
-		border: 1px solid oklch(var(--line-strong));
-		padding: 0.5rem;
+		box-shadow: inset 0 0 0 1px oklch(var(--line-strong) / 0.6);
+		padding: 0.375rem;
 	}
 	.button-label {
-		font-family: var(--font-sans), system-ui, sans-serif;
-		font-stretch: 100%;
 		font-size: 1rem;
-		font-weight: 650;
+		font-weight: 600;
 		line-height: 1;
 	}
 	/*
-	 * The one primary action: trail red, on-trail text (spec §3). Pair it with
+	 * The one primary action: ember glass with on-trail text. Pair it with
 	 * .press for the hover lift.
 	 */
 	.button-primary {
-		@apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-trail px-6 py-3 font-sans text-[0.9375rem] font-semibold text-on-trail;
+		@apply inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full bg-trail px-6 py-2.5 font-sans text-[0.9375rem] font-semibold text-on-trail;
+		box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.35);
 	}
-	/* The second path beside it: an ink outline, never filled. */
+	/* The second path beside it: clear glass. */
 	.button-secondary {
-		@apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border-2 border-ink bg-transparent px-6 py-3 font-sans text-[0.9375rem] font-semibold text-ink;
+		@apply inline-flex min-h-[46px] items-center justify-center gap-2 rounded-full px-6 py-2.5 font-sans text-[0.9375rem] font-semibold text-ink;
+		background: oklch(var(--panel) / 0.7);
+		-webkit-backdrop-filter: blur(10px) saturate(1.5);
+		backdrop-filter: blur(10px) saturate(1.5);
+		box-shadow:
+			inset 0 0 0 1px oklch(var(--line-strong)),
+			inset 0 1px 0 oklch(var(--shine) / var(--shine-a));
 	}
 
 	/*
@@ -320,17 +353,9 @@
 }
 
 /*
- * Homepage (Isarog Trail Map, .impeccable/surfaces/app-page-tsx.md). Three
- * verbs: draw, rise and pan.
- * Layout pieces first (always on), then the Trailhead's load sequence and the
- * scroll reveals, each behind its gates. Outside the gates every piece sits at
- * rest, fully visible.
- */
-
-/*
  * Sections far below the fold skip style, layout and paint until they near the
  * viewport, so the first layout (and the relayout when the web fonts arrive)
- * covers the Trailhead and the first section, not the whole page. Containment clips paint
+ * covers the first sections, not the whole page. Containment clips paint
  * to the box, so .defer-render goes only on sections whose content never
  * paints outside it. The intrinsic size is a placeholder until a section has
  * rendered once; `auto` then remembers its real height.
@@ -346,35 +371,173 @@
 	content-visibility: visible;
 }
 
-/* Trailhead (components/sections/trailhead.tsx): the first viewport's load
- * sequence in one place. The headline's lines rise in turn, the copy under
- * them rises, and the trail draws out of the portrait plate
- * (.trail-draw--load reads --t-trail), all once, ending by 1.9s. */
-.trailhead {
-	--t-lede: 250ms;
-	--t-trail: 300ms;
+/* Portrait: cropped to Christian, who stands right of centre in the photo. */
+.portrait {
+	border-radius: 2rem;
+	box-shadow: 0 0 0 1px oklch(var(--line-strong) / 0.6), var(--shadow-overlay);
 }
-/* The headline is sized to its column, never to the viewport. */
-.trailhead-copy { container-type: inline-size; }
-.trailhead-title { font-size: clamp(2.25rem, 13cqi, 7.5rem); }
-/* Each authored line stays one line in every font (Arial, the fallback, is
- * wider than Archivo), so the font swap never re-wraps the headline: no layout
- * shift under the first viewport. */
-.trailhead-line { display: block; white-space: nowrap; }
-/* Under a fine pointer the contours drift toward the half the pointer rests
- * on (spec §4), 8px (motionTokens.distance.sm) by transform, on the crawl
- * token. The trail stays put, so the land moves under a fixed route. Nothing
- * on touch, nothing under reduced motion, and it moves only while the pointer
- * moves between halves. */
+.portrait__photo {
+	object-position: 50% 50%;
+	transform: scale(2.05);
+	transform-origin: 59% 60%;
+}
+
+/* A project in development: its site shows through the banner's right side. */
+.banner { border-radius: 1.25rem; }
+.banner__link::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}
+.banner__shot {
+	-webkit-mask-image: linear-gradient(90deg, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.5) 32%, rgb(0 0 0 / 0.88) 50%, #000 66%);
+	mask-image: linear-gradient(90deg, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.5) 32%, rgb(0 0 0 / 0.88) 50%, #000 66%);
+}
+@media (max-width: 639px) {
+	.banner__shot {
+		-webkit-mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.5) 32%, rgb(0 0 0 / 0.88) 50%, #000 66%);
+		mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.12) 14%, rgb(0 0 0 / 0.5) 32%, rgb(0 0 0 / 0.88) 50%, #000 66%);
+	}
+}
+
+/* A list row that is one link. Its glass lies under it, wider than the text. */
+.rows > li { border-bottom: 1px solid oklch(var(--line)); }
+.row {
+	position: relative;
+	padding-block: 1rem;
+}
+.row::before {
+	content: '';
+	position: absolute;
+	inset: 4px -14px;
+	z-index: -1;
+	border-radius: calc(var(--radius) - 2px);
+	background: oklch(var(--ink) / 0.06);
+	box-shadow: inset 0 1px 0 oklch(var(--shine) / var(--shine-a));
+	opacity: 0;
+}
+.rows > li { isolation: isolate; }
+.row:focus-visible { border-radius: calc(var(--radius) - 2px); }
+.row:is(:hover, :focus-visible)::before { opacity: 1; }
+.thumb {
+	border-radius: calc(var(--radius) - 6px);
+	background: oklch(var(--panel));
+	box-shadow: 0 0 0 1px oklch(var(--line-strong) / 0.6);
+}
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-	.trailhead-contours { transition: transform var(--dur-crawl) var(--ease-smooth); }
-	.trailhead:has(.trailhead-copy:hover) .trailhead-contours { transform: translate(-8px, -4px); }
-	.trailhead:has(.trailhead-plate:hover) .trailhead-contours { transform: translate(8px, 4px); }
+	.row::before {
+		transform: scale(0.985, 0.94);
+		transition: opacity var(--dur-fast) var(--ease-smooth), transform var(--dur-normal) var(--ease-smooth);
+	}
+	.row:is(:hover, :focus-visible)::before { transform: none; }
+	.row__shot { transition: transform var(--dur-slow) var(--ease-smooth); transform-origin: top; }
+	.row:hover .row__shot { transform: scale(1.12); }
+	.lozenge { transition: transform var(--dur-normal) var(--ease-smooth), opacity var(--dur-fast) var(--ease-smooth); }
+}
+
+/* A role's full list: a native disclosure that opens to its height. */
+.more__summary {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+	cursor: pointer;
+	list-style: none;
+}
+.more__summary::-webkit-details-marker { display: none; }
+.more__open { display: none; }
+.more[open] .more__open { display: inline; }
+.more[open] .more__closed { display: none; }
+@supports (interpolate-size: allow-keywords) {
+	@media (prefers-reduced-motion: no-preference) {
+		.more { interpolate-size: allow-keywords; }
+		.more::details-content {
+			height: 0;
+			overflow: clip;
+			transition:
+				height var(--dur-normal) var(--ease-smooth),
+				content-visibility var(--dur-normal) allow-discrete;
+		}
+		.more[open]::details-content { height: auto; }
+	}
 }
 
 /*
- * Catalog hover (.lift-card): /projects plates, a product's screenshot and the
- * journal covers. On a fine pointer, with motion allowed, the card lifts
+ * The scene (components/scene.tsx): the land fixed behind every page. Each
+ * layer is a one-bit mask painted with a theme token, its pixels 4px squares.
+ */
+.scene {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	overflow: hidden;
+	background: oklch(var(--bg));
+	pointer-events: none;
+}
+.scene-layer {
+	position: absolute;
+	inset: auto 0 0;
+	height: 448px;
+	-webkit-mask: var(--mask) center bottom / 2560px 448px repeat-x;
+	mask: var(--mask) center bottom / 2560px 448px repeat-x;
+}
+.scene-dawn { --mask: url('/assets/scene/dawn.png'); background: oklch(var(--dawn)); }
+.scene-far { --mask: url('/assets/scene/far.png'); background: oklch(var(--land-far)); }
+.scene-near { --mask: url('/assets/scene/near.png'); background: oklch(var(--land-near)); }
+.scene-lit { --mask: url('/assets/scene/lit.png'); background: oklch(var(--land-lit)); }
+/* Under the reading column the land keeps its shape but loses its light. */
+.scene-scrim {
+	position: absolute;
+	inset: 0;
+	background: oklch(var(--bg) / 0.6);
+	-webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+	mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.firefly {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background: oklch(var(--firefly));
+}
+@media (min-width: 1024px) {
+	/* The land, like the page, centres on what the panel leaves. */
+	.scene-layer { -webkit-mask-position: calc(50% + 8.75rem) bottom; mask-position: calc(50% + 8.75rem) bottom; }
+	.scene-scrim { left: calc(50% + 8.75rem - 36rem); right: auto; width: 72rem; }
+}
+@media (max-width: 1279px) {
+	.firefly { display: none; }
+}
+@media (max-width: 1023px) {
+	.scene-scrim {
+		background: oklch(var(--bg) / 0.74);
+		-webkit-mask-image: none;
+		mask-image: none;
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes firefly {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.15; }
+	}
+	/* Twice, then still (WCAG 2.2.2). */
+	.firefly--twinkle { animation: firefly 2.2s ease-in-out 2; }
+}
+/* First light: the one thing that follows the page. It starts below the
+ * summit's shoulder and stands full behind it at the page's end. */
+@supports ((animation-timeline: scroll()) and (animation-range: entry)) {
+	@media (prefers-reduced-motion: no-preference) {
+		@keyframes first-light {
+			from { transform: translateY(96px); opacity: 0.45; }
+			to { transform: none; opacity: 1; }
+		}
+		.scene-dawn {
+			animation: first-light linear both;
+			animation-timeline: scroll(root block);
+		}
+	}
+}
+
+/*
+ * Catalog hover (.lift-card): a screenshot that is a link. On a fine pointer, with motion allowed, the card lifts
  * 2px, its border turns ink and its screenshot (.lift-card__shot, inside a
  * clipping frame) scales to 1.02, fast/smooth. The shadow is a pseudo-element
  * faded in by opacity, so no box-shadow is ever animated. Keyboard focus gets
@@ -413,44 +576,31 @@
 @media (prefers-reduced-motion: no-preference) {
 	:is(a, button):hover .arrow-nudge { transform: translateX(8px); }
 
-	@keyframes trailhead-line {
-		from { transform: translateY(0.35em); }
-		to { transform: none; }
-	}
-	@keyframes trailhead-rise {
+	@keyframes rise {
 		from { transform: translateY(16px); }
 		to { transform: none; }
 	}
 	/* Lines are painted from frame one (transform only), so LCP is unaffected. */
-	.trailhead-line {
-		animation: trailhead-line var(--dur-slow) var(--ease-smooth) both;
+	.rise {
+		animation: rise var(--dur-slow) var(--ease-smooth) both;
 		animation-delay: calc(var(--i, 0) * var(--stagger-line));
-	}
-	.trailhead-rise {
-		animation: trailhead-rise var(--dur-normal) var(--ease-smooth) var(--t-lede) both;
 	}
 }
 
 /*
- * Scroll choreography. Proof (the field map, the products, the journals) moves by transform only,
- * never opacity, so the server HTML is the finished page. Ranges are the
- * contract's `entry 10% cover 30%`: the motion plays while the element is in
- * view, not as it crosses the bottom edge (the gate's critique found reveals
- * finished before anyone saw them), and distances use the larger tokens (lg
- * 24px, xl 40px). Rows stagger by starting later in the range (--i), since a
- * time delay means nothing on a scroll timeline.
+ * Rows rise a little into place as they scroll in. Transform only, never
+ * opacity, so the server HTML is the finished page.
  */
-@supports (animation-timeline: view()) {
+@supports ((animation-timeline: view()) and (animation-range: entry)) {
 	@media (prefers-reduced-motion: no-preference) {
-		/* Transform only: a case study is never read faded. */
-		@keyframes reveal-cover {
+		@keyframes rise-in {
 			from { transform: translateY(24px); }
 			to { transform: none; }
 		}
-		.reveal-cover {
-			animation: reveal-cover var(--dur-normal) var(--ease-smooth) both;
+		.rise-in {
+			animation: rise-in linear both;
 			animation-timeline: view();
-			animation-range: entry calc(10% + var(--i, 0) * 10%) cover 30%;
+			animation-range: entry 0% entry 100%;
 		}
 	}
 }
@@ -571,15 +721,11 @@
 	::view-transition-new(*) {
 		animation-duration: 0s !important;
 	}
-	.reveal-cover {
+	/* Every line and row in place at first paint; the light already up. */
+	:is(.rise, .rise-in, .scene-dawn) {
 		animation: none !important;
+		transform: none;
 		opacity: 1;
-		transform: none;
-	}
-	/* Trailhead: every line in place and the trail drawn at first paint. */
-	:is(.trailhead-line, .trailhead-rise, .trail-draw--load) {
-		animation: none !important;
-		transform: none;
 	}
 	.arrow-nudge { transition: none; }
 	.live-pulse::after { display: none; }
@@ -591,76 +737,5 @@
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.001ms !important;
 		scroll-behavior: auto !important;
-	}
-}
-
-/*
- * The trail (spec §4). Fully drawn by default. Where motion is allowed it
- * draws: the trailhead's once on load (.trail-draw--load), and each short
- * segment between homepage sections as it scrolls into view
- * (.trail-draw--view). A segment's view timeline is named on its <svg>
- * (.trail-view), a CSS box: an SVG <path> has none, so an anonymous view() on
- * the path would stay inactive. Never loops; never follows the page's scroll.
- */
-.trail-draw {
-	stroke-dasharray: 1;
-	stroke-dashoffset: 0;
-}
-.trail-view {
-	view-timeline: --trail-segment block;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	.trail-draw--load {
-		animation: trail-draw var(--dur-draw) var(--ease-smooth) var(--t-trail, 0ms) both;
-	}
-}
-
-@supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
-		.trail-draw--view {
-			animation: trail-draw linear both;
-			animation-timeline: --trail-segment;
-			animation-range: entry 10% cover 45%;
-		}
-	}
-}
-
-/*
- * The elevation strip's "you are here" marker
- * (components/sections/elevation-strip.tsx) rests at now. Where view
- * timelines exist and motion is allowed it travels from the strip's start to
- * now as the drawn strip comes into view, then stays. Nothing follows the
- * whole-page scroll. Transform only.
- */
-.elevation-track {
-	view-timeline: --elevation block;
-}
-
-@supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
-		.elevation-marker {
-			animation: elevation-marker linear both;
-			animation-timeline: --elevation;
-			animation-range: entry 20% cover 50%;
-		}
-	}
-}
-
-@keyframes elevation-marker {
-	from {
-		transform: translateX(-100%);
-	}
-	to {
-		transform: none;
-	}
-}
-
-@keyframes trail-draw {
-	from {
-		stroke-dashoffset: 1;
-	}
-	to {
-		stroke-dashoffset: 0;
 	}
 }

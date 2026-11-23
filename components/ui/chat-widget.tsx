@@ -277,7 +277,7 @@ export function ChatWidget() {
               type="button"
               onClick={() => setIsOpen(true)}
               aria-haspopup="dialog"
-              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-line-strong bg-panel text-ink shadow-overlay transition-colors hover:border-ink sm:h-14 sm:w-14"
+              className="flex h-11 w-11 items-center justify-center glass rounded-full text-ink sm:h-14 sm:w-14"
               aria-label="Open chat"
             >
               <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
@@ -299,14 +299,14 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: reduce ? 0 : motionTokens.distance.sm }}
             transition={fade}
-            className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-line bg-panel shadow-overlay sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
+            className="fixed bottom-4 right-4 z-50 flex h-[520px] max-h-[calc(100vh-2rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden glass glass--dense rounded-xl sm:bottom-6 sm:right-6 sm:max-h-[calc(100vh-3rem)]"
             ref={dialogRef}
             role="dialog"
             aria-modal={isModal ? 'true' : undefined}
             aria-labelledby="chat-title"
             onKeyDown={handleDialogKeyDown}
           >
-            <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-3">
+            <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <div className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
@@ -338,7 +338,7 @@ export function ChatWidget() {
               aria-live="polite"
               aria-relevant="additions"
               aria-label="Conversation"
-              className="flex-1 space-y-4 overflow-y-auto bg-canvas p-4"
+              className="flex-1 space-y-4 overflow-y-auto p-4"
             >
               {messages.map((message) => {
                 const mine = message.sender === 'user'
@@ -381,7 +381,7 @@ export function ChatWidget() {
             </div>
 
             {messages.length <= 1 && !isTyping && (
-              <div className="flex flex-wrap gap-2 bg-canvas px-4 pb-3">
+              <div className="flex flex-wrap gap-2 px-4 pb-3">
                 {SUGGESTIONS.map((suggestion) => (
                   <button key={suggestion} type="button" onClick={() => handleSend(suggestion)} className={CHIP}>
                     {suggestion}
@@ -393,7 +393,7 @@ export function ChatWidget() {
               </div>
             )}
 
-            <div className="border-t border-line bg-panel p-3">
+            <div className="border-t border-line p-3">
               <div className="flex items-center gap-2">
                 <label htmlFor="chat-input" className="sr-only">
                   Message Chunks

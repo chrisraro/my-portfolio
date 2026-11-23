@@ -2,17 +2,84 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import { useTheme } from 'next-themes'
-import { Menu, Moon, Sun, X } from 'lucide-react'
-import { heroContent, navigationItems, resumeUrl } from '@/lib/data'
+import { Briefcase, FileText, Github, Layers, Linkedin, Mail, MapPin, Menu, Moon, BookOpen, Sun, User, UserCheck, Wrench, X, type LucideIcon } from 'lucide-react'
+import { contactInfo, ctaLabels, exploreItems, footerContent, heroContent, navigationItems, projects, resumeUrl, servicePages, socialLinks } from '@/lib/data'
 import { BrandMark } from '@/components/brand-mark'
 import { cn } from '@/lib/utils'
 
-// A nav link at rest, on hover and as the current page (ink, a trail-red
-// underline: more than colour), in the row and in the menu alike.
+// A link in the phone menu: ink and an underline when current (more than colour).
 const LINK =
-  'map-label inline-flex min-h-[44px] items-center whitespace-nowrap px-2 text-muted-strong transition-colors duration-[var(--dur-fast)] ease-[var(--ease-sharp)] hover:text-ink aria-[current=page]:text-ink aria-[current=page]:decoration-trail aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]'
+  'inline-flex min-h-[44px] items-center whitespace-nowrap px-3 text-muted-strong transition-colors duration-[var(--dur-fast)] ease-[var(--ease-sharp)] hover:text-ink aria-[current=page]:text-ink aria-[current=page]:decoration-trail aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-[6px]'
+
+const ICONS: Record<string, LucideIcon> = {
+  '/projects': Briefcase,
+  '/services': Layers,
+  '/about': User,
+  '/hire': UserCheck,
+  '/#journals': BookOpen,
+  '/#places': MapPin,
+  '/#stack': Wrench,
+}
+const COUNTS: Record<string, number> = { '/projects': projects.length, '/services': servicePages.length }
+const SOCIAL: Record<string, LucideIcon> = { github: Github, linkedin: Linkedin, mail: Mail }
+
+/** The specular highlight follows the pointer over a pane of glass (--gx, --gy in globals.css). */
+function followPointer(e: ReactPointerEvent<HTMLElement>) {
+  const box = e.currentTarget.getBoundingClientRect()
+  e.currentTarget.style.setProperty('--gx', `${Math.round(e.clientX - box.left)}px`)
+  e.currentTarget.style.setProperty('--gy', `${Math.round(e.clientY - box.top)}px`)
+}
+
+interface PanelLink {
+  label: string
+  href: string
+  current: boolean
+}
+
+/**
+ * The panel's list. One lozenge of glass sits behind the current link and
+ * glides to whichever link the pointer or the keyboard is on, then back.
+ */
+function PanelNav({ label, links }: { label: string; links: PanelLink[] }) {
+  const [at, setAt] = useState<number | null>(null)
+  const home = links.findIndex((l) => l.current)
+  const active = at ?? (home === -1 ? null : home)
+
+  return (
+    <nav aria-label={label} className="relative" onPointerLeave={() => setAt(null)}>
+      <span
+        aria-hidden="true"
+        className="lozenge"
+        data-on={active !== null}
+        // Rows are 44px tall with a 2px gap.
+        style={{ transform: `translateY(${(active ?? 0) * 46}px)` }}
+      />
+      <ul className="relative grid gap-0.5" onBlur={() => setAt(null)}>
+        {links.map((l, i) => {
+          const Icon = ICONS[l.href]
+          return (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                aria-current={l.current ? 'page' : undefined}
+                onPointerEnter={() => setAt(i)}
+                onFocus={() => setAt(i)}
+                className="flex h-11 items-center gap-3 rounded-sm px-3 font-medium text-muted-strong transition-colors duration-[var(--dur-fast)] hover:text-ink aria-[current=page]:text-ink"
+              >
+                {Icon && <Icon aria-hidden="true" className="h-[1.125rem] w-[1.125rem] text-muted" />}
+                {l.label}
+                {l.current && <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-trail" />}
+                {COUNTS[l.href] !== undefined && <span className="ml-auto text-sm font-normal text-muted">{COUNTS[l.href]}</span>}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
+  )
+}
 
 export function SiteLegend() {
   const pathname = usePathname()
@@ -118,77 +185,110 @@ export function SiteLegend() {
     current: !item.href.startsWith('#') && pathname.startsWith(item.href),
   }))
 
+  const themeButton = (className: string) => (
+    <button
+      type="button"
+      onClick={() => switchTheme(isDark ? 'light' : 'dark')}
+      aria-label={themeLabel}
+      className={cn('press glass-control h-11 w-11', className)}
+    >
+      {mounted ? isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" /> : <span className="h-4 w-4" />}
+    </button>
+  )
+  const contact = links.find((l) => l.href === '/#contact')
+  const pages = links.filter((l) => l !== contact)
+  const explore = exploreItems.map((item) => ({ ...item, current: false }))
+
   return (
-    <header className="pointer-events-none sticky top-3 z-40 px-3 sm:px-5">
-      <div className="legend-glass pointer-events-auto relative mx-auto flex h-14 max-w-6xl items-center gap-3 rounded border border-line px-3 sm:gap-6 sm:px-5">
-        <Link href="/" className="inline-flex min-h-[44px] shrink-0 items-center gap-2 text-ink">
-          <BrandMark />
-          <span className="map-label text-[0.9375rem] text-ink max-sm:sr-only">{heroContent.name}</span>
+    <header className="pointer-events-none sticky top-3 z-40 px-3 sm:px-5 lg:fixed lg:bottom-3 lg:left-3 lg:w-64 lg:px-0">
+      {/* From 1024px: the panel, a pane of glass the height of the window. */}
+      <div onPointerMove={followPointer} className="glass panel pointer-events-auto hidden h-full flex-col p-4 lg:flex">
+        <Link href="/" className="flex min-h-[44px] items-center gap-3 px-2 text-lg font-semibold text-ink">
+          <BrandMark className="h-7 w-7" />
+          {heroContent.name}
         </Link>
-
-        {/* From 1024px: the row, as the legend has always looked. */}
-        <nav aria-label="Primary" className="min-w-0 flex-1 max-lg:hidden">
-          <ul className="flex gap-1 overflow-x-auto p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {links.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} aria-current={l.current ? 'page' : undefined} className={LINK}>
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          <a href={resumeUrl} className="map-label hidden min-h-[44px] items-center px-2 text-muted-strong hover:text-ink lg:inline-flex">
-            Résumé
-          </a>
-          <details
-            ref={detailsRef}
-            open={menuOpen}
-            onToggle={(e) => setMenuOpen(e.currentTarget.open)}
-            onKeyDown={onMenuKey}
-            className="lg:hidden"
-          >
-            <summary
-              ref={summaryRef}
-              className="map-label press inline-flex min-h-[44px] cursor-pointer list-none items-center gap-2 rounded-sm border border-line-strong px-3 text-ink [&::-webkit-details-marker]:hidden"
-            >
-              {menuOpen ? <X aria-hidden="true" className="h-4 w-4" /> : <Menu aria-hidden="true" className="h-4 w-4" />}
-              Menu
-            </summary>
-            {/* Below the card, the card's full width. Opaque panel paper: one frosted surface only. */}
-            <nav aria-label="Primary" className="absolute inset-x-0 top-full mt-2 rounded border border-line bg-panel p-2 shadow-overlay">
-              <ul className="grid">
-                {links.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      aria-current={l.current ? 'page' : undefined}
-                      onClick={() => setMenuOpen(false)}
-                      className={cn(LINK, 'w-full')}
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <a href={resumeUrl} onClick={() => setMenuOpen(false)} className={cn(LINK, 'w-full')}>
-                    Résumé
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </details>
-          <button
-            type="button"
-            onClick={() => switchTheme(isDark ? 'light' : 'dark')}
-            aria-label={themeLabel}
-            className="press inline-flex h-11 w-11 items-center justify-center rounded-sm border border-line-strong text-muted-strong hover:border-ink hover:text-ink"
-          >
-            {mounted ? isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" /> : <span className="h-4 w-4" />}
-          </button>
+        {contact && (
+          <Link href={contact.href} className="press button-secondary mt-5 w-full">
+            <Mail aria-hidden="true" className="h-4 w-4" />
+            {contact.label}
+          </Link>
+        )}
+        <div className="-mx-1 mt-5 min-h-0 flex-1 overflow-y-auto px-1 [scrollbar-width:thin]">
+          <PanelNav label="Primary" links={pages} />
+          <div className="mt-5">
+            <PanelNav label="On the homepage" links={explore} />
+          </div>
         </div>
+        <div className="mt-4 border-t border-line pt-4">
+          <p className="px-2 text-sm leading-snug text-muted">{footerContent.base.place}</p>
+          <ul className="mt-3 flex items-center gap-2">
+            <li>{themeButton('')}</li>
+            <li>
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="press glass-control h-11 w-11">
+                <FileText aria-hidden="true" className="h-4 w-4" />
+                <span className="sr-only">{`${ctaLabels.downloadResume} (PDF, opens in a new tab)`}</span>
+              </a>
+            </li>
+            {socialLinks
+              .filter((l) => l.icon === 'github' || l.icon === 'linkedin')
+              .map((l) => {
+                const Icon = SOCIAL[l.icon]
+                return (
+                  <li key={l.name}>
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" className="press glass-control h-11 w-11">
+                      <Icon aria-hidden="true" className="h-4 w-4" />
+                      <span className="sr-only">{`${l.name} (opens in a new tab)`}</span>
+                    </a>
+                  </li>
+                )
+              })}
+          </ul>
+        </div>
+      </div>
+
+      {/* Below 1024px: a bar of the same glass, its links in a disclosure. */}
+      <div className="glass pointer-events-auto relative mx-auto flex h-14 max-w-[45rem] items-center gap-3 rounded-full pl-4 pr-1.5 lg:hidden">
+        <Link href="/" className="mr-auto inline-flex min-h-[44px] items-center gap-2.5 font-semibold text-ink">
+          <BrandMark className="h-7 w-7" />
+          {heroContent.name}
+        </Link>
+        {themeButton('')}
+        <details ref={detailsRef} open={menuOpen} onToggle={(e) => setMenuOpen(e.currentTarget.open)} onKeyDown={onMenuKey}>
+          <summary
+            ref={summaryRef}
+            className="press glass-control h-11 cursor-pointer list-none gap-2 px-4 [&::-webkit-details-marker]:hidden"
+          >
+            {menuOpen ? <X aria-hidden="true" className="h-4 w-4" /> : <Menu aria-hidden="true" className="h-4 w-4" />}
+            Menu
+          </summary>
+          {/* Opaque, not glass on glass. */}
+          <nav aria-label="Primary" className="absolute inset-x-0 top-full mt-2 rounded border border-line bg-panel p-2 shadow-overlay">
+            <ul className="grid">
+              {[...links, ...explore].map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    aria-current={l.current ? 'page' : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className={cn(LINK, 'w-full')}
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a href={resumeUrl} onClick={() => setMenuOpen(false)} className={cn(LINK, 'w-full')}>
+                  Résumé
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contactInfo.email}`} onClick={() => setMenuOpen(false)} className={cn(LINK, 'w-full')}>
+                  {contactInfo.email}
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </details>
       </div>
     </header>
   )

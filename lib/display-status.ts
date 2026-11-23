@@ -4,7 +4,7 @@ import type { DisplayStatus, ProjectStatus } from '@/types'
 const MAP: Record<ProjectStatus, DisplayStatus> = {
   live: 'live',
   'ua-gated': 'live',
-  'early-access': 'early-access',
+  'in-development': 'in-development',
   'auth-gated': 'private',
   internal: 'internal',
   staging: 'staging',
@@ -12,7 +12,7 @@ const MAP: Record<ProjectStatus, DisplayStatus> = {
 
 export const DISPLAY_STATUS_LABEL: Record<DisplayStatus, string> = {
   live: 'Live',
-  'early-access': 'Early access',
+  'in-development': 'In development',
   private: 'Private',
   internal: 'Internal',
   staging: 'Staging',

@@ -19,7 +19,7 @@ export function WorkHistory({ detailed = false }: WorkHistoryProps) {
         const role = e.type === 'work' ? experience.find((x) => x.title === e.title && x.company === e.subtitle) : undefined
         return (
           <li key={`${e.title}-${e.sortKey}`} className="grid gap-2 border-t border-line pt-4 md:grid-cols-[12rem_1fr] md:gap-8">
-            <p className="map-label tabular text-muted">{e.date}</p>
+            <p className="tabular text-sm text-muted">{e.date}</p>
             <div className="min-w-0">
               <h3 className="text-title text-ink">{e.title}</h3>
               <p className="mt-1 text-muted-strong">{role ? `${e.subtitle} · ${role.location}` : e.subtitle}</p>

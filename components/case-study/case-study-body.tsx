@@ -1,39 +1,26 @@
 import type { ReactNode } from 'react'
 import { ReadSpread } from '@/components/case-study/read-spread'
 import { SpotHeight } from '@/components/map/spot-height'
-import { SECTION } from '@/components/ui/grid'
-import { ProjectPlate } from '@/components/ui/project-plate'
+import { SECTION_WIDE as SECTION } from '@/components/ui/grid'
+import { ProjectRow } from '@/components/ui/project-row'
 import { TrailLink } from '@/components/ui/trail-link'
-import { catalogOrder, projectCode } from '@/lib/board'
 import { FLAGSHIP_SLUGS, caseStudies } from '@/lib/case-studies'
 import { caseStudyContent, projects } from '@/lib/data'
-import { hasFullShot, nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
+import { nextInOrder, projectHref, recommendationFor } from '@/lib/project-page'
 import type { CaseStudy, Project } from '@/types'
 
 const P = 'mt-3 text-base leading-relaxed text-muted-strong'
 
 interface EntryProps {
   id: string
-  /** Its place on the route, in reading order. */
-  step: number
   title: string
   children: ReactNode
 }
 
-/**
- * One entry of the trail journal: a waypoint on the journal's dashed left
- * rule, numbered in reading order (an ink ring), then its heading and prose. Nothing defers
- * or moves: the ring sits outside the entry's box, which containment would clip.
- */
-function Entry({ id, step, title, children }: EntryProps) {
+/** One part of a case study: its heading and prose. */
+function Entry({ id, title, children }: EntryProps) {
   return (
-    <section aria-labelledby={id} className="journal-entry relative mt-14 border-l border-dashed border-line-strong pb-2 pl-8 first:mt-0">
-      <span
-        aria-hidden="true"
-        className="journal-step map-label tabular absolute -left-[13px] top-0 flex h-[26px] w-[26px] items-center justify-center rounded-full border-2 border-ink bg-canvas text-ink"
-      >
-        {step}
-      </span>
+    <section aria-labelledby={id} className="journal-entry mt-14 first:mt-0">
       <h2 id={id} className="text-title text-ink">
         {title}
       </h2>
@@ -66,13 +53,12 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
   const related = (study.related ?? [])
     .map((slug) => projects.find((p) => p.slug === slug))
     .filter((p): p is Project => Boolean(p))
-  const strip = catalogOrder(projects, hasFullShot)
 
   return (
     <>
       <ReadSpread
         lead={
-          <Entry id="brief" step={1} title={h.brief}>
+          <Entry id="brief" title={h.brief}>
             {study.brief.map((p) => (
               <p key={p} className={P}>
                 {p}
@@ -82,7 +68,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
         }
         rail={screenshots}
       >
-        <Entry id="built" step={2} title={h.built}>
+        <Entry id="built" title={h.built}>
           {study.built.map((p) => (
             <p key={p} className={P}>
               {p}
@@ -90,14 +76,11 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
           ))}
         </Entry>
 
-        <Entry id="decisions" step={3} title={h.decisions}>
+        <Entry id="decisions" title={h.decisions}>
           {/* Each decision: what was chosen, over what, and why. */}
           <ol className="mt-5 grid gap-4">
-            {study.decisions.map((d, i) => (
-              <li data-decision key={d.chose} className="grid grid-cols-[2.25rem_1fr] gap-x-3 rounded-sm border border-line bg-panel p-5">
-                <span aria-hidden="true" className="map-label tabular pt-1 text-muted">
-                  {i + 1}
-                </span>
+            {study.decisions.map((d) => (
+              <li data-decision key={d.chose} className="grid gap-x-3 border-t border-line pt-4">
                 <div>
                   <p className="text-base text-ink">
                     {d.chose} <span className="text-muted">over</span> {d.over}
@@ -109,18 +92,18 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
           </ol>
         </Entry>
 
-        <Entry id="stack" step={4} title={h.stack}>
+        <Entry id="stack" title={h.stack}>
           <dl className="mt-4 grid gap-3">
             {study.stack.map((s) => (
               <div key={s.name} className="grid gap-1 border-t border-line pt-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="map-label pt-0.5 text-ink">{s.name}</dt>
+                <dt className="font-medium text-ink">{s.name}</dt>
                 <dd className="text-sm leading-relaxed text-muted-strong">{s.why}</dd>
               </div>
             ))}
           </dl>
         </Entry>
 
-        <Entry id="outcome" step={5} title={h.outcome}>
+        <Entry id="outcome" title={h.outcome}>
           {study.outcome.map((p) => (
             <p key={p} className={P}>
               {p}
@@ -145,10 +128,10 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
         </Entry>
 
         {quote && (
-          <Entry id="client" step={6} title={h.client}>
-            <figure className="mt-4 rounded-sm border border-line bg-panel p-6">
+          <Entry id="client" title={h.client}>
+            <figure className="mt-4">
               <blockquote className="text-lede text-ink">{quote.quote}</blockquote>
-              <figcaption className="map-label mt-4 text-muted-strong">
+              <figcaption className="mt-4 text-sm text-muted-strong">
                 {quote.authorName}, {quote.authorTitle}
               </figcaption>
             </figure>
@@ -157,7 +140,7 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
 
         {/* Work told inside this story that also has its own page, e.g. the BeachBus NFC system. */}
         {related.length > 0 && (
-          <div className="mt-14 pl-8">
+          <div className="mt-14">
             <p className="map-label text-muted-strong">{h.related}</p>
             <ul className="mt-2 flex flex-wrap gap-x-6">
               {related.map((p) => (
@@ -172,10 +155,10 @@ export function CaseStudyBody({ study, project, screenshots }: CaseStudyBodyProp
 
       {next && (
         <nav aria-label={h.next} className={SECTION}>
-          <p className="map-label mb-5 text-ink">{h.next}</p>
-          {/* One plate, as on /projects: its link reads its label first, since the nav's name is not part of it. */}
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <ProjectPlate project={next} code={projectCode(next, strip)} labelPrefix={h.next} />
+          <p className="text-list pb-3 text-ink">{h.next}</p>
+          {/* One row, as on /projects: its link reads its label first, since the nav's name is not part of it. */}
+          <ul className="rows border-t border-line">
+            <ProjectRow project={next} labelPrefix={h.next} />
           </ul>
         </nav>
       )}

@@ -11,14 +11,14 @@ import { availability, contactInfo, ctaLabels, resumeUrl, sectionContent } from 
 import { cn } from '@/lib/utils'
 
 const FIELD =
-  'w-full rounded border border-field-border bg-canvas px-3 py-2.5 text-ink placeholder:text-muted focus-visible:border-ink aria-[invalid=true]:border-ink'
+  'w-full rounded-sm border border-field-border bg-canvas/70 px-3.5 py-2.5 text-ink placeholder:text-muted focus-visible:border-ink aria-[invalid=true]:border-ink'
 
-const LABEL = 'map-label mb-1.5 block text-muted-strong'
+const LABEL = 'mb-1.5 block text-sm font-medium text-muted-strong'
 
 // On paper: ink text over a line-strong underline (more than colour, WCAG 1.4.1)
 // that turns ink on hover and focus. The offset is the base rule's (a, 0.2em).
 const CONTACT_LINK =
-  'inline-flex min-h-[44px] items-center text-ink underline decoration-line-strong hover:decoration-ink focus-visible:decoration-ink sm:min-h-[32px]'
+  'inline-flex min-h-[44px] items-center text-ink underline decoration-line-strong hover:decoration-ink focus-visible:decoration-ink '
 
 type Field = 'name' | 'email' | 'message'
 
@@ -118,13 +118,13 @@ export function PlanTheRoute() {
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
-      <div className="grid gap-10 md:grid-cols-[5fr_7fr] md:gap-12">
+    <section id="contact" aria-labelledby="contact-title" className={cn(SECTION, 'pb-20 pt-24')}>
+      <div className="grid gap-8">
         <div className="flex flex-col">
           <SectionHeading id="contact-title" title={sectionContent.contact.title} className="mb-0" />
-          <p className="text-lede mt-5 max-w-[30rem] text-muted-strong">{sectionContent.contact.lede}</p>
-          <p className="map-label mt-6 text-muted-strong">{availability}</p>
-          <ul className="mt-8 space-y-1">
+          <p className="text-lede mt-3 max-w-[34rem] text-muted-strong">{sectionContent.contact.lede}</p>
+          <p className="mt-2 text-muted">{availability}</p>
+          <ul className="mt-4 flex flex-wrap items-center gap-x-6">
             <li>
               <a href={`mailto:${contactInfo.email}`} className={CONTACT_LINK}>
                 {contactInfo.email}
@@ -144,15 +144,15 @@ export function PlanTheRoute() {
                 </a>
               </li>
             )}
-            <li className="map-label pt-2 text-muted">{contactInfo.location}</li>
+            <li className="text-muted">{contactInfo.location}</li>
           </ul>
-          <button type="button" aria-haspopup="dialog" onClick={openChat} className="press button-secondary mt-8 self-start">
+          <button type="button" aria-haspopup="dialog" onClick={openChat} className="press button-secondary mt-5 self-start">
             {sectionContent.contact.chunks}
           </button>
         </div>
 
         {/* Sized to the form, not stretched to the left column. */}
-        <SurveyPlate className="p-6 sm:p-8 md:self-start lg:p-10">
+        <SurveyPlate className="glass p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

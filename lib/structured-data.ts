@@ -121,7 +121,7 @@ export function serviceSchema(service: ServicePage): JsonLdNode {
  * software rich result for these; the nodes name the work and its maker.
  */
 export function projectSchemaType(project: Project): 'SoftwareApplication' | 'CreativeWork' {
-  return project.band === 'Products' || project.band === 'Applications' ? 'SoftwareApplication' : 'CreativeWork'
+  return project.band === 'Applications' ? 'SoftwareApplication' : 'CreativeWork'
 }
 
 export function projectSchema(project: Project): JsonLdNode {

@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import { JsonLd } from '@/components/json-ld'
-import { TrailSegment } from '@/components/map/trail-segment'
-import { ElevationStrip } from '@/components/sections/elevation-strip'
-import { FieldMap } from '@/components/sections/field-map'
-import { Fork } from '@/components/sections/fork'
-import { OwnProducts } from '@/components/sections/own-products'
+import { Experience } from '@/components/sections/experience'
+import { Intro } from '@/components/sections/intro'
+import { NowBuilding } from '@/components/sections/now-building'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
-import { TrailJournals } from '@/components/sections/trail-journals'
-import { Trailhead } from '@/components/sections/trailhead'
+import { StackTable } from '@/components/sections/stack-table'
+import { CaseStudyList, WorkList } from '@/components/sections/work-list'
+import { Places, WorkWithMe } from '@/components/sections/work-with-me'
 import { buildRouteMetadata } from '@/lib/site-metadata'
 import { graphFor } from '@/lib/structured-data'
 
@@ -15,25 +14,20 @@ import { graphFor } from '@/lib/structured-data'
 // the homepage sets its own, with its title, description and card.
 export const metadata: Metadata = buildRouteMetadata('/')
 
-// Section order: the Isarog Trail Map contract (.impeccable/surfaces/app-page-tsx.md,
-// spec §5). The trail leaves the trailhead's plate on load; below the
-// elevation strip (the trailhead's bottom edge) a short segment draws between
-// each pair of sections as it scrolls into view.
+// One reading column, from who he is to how to reach him. Section order: the
+// direction contract (.impeccable/surfaces/app-page-tsx.md).
 export default function HomePage() {
   return (
     <>
       <JsonLd data={graphFor('/')} />
-      <Trailhead />
-      <ElevationStrip />
-      <TrailSegment variant={0} />
-      <Fork />
-      <TrailSegment variant={1} />
-      <FieldMap />
-      <TrailSegment variant={0} />
-      <OwnProducts />
-      <TrailSegment variant={1} />
-      <TrailJournals />
-      <TrailSegment variant={0} />
+      <Intro />
+      <NowBuilding />
+      <Experience />
+      <CaseStudyList />
+      <WorkList />
+      <Places />
+      <WorkWithMe />
+      <StackTable />
       <PlanTheRoute />
     </>
   )

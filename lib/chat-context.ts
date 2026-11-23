@@ -192,7 +192,6 @@ export function numberToWords(n: number): string {
 // this module exists to keep those facts out of. Derived from the same
 // `projects` array as the rest of this file, so it cannot drift. Shipped
 // excludes the staging site, the same count the elevation strip prints.
-const productCount = projects.filter((p) => p.band === 'Products').length
-const projectCount = elevationFigures()[1].value
+const projectCount = elevationFigures()[0].value
 
-export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City, with ${numberToWords(productCount)} products of his own and ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`
+export const OFFLINE_REPLY = `I'm currently running in offline mode. I can still point you around: Christian is a full-stack web developer in Naga City, with ${numberToWords(projectCount)} projects shipped. Explore the portfolio or use the contact form to reach him directly.`

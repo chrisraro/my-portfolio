@@ -24,7 +24,7 @@ export function ProjectSummary({ project }: { project: Project }) {
       <h2 className="text-title mt-14 text-ink">{h.stack}</h2>
       <ul className="mt-4 flex flex-wrap gap-2">
         {project.technologies.map((t) => (
-          <li key={t} className="map-label rounded-sm border border-line-strong px-3 py-1.5 text-muted-strong">
+          <li key={t} className="chip">
             {t}
           </li>
         ))}

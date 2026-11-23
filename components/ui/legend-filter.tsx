@@ -30,11 +30,11 @@ export function LegendFilter({ active, projects }: LegendFilterProps) {
 
   return (
     <nav aria-label="Filter projects by band">
-      <ul className="flex overflow-x-auto rounded-sm border border-line-strong bg-panel [scrollbar-width:none]">
+      <ul className="glass flex w-fit max-w-full overflow-x-auto rounded-full p-1 [scrollbar-width:none]">
         {items.map((item) => (
           <li
             key={item.label}
-            className={cn('shrink-0 border-r border-line last:border-r-0', item.current && '[scroll-initial-target:nearest]')}
+            className={cn('shrink-0', item.current && '[scroll-initial-target:nearest]')}
           >
             <Link
               href={item.href}
@@ -45,17 +45,16 @@ export function LegendFilter({ active, projects }: LegendFilterProps) {
               aria-current={item.current ? 'true' : undefined}
               className={cn(
                 // The ring is drawn inward: the scrolling row would clip one drawn outside.
-                'map-label relative inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap px-4 transition-colors focus-visible:outline-offset-[-3px]',
-                item.current ? 'text-ink' : 'text-muted-strong hover:text-ink',
+                'relative inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-offset-[-3px]',
+                item.current ? 'bg-ink/10 text-ink' : 'text-muted-strong hover:text-ink',
               )}
             >
               <span
                 aria-hidden="true"
-                className={cn('h-2.5 w-2.5 shrink-0 rounded-full border-2', item.current ? 'border-trail bg-trail' : 'border-ink')}
+                className={cn('h-1.5 w-1.5 shrink-0 rounded-full', item.current ? 'bg-trail' : 'bg-line-strong')}
               />
               {item.label}
               <span className="tabular text-muted">{item.count}</span>
-              {item.current && <span aria-hidden="true" className="absolute inset-x-3 bottom-0 h-[3px] bg-trail" />}
             </Link>
           </li>
         ))}

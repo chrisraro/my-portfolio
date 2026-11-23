@@ -5,12 +5,10 @@ import { JsonLd } from '@/components/json-ld'
 import { PlanTheRoute } from '@/components/sections/plan-the-route'
 import { SECTION } from '@/components/ui/grid'
 import { PageIntro } from '@/components/ui/page-intro'
-import { ProjectPlate } from '@/components/ui/project-plate'
+import { ProjectRow } from '@/components/ui/project-row'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { TrailLink } from '@/components/ui/trail-link'
-import { catalogOrder, projectCode } from '@/lib/board'
 import { ctaLabels, pagesUpdated, projects, servicePages, servicesPageContent } from '@/lib/data'
-import { hasFullShot } from '@/lib/project-page'
 import { buildRouteMetadata } from '@/lib/site-metadata'
 import { graphFor } from '@/lib/structured-data'
 import { cn } from '@/lib/utils'
@@ -58,7 +56,7 @@ function Comparison({ comparison }: { comparison: ServiceComparison }) {
           <thead>
             <tr>
               {comparison.columns.map((column) => (
-                <th key={column} scope="col" className="map-label border-b border-line-strong pb-2 pr-6 text-muted-strong">
+                <th key={column} scope="col" className="border-b border-line-strong pb-2 pr-6 text-sm font-medium text-muted">
                   {column}
                 </th>
               ))}
@@ -84,18 +82,17 @@ function Comparison({ comparison }: { comparison: ServiceComparison }) {
 /**
  * A service (spec §5, §6): the answer that opens it, question-style h2s with
  * short answers, an honest comparison where the data holds one, the projects
- * that prove it as plates (catalog numbers as on /projects), then the form.
+ * that prove it as rows, as on /projects, then the form.
  */
 export default function ServicePage({ params }: ServicePageProps) {
   const service = servicePages.find((s) => s.slug === params.slug)
   if (!service) notFound()
-  const order = catalogOrder(projects, hasFullShot)
   const { proof } = servicesPageContent
 
   return (
     <>
       <JsonLd data={graphFor(`/services/${service.slug}`)} />
-      <PageIntro eyebrow={servicesPageContent.eyebrow} title={service.name} answer={service.answer} updated={pagesUpdated}>
+      <PageIntro title={service.name} answer={service.answer} updated={pagesUpdated}>
         <a href="#contact" className="press button-primary">
           {ctaLabels.startProject}
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
@@ -103,7 +100,7 @@ export default function ServicePage({ params }: ServicePageProps) {
         <TrailLink href="/services" text={ctaLabels.allServices} />
       </PageIntro>
 
-      <div className={cn(SECTION, 'grid gap-12 pb-[72px] md:pb-[112px]')}>
+      <div className={cn(SECTION, 'grid gap-10 pb-20')}>
         {service.sections.map((s, i) => (
           <section key={s.question} aria-labelledby={`question-${i + 1}`} className="max-w-3xl border-t border-line pt-8">
             <h2 id={`question-${i + 1}`} className="text-title text-ink">
@@ -119,12 +116,11 @@ export default function ServicePage({ params }: ServicePageProps) {
         {service.comparison && <Comparison comparison={service.comparison} />}
       </div>
 
-      <section aria-labelledby="proof-title" className={cn(SECTION, 'pb-[72px] md:pb-[112px]')}>
+      <section aria-labelledby="proof-title" className={SECTION}>
         <SectionHeading id="proof-title" title={proof.title} />
-        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {service.projectIds.map(byId).map((p, i) => (
-            // The first row (three columns from 1024px) loads at once.
-            <ProjectPlate key={p.id} project={p} code={projectCode(p, order)} eager={i < 3} />
+        <ul className="rows border-t border-line">
+          {service.projectIds.map(byId).map((p) => (
+            <ProjectRow key={p.id} project={p} />
           ))}
         </ul>
       </section>

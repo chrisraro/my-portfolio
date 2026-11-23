@@ -114,10 +114,6 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
     <ul><li>AppBuildersPH Hackathon 2026 entry (Local AI theme, with Glenn Viola): reads an agreement on-device and explains key terms in English or Filipino, linked to the source sentence. Web and Android.</li></ul>
   </div>
   <div class="proj">
-    <div class="row"><span><b>Connecta PH</b> <span class="stack">| Next.js, TypeScript, Supabase, Resend, NFC</span></span><span class="date">Sep 2026</span></div>
-    <ul><li>NFC/QR digital business card platform: tap-to-open profiles, lead capture into a dashboard, and an admin console.</li></ul>
-  </div>
-  <div class="proj">
     <div class="row"><span><b>BUCS PolicyPulse</b> <span class="stack">| Next.js, Vercel AI SDK, LlamaIndex.TS, Supabase pgvector</span></span><span class="date">Jul 2026</span></div>
     <ul><li>Retrieval-augmented policy assistant that answers from uploaded documents with verifiable citations, plus an admin console for ingestion, retrieval tuning and escalations.</li></ul>
   </div>

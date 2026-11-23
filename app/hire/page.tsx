@@ -15,8 +15,8 @@ import type { Skill } from '@/types'
 
 export const metadata: Metadata = buildRouteMetadata('/hire')
 
-const BLOCK = 'pb-[72px] md:pb-[112px]'
-const CHIP = 'map-label rounded-sm border border-line-strong px-3 py-2 text-ink'
+const BLOCK = 'pb-20'
+const CHIP = 'chip'
 
 /**
  * Hire (spec §5), the team path from the fork: the answer, the résumé
@@ -36,7 +36,7 @@ export default function HirePage() {
   return (
     <>
       <JsonLd data={graphFor('/hire')} />
-      <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
+      <PageIntro title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="press button-primary">
           {ctaLabels.downloadResume}
           <Download aria-hidden="true" className="h-4 w-4" />
@@ -47,7 +47,7 @@ export default function HirePage() {
         </a>
       </PageIntro>
 
-      <div className={cn(SECTION, BLOCK, 'grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-start')}>
+      <div className={cn(SECTION, BLOCK, 'grid gap-12 ')}>
         <section aria-labelledby="stack-title" className="min-w-0">
           <SectionHeading id="stack-title" title={c.stack.title} />
           <h3 className="map-label text-ink">{c.stack.coreLabel}</h3>
@@ -80,7 +80,7 @@ export default function HirePage() {
           </dl>
         </section>
 
-        <aside aria-labelledby="facts-title" className="rounded-sm border border-line bg-panel p-6 sm:p-8">
+        <aside aria-labelledby="facts-title" className="glass rounded p-6 sm:p-8">
           <h2 id="facts-title" className="map-label text-ink">
             {c.facts.title}
           </h2>
@@ -107,7 +107,7 @@ export default function HirePage() {
 
       <section aria-labelledby="practice-title" className={cn(SECTION, BLOCK)}>
         <SectionHeading id="practice-title" title={c.howIWork.title} />
-        <ul className="grid gap-6 md:grid-cols-3">
+        <ul className="grid gap-6 ">
           {c.howIWork.notes.map((n) => (
             <li key={n.title} className="border-t border-line pt-4">
               <h3 className="text-title text-ink">{n.title}</h3>

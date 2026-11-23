@@ -14,7 +14,7 @@ export { projectHref }
 
 // ua-gated sites refuse automated clients but open in any browser, so a
 // visitor can follow the link. Login-walled and internal systems cannot.
-const LINKABLE: readonly ProjectStatus[] = ['live', 'early-access', 'ua-gated', 'staging']
+const LINKABLE: readonly ProjectStatus[] = ['live', 'in-development', 'ua-gated', 'staging']
 
 export function canLinkLive(project: Project): boolean {
   return Boolean(project.links.live) && LINKABLE.indexOf(project.status) !== -1

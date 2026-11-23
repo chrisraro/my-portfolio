@@ -24,7 +24,7 @@ function StatusGlyph({ status }: { status: DisplayStatus }) {
 
   const shape: Record<Exclude<DisplayStatus, 'private'>, string> = {
     live: 'live-pulse relative h-2 w-2 rounded-full bg-live',
-    'early-access': 'h-2 w-2 rounded-full border-[1.5px] border-status-early',
+    'in-development': 'h-2 w-2 rounded-full border-[1.5px] border-status-early',
     internal: 'h-2 w-2 rounded-[1px] bg-status-internal',
     staging: 'h-2 w-2 rounded-[1px] border-[1.5px] border-status-internal',
   }

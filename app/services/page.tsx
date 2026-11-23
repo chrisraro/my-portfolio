@@ -21,20 +21,22 @@ export default function ServicesPage() {
   return (
     <>
       <JsonLd data={graphFor('/services')} />
-      <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
+      <PageIntro title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <a href="#contact" className="press button-primary">
           {ctaLabels.startProject}
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
         </a>
       </PageIntro>
 
-      <ul className={cn(SECTION, 'grid gap-6 pb-[72px] md:grid-cols-3 md:pb-[112px]')}>
+      <ul className={cn(SECTION, 'grid')}>
         {servicePages.map((s) => (
-          <li key={s.slug} className="flex flex-col rounded border border-line bg-panel p-6 sm:p-8">
-            <h2 className="text-title text-ink">{s.name}</h2>
-            <p className="mt-4 leading-relaxed text-muted-strong">{s.summary}</p>
-            <p className="map-label tabular mt-4 text-muted">{`${s.projectIds.length} projects`}</p>
-            <div className="mt-auto pt-6">
+          <li key={s.slug} className="grid gap-x-8 border-t border-line py-6 last:border-b sm:grid-cols-[1fr_auto] sm:items-center">
+            <div>
+              <h2 className="text-title text-ink">{s.name}</h2>
+              <p className="mt-2 leading-relaxed text-muted-strong">{s.summary}</p>
+              <p className="tabular mt-2 text-sm text-muted">{`${s.projectIds.length} projects`}</p>
+            </div>
+            <div>
               <TrailLink href={`/services/${s.slug}`} text={ctaLabels.readMore} srText={` about ${s.name}`} />
             </div>
           </li>

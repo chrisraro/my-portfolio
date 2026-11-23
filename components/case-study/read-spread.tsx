@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { SECTION } from '@/components/ui/grid'
+import { SECTION_WIDE as SECTION } from '@/components/ui/grid'
 import { cn } from '@/lib/utils'
 
 interface ReadSpreadProps {
@@ -21,14 +21,14 @@ interface ReadSpreadProps {
 export function ReadSpread({ lead, rail, children }: ReadSpreadProps) {
   return (
     <div className={cn(SECTION, 'py-12 md:py-16')}>
-      <div className="grid lg:grid-cols-[minmax(0,36rem)_minmax(0,1fr)] lg:gap-x-16">
-        {lead && <div className="max-w-[36rem] lg:col-start-1 lg:row-start-1">{lead}</div>}
+      <div className="grid xl:grid-cols-[minmax(0,36rem)_minmax(0,1fr)] xl:gap-x-16">
+        {lead && <div className="max-w-[36rem] xl:col-start-1 xl:row-start-1">{lead}</div>}
         {rail && (
-          <div className={lead ? 'my-12 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:my-0' : 'mb-12 lg:col-start-2 lg:row-start-1 lg:mb-0'}>
-            <div className="lg:sticky lg:top-24">{rail}</div>
+          <div className={lead ? 'my-12 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:my-0' : 'mb-12 xl:col-start-2 xl:row-start-1 xl:mb-0'}>
+            <div className="xl:sticky xl:top-24">{rail}</div>
           </div>
         )}
-        <div className={lead ? 'max-w-[36rem] lg:col-start-1 lg:row-start-2 lg:mt-14' : 'max-w-[36rem] lg:col-start-1 lg:row-start-1'}>
+        <div className={lead ? 'max-w-[36rem] xl:col-start-1 xl:row-start-2 xl:mt-14' : 'max-w-[36rem] xl:col-start-1 xl:row-start-1'}>
           {children}
         </div>
       </div>

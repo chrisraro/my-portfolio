@@ -1,7 +1,7 @@
 import { Project, ProjectPlace, ProjectSector, Skill, SocialLink, ContactInfo, ExperienceItem, EducationItem, Recommendation, GalleryImage, NavigationItem, SECTOR_ORDER } from '@/types'
 import type { AboutPageContent, HirePageContent, ServiceArea, ServicePage, ServicesPageContent } from '@/types'
 import { caseStudies } from '@/lib/case-studies'
-import { numberWord } from '@/lib/proof'
+import { isShipped, numberWord } from '@/lib/proof'
 
 // The four gateways actually integrated across the WooCommerce projects. The
 // hero proof band cites this count and a test enforces the match — an early
@@ -38,12 +38,8 @@ export const heroContent = {
   get headline(): string {
     return this.headlineLines.join(' ')
   },
-  // A getter for the same reason as `specialism`: `projects` is declared below.
-  // The count is the Products band, written as a word.
-  get subheadline(): string {
-    const own = projects.filter((p) => p.band === 'Products').length
-    return `Booking and payment sites for travel businesses, AI automation for teams, and ${numberWord(own)} products of my own. Open to client projects and to full-time remote roles.`
-  },
+  subheadline:
+    'Booking and payment sites for travel businesses, web apps and AI automation for teams. Open to client projects and to full-time remote roles.',
   title: 'Mid-level full-stack developer',
   // The homepage's <title> (spec §6, titles table).
   pageTitle: 'Christian Raro · Full-Stack Developer in the Philippines',
@@ -80,69 +76,6 @@ const BORACAY: Omit<ProjectPlace, 'evidence'> = { name: 'Boracay', region: 'Akla
 const BICOL: Omit<ProjectPlace, 'evidence'> = { name: 'Bicol', region: 'Philippines', lat: 13.4, lng: 123.4, precision: 'region' }
 
 export const projects: Project[] = [
-  // --- Products ------------------------------------------------------------
-  {
-    id: 'iskotify',
-    slug: 'iskotify',
-    title: 'Iskotify',
-    description: 'Scholarship and exam-prep platform for Filipino students: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw."',
-    metaDescription: 'Scholarship and exam-prep platform for Filipino students: deadline reminders, AI flashcards for UPCAT, ACET and DCAT, and an AI study companion.',
-    summary: 'Filipino students · scholarships, AI exam prep',
-    band: 'Products',
-    sector: 'product',
-    image: '/assets/images/projects/iskotify.png',
-    technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
-    links: { live: 'https://iskotify.ph' },
-    status: 'early-access',
-    dates: 'June 2026',
-    featured: true,
-  },
-  {
-    id: 'naga-perks-giya-app',
-    slug: 'giya',
-    title: 'Giya',
-    description: 'Receipt-scanning rewards app for Philippine food and retail: customers scan the receipts they already get, earn points at partner venues and redeem real rewards, with business and admin modules behind it.',
-    metaDescription: 'Receipt-scanning rewards app for Philippine food and retail: customers scan the receipts they already get, earn points at partner venues, redeem rewards.',
-    summary: 'Food and retail · receipt-scanning rewards',
-    band: 'Products',
-    sector: 'product',
-    image: '/assets/images/projects/naga-perks-giya-app.png',
-    technologies: ['Next.js', 'Node.js', 'Tailwind CSS', 'Supabase', 'PWA'],
-    links: { live: 'https://giya.ph' },
-    status: 'live',
-    featured: true,
-  },
-  {
-    id: 'latag',
-    slug: 'latag',
-    title: 'Latag',
-    description: 'Offline-first inventory and storefront tool for Philippine ukay-ukay resellers: catalogue every piece once, then share a single link buyers can browse. Free tier with a paid Pro storefront.',
-    metaDescription: 'Offline-first inventory and storefront tool for Philippine ukay-ukay resellers: catalogue every piece once, then share one link buyers can browse.',
-    summary: 'Ukay-ukay resellers · inventory and storefront link',
-    band: 'Products',
-    sector: 'product',
-    image: '/assets/images/projects/latag.png',
-    technologies: ['Next.js', 'React', 'Tailwind CSS'],
-    links: { live: 'https://latag.vercel.app' },
-    status: 'live',
-    featured: true,
-  },
-  {
-    id: 'connecta-ph',
-    slug: 'connecta-ph',
-    title: 'Connecta PH',
-    description: 'NFC and QR business cards that open a professional profile on any phone with no app to install, and send every visitor enquiry back to the card owner. Built for Naga first.',
-    summary: 'Naga professionals · NFC cards, no app needed',
-    sector: 'product',
-    band: 'Products',
-    image: '/assets/images/projects/connecta-ph.png',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend', 'Vercel', 'NFC'],
-    links: { live: 'https://connectaph.vercel.app' },
-    status: 'live',
-    place: { ...NAGA_CITY, evidence: 'Built for Naga first' },
-    featured: false,
-  },
-
   // --- Custom systems --------------------------------------------------------
   {
     id: 'beachbus-nfc',
@@ -175,6 +108,22 @@ export const projects: Project[] = [
   },
 
   // --- Applications --------------------------------------------------------
+  {
+    id: 'iskotify',
+    slug: 'iskotify',
+    title: 'Iskotify',
+    description: 'Scholarship and exam-prep platform for Filipino students, a project of Online Creative Solutions: scholarship tracking with deadline reminders, AI-generated flashcards with spaced repetition for UPCAT/ACET/DCAT, and an AI study companion, "Kuya Baw." In development, with the live website open to visit.',
+    metaDescription: 'Online Creative Solutions project for Filipino students: scholarship deadlines, AI flashcards for UPCAT, ACET and DCAT, and an AI study companion.',
+    summary: 'Filipino students · scholarships, AI exam prep',
+    band: 'Applications',
+    sector: 'education',
+    image: '/assets/images/projects/iskotify.png',
+    technologies: ['Next.js', 'React', 'Supabase', 'AI', 'PWA'],
+    links: { live: 'https://iskotify.ph' },
+    status: 'in-development',
+    dates: 'June 2026',
+    featured: true,
+  },
   {
     id: 'aman-webapp',
     slug: 'aman-group-web-app',
@@ -477,6 +426,13 @@ export const contactInfo: ContactInfo = {
   socialLinks,
 }
 
+// The panel's second group: places on the homepage.
+export const exploreItems: NavigationItem[] = [
+  { label: 'Case studies', href: '/#journals' },
+  { label: 'Places', href: '/#places' },
+  { label: 'Stack', href: '/#stack' },
+]
+
 // Labels a client understands, in the spec's order (§3). `/` targets are
 // pages; `#contact` is the homepage's form. tests/design/nav-anchors.test.ts
 // checks both kinds resolve. The dated route lives on /about, so the legend no
@@ -509,7 +465,16 @@ export const ctaLabels = {
 
 // Headings and copy for each homepage section. `galleryContent` heads the photos on /about.
 export const sectionContent = {
-  ownProducts: { title: 'Products of my own' },
+  // What is in development now; a line per project, else its summary.
+  building: {
+    title: 'In development',
+    more: 'About the project',
+    lines: {
+      iskotify: 'Scholarship deadlines, AI flashcards and a study companion for Filipino students. An Online Creative Solutions project; the website is live.',
+    } as Record<string, string>,
+  },
+  work: { title: 'More work', cta: ctaLabels.allProjects },
+  stack: { title: 'Stack', gateways: 'Payment gateways' },
   fieldMap: {
     title: 'Where the work runs',
     caption: 'A pin sits only where a project’s own page names the place.',
@@ -521,23 +486,22 @@ export const sectionContent = {
     unplacedNote: 'These projects name no single place, so they are listed here rather than pinned.',
     cta: ctaLabels.browseProjects,
   },
-  journals: { title: 'From the brief to launch' },
+  journals: { title: 'Case studies' },
   timeline: {
     title: "Where I've worked",
-    // The marker at now on the strip.
-    here: 'You are here',
-    // Labels for the spot heights; the numbers come from lib/elevation.ts.
+    // Closes a role's full list of responsibilities.
+    less: 'Show less',
+    // Labels for the figures; the numbers come from lib/elevation.ts.
     figures: {
-      products: 'products of my own',
       shipped: 'projects shipped',
       caseStudies: 'case studies',
-      places: 'places on the field map',
+      places: 'places on the map',
     },
   },
   // The two paths up from the trailhead (spec §5): a business to /services, a
   // hiring team to /hire.
   fork: {
-    title: 'Two ways up',
+    title: 'Work with me',
     business: {
       title: 'For your business',
       body: `Booking and payment sites for hotels, tours and restaurants, WooCommerce stores with ${gatewaySentence}, and AI automation for the work your team repeats.`,
@@ -571,7 +535,7 @@ export const projectsPageContent = {
   // A filtered view (?band=) names its band instead.
   bandEyebrow: 'Projects · {band}',
   title: 'Everything I have shipped',
-  description: 'Products of my own, custom systems, and client work, each with its live status.',
+  description: 'Custom systems, applications and client sites, each with its live status.',
   // Under the /projects map: how many of the projects shown have no pin.
   unpinned: 'Projects that name no single place are in the list only ({count} here).',
 }
@@ -692,10 +656,9 @@ export const caseStudyContent = {
 // app/not-found.tsx: any unknown address, including an unknown /projects/<slug>
 // or /services/<slug>. Spec §5: "Off the trail".
 export const notFoundContent = {
-  eyebrow: '404 · Off the trail',
-  title: 'Off the trail',
+  eyebrow: '404',
+  title: 'No page here',
   description: 'Nothing lives at this address: the link may be old or mistyped. The way home starts here, and every project I have shipped is on the projects page.',
-  here: sectionContent.timeline.here,
 }
 
 // What Christian offers. The chat prompt and /llms.txt read this list, so it
@@ -727,10 +690,8 @@ export const serviceArea: ServiceArea = {
 // proving project to its own data.
 
 /** When the copy on /services, /about and /hire was last checked; each page shows it. */
-export const pagesUpdated = '2026-11-20'
+export const pagesUpdated = '2026-11-23'
 
-const ownProductTitles = () => projects.filter((p) => p.band === 'Products').map((p) => p.title)
-const listSentence = (items: string[]) => `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
 const idsUsing = (technology: string) => projects.filter((p) => p.technologies.indexOf(technology) !== -1).map((p) => p.id)
 
 // Who each gateway was chosen for, from the case studies' decisions (El Nido
@@ -750,26 +711,24 @@ export const servicePages: ServicePage[] = [
     name: 'Full-stack development',
     summary: 'Web apps in Next.js, React, TypeScript and Supabase, from the first screen to the database.',
     keyword: 'full-stack developer Philippines',
-    // Aman Group Web App (loan calculator), Giya (receipt rewards), Connecta PH (NFC cards, no app).
+    // Aman Group Web App (loan calculator), Lunad (jeepney trips), SkimCare (on-device reader).
     answer:
-      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has built a real estate showcase with a loan calculator, a receipt-scanning rewards app and NFC business cards with no app to install, and is open to client projects and full-time remote roles.',
+      'Christian Raro is a full-stack developer in Naga City, Philippines, who builds web apps in Next.js, React, TypeScript and Supabase. He has built a real estate showcase with a loan calculator, a jeepney trip planner for Naga City and an on-device agreement reader, and is open to client projects and full-time remote roles.',
     sections: [
       {
         question: 'What do I build with Next.js and React?',
         answer: [
-          // Project descriptions: aman-webapp, naga-perks-giya-app, lunad.
-          'Web apps with screens a template cannot give. The Aman Group Web App compares Pag-IBIG, bank and in-house financing in a loan calculator. Giya turns scanned receipts into points at partner businesses. Lunad plans jeepney trips around Naga City, and is in pre-launch while reviewers check its route data.',
-          // connecta-ph description.
-          'Connecta PH opens a professional profile from an NFC or QR card on any phone, with no app to install, and sends every enquiry back to the card owner.',
+          // Project descriptions: aman-webapp, lunad.
+          'Web apps with screens a template cannot give. The Aman Group Web App compares Pag-IBIG, bank and in-house financing in a loan calculator. Lunad plans jeepney trips around Naga City, and is in pre-launch while reviewers check its route data.',
+          // iskotify description.
+          'Iskotify, a project of Online Creative Solutions, tracks scholarships with deadline reminders and makes exam-prep flashcards with AI. It is in development, and its website is live.',
         ],
       },
       {
         question: 'Which backend do I choose?',
         answer: [
-          // Giya and Connecta PH decisions (Supabase); Aman decision (Upstash Redis, Vercel KV).
-          'Supabase when an app needs Postgres, sign-in and file storage in one service, as Giya and Connecta PH do; its row-level security keeps Giya’s customer, business and admin data apart. Upstash Redis through Vercel KV when an app only stores small key-value data, as the Aman Group Web App does.',
-          // lunad technologies.
-          'Lunad runs on Neon Postgres with PostGIS.',
+          // iskotify technologies; Aman decision (Upstash Redis, Vercel KV); lunad technologies.
+          'Supabase for an app like Iskotify, which runs on Next.js and Supabase. Upstash Redis through Vercel KV when an app only stores small key-value data, as the Aman Group Web App does. Lunad runs on Neon Postgres with PostGIS.',
         ],
       },
       {
@@ -788,18 +747,19 @@ export const servicePages: ServicePage[] = [
       },
     ],
     // The case studies' decisions: El Nido (WordPress over a custom app), Aman
-    // (Next.js over WordPress; Upstash over Supabase), Giya and Connecta PH (Supabase).
+    // (Next.js over WordPress; Upstash over Supabase); iskotify and lunad technologies.
     comparison: {
       caption: 'WordPress or a custom app: what I reach for',
       columns: ['When the job needs', 'I reach for', 'As on'],
       rows: [
         { need: 'Owners and staff editing pages, listings and bookings without a developer', choice: 'WordPress and WooCommerce', projectIds: ['elnido'] },
         { need: 'Custom interactive screens, such as a loan calculator', choice: 'A Next.js app', projectIds: ['aman-webapp'] },
-        { need: 'Sign-in, a database and file storage, built fast by one developer', choice: 'Next.js with Supabase', projectIds: ['naga-perks-giya-app', 'connecta-ph'] },
+        { need: 'A student platform with AI features, as a PWA', choice: 'Next.js with Supabase', projectIds: ['iskotify'] },
+        { need: 'Map and route data', choice: 'Neon Postgres with PostGIS', projectIds: ['lunad'] },
         { need: 'Small key-value data such as listings, settings and leads', choice: 'Upstash Redis through Vercel KV', projectIds: ['aman-webapp'] },
       ],
     },
-    projectIds: ['aman-webapp', 'naga-perks-giya-app', 'connecta-ph', 'lunad', 'skimcare'],
+    projectIds: ['aman-webapp', 'iskotify', 'lunad', 'skimcare'],
   },
   {
     slug: 'wordpress-woocommerce',
@@ -858,7 +818,7 @@ export const servicePages: ServicePage[] = [
     keyword: 'AI automation engineer',
     // experience: ocs-webdev (title, n8n stack, the control panel over MCP).
     answer:
-      'Christian Raro is an AI automation engineer in Naga City, Philippines, working as Web Developer and AI Automation Specialist at Online Creative Solutions. He set up and runs the team’s self-hosted n8n stack for Google Workspace and LLM workflows, built a dashboard that manages client WordPress sites over MCP, and ships AI features in his own products.',
+      'Christian Raro is an AI automation engineer in Naga City, Philippines, working as Web Developer and AI Automation Specialist at Online Creative Solutions. He set up and runs the team’s self-hosted n8n stack for Google Workspace and LLM workflows, built a dashboard that manages client WordPress sites over MCP, and builds AI features into web apps.',
     sections: [
       {
         question: 'What do I automate?',
@@ -870,8 +830,8 @@ export const servicePages: ServicePage[] = [
       {
         question: 'Where do I put LLMs in a product?',
         answer: [
-          // iskotify description; Giya case study (AI reads the receipt, then the fraud review); Chunks on Groq.
-          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Giya uses AI to read a scanned receipt, then a fraud review, partly live, checks it. Chunks, this site’s assistant, answers questions about my work through Groq.',
+          // iskotify description; Chunks on Groq.
+          'Iskotify generates exam-prep flashcards with AI and has an AI study companion, Kuya Baw. Chunks, this site’s assistant, answers questions about my work through Groq.',
         ],
       },
       {
@@ -889,7 +849,7 @@ export const servicePages: ServicePage[] = [
         ],
       },
     ],
-    projectIds: ['ocs-wp-control', 'iskotify', 'naga-perks-giya-app', 'skimcare'],
+    projectIds: ['ocs-wp-control', 'iskotify', 'skimcare'],
   },
 ]
 
@@ -913,7 +873,7 @@ export const aboutPageContent: AboutPageContent = {
   keyword: 'web developer Naga City Bicol',
   // education, experience (ocs-webdev start), the hero subheadline's claims.
   get answer(): string {
-    return `Christian Raro is a web developer in Naga City, Camarines Sur, in the Bicol region of the Philippines. He studied computer science at Bicol University, has worked at Online Creative Solutions since November 2024, and builds booking and payment sites for travel businesses, AI automation for teams and ${numberWord(ownProductTitles().length)} products of his own.`
+    return `Christian Raro is a web developer in Naga City, Camarines Sur, in the Bicol region of the Philippines. He studied computer science at Bicol University, has worked at Online Creative Solutions since November 2024, and builds booking and payment sites for travel businesses, and web apps and AI automation for teams.`
   },
   story: {
     title: 'Built in Bicol',
@@ -923,8 +883,8 @@ export const aboutPageContent: AboutPageContent = {
         'I studied computer science at Bicol University Polangui Campus from 2020 to 2024. That November I joined Online Creative Solutions in Naga City as a web developer, and I still build and maintain WordPress and WooCommerce sites for its clients and run the team’s n8n automation there.',
         // experience: enjoy-it; Aman case study outcome.
         'From March to August 2025 I also worked full-time as IT staff and web developer at Enjoy Realty and Development Corporation. There I built the Aman Group Web App and presented it at the company’s brokers’ meeting.',
-        // places on the field map; the Products band; Connecta PH description.
-        `Much of the client work runs far from Naga: tour bookings in El Nido, a beach shuttle in El Nido, hotels in Baguio and Boracay. Closer to home I build products of my own: ${listSentence(ownProductTitles())}. Connecta PH launches in Naga first.`,
+        // places on the field map; naga-city-guide, lunad and iskotify descriptions.
+        `Much of the client work runs far from Naga: tour bookings in El Nido, a beach shuttle in El Nido, hotels in Baguio and Boracay. Closer to home are Naga City Guide, Lunad’s jeepney routes, and Iskotify, the student platform in development at Online Creative Solutions.`,
       ]
     },
   },
@@ -940,8 +900,8 @@ export const hirePageContent: HirePageContent = {
   keyword: 'mid-level full-stack developer remote',
   // heroContent.title, the fork's team body, the elevation strip's counts.
   get answer(): string {
-    const shipped = projects.filter((p) => p.status !== 'staging').length
-    return `Christian Raro is a mid-level full-stack developer in Naga City, Philippines, open to full-time remote roles. He works in Next.js, TypeScript, Supabase and WordPress, with tests, CI and AI coding tools in daily use, and has shipped ${numberWord(shipped)} projects, ${numberWord(ownProductTitles().length)} of them his own products, with ${numberWord(caseStudies.length)} written up as case studies.`
+    const shipped = projects.filter(isShipped).length
+    return `Christian Raro is a mid-level full-stack developer in Naga City, Philippines, open to full-time remote roles. He works in Next.js, TypeScript, Supabase and WordPress, with tests, CI and AI coding tools in daily use, and has shipped ${numberWord(shipped)} projects, with ${numberWord(caseStudies.length)} written up as case studies.`
   },
   facts: { title: 'At a glance', labels: { availability: 'Availability', base: 'Base', code: 'Code' } },
   stack: {
@@ -965,11 +925,10 @@ export const hirePageContent: HirePageContent = {
       ]
     },
     aiLead: 'In use:',
-    // Moved from heroContent.aiProof (S4): Chunks runs on Groq (app/api/chat);
-    // the Connecta PH case study says it was built with AI coding help.
+    // Chunks runs on Groq (app/api/chat); iskotify description.
     aiInUse: [
       { label: 'Chunks, this site’s assistant (Groq)' },
-      { label: 'Connecta PH, built with AI coding help', href: '/projects/connecta-ph' },
+      { label: 'Iskotify, with AI flashcards and a study companion', href: '/projects/iskotify' },
     ],
   },
   history: { title: 'Work history' },

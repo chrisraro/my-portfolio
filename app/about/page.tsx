@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = buildRouteMetadata('/about')
 
-const BLOCK = 'pb-[72px] md:pb-[112px]'
+const BLOCK = 'pb-20'
 
 /**
  * About (spec §5), a Read page: the answer, the story, the dated route, the
@@ -41,7 +41,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={graphFor('/about')} />
-      <PageIntro eyebrow={c.eyebrow} title={c.heading} answer={c.answer} updated={pagesUpdated}>
+      <PageIntro title={c.heading} answer={c.answer} updated={pagesUpdated}>
         <Link href="/#contact" className="press button-primary">
           {ctaLabels.startProject}
           <ArrowRight aria-hidden="true" className="arrow-nudge h-4 w-4" />
@@ -68,7 +68,7 @@ export default function AboutPage() {
 
       <section id="field-log" aria-labelledby="field-log-title" className={cn(SECTION, BLOCK)}>
         <SectionHeading id="field-log-title" title={galleryContent.title} />
-        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
           {galleryImages.map((img) => (
             <li key={img.id}>
               <SurveyPlate as="figure">
@@ -79,7 +79,7 @@ export default function AboutPage() {
                       src={img.src}
                       alt=""
                       fill
-                      sizes="(min-width: 1024px) 352px, (min-width: 640px) 45vw, calc(100vw - 58px)"
+                      sizes="(min-width: 1024px) 336px, (min-width: 640px) 45vw, calc(100vw - 58px)"
                       className="object-cover"
                     />
                   </span>
@@ -95,12 +95,12 @@ export default function AboutPage() {
 
       <section id="testimonials" aria-labelledby="testimonials-title" className={cn(SECTION, BLOCK)}>
         <SectionHeading id="testimonials-title" title={c.testimonials.title} />
-        <ul className="grid gap-6 md:grid-cols-2">
+        <ul className="grid gap-6 ">
           {recommendations.map((r) => {
             const project = projects.find((p) => p.id === r.projectId)
             return (
               <li key={r.id}>
-                <figure className="flex h-full flex-col rounded border border-line bg-panel p-6 sm:p-8">
+                <figure className="flex h-full flex-col border-t border-line pt-5">
                   <blockquote className="text-lg leading-relaxed text-ink">
                     <p>{`“${r.quote}”`}</p>
                   </blockquote>

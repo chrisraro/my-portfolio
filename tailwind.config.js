@@ -29,17 +29,16 @@ module.exports = {
         'status-internal': token('status-internal'),
       },
       fontFamily: {
-        // Archivo only. `display` is the same family; width and case come
-        // from .text-display and .map-label.
+        // Instrument Sans only.
         sans: ['var(--font-sans)', 'Arial', 'sans-serif'],
         display: ['var(--font-sans)', 'Arial', 'sans-serif'],
       },
-      // --radius is 6px: sm 2px (buttons), md 4px, DEFAULT/lg 6px (plates,
-      // panels, buttons), xl 10px (dialog). Chips use rounded-full.
+      // --radius is 16px: sm 10px (rows, fields), md 12px, DEFAULT/lg 16px
+      // (glass, plates), xl 20px (dialog). Buttons and chips are rounded-full.
       borderRadius: {
         DEFAULT: 'var(--radius)',
-        sm: 'calc(var(--radius) - 4px)',
-        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 6px)',
+        md: 'calc(var(--radius) - 4px)',
         lg: 'var(--radius)',
         xl: 'calc(var(--radius) + 4px)',
       },

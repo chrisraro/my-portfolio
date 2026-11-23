@@ -27,7 +27,7 @@ interface TrailLinkTextProps {
   text: string
   kind?: TrailLinkKind
   external?: boolean
-  /** Read after the text by screen readers only, e.g. " about Latag". */
+  /** Read after the text by screen readers only, e.g. " about Iskotify". */
   srText?: string
 }
 

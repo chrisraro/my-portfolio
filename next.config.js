@@ -9,6 +9,14 @@ const nextConfig = {
     ],
   },
   trailingSlash: false,
+  // Taken off the portfolio on 2026-11-23: their old addresses lead to the list.
+  async redirects() {
+    return ['giya', 'latag', 'connecta-ph'].map((slug) => ({
+      source: `/projects/${slug}`,
+      destination: '/projects',
+      permanent: true,
+    }))
+  },
   reactStrictMode: true,
   swcMinify: true,
   compiler: {

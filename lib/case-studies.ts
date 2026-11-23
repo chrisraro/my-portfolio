@@ -1,6 +1,6 @@
 import type { CaseStudy } from '@/types'
 
-// The six projects with a full case study, in reading order: the "next case
+// The four projects with a full case study, in reading order: the "next case
 // study" link follows it. Every other project gets a short page built from
 // lib/data.ts alone. Spec: docs/superpowers/specs/2026-09-23-case-studies-design.md
 export const FLAGSHIP_SLUGS: readonly string[] = [
@@ -8,8 +8,6 @@ export const FLAGSHIP_SLUGS: readonly string[] = [
   'beachbus-palawan',
   'acad1-review-center',
   'aman-group-web-app',
-  'giya',
-  'connecta-ph',
 ]
 
 // Entries are added as Christian answers each research dossier's questions.
@@ -170,90 +168,6 @@ export const caseStudies: CaseStudy[] = [
       'I presented the app at Enjoy Realty\'s brokers\' meeting as the company\'s property showcase.',
       'Brokers and the sales team use it to show properties to buyers and to run the financing numbers with them.',
     ],
-  },
-  {
-    slug: 'giya',
-    role: 'Sole developer: my own product',
-    brief: [
-      'Food and retail customers in the Philippines already get a paper receipt when they buy. I wanted those receipts to earn them points they can turn into real rewards.',
-      'Small food and retail businesses also want a loyalty programme. Giya had to give them one with no POS integration and no new hardware.',
-    ],
-    built: [
-      'Giya is a PWA. A customer scans a printed receipt, earns points at partner businesses and redeems them for rewards. Sign-in is Google or Facebook only.',
-      'When a customer scans a receipt, AI reads its details, then a fraud review checks it before any points are awarded. The points sit in a ledger. The fraud review and the ledger are partly live, and I am building the rest.',
-      'Businesses get a module for their campaigns, points and customers, and an admin module sits behind both sides. The live version, Giya 2.0, is a rebuild of my first version. Giya is free for customers, and free for businesses during the pilot.',
-    ],
-    decisions: [
-      {
-        chose: 'Rebuilding as Giya 2.0',
-        over: 'extending the first version',
-        because: 'The product changed. The first version was a hyperlocal discovery and privileges app, and 2.0 focuses on receipt-scanning rewards and a CRM for businesses. The first version also began as a quick prototype, so 2.0 starts from a clean, maintainable codebase.',
-      },
-      {
-        chose: 'Supabase',
-        over: 'a custom backend',
-        because: 'It gives me Postgres, sign-in and file storage for receipt images in one service, so I can ship fast as the only developer. Postgres row-level security also keeps customer, business and admin data apart.',
-      },
-      {
-        chose: 'Google and Facebook sign-in only',
-        over: 'email and password',
-        because: 'Real social accounts make it harder to farm points with throwaway emails. One-tap sign-in also leaves no passwords to reset.',
-      },
-    ],
-    stack: [
-      { name: 'Next.js and React', why: 'Build the customer app and the business and admin modules.' },
-      { name: 'Supabase', why: 'Holds the database, sign-in and receipt images, with row-level security between customers, businesses and admins.' },
-      { name: 'Receipt OCR', why: 'Reads the details of each scanned receipt before the fraud review.' },
-      { name: 'Tailwind CSS', why: 'Styles the app.' },
-      { name: 'PWA', why: 'Makes Giya an installable app that runs in the browser.' },
-      { name: 'Sentry', why: 'Reports errors from the live app.' },
-    ],
-    outcome: [
-      'Giya 2.0 is live at giya.ph in a free pilot for customers and businesses. Paid tiers for businesses are planned.',
-    ],
-  },
-  {
-    slug: 'connecta-ph',
-    role: 'Sole developer and owner: built with AI coding help',
-    brief: [
-      'I wanted a business card that opens a profile on any phone with no app to install. I am launching it in Naga first and expanding later.',
-      'It is for real estate agents, shop owners, professionals and students. Each card carries an NFC chip, and a QR code on the card covers phones without NFC.',
-    ],
-    built: [
-      'Connecta PH is a web app. Tapping a card or scanning its QR code opens the owner\'s profile, which can show photos, listings and services. The person who taps saves the contact in one tap.',
-      'Each profile has a lead form. Every lead lands in the owner\'s dashboard, and the owner gets an email notification.',
-      'I also built the profile builder, an admin console, a card factory that sets up each physical NFC card, and a shop. Card orders in the shop arrive as inquiries.',
-    ],
-    decisions: [
-      {
-        chose: 'An NFC and QR web profile',
-        over: 'a mobile app',
-        because: 'There is nothing to install: any phone opens the profile with a tap or a scan. The QR code covers phones without NFC.',
-      },
-      {
-        chose: 'Supabase',
-        over: 'a custom backend',
-        because: 'It gives me Postgres, sign-in and file storage in one service, so I can ship fast as the only developer.',
-      },
-      {
-        chose: 'Order inquiries',
-        over: 'online checkout',
-        because: 'Connecta PH is in prelaunch, and I am not ready to take payments yet. Card orders arrive as inquiries, and online payment comes after launch.',
-      },
-    ],
-    stack: [
-      { name: 'Next.js and React', why: 'Build the profiles, the dashboard, the admin console and the shop.' },
-      { name: 'Supabase', why: 'Holds the Postgres database, sign-in and file storage.' },
-      { name: 'Resend', why: 'Emails the owner when a new lead comes in.' },
-      { name: 'Tailwind CSS', why: 'Styles the app.' },
-      { name: 'Vercel', why: 'Hosts the app.' },
-      { name: 'NFC and QR codes', why: 'Open the profile with a tap, or with a scan on phones without NFC.' },
-    ],
-    outcome: [
-      'Connecta PH is live at connectaph.vercel.app in prelaunch, launching in Naga first. The physical card and the lead tools are offered at prelaunch prices.',
-      'I built it alone, with AI coding help. The code is public at github.com/chrisraro/connecta.',
-    ],
-    metrics: [{ value: 'PHP 799', label: 'prelaunch price of the physical card, paid once', clientApproved: true }],
   },
 ]
 

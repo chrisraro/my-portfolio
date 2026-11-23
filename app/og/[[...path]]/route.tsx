@@ -1,13 +1,13 @@
 import { ImageResponse } from 'next/og'
 import { heroContent } from '@/lib/data'
-import { CONTOURS, HERE, PAD_X, TEXT_WIDTH, TRAIL } from '@/lib/og-linework'
+import { DAWN, PAD_X, RIDGE, TEXT_WIDTH } from '@/lib/og-linework'
 import { ogPalette as c } from '@/lib/og-palette'
 import { OG_SIZE, SITE_URL } from '@/lib/site-metadata'
 import { findRoute } from '@/lib/site-routes'
 
 // One link-preview card per page (spec §6), at the page's own path under /og:
-// /og is the homepage's, /og/about the about page's, /og/projects/giya Giya's.
-// One layout in the trail palette; the words come from the page's route in
+// /og is the homepage's, /og/about the about page's, /og/projects/iskotify Iskotify's.
+// One layout in the night palette; the words come from the page's route in
 // lib/site-routes.ts, so a path that is not a page gets a 404, never a card
 // with words a stranger chose.
 //
@@ -17,7 +17,7 @@ import { findRoute } from '@/lib/site-routes'
 // routes render per request, so the font is fetched as a bundled asset.
 // Recursive Sans is a static instance from Google Fonts (SIL Open Font
 // License) in app/fonts: ImageResponse cannot read a variable font, and the
-// site's Archivo ships as one.
+// site's Instrument Sans ships as one.
 export const runtime = 'edge'
 
 const SANS = 'Recursive'
@@ -52,11 +52,8 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
           viewBox={`0 0 ${OG_SIZE.width} ${OG_SIZE.height}`}
           style={{ position: 'absolute', left: 0, top: 0 }}
         >
-          {CONTOURS.map((d) => (
-            <path key={d} d={d} fill="none" stroke={c.contour} strokeWidth={2} />
-          ))}
-          <path d={TRAIL} fill="none" stroke={c.trail} strokeWidth={5} strokeLinecap="round" />
-          <circle cx={HERE.cx} cy={HERE.cy} r={HERE.r} fill={c.trail} />
+          <path d={DAWN} fill={c.dawn} />
+          <path d={RIDGE} fill={c['land-far']} stroke={c['land-lit']} strokeWidth={3} />
         </svg>
         <div
           style={{
@@ -73,8 +70,6 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
               display: 'flex',
               maxWidth: TEXT_WIDTH,
               fontSize: 24,
-              letterSpacing: 3,
-              textTransform: 'uppercase',
               color: c.muted,
             }}
           >
@@ -87,8 +82,7 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
                 fontSize: 68,
                 fontWeight: 600,
                 lineHeight: 1.04,
-                letterSpacing: -1,
-                textTransform: 'uppercase',
+                letterSpacing: -2,
               }}
             >
               {card.title}
@@ -102,8 +96,6 @@ export async function GET(_request: Request, { params }: { params: { path?: stri
               display: 'flex',
               justifyContent: 'space-between',
               maxWidth: TEXT_WIDTH,
-              paddingTop: 24,
-              borderTop: `2px solid ${c.line}`,
               fontSize: 24,
             }}
           >

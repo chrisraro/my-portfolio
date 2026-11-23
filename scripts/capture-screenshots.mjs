@@ -151,7 +151,7 @@ async function dismissOverlays(page) {
       const page = await browser.newPage()
       await page.setViewport(viewport)
       // A full-page shot is taken in one go, so scroll-reveal sections that
-      // wait for an IntersectionObserver would capture blank (Connecta PH did).
+      // wait for an IntersectionObserver would capture blank.
       // Under reduced motion well-built sites render every section at rest.
       if (FULL) await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
       await page.setDefaultNavigationTimeout(60000)

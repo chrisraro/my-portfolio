@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
-import { SECTION } from '@/components/ui/grid'
+import { SECTION_WIDE as SECTION } from '@/components/ui/grid'
 import { LivePreview } from '@/components/ui/live-preview'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { TrailLink } from '@/components/ui/trail-link'
@@ -36,24 +36,23 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
   const preview = previewFor(project)
 
   return (
-    <header className={cn(SECTION, 'pt-6 md:pt-8')}>
+    <header className={cn(SECTION, 'pt-8 lg:pt-16')}>
       <TrailLink href="/projects" text={ctaLabels.allProjects} kind="label" className="text-muted-strong" />
 
-      <div className="mt-6 grid gap-8 md:grid-cols-[7fr_5fr] md:items-end md:gap-12">
+      <div className="mt-6 grid gap-8 md:grid-cols-[7fr_5fr] md:items-start md:gap-12">
         <div className="min-w-0">
-          <p className="eyebrow">{isCaseStudy ? caseStudyContent.eyebrow.caseStudy : caseStudyContent.eyebrow.project}</p>
           {/* Focusable by script only: a plate navigation moves focus here (components/ui/view-transitions.tsx). */}
-          <h1 tabIndex={-1} className="text-page-h1 mt-6 text-ink">
+          <h1 tabIndex={-1} className="text-page-h1 text-ink">
             {project.title}
           </h1>
           <p className="text-lede mt-5 max-w-[34rem] text-muted-strong">{project.summary}</p>
           <StatusBadge status={project.status} className="mt-6" />
         </div>
 
-        <div className="flex flex-col rounded-sm border border-line bg-panel p-6 sm:p-8">
+        <div className="flex flex-col glass rounded p-6">
           {/* The role is the fact a hiring reader came for: its own line, in readable type. */}
           {role && <p className="max-w-[30rem] text-base text-ink">{role}</p>}
-          <ul className={cn('map-label grid gap-1.5 text-muted-strong', role && 'mt-5')}>
+          <ul className={cn('grid gap-1 text-sm text-muted-strong', role && 'mt-5')}>
             {facts.map((f) => (
               <li key={f}>{f}</li>
             ))}

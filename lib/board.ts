@@ -1,3 +1,4 @@
+import { isShipped } from '@/lib/proof'
 import { BAND_ORDER, SECTOR_ORDER, type Project, type ProjectBand } from '@/types'
 
 export interface BoardGroup {
@@ -70,22 +71,22 @@ export function projectCode(project: Project, order: Project[]): string {
 
 /**
  * The /projects count line. Unfiltered it states what the hero claims
- * (shipped = everything but staging) beside the whole inventory; filtered, it
+ * (shipped = not staging, not in development) beside the whole inventory; filtered, it
  * counts the band against the whole.
  */
 export function projectCount(visible: Project[], all: Project[], filtered: boolean): string {
-  const staging = (list: Project[]) => list.filter((p) => p.status === 'staging').length
+  const unshipped = (list: Project[]) => list.filter((p) => !isShipped(p)).length
   if (!filtered) {
-    const s = staging(all)
-    return `${all.length} projects · ${all.length - s} shipped${s ? `, ${s} in staging` : ''}`
+    const s = unshipped(all)
+    return `${all.length} projects · ${all.length - s} shipped${s ? `, ${s} in progress` : ''}`
   }
-  const s = staging(visible)
-  return `${visible.length} of ${all.length} projects${s ? ` · ${s} in staging` : ''}`
+  const s = unshipped(visible)
+  return `${visible.length} of ${all.length} projects${s ? ` · ${s} in progress` : ''}`
 }
 
 /**
  * A plate's catalog code: a running index over the whole inventory plus a
- * label, so the list reads as one numbered survey ("04 / 18 · Products").
+ * label, so the list reads as one numbered survey ("04 / 18 · Sites").
  */
 export function edgeCode(position: number, total: number, label: string): string {
   const pad = (n: number) => String(n).padStart(String(total).length, '0')
