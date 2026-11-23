@@ -33,11 +33,18 @@ him — and every claim on the page is backed by the project inventory.
 considered and rejected, because a narrow niche risks starving the pipeline in a
 regional market. That puts the whole differentiation burden on proof.
 
-The claim a neighbouring developer cannot truthfully copy: **4 own products**
-(Iskotify, Giya, Latag, Connecta PH) alongside client work, plus **custom systems**
-(an NFC card system for BeachBus Palawan, and an internal WordPress control panel
-for Online Creative Solutions). WordPress specialism is shown as proof — nine
-production sites — not stated as a title.
+The claim a neighbouring developer cannot truthfully copy: **work that runs in
+the places it names**, backed by 4 case studies and 15 shipped projects, and
+the range behind it — booking and payment sites for travel businesses in
+Palawan, Baguio and Boracay, **custom systems** (an NFC card system for
+BeachBus Palawan, an internal WordPress control panel for Online Creative
+Solutions), and web apps. WordPress specialism is shown as proof, in the 11
+sites, not stated as a title.
+
+The portfolio claims **no products of Christian's own**. His personal products
+were taken off at his request. Iskotify, the student platform, is an Online
+Creative Solutions project: it is shown as *In development*, with its website
+live, and the copy says whose it is.
 
 ## Operating Context
 
@@ -48,21 +55,24 @@ production sites — not stated as a title.
 - Visitors reach him through the contact form (`/api/contact`, with a mailto
   fallback when no mail provider is configured), email, the résumé PDF, and an
   AI assistant named Chunks that answers only from the portfolio data.
-- Deployed on Vercel from `main`. Portfolio 5.0 (Isarog Trail Map) is built on
-  the `v5` branch, with a Vercel preview for every push; it merges after
+- Deployed on Vercel from `main`. Portfolio 6.0 (First Light) is built on the
+  `v6` branch, with a Vercel preview for every push; it merges after
   Christian signs off a preview.
 
 ## Capabilities and Constraints
 
 - Next.js 14 App Router, TypeScript, Tailwind CSS. All content lives in
   `lib/data.ts`; Vitest content tests assert every factual claim the site makes.
-- Surfaces: the homepage; `/projects`, map and list views of 20 projects in
-  four bands (Products, Custom systems, Applications, Sites) with the `?band=`
-  filter; a page per project at `/projects/[slug]`, the 6 case studies as
-  trail journals and the rest as short pages built only from data they already
-  have; `/services` with three service pages (full-stack development,
-  WordPress and WooCommerce, AI automation); `/about`; `/hire`; the "Off the
-  trail" 404; `/llms.txt` and `/llms-full.txt`.
+- Surfaces: the homepage, one reading column from who he is to the contact form;
+  `/projects`, a map and a list of 17 projects in three bands (Custom systems,
+  Applications, Sites) with the `?band=` filter; a page per project at
+  `/projects/[slug]`, the 4 case studies as trail journals and the rest as short
+  pages built only from data they already have; `/services` with three service
+  pages (full-stack development, WordPress and WooCommerce, AI automation);
+  `/about`; `/hire`; the 404; `/llms.txt` and `/llms-full.txt`.
+- The look: a fixed pixel land of Mount Isarog under every page, first light
+  rising behind it as you scroll, and a floating panel of glass. Night is the
+  default theme. `DESIGN.md` documents it.
 - Both API routes must work with no environment variables set.
 - Payment gateways, confirmed by Christian on 2026-09-23 and corroborated by the
   live sites: **PayPal, PayMongo and Maya on BeachBus Palawan; Xendit on ACAD1
@@ -75,12 +85,15 @@ production sites — not stated as a title.
 - Voice: first person, plain and specific. No years-of-experience figure is
   claimed; the dated work history carries that.
 - The chat assistant is named Chunks.
+- Who owns the work is said plainly: client work is the client's, Online
+  Creative Solutions projects are Online Creative Solutions'.
 
 ## Evidence on Hand
 
-- 20 projects, 19 with live URLs, with full-page screenshots in
-  `public/assets/images/projects/`.
-- 6 case studies in `lib/case-studies.ts`.
+- 17 projects, 16 with live URLs, with full-page screenshots in
+  `public/assets/images/projects/` where a public screen exists.
+- 4 case studies in `lib/case-studies.ts` (El Nido Guide PH, BeachBus Palawan,
+  ACAD1 Review Center, the Aman Group Web App).
 - Four real, attributed testimonials in `lib/data.ts` (Alec Santos, Brian
   Labilles, Bryden Elizan, Joseph Cua). Three are attached to the project they
   refer to.
@@ -90,19 +103,22 @@ production sites — not stated as a title.
 **Absent — never fabricate:** outcome metrics; per-project "what I built"
 write-ups; the BeachBus NFC system write-up; screenshots of the auth-gated OCS
 control panel (showing its interior needs Online Creative Solutions' clearance);
-client logos.
+client logos; products of Christian's own.
 
 ## Product Principles
 
 1. Every claim is backed by the inventory, and a test holds it true.
-2. Proof over titles: show the products and systems rather than stacking job
+2. Proof over titles: show the work and the systems rather than stacking job
    titles.
 3. Human proof sits beside technical proof. Freelance clients need to see a
    person and the people he has worked with, not only a console.
-4. A thin true entry beats a padded one.
+4. A thin true entry beats a padded one. A project that is not finished says so
+   (*In development*), and does not count as shipped.
+5. The atmosphere is his: Isarog, the Naga plain, a Bicol dawn. The structure may
+   borrow from sites he admires; the place, light and words do not.
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA. Status is never conveyed by colour alone. Motion respects
-`prefers-reduced-motion`, and nothing animates continuously for more than five
-seconds.
+WCAG 2.2 AA. Status is never conveyed by colour alone. Glass goes opaque under
+reduced transparency and more contrast. Motion respects
+`prefers-reduced-motion`, and nothing animates for more than five seconds.
