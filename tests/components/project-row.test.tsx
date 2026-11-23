@@ -14,7 +14,6 @@ const render = (project: Project, props: { labelPrefix?: string; text?: string; 
     </ul>,
   )
 const withShot = projects.find((p) => fullShotFor(p))!
-const withoutShot = projects.find((p) => !fullShotFor(p))!
 
 describe('ProjectRow', () => {
   it('is a list item the map pins and the filter transition can find, still named a plate', () => {
@@ -71,7 +70,7 @@ describe('ProjectRow', () => {
   })
 
   it('keeps the same thumbnail frame with a lock where there is no public screen', () => {
-    const html = render(withoutShot)
+    const html = render({ ...withShot, id: 'no-shot', image: '' })
     expect(html).toContain('class="thumb relative block aspect-[8/5]')
     expect(html).not.toContain('<img')
     expect(html).not.toContain('data-vt-shot')

@@ -41,7 +41,7 @@ export function WorkList() {
 
   return (
     <section id="work" aria-labelledby="work-title" className={cn(SECTION, 'pt-24')}>
-      <ListHeading id="work-title" title={sectionContent.work.title} count={rest.length} />
+      <ListHeading id="work-title" title={sectionContent.work.title} />
       <ul className="rows">
         {rows.map((p) => (
           <ProjectRow key={p.id} project={p} />

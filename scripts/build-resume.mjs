@@ -98,7 +98,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
     <div class="row"><span><b>BeachBus Palawan</b> <span class="stack">| WordPress, WooCommerce, PayPal, PayMongo, Maya &middot; Next.js, NFC</span></span><span class="date">Jun 2025 &ndash; Present</span></div>
     <ul>
       <li>Built the website and WooCommerce storefront for an El Nido shuttle operator, with three payment gateways.</li>
-      <li class="nda">Also built and maintain a confidential NFC card system now in production for the client (details under NDA).</li>
+      <li>Also built and maintain the client&rsquo;s internal NFC card system, now in production.</li>
     </ul>
   </div>
   <div class="proj">

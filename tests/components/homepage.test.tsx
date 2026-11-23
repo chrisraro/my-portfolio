@@ -355,8 +355,8 @@ describe('PlanTheRoute', () => {
   })
 
   // One column now: the form sits on a pane of glass of its own, under the copy.
-  it('sets the form on a glass plate, not boxed in a panel colour', () => {
-    expect(html).toMatch(/<div class="survey-plate glass [^"]*"><form/)
+  it('sets the form on a survey plate, not boxed in a panel colour', () => {
+    expect(html).toMatch(/<div class="survey-plate [^"]*"><form/)
     expect(html).not.toContain('bg-panel')
   })
 })

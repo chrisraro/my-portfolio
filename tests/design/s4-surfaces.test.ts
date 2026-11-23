@@ -20,7 +20,7 @@ describe('S4 surfaces', () => {
 
   it('keeps the legend’s ember to the current page: its underline and its dot', () => {
     const src = readFileSync('components/site-legend.tsx', 'utf8')
-      .split('aria-[current=page]:decoration-trail').join('')
+      .split('[&[aria-current]]:decoration-trail').join('')
       .replace(/\{l\.current && <span aria-hidden="true" className="h-1\.5 w-1\.5 rounded-full bg-trail" \/>\}/, '')
     expect(src).not.toMatch(TRAIL)
   })

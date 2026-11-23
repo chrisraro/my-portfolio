@@ -85,7 +85,8 @@ export const projects: Project[] = [
     summary: 'Shuttle operator · internal NFC card system',
     band: 'Custom systems',
     sector: 'internal-tool',
-    image: '',
+    image: '/assets/images/projects/beachbus-nfc.png',
+    sampleData: true,
     technologies: ['NFC'],
     links: {},
     status: 'internal',
@@ -100,7 +101,8 @@ export const projects: Project[] = [
     summary: 'Internal · manage, secure and report on client sites',
     band: 'Custom systems',
     sector: 'internal-tool',
-    image: '',
+    image: '/assets/images/projects/ocs-wp-control.png',
+    sampleData: true,
     technologies: ['Next.js', 'WordPress'],
     links: { live: 'https://ocs-wp-control.vercel.app' },
     status: 'auth-gated',
@@ -522,9 +524,7 @@ export const sectionContent = {
   },
 }
 
-// The footer's colophon, set as a small edge code.
 export const footerContent = {
-  colophon: 'Surveyed in Naga City',
   // The public locality only (CLAUDE.md privacy rule): Naga City's centre,
   // rounded to two decimals.
   base: { place: 'Naga City, Camarines Sur', coordinates: '13.62° N · 123.19° E' },
@@ -534,7 +534,7 @@ export const projectsPageContent = {
   eyebrow: ctaLabels.allProjects,
   // A filtered view (?band=) names its band instead.
   bandEyebrow: 'Projects · {band}',
-  title: 'Everything I have shipped',
+  title: 'Projects',
   description: 'Custom systems, applications and client sites, each with its live status.',
   // Under the /projects map: how many of the projects shown have no pin.
   unpinned: 'Projects that name no single place are in the list only ({count} here).',
@@ -646,6 +646,8 @@ export const caseStudyContent = {
   },
   // A short page told inside a flagship's story links back to it.
   partOf: 'Part of the {title} case study',
+  // Beside shots of an internal system, captured from a local copy.
+  sampleData: 'Screens from a local copy, showing sample data.',
   noPreview: {
     'auth-gated': 'This system sits behind a login, so there is no public preview.',
     internal: 'This is an internal system with no public screen to show.',
@@ -658,7 +660,7 @@ export const caseStudyContent = {
 export const notFoundContent = {
   eyebrow: '404',
   title: 'No page here',
-  description: 'Nothing lives at this address: the link may be old or mistyped. The way home starts here, and every project I have shipped is on the projects page.',
+  description: 'Nothing lives at this address: the link may be old or mistyped. The way home starts here, and every project is on the projects page.',
 }
 
 // What Christian offers. The chat prompt and /llms.txt read this list, so it

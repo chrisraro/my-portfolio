@@ -152,7 +152,7 @@ export function PlanTheRoute() {
         </div>
 
         {/* Sized to the form, not stretched to the left column. */}
-        <SurveyPlate className="glass p-6 sm:p-8">
+        <SurveyPlate className="p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

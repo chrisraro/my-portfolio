@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { ogImage } from '@/lib/site-metadata'
 import ProjectPage, { generateMetadata, generateStaticParams } from '@/app/projects/[slug]/page'
 import { FLAGSHIP_SLUGS, caseStudies, getCaseStudy } from '@/lib/case-studies'
+import { ProjectScreenshots } from '@/components/case-study/project-screenshots'
 import { caseStudyContent, projects, recommendations } from '@/lib/data'
+import type { Project } from '@/types'
 import { canLinkLive, fullShotFor, isEmbeddable } from '@/lib/project-page'
 
 const render = (slug: string) => renderToStaticMarkup(ProjectPage({ params: { slug } }))
@@ -60,8 +62,18 @@ describe('/projects/[slug]', () => {
   })
 
   it('explains a missing preview instead of showing an empty frame', () => {
-    expect(render('ocs-wp-control-panel')).toContain(caseStudyContent.noPreview['auth-gated'])
-    expect(render('beachbus-nfc-card-system')).toContain(caseStudyContent.noPreview.internal)
+    const bare = (status: Project['status']) =>
+      renderToStaticMarkup(<ProjectScreenshots project={{ ...projects[0], id: 'no-shot', image: '', status }} />)
+    expect(bare('auth-gated')).toContain(caseStudyContent.noPreview['auth-gated'])
+    expect(bare('internal')).toContain(caseStudyContent.noPreview.internal)
+  })
+
+  it('says the internal systems’ screens show sample data, and never on a public site', () => {
+    for (const p of projects) {
+      const internal = p.status === 'internal' || p.status === 'auth-gated'
+      expect(p.sampleData === true, p.slug).toBe(internal)
+      expect(render(p.slug).includes(caseStudyContent.sampleData), p.slug).toBe(internal)
+    }
   })
 
   it('keeps the sticky rail plate at least 16rem wide on a short screen', () => {

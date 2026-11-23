@@ -28,9 +28,9 @@ describe('survey plates', () => {
     expect(offenders).toEqual([])
   })
 
-  it('frame the contact form, as glass', () => {
+  it('frame the contact form', () => {
     const html = renderToStaticMarkup(createElement(ToastProvider, null, createElement(PlanTheRoute)))
-    expect(html).toContain('class="survey-plate glass')
+    expect(html).toContain('class="survey-plate ')
   })
 
   it('frame the about page’s photos and the project page’s screenshot rail, and nothing else writes one', () => {

@@ -85,7 +85,7 @@ export default function ProjectsPage({ searchParams }: ProjectsPageProps) {
             )
           })}
         </div>
-        <figure className="mx-auto w-full max-w-[18rem] xl:sticky xl:top-24 xl:max-w-none">
+        <figure className="order-first mx-auto w-full max-w-[15rem] xl:order-last xl:sticky xl:top-24 xl:max-w-none">
           {/* The frame clips the pan layer; the layer is the whole map, moved and scaled. */}
           <div className="overflow-hidden rounded">
             <div className="map-pan" style={panStyle(pan)}>

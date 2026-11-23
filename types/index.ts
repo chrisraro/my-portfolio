@@ -86,6 +86,8 @@ export interface Project {
   /** Who it was built for, from what the description already says. */
   sector: ProjectSector;
   image: string;
+  /** The shots come from a local copy with invented data; the page says so. */
+  sampleData?: boolean;
   technologies: string[];
   links: {
     live?: string;

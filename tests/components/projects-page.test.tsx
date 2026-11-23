@@ -94,7 +94,7 @@ describe('/projects: the list', () => {
     for (const p of projects) {
       const row = rowFor(p)
       expect(row, p.slug).toContain('thumb relative block aspect-[8/5]')
-      if (fullShotFor(p)) expect(row, p.slug).toContain('<img')
+      if (fullShotFor(p) || p.image) expect(row, p.slug).toContain('<img')
       else expect(row, p.slug).not.toContain('<img')
     }
     expect(html).not.toMatch(/aspect-square|aspect-\[9\/16\]|aspect-\[3\/4\]/)

@@ -44,6 +44,9 @@ export default function RootLayout({
               Skip to content
             </a>
             {/* main grows, so on a page shorter than the window (the 404) the footer meets its bottom. */}
+            <noscript>
+              <style>{'.theme-toggle{display:none}'}</style>
+            </noscript>
             <Scene />
             {/* From 1024px the page sits beside the fixed panel. */}
             <div className="relative flex min-h-screen flex-col text-ink lg:pl-[17.5rem]">

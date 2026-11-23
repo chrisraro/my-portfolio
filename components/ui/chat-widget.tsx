@@ -284,7 +284,7 @@ export function ChatWidget() {
               {!isOffline && (
                 <span
                   aria-hidden="true"
-                  className={cn('absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-canvas', DOT_READY)}
+                  className={cn('absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full border-2 border-canvas', DOT_READY)}
                 />
               )}
             </button>

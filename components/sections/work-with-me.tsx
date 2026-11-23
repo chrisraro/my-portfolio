@@ -26,10 +26,10 @@ export function WorkWithMe() {
         {rows.map((r) => (
           <li key={r.href} className="rise-in">
             <Link href={r.href} className="row group flex items-center gap-6">
-              <span className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1">
                 <h3 className="text-row text-ink">{r.title}</h3>
                 <span className="mt-1 block leading-relaxed text-muted-strong">{r.body}</span>
-              </span>
+              </div>
               <ArrowRight aria-hidden="true" className="arrow-nudge h-5 w-5 shrink-0 text-muted" />
               <span className="sr-only">{r.cta}</span>
             </Link>

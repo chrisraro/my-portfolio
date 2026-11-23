@@ -217,10 +217,12 @@ client; one link). What fills the thumbnail and the project page's frame:
   WebP quality 70). View every new shot; a broken one is deleted and its id
   added to `FULL_SKIP` in `scripts/capture-screenshots.mjs` with the reason, so a
   rerun does not bring it back.
+- **Internal systems** (`beachbus-nfc`, `ocs-wp-control`): shot on 2026-11-24 from
+  local copies with no env, no login and invented data, with Christian's
+  go-ahead. They carry `sampleData: true`, and the project page says so. Never
+  capture one against a real database, and get the go-ahead for any new one.
 - **No shot:** a row shows a lock, and the project page's `NoPreviewTag` prints
-  why (`caseStudyContent.noPreview`) in the same `SHOT_ASPECT` frame. Never fake
-  a screenshot for an auth-gated or internal project; its interior needs the
-  client's clearance.
+  why (`caseStudyContent.noPreview`) in the same `SHOT_ASPECT` frame.
 - **LivePreview** (`components/ui/live-preview.tsx`, client) appears only when
   `isEmbeddable(project)` is true, which reads `lib/embeddable.json`. Refresh it
   with `npm run check:embeds` (a site is embeddable when it answers 2xx and its

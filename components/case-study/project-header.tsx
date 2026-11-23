@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/ui/status-badge'
 import { TrailLink } from '@/components/ui/trail-link'
 import { caseStudyContent, ctaLabels, paymentGateways, sectorNames } from '@/lib/data'
 import { canLinkLive, liveLinkLabel, previewFor } from '@/lib/project-page'
+import { isShipped } from '@/lib/proof'
 import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -29,7 +30,7 @@ export function ProjectHeader({ project, role, isCaseStudy = false }: ProjectHea
   const facts = [
     project.sector !== 'product' ? `${project.band} · ${sectorNames[project.sector]}` : project.band,
     project.place ? `Place: ${project.place.name}` : undefined,
-    project.dates ? `Built ${project.dates}` : undefined,
+    project.dates ? `${isShipped(project) ? 'Built' : 'Started'} ${project.dates}` : undefined,
     gateways.length ? `Payments: ${gateways.join(', ')}` : undefined,
   ].filter((f): f is string => Boolean(f))
   const live = canLinkLive(project) ? project.links.live : undefined

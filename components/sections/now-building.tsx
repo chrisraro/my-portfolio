@@ -24,7 +24,7 @@ export function NowBuilding() {
         const live = canLinkLive(p) ? p.links.live : undefined
         return (
           <article key={p.id} className="banner glass relative grid overflow-hidden sm:grid-cols-[1fr_17rem]">
-            <div className="relative z-10 p-6">
+            <div className="p-6">
               <StatusBadge status={p.status} />
               <h2 className="mt-3 text-title text-ink">{p.title}</h2>
               <p className="mt-2 max-w-[42ch] leading-relaxed text-muted-strong">{copy.lines[p.id] ?? p.summary}</p>
@@ -32,7 +32,7 @@ export function NowBuilding() {
                 {/* The name's link covers the banner; the live link sits above it. */}
                 <Link href={projectHref(p)} className="banner__link inline-flex min-h-[44px] items-center font-medium text-ink">
                   <span className="link-draw">{copy.more}</span>
-                  <span className="sr-only">{` about ${p.title}`}</span>
+                  <span className="sr-only">{`: ${p.title}`}</span>
                 </Link>
                 {live && (
                   <a
@@ -50,7 +50,7 @@ export function NowBuilding() {
             </div>
             {shot && (
               <div aria-hidden="true" className="banner__shot relative min-h-[11rem] sm:min-h-full">
-                <Image src={shot} alt="" fill sizes="(min-width: 640px) 272px, 100vw" quality={50} className="object-cover object-top" />
+                <Image src={shot} alt="" fill sizes="(min-width: 640px) 272px, 100vw" quality={50} loading="eager" fetchPriority="high" className="object-cover object-top" />
               </div>
             )}
           </article>

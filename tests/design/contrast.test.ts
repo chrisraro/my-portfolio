@@ -256,8 +256,8 @@ describe('text over the scene scrim', () => {
 describe('glass fallbacks', () => {
   const blurred = rules.filter((r) => /backdrop-filter:\s*blur/.test(r.body) && r.ancestors.every((a) => a.startsWith('@layer')))
 
-  it('blurs only through .glass and the secondary button', () => {
-    expect(blurred.map((r) => r.selector).sort()).toEqual(['.button-secondary', '.glass'])
+  it('blurs only through .glass', () => {
+    expect(blurred.map((r) => r.selector).sort()).toEqual(['.glass'])
   })
 
   it('sets .glass opaque where the browser has no backdrop-filter', () => {

@@ -17,11 +17,11 @@ const sources = ['app', 'components'].flatMap(tsxFiles).map((f) => ({ f, src: re
 const css = readFileSync('app/globals.css', 'utf8')
 
 describe('image priority', () => {
-  it('is set only on the first-viewport images: the hero portrait and a project page’s fallback screenshot', () => {
+  it('is set only on the first-viewport images: the hero portrait, the banner under it and a project page’s fallback screenshot', () => {
     const withPriority = sources
       .filter(({ src }) => /^\s*priority\b/m.test(src) || /fetchPriority=/.test(src))
       .map(({ f }) => f.replace(/\\/g, '/'))
-    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/intro.tsx'])
+    expect(withPriority.sort()).toEqual(['components/case-study/project-screenshots.tsx', 'components/sections/intro.tsx', 'components/sections/now-building.tsx'])
   })
 
   it('never prioritises a full-page project shot', () => {

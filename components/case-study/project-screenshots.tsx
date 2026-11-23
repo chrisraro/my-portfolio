@@ -4,6 +4,7 @@ import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { NoPreviewTag } from '@/components/ui/no-preview-tag'
 import { ProjectShot, SHOT_ASPECT } from '@/components/ui/project-shot'
 import { SurveyPlate } from '@/components/ui/survey-plate'
+import { caseStudyContent } from '@/lib/data'
 import { fullShotFor, screenshotsFor } from '@/lib/project-page'
 import { extractDomain } from '@/lib/utils'
 import { shotTransitionName } from '@/lib/view-transition'
@@ -19,7 +20,7 @@ const FRAME = 'w-full sm:max-w-[22rem] xl:max-w-[min(100%,max(16rem,calc((100vh_
  * site's full-page shot, still, at the one scale every screenshot shares (the
  * end of the plate-to-page morph), with the phone shot beside or below it in a
  * lightbox. A project with no full-page shot falls back to its desktop
- * screenshot; one with no public screen at all keeps the plate with the
+ * screenshot; one with no screen at all keeps the plate with the
  * printed reason in the same shot frame.
  */
 export function ProjectScreenshots({ project }: { project: Project }) {
@@ -37,6 +38,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
   }
 
   return (
+    <>
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end xl:flex-col xl:items-start">
       {full ? (
         <SurveyPlate className={FRAME}>
@@ -45,7 +47,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
             label={`Screenshot of ${name}`}
             slug={project.slug}
             morphTarget
-            sizes="(min-width: 1024px) 448px, (min-width: 640px) 336px, calc(100vw - 58px)"
+            sizes="(min-width: 1280px) 448px, (min-width: 640px) 336px, calc(100vw - 58px)"
             className="w-full"
           />
         </SurveyPlate>
@@ -66,7 +68,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
                   width={1440}
                   height={900}
                   priority
-                  sizes="(min-width: 1024px) 448px, (min-width: 640px) 336px, 100vw"
+                  sizes="(min-width: 1280px) 448px, (min-width: 640px) 336px, 100vw"
                   className="h-auto w-full"
                 />
               </span>
@@ -84,5 +86,7 @@ export function ProjectScreenshots({ project }: { project: Project }) {
         </ImageLightbox>
       )}
     </div>
+    {project.sampleData && <p className="mt-3 text-sm text-muted">{caseStudyContent.sampleData}</p>}
+    </>
   )
 }

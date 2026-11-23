@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react'
 import { Lock } from 'lucide-react'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { sectorNames } from '@/lib/data'
-import { fullShotFor, projectHref } from '@/lib/project-page'
+import { fullShotFor, projectHref, screenshotsFor } from '@/lib/project-page'
 import { plateTransitionName } from '@/lib/view-transition'
 import type { Project } from '@/types'
 
@@ -20,14 +20,14 @@ interface ProjectRowProps {
 
 /**
  * One project as a row, everywhere the site lists work: a thumbnail of the top
- * of its real site (a lock where there is no public screen to show), the name
+ * of its real site (a lock where there is no screen to show), the name
  * with its status, one line, and what kind of client it is. The row is one
  * link, named by its own visible text. Hover slides a pane of glass under the
  * row and zooms the thumbnail inside its frame (.row in app/globals.css). The
  * li carries the id a map pin jumps to and the name a filter change glides.
  */
 export function ProjectRow({ project, text, labelPrefix, eager = false }: ProjectRowProps) {
-  const shot = fullShotFor(project)
+  const shot = fullShotFor(project) ?? screenshotsFor(project).desktop
 
   return (
     <li
@@ -54,13 +54,13 @@ export function ProjectRow({ project, text, labelPrefix, eager = false }: Projec
             </span>
           )}
         </span>
-        <span className="min-w-0">
-          <span className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
             <h3 className="text-row text-ink">{project.title}</h3>
             <StatusBadge status={project.status} />
-          </span>
+          </div>
           <span className="mt-1 block leading-snug text-muted-strong">{text ?? project.summary}</span>
-        </span>
+        </div>
         <span className="hidden text-right text-sm text-muted sm:block">{sectorNames[project.sector]}</span>
       </Link>
     </li>

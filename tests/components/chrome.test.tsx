@@ -17,14 +17,14 @@ describe('legend navigation', () => {
   it('is a fixed panel of glass from 1024px and a bar of the same glass below it', () => {
     expect(html).toContain('lg:fixed')
     expect(html).toContain('class="glass panel pointer-events-auto hidden h-full flex-col p-4 lg:flex"')
-    expect(html).toMatch(/class="glass pointer-events-auto relative [^"]*lg:hidden"/)
+    expect(html).toMatch(/class="glass glass--dense pointer-events-auto relative [^"]*lg:hidden"/)
     expect(css).toMatch(/\.glass \{[^}]*backdrop-filter:\s*blur\(/)
   })
 
   it('marks the current page by more than colour', () => {
-    expect(src).toContain('aria-[current=page]:underline')
-    expect(src).toContain('aria-[current=page]:decoration-trail')
-    expect(src).not.toContain('aria-[current=page]:text-trail')
+    expect(src).toContain('[&[aria-current]]:underline')
+    expect(src).toContain('[&[aria-current]]:decoration-trail')
+    expect(src).not.toContain('[&[aria-current]]:text-trail')
     // In the panel the current page also carries the lozenge and an ember dot.
     expect(src).toContain('bg-trail')
     expect(src).toContain('className="lozenge"')
@@ -86,10 +86,10 @@ describe('legend navigation', () => {
     expect(src).toMatch(/onToggle=\{\(e\) => setMenuOpen\(e\.currentTarget\.open\)\}/)
   })
 
-  it('closes the menu when keyboard focus leaves it (focusout to nothing or outside the details)', () => {
+  it('closes the menu when keyboard focus moves outside it, and leaves presses to the pointer handler', () => {
     expect(src).toContain("details?.addEventListener('focusout', onFocusOut)")
     expect(src).toContain("details?.removeEventListener('focusout', onFocusOut)")
-    expect(src).toMatch(/e\.relatedTarget instanceof Node && details\.contains\(e\.relatedTarget\)/)
+    expect(src).toMatch(/e\.relatedTarget instanceof Node && !details\.contains\(e\.relatedTarget\)/)
   })
 
   it('gives every panel link a 44px row, and every icon control a 44px target', () => {

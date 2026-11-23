@@ -53,8 +53,8 @@ describe('the fireflies', () => {
     expect(twinkle?.ancestors).toContain(NO_PREF)
   })
 
-  it('are off below 1280px, where the column and the land share the screen', () => {
-    const off = rules.find((r) => r.selector === '.firefly' && r.ancestors.includes('@media (max-width: 1279px)'))
+  it('are off below 1536px, where they would land on the wide column', () => {
+    const off = rules.find((r) => r.selector === '.firefly' && r.ancestors.includes('@media (max-width: 1535px)'))
     expect(off?.body).toMatch(/display:\s*none/)
   })
 })
